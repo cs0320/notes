@@ -4,6 +4,8 @@ Welcome to CSCI 0320/1340!
 
 This page contains the _lecture notes_ for the course. With JavaScript enabled, the table of contents that will allow you to select a specific chapter. Likewise, the search icon should allow you to search for arbitrary words throughout all the notes.
 
+This outline is subject to change, and notes are often modified in response to TA feedback or student Q&A. Lecture indexing is for Spring 2024. Notes Tim is still revising will be greyed out and inaccessible in the table of contents.
+
 ## Exercises
 
 If you see an expandable piece of text, like this:
