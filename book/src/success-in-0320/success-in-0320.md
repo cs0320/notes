@@ -412,3 +412,11 @@ On a similar note, there's diminishing returns on time to improve coverage. In a
 This badge also includes error handling. Make sure you're handling error cases in a reasonable way. E.g., what happens if the code calling your CSV parser gives an invalid file name? (And numerous other scenarios...)
 
 Keep in mind: you probably don't want to print an error message and exit as part of your CSV parser. Be considerate of the code calling yours---maybe they want to do something for error cases. For more advice on this, see _Effective Java_ on exceptions.
+
+Finally, it would be bad to use typecasting or `instanceof` on this assignment, outside of defining something like an `equals` or `hashCode` method. Typecasting is telling the compiler "I know best, not you"; that's not very defensive programming! Here's an example of what I mean: 
+
+```java 
+return (T) creator.create(row);
+```
+
+That's the sort of thing I had to do when I was learning Java in the late 90's, before generics existed. If you find yourself doing something like that, it means you aren't using generics properly, and would be at risk of losing the strategy pattern and/or defensive-programming badges. 
