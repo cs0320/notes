@@ -176,7 +176,7 @@ public class Student<T> {
 }
 ```
 
-Every time we create a `Student`, that instance will have a todo list containing items of some type. That type will always have to be the same type for any specific student. We can create students just like we would without the type variable, but we need to provide a little information, like this:
+Every time we create a `Student`, that instance will have a todo list containing items of some type. That type will always have to be the same type for any specific student; that single type is the value of `T` (which only exists for the compiler). We can create students just like we would without the type variable, but we need to provide a little information, like this:
 
 ```java
 Student<String> tim = new Student<>(List.of("lecture notes", "email", "email", "family", "email"));
@@ -245,7 +245,7 @@ TA in audience: Well, uh, Tim, your code just broke some of our tests...
 
 Oh, dear. 
 
-Since this was an existing project, we had test cases written for it. I guess I should have run those tests _before_ pushing my update, huh? Let's have a look. Our tests use _JUnit_, a popular testing library for Java. How do we install JUnit? Just by adding it as a depdendency in Maven, our Java package manager. Your Maven configuration usually lives in a single file: `pom.xml`. In my project, I have:
+Since this was an existing project, we had test cases written for it. I guess I should have run those tests _before_ pushing my update, huh? Let's have a look. Our tests use _JUnit_, a popular testing library for Java. How do we install JUnit? Just by adding it as a dependency in Maven, our Java package manager. Your Maven configuration usually lives in a single file: `pom.xml`. In my project, I have:
 
 ```xml
     <dependencies>
@@ -313,11 +313,11 @@ Let's give it a try.
 
 #### Localization
 
-Confirm each step in your desciption is accurate. Use any reasonable means (e.g., print statements or a debugger). The first step where the program behaves unexpectedly is a *possible location* for the original bug. More commonly, it contains the call site for the actual buggy code. 
+Confirm each step in your description is accurate. Use any reasonable means (e.g., print statements or a debugger). The first step where the program behaves unexpectedly is a *possible location* for the original bug. More commonly, it contains the call site for the actual buggy code. 
 Record this location, along with the expected and actual behavior.
 
-* I see the student is created, and I know the method is called because I added a println to check.
-* I see my exception is being returned, because I added a println to check.*
+* I see the student is created, and I know the method is called because I added a `println` to check.
+* I see my exception is being returned, because I added a `println` to check.*
 
 Notice how this process is leading us to the problem: that an exception being thrown is not the same as returning `null`. This is a pretty simple bug, but the process of _narrowing your attention_ through experiments is a professional technique that works even in enormous enterprise systems.
 
@@ -333,11 +333,7 @@ No. In 0320, we have an open collaboration policy---even about code. But in exch
 * never copy or adapt code that you can't explain (to a staff member, or me, or your partner, or yourself); and
 * never copy or adapt code that you haven't tested thoroughly.
 
-In fact, a failure to meet these basic professional standards would be a violation of Brown's academic code. To run a course with such an open policy is _risky_---if abused, it harms your learning and our ability to keep the course collaborative. I'm sorry to say that this means I would have to file an academic code case if these standards were violated, and then relentlessly pursue it.
-
-### Test Coverage 
-
-**TODO**
+A failure to meet these basic professional standards would be a violation of Brown's academic code (it would also get you in trouble at work). To run a course with such an open policy is _risky_---if abused, it harms your learning and our ability to keep the course collaborative. I'm sorry to say that this means I would have to file an academic code case if these standards were violated, and then relentlessly pursue it.
 
 <!-- However, I believe this policy can work well. It's realistic---the cases for violating the policy are cases any manager or tech lead would be extremely unhappy with! And since every team will have a TA serving as a manager, that's not a hypothetical. Also:
 
@@ -386,6 +382,30 @@ Push regularly with reasonable commit messages. Don't just keep all your code in
 ### Testing
 
 Test your code. We'll talk more about testing next week, but it should go without saying that in 0320, we take testing seriously. The handout contains *good advice* on meeting our requirements for this sprint. Future sprints may reduce the level of detail we give.
+
+#### Test Coverage 
+
+There are a few metrics for how good a test suite is. One is "test coverage", which measures how much of the code the suite exercises. Although we encourage you to run from the terminal using `mvn`, IntelliJ is probably the best way to get test-coverage information easily, without more configuration work. To do this, run a test file in IntelliJ, then select "Run with Coverage" from the "Run" menu:
+
+![The run menu's run-with-coverage option](./run-with-coverage.png)
+
+This will open a new pane in IntelliJ:
+
+![A new pane labeled "Coverage", showing class, method, and line coverage](./coverage-window.png)
+
+My 3 tests for today's lecture are only exercising 29 percent of the code! That's a bit worrying. (We'll expect at least 50 percent line coverage on CSV, which should be very easy to reach.) If you click on the package name, it will show you lower-level information:
+
+![Details for the `Student` class, the `Main` class, and the `prep` sub-package](./more-coverage.png)
+
+Actually, my coverage isn't bad after all. I simply don't have tests in this file for my course-prep code, or for the `Main` class. That's OK; all lines in the `Student` class are being exercised. 
+
+~~~admonish warning title="Coverage isn't everything!"
+Don't view a high level of coverage as a guarantee! Coverage is imperfect; there are a lot of things it doesn't measure. But it's one means by which you can discover problems with your testing. 
+
+On a similar note, there's diminishing returns on time to improve coverage. In a real, large code base, it's _far_ more difficult to move from 90% to 95% than it is to move from 50% to 65%. Don't spend all your time trying to improve coverage at the exclusion of all else, but don't neglect it either. Our sprints are small, compared to most real-world projects!
+~~~
+
+
 
 ### Defensive Programming
 
