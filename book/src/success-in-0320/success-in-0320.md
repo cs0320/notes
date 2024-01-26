@@ -44,11 +44,12 @@ Non-technical reading: [Clever Manka](https://www.gutenberg.org/files/33002/3300
 
 ### Reading for the CSV Sprint
 
-_Effective Java_ items on:
-* generics;
-* equality/hash;
-* gen contract; and 
-* exceptions.
+_Effective Java_ (3rd edition) items on:
+* general contracts and equality/hash, **Items 10, 11, and 12**;
+* generics, **Items 26, 29, and 30**; and
+* exceptions, **Items 69, 70, 72, 73**.
+
+Items in Chapter 4 may be useful for those who haven't done object-oriented programming recently. Especially **Items 15, 17, and 19**. 
 
 You are not required to buy this book. It's available free to read online via Brown's library. 
 
