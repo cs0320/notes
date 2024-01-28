@@ -1,6 +1,6 @@
 # sp24.3: Equality in Java, Contracts
 
-**This chapter is being edited.**
+**This chapter is being edited. Expect TODOs inline, possible bugs etc. until the pertinent class session.**
 
 ## Logistics
 

@@ -1,6 +1,6 @@
 # sp24.2: Testing, Strategies, and the Debugging Recipe
 
-**This chapter is being edited.**
+**This chapter is being edited. Expect TODOs inline, possible bugs etc. until the pertinent class session.**
 
 **Reminder:** Notes in 0320 often cover topics in more detail than we have time for. Thus, we expect you to at least skim the notes! Likewise, the class livecode repository includes marked up versions of the livecode meant for your reference and *experimentation*.
 
@@ -13,7 +13,7 @@
 
 ## Note on CSV
 
-Many questions are being answered in Ed already. You might benefit from skimming the topics, or searching. We are trying to promote discussion and thought, not give "the answer". If you ask "Is this right?" we might not answer with a boolean.
+Many questions are being answered in Ed already. You might benefit from skimming the topics, or searching. **Look at the endorsed threads!** We are trying to promote discussion and thought, not give "the answer". If you ask "Is this right?" we might not answer with a boolean.
 
 Keep in mind, you should not need to use `instanceof` or typecasting outside of methods like overriding `.equals` or `.hashCode` in a new class.**
 
