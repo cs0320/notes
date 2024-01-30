@@ -1,7 +1,5 @@
 # sp24.2: Testing, Strategies, and the Debugging Recipe
 
-**This chapter is being edited. Expect TODOs inline, possible bugs etc. until the pertinent class session.**
-
 **Reminder:** Notes in 0320 often cover topics in more detail than we have time for. Thus, we expect you to at least skim the notes! Likewise, the class livecode repository includes marked up versions of the livecode meant for your reference and *experimentation*.
 
 <!-- ## Logistics
@@ -15,7 +13,7 @@
 
 Many questions are being answered in Ed already. You might benefit from skimming the topics, or searching. **Look at the endorsed threads!** We are trying to promote discussion and thought, not give "the answer". If you ask "Is this right?" we might not answer with a boolean.
 
-Keep in mind, you should not need to use `instanceof` or typecasting outside of methods like overriding `.equals` or `.hashCode` in a new class.**
+Keep in mind, you should not need to use `instanceof` or typecasting outside of methods like overriding `.equals` or `.hashCode` in a new class.
 
 <!-- #### Optional: Course Design Motivation
 
@@ -119,10 +117,6 @@ Let's write code that can sort a list of `Diplomat` objects in their order of di
 So we'd put an ambassador ahead of a minister, but it would be ok to put a high commissioner above or below an ambassador, since they're at the same tier of ranks.
 
 We're not done though. The order of precedence is complicated by some real-life norms that any *real* software would need to address. When we come back from the break, we'll look at a small challenge and a bigger challenge. 
-
-## Let's take a break!
-
-![](https://hackmd.io/_uploads/SyfWMb0An.png)
 
 ## Design Challenges
 
