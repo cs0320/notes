@@ -1,15 +1,18 @@
 # sp24.3: Equality in Java, Contracts
-
-**This chapter is being edited. Expect TODOs inline, possible bugs etc. until the pertinent class session.**
-
 ## Logistics
 
 * If you're finding user stories 2 and 3 challenging, that's _normal_. Many students do not obtain all badges on CSV. 
 * I'm going to start the required in-class exercises sometime next week. If you're sick, traveling, etc. for a day or two, don't worry about mailing me; this is meant to be a lightweight thing. If you're out for *many* days, do reach out for accommodations. Otherwise, come to class and do the exercises.
-* When you are serving as a partner in collab section, you're prioritizing _others'_ bugs, but may collaboratively work on your own. You can attend collab section as often as you want. 
+* When you are serving as a partner in collab section, you're prioritizing _others'_ issues, but keep in mind:
+  * you may (collaboratively!) work on your own issues; and
+  * you can attend collab section as often as you want. 
 * If you're not reading the notes or using the livecode, you're missing what might be useful advice for the sprints. For example, today I am not going to run through the full testing discussion at the start of these notes; you're responsible for reading it.
 
 If you haven't cloned the [livecode repo](https://github.com/cs0320/class-livecode), you need to do so **NOW**. Once you've cloned it, just run `git pull` in the repository before class, and you'll get my updates. Change anything you want; you don't have permission to push, so you can't ever mess up. Just re-clone and start over if needed!
+
+~~~admonish warning title="Opening a Maven Project in IntelliJ" 
+Make sure you open the `pom.xml` file, not the directory. If you don't do this, IntelliJ will create a project without Maven. You want it to be aware that this is a Maven project so it will automatically obtain dependencies. 
+~~~
 
 ## Today's Testing Lesson: Representation vs. Domain 
 Back in 2019, engineers at Apple had to deal with a major security bug in Facetime, the video-chat app that many iOS users use. It seems to have been reported earliest on  [Twitter](https://twitter.com/MGT7500/status/1087171594756083713), but Apple didn't immediately (appear to) take the problem seriously. This isn't a class on PR or management, so we won't follow that line of discussion much further. 
@@ -58,11 +61,11 @@ One of the first things you should do when learning a new programming language i
 
 Today we're going to dive into a few reasons why equality is complex in Java. The lessons here will affect work you do in future sprints, especially where defensive programming is concerned.
 
-Start by pulling the livecode repository, and opening the `F23/sep14-equality/pom.xml` file as a project in IntelliJ.
+Start by pulling the livecode repository, and opening the `S24/feb01-equality/pom.xml` file as a project in IntelliJ.
 
 ### Reviewing Equality in Java (with some new insights)
 
-Let's proceed with a series of experiments. We'll record them in the `Main` class, so we can see the demo progressing. Each of these blocks can go in its own method, or we can just paste each into `main`. To make this easier to follow, I've defined a helper method called`print`.
+Let's proceed with a series of experiments. We'll record them in the `Main` class, so we can see the demo progressing. Each of these blocks can go in its own method, or we can just paste each into `main`. To make this easier to follow, I've defined a helper method called `print`.
 
 #### String Equality
 
@@ -275,19 +278,13 @@ This is called a _contract_ on the method. The documentation for `Object` is say
 
 **Exercise:** try to come up with a situation where breaking one of these requirements would result in buggy behavior. You may use built-in data structures for these examples, or not, as you wish. 
 
-
-
-## Final Takeaways
+## Takeaways
 
 Java's `record`s automatically define `equals` and `hashCode` for you---assuming that you wanted all fields of the record to be included in calculating these. This is one of many ways they are convenient. (Unfortunately, you can't have a `record` extend another to add more fields.)
 
-Documenting the expectations you have for anyone using, or extending, your classes is not just best practice; it will save real time and frustration. Similarly, be willing to glance at the documentation for methods you're using---you might be surprised what you find.
+**Documenting the expectations** you have for anyone using, or extending, your classes is not just best practice; it will save real time and frustration. Similarly, be willing to glance at the documentation for methods you're using---you might be surprised what you find.
 
 All of this will be important for how we evaluate your work in future sprints.
-
-## Closing Session
-
-We'll spend remaining time in class on the above testing example and/or discussing CSV.
 
 
 
