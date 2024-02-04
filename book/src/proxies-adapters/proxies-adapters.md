@@ -1,14 +1,16 @@
 # fa23.4 Proxies (Defensive and Otherwise)
 
+**These notes are being worked on; expect changes up until class.**
+
 Today we'll cover some topics in *defensive programming* and introduce the *proxy* pattern. There will be two livecode examples, both [in the repo](https://github.com/cs0320/class-livecode) for today: 
 * a TA hours dispatcher; and 
 * a small caching example.
 
+~~~admonish warning title="In-class exercises are coming soon!"
 Shopping period ends today. We may have a code-review exercise on Thursday if time permits.
+~~~
 
-(If CAB is reporting open seats, that's because it isn't counting active overrides and 1340. **If you have an override, you need to *accept it ASAP* or you may not be registered!**)
-
-Let's get ready for the next sprint.
+**Let's get ready for the next sprint.**
 
 ## Defensive Programming: Context
 
@@ -72,7 +74,7 @@ Remember: we're pretending that there's someone using our code, or someone whose
 
 Ok, let's make those changes, and continue iterating. 
 
-### Private and Final
+### Keywords: `private` and `final`
 
 There are a few problems we might notice as we go. First, neither `private` nor `final` always protect you. Let's look very closely at one example: our `minutesLeft` field. We can make it `final` to prevent it from being modified---but that prevents value of the _field itself_ from being _reassigned_. It doesn't stop someone from calling (e.g.) `minutesLeft.put` themselves. That is:
 
@@ -127,7 +129,7 @@ Documentation is thus much more important than code comments, and code comments 
 I'll usually skip this in lecture, unless it's the topic of discussion---good documentation takes time.
 
 
-### Validing Input and Exceptions
+### Validating Input and Exceptions
 
 Defensive programming isn't just about protecting your own code from someone else's bugs, it's also about protecting others from themselves, you, their other dependencies, and your own dependencies. 
 
@@ -230,7 +232,9 @@ class LimitedTATimesMap implements Map<String, Integer> {
 
 Since proxies modify existing methods, they're very useful for adding on hidden efficiencies. Caching is a great example -- and something you'll be doing in your Server sprint. 
 
-See the lecture capture and the livecode example in the `caching` folder for more information. 
+~~~admonish warning title="For your sprint!"
+See the lecture capture and the livecode example in the `caching` folder for more of the caching demo. 
+~~~
 
 ## Supplemental Material: More Advanced Structural Patterns
 

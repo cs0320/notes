@@ -1,18 +1,28 @@
 # fa23.5: Web APIs and Integration Testing with Mocks
 
-###### tags: `Tag(fa23)`
+**These notes are being worked on; expect changes up until class.**
 
-**These notes are currently being edited. They are not final.**
-
+~~~admonish warning title="Server sprint is out!"
 Server goes out today. **Do not wait to get started.** Start with integrating your CSV code with SparkJava (which we're covering today).
+~~~
 
-The [livecode for today](https://github.com/cs0320/class-livecode/tree/main/F23/sep21_nws_api) supplements the Server gearup example. We'll talk about:
+
+## Looking Ahead! 
+
+In the next sprint, you'll be building a _server_ that listens for requests. It gets its data from your CSV files but also from other servers on the Internet. We anticipate some of the major challenges to be:
+* setting the server up to listen properly (you'll use the _strategy pattern_ for this!);
+* serializing and deserializing data to and from other servers and your user; 
+* limited caching of prior results (you'll use the _proxy pattern_ for this!); and 
+* _integration testing_ your server by sending it fake requests. 
+
+## Livecode 
+
+The [livecode for today](https://github.com/cs0320/class-livecode/tree/main/S24/feb08_nws_api) supplements the Server gearup example. We'll talk about:
 * invoking (and creating) Web APIs; 
 * integration testing; and 
 * using "mocks" to avoid several different costs in development.
 
-This example does *not* cover caching. For that, see the previous livecode.
-
+This example does *not* cover caching, which you'll need for the sprint. For that, see the previous livecode.
 
 ## Web APIs
 

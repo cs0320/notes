@@ -3,10 +3,13 @@
 [How to read these notes](./home.md) 
 
 [Lecture 1: Success in 0320](./success-in-0320/success-in-0320.md)
+
 [Lecture 2: More Strategies, More Testing](./comparators-and-testing/comparators-and-testing.md)
 [Lecture 3: Equality is Hard, Caching](./equality-contracts/equality-contracts.md)
-[Lecture 4: Proxies and Adapters, Defensive Programming]()
-[Lecture 5: Web APIs and Integration Testing]()
+
+[Lecture 4: Proxies and Adapters, Defensive Programming](./proxies-adapters/proxies-adapters.md)
+[Lecture 5: Web APIs and Integration Testing](./apis-integration/apis-integration.md)
+
 [Lecture 6: More Mocking, CSV Review]()
 [Lecture 7: Generic Types and Wildcards, Fuzz Testing]()
 [Lecture 8]()
