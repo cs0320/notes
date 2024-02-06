@@ -2,12 +2,14 @@
 
 **These notes are being worked on; expect changes up until class.**
 
-Today we'll cover some topics in *defensive programming* and introduce the *proxy* pattern. There will be two livecode examples, both [in the repo](https://github.com/cs0320/class-livecode) for today: 
+Today we'll cover some topics in *defensive programming* and introduce the *proxy* pattern. There will be two livecode examples, both [in the repo](https://github.com/cs0320/class-livecode/tree/main/S24/feb06_queue_manager) for today: 
 * a TA hours dispatcher; and 
 * a small caching example.
 
+Both are in the same project. 
+
 ~~~admonish warning title="In-class exercises are coming soon!"
-Shopping period ends today. We may have a code-review exercise on Thursday if time permits.
+Today is the last day of shopping period. We may have a code-review exercise on Thursday if time permits.
 ~~~
 
 **Let's get ready for the next sprint.**
@@ -74,6 +76,13 @@ Remember: we're pretending that there's someone using our code, or someone whose
 
 Ok, let's make those changes, and continue iterating. 
 
+<details>
+<summary>Click to see diagram</summary>
+
+![Dispatcher 1](./dispatcher1.png)
+
+</details>
+
 ### Keywords: `private` and `final`
 
 There are a few problems we might notice as we go. First, neither `private` nor `final` always protect you. Let's look very closely at one example: our `minutesLeft` field. We can make it `final` to prevent it from being modified---but that prevents value of the _field itself_ from being _reassigned_. It doesn't stop someone from calling (e.g.) `minutesLeft.put` themselves. That is:
@@ -117,6 +126,14 @@ This solution is still moving in the right direction. We could certainly update 
 
 So we need to enforce immutability on the canonical copy. It turns out that Java's standard library has a convenient way to do this.
 
+<details>
+<summary>Click to see diagram</summary>
+
+![Dispatcher 1](./dispatcher2.png)
+
+</details>
+
+
 
 ### Documenting Assumptions and Guarantees
 
@@ -150,7 +167,7 @@ Another option is to define our own, custom, _checked_ `Exception` class. We'd t
 
 Remember: a string isn't a great way to send back structured information. A person may be able to read it, but if they want to do something more programmatic, they need to parse it. Don't make them do this! If the exception happened for complicated reasons (or maybe even if it didn't) make a custom exception that includes fields related to the problem, and document them.
 
-### A Quick Fix: Unmodifiable Maps
+### A Clever Fix: Unmodifiable Maps
 
 Let's go back to the defensive-programing problem we observed earlier.
 
@@ -198,6 +215,14 @@ Unfortunately:
 
 **Aside:** Again, note that our assumption "the adversary is in the codebase" does need some moderation! If there really is a malicious developer on our team, we're probably in deep trouble. We're using the _fiction_ of the adversary to help us think of ways our code could be made safer or more robust against worst case possibilities.
 
+<details>
+<summary>Click to see diagram</summary>
+
+![Dispatcher 1](./dispatcher3.png)
+
+</details>
+
+
 ## Bringing All That Together: Structural Patterns (like Proxy)
 
 A _proxy_ class wraps another object and provides all the same interfaces, but might possibly restrict or change the exact behavior of the promised methods. This is an incredibly useful pattern, and it's related to other _structural patterns_ like _decorator_ (which adds in additional functionality) or _adapter_ (which modifies one interface into another). There are more than 20 patterns in the [classic book](https://learning.oreilly.com/library/view/design-patterns-elements/0201633612/fm.html), and we won't talk about them all explicitly in class.
@@ -230,7 +255,7 @@ class LimitedTATimesMap implements Map<String, Integer> {
 
 ## Caching
 
-Since proxies modify existing methods, they're very useful for adding on hidden efficiencies. Caching is a great example -- and something you'll be doing in your Server sprint. 
+Since proxies _filter access_ to existing methods, they're very useful for adding on hidden efficiencies. Caching is a great example -- and something you'll be doing in your Server sprint. 
 
 ~~~admonish warning title="For your sprint!"
 See the lecture capture and the livecode example in the `caching` folder for more of the caching demo. 
