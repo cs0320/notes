@@ -1,10 +1,12 @@
 # fa23.5: Web APIs and Integration Testing with Mocks
 
-**These notes are being worked on; expect changes up until class.**
-
 ~~~admonish warning title="Server sprint is out!"
 Server goes out today. **Do not wait to get started.** Start with integrating your CSV code with SparkJava (which we're covering today).
 ~~~
+
+Today's in-class code is [here](https://github.com/cs0320/class-livecode/tree/main/S24/feb08_nws_api). Please pull the repository and make sure you can load this. Remember to load the `pom.xml` file _as a project_. 
+
+Today's in-class exercise is [here](https://forms.gle/2TykFfqZVvJz4gjC6). If you are in the remote section, or have special circumstances you will be allowed to hand in the exercise within the next couple of days. Otherwise, the expectation is that everyone will complete the exercise (honestly) by the end of the day today. 
 
 
 ## Looking Ahead! 
@@ -15,6 +17,25 @@ In the next sprint, you'll be building a _server_ that listens for requests. It 
 * limited caching of prior results (you'll use the _proxy pattern_ for this!); and 
 * _integration testing_ your server by sending it fake requests. 
 
+<center>
+<img src="./server_arch.png" width="50%"/>
+</center>
+
+### Readings
+
+Your readings for this sprint include:
+* Bloch (Effective Java)
+  * Minimize mutability (Item 17); 
+  * Check parameters for validity (Item 49); 
+  * Make defensive copies when needeed (Item 50); 
+  * Some of the items about exceptions (Items 69, 70, 72, **73**, and 75); 
+  * [This short article](https://99percentinvisible.org/episode/the-future-of-the-final-mile/) about Internet access; and 
+  * [This page](https://detroitcommunitytech.org/?q=eii) about the Equitable Internet Initiative. 
+
+Some of these reinforce concepts from class; others introduce deeper discussion than we have time for (e.g., much of the exceptions content). You're of course free to read more of Bloch if you wish; we strongly recommend it for learning about OO Java programming.
+
+We will have another class on generics in the near future, and Bloch's Item 31 would be a good companion to that. 
+
 ## Livecode 
 
 The [livecode for today](https://github.com/cs0320/class-livecode/tree/main/S24/feb08_nws_api) supplements the Server gearup example. We'll talk about:
@@ -22,7 +43,7 @@ The [livecode for today](https://github.com/cs0320/class-livecode/tree/main/S24/
 * integration testing; and 
 * using "mocks" to avoid several different costs in development.
 
-This example does *not* cover caching, which you'll need for the sprint. For that, see the previous livecode.
+This example does *not* cover caching, which you'll need for the sprint. For that, see the previous livecode. Although it does have an empty class that demonstrates the shape.
 
 ## Web APIs
 
@@ -49,6 +70,12 @@ APIs work like this: the user sends a structured request to the API, which repli
 This is an example of an "interface" in the broad, classical sense. It isn't a _Java_ `interface`. It's one of many ways for two programs to communicate across the web, but it's _specific_ and _well-defined_.
 
 APIs are everywhere. Whenever you log in via Google (even on a non-Google site) you're using [Google's Authentication API](https://developers.google.com/identity). 
+
+APIs are very like method calls! The pictures are very similar:
+
+<img src="./method_call.png" width="45%"/> <img src="./api_call.png" width="45%"/>
+
+The differences are in the ways we go about making a call (and processing the result). E.g., we have to build a request string that embodies the call, and we have to turn the response object into usable data.
 
 ### Example: National Weather Service
 
