@@ -1,24 +1,22 @@
 # fa23.8+9: Webapps: HTML/CSS, TypeScript, React, Playwright
 
-###### tags: `Tag(fa23)`
-
+~~~admonish warning title="Additional Materials"
 Please be aware that these notes:
 * contain supplemental material, like the links below, that isn't covered in class; and
-* are meant to be accompanied by the full [reactNYT livecode](https://github.com/cs0320/class-livecode/tree/main/F23/reactNYT), which contains many comments and more examples for your reference.
-
-
+* are meant to be accompanied by the full [reactNYT livecode](https://github.com/cs0320/class-livecode/tree/main/S24/reactNYT), which contains many comments and more examples for your reference.
+~~~
 
 ## Quick Links
 
-[TypeScript documentation on "instanceof narrowing"](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)---a technique we'll use when writing web applications in TypeScript.
+[TypeScript documentation on "instanceof narrowing"](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)---a technique we'll sometimes use when writing web applications in TypeScript. Notice how different this is from what we're used to in Java. That doesn't make it good or bad, just different; TypeScript has to work differently because it was built as an add-on to JavaScript.
 
-You won't need classes to implement your Mock sprint (Sprint 3), but if you want to refer to documentation anyway, the [TypeScript docs on classes](https://www.typescriptlang.org/docs/handbook/2/classes.html) are worthwhile here. You'll use TypeScript classes on the *next* sprint, REPL (Sprint 4).
+You won't need classes to implement your Mock sprint (Sprint 3), but if you want to refer to documentation anyway, the [TypeScript docs on classes](https://www.typescriptlang.org/docs/handbook/2/classes.html) are worthwhile here. You might find TypeScript classes useful on future sprints.
 
-You may find the [React docs](https://beta.reactjs.org/) useful. This is especially true for the `useEffect` hook (not used in the NYT app) and `useState` hooks, which you may need depending on architecture. The `useEffect` hook helps if you want to control _side effects_ in your components. Remember that you are not in control of how often a function component is re-evaluated; **putting side effects directly in the function is not reliable**. Use `useEffect` instead. 
+You will find the [React docs](https://beta.reactjs.org/) useful. This is especially true for the `useEffect` hook (not used in the NYT app) and `useState` hooks, which you may need depending on architecture. The `useEffect` hook helps if you want to control _side effects_ in your components. Remember that you are not in control of how often a function component is re-evaluated; **putting side effects directly in the function is not reliable**. Use hooks instead. 
 
 Finally, [Playwright's documentation](https://playwright.dev/docs/intro), especially its [page on locators](https://playwright.dev/docs/locators#locate-by-role), will be useful for testing.
 
-The end of this document says a few words on `await`, which you'll see in the Playwright examples, but should not need to use outside your test files.
+The end of this document says a few words on `await`, which you'll see in the Playwright examples, but **you should not need to use `await` outside your test files.** We'll cover `await` and `async` more for your _next_ Sprint, REPL.
 
 ## Logistics
 
@@ -32,22 +30,26 @@ Items on the rubric, especially for testing, also reinforce concepts we're likel
 
 I'd caution against viewing success in either 0320 or CSCI generally as related to _talent_, for a couple reasons.  We don't talk enough about how talent depends on external factors and experience. Stephen Sondheim (who I imagine knew more about talent than most) said that "everybody is talented, it's just that some people get it developed and some don't." We can often (wrongly) think of "talent" in CSCI as when some skill or concept comes easily. But the development of talent requires time, support, work, etc. And even prodigies need that---e.g., Terrence Tao (who aced the math SATs when he was 8 years old) got a lot of tutoring support growing up, and (crucially) his family was able to provide it.
 
+## An Exercise 
+
+You'll start the "front end" part of 0320 today. In our context, that means web programming. **What's a (work-safe) website that you particularly like, and what's something the website's interface does that you'd like to learn how to do?**
+
 ## Static HTML and CSS Basics
 
-We're going to be working with a student's website today. The site is hosted [here](https://cs.brown.edu/~tbn/nim/). Naturally, I got permission before using one of your fellow student's webpages.
+Let's start by looking at a student's website. The site is hosted [here](https://cs.brown.edu/~tbn/nim/). Naturally, I got permission before using one of your fellow student's webpages. The style is rather outdated, but it suffices as a first intro to these concepts.
 
 This website uses three files:
 * an HTML file, which defines the _content_ of the page ([index.html](https://cs.brown.edu/~tbn/nim/index.html));
 * a CSS File, which defines the _styling_ of the page ([styles.css](https://cs.brown.edu/~tbn/nim/styles.css)); and 
 * an image file with a picture of the student ([nim.png](https://cs.brown.edu/~tbn/nim/nim.png)).
 
-### HTML Structure
+### HTML: The Content
 
 Notice that the structure of HTML is _treelike_. Tags open and close elements in the document. There's some metadata, but largely the document describes visible content and the structure of that content.
 
-If you're used to editing documents via Google Docs or MS Word, you might be wondering where the _formatting_ information comes from. Websites usually separate out content from styling, meaning that the HTML won't say that a certain word should be shown in a particular font, but gives any context needed for styling to be done by...
+If you're used to editing documents via Google Docs or MS Word, you might be wondering where the _formatting_ information comes from. Websites usually separate out content from styling, meaning that the HTML won't say that a certain word should be shown in a particular font, or aligned in a particular way. Instead, any context needed for styling to be done is specified by...
 
-### CSS Structure
+### CSS: The Styling
 
 CSS files say how to _style_ elements of a webpage. Because the author of this page gave the `uniName` class to "Brown University", this style declaration will apply:
 
@@ -84,14 +86,13 @@ Notice that when I mouse over the first column in the table, my browser is highl
 
 There are better ways of formatting this sort of data than tables. I took this from a webpage written more than a decade ago. 
 
-**But note: tables would be a great way to arrange CSV rows on the webpage.**
+**But note: HTML tables would be a great way to arrange CSV rows on the webpage for Mock!**
 
 #### Warning! 
 
-Make sure you're looking at `Elements` or `Inspector`, not `Sources`. Once we start working with pages that change dynamically, `Sources` may only show the starter template, without taking into account updates. 
+Make sure you're looking at `Elements` or `Inspector`, not `Sources`. Once we start working with pages that change dynamically, `Sources` only shows the starting HTML (the source loaded in the file) without updates that are actually displayed. 
 
-
-## Framing the Example: A Puzzle
+## A Website I Liked
 
 The New York Times website had a [puzzle](https://www.nytimes.com/interactive/2015/07/03/upshot/a-quick-puzzle-to-test-your-problem-solving.html) a few years back that I love to use in class. It went something like this:
 
@@ -101,7 +102,7 @@ The New York Times website had a [puzzle](https://www.nytimes.com/interactive/20
 
 The page is paywalled. Although Brown provides access through your logins, it's kind of a pain to set up under time constraints. So, while you should definitely try the NYT's version if you can, _let's build our own_. In fact, [I've already built one!](https://tnelson.github.io/reactNYT/) 
 
-This is an example of a webapp with both a _front end_ and a _back end_. The front-end piece is what you see on the webpage, and all the dynamic functionality there. The backend (here) is just a database where I keep track of everyone's sequences, and the results the app gave you. 
+This is an example of a webapp with both a _front end_ and a _back end_. The front-end piece is what you see on the webpage, and all the dynamic functionality is there. The backend (in this app, anyway) is just a database where I keep track of everyone's sequences, and the results the app gave you. 
 
 Let's try it out. I didn't implement the "I'm ready to guess" part yet, but once you have a guess, **write it down** and stop.
 
@@ -111,7 +112,9 @@ The rule is "any non-decreasing sequence of three numbers." Is that your guess?
     
 Perhaps not! The NYT reports that the majority of people who've tried the puzzle made their first guess before ever receiving a _false_ response. 
     
-What does that have to do with software engineering? This is an example of _confirmation bias_; we humans tend to favor examples that _meet_ our expectations. But without first seeing some `false` results, how would you really build confidence in your guess? (Maybe _any_ sequence worked!)     
+What does that have to do with software engineering? This is an example of _confirmation bias_; we humans tend to favor examples that _meet_ our expectations. But without first seeing some `false` results, how would you really build confidence in your guess? (Maybe _any_ sequence worked!) 
+
+By the way, this shows an example of how cognitive bias can impact our testing. It's quite easy to see a lot of `true` responses and get complacent...
 </details>
 
 #### Accessibility
@@ -122,22 +125,23 @@ This site isn't great in terms of accessibility, yet. Notice that whether the pa
 
 We're going to write a less complex version of that web app today. Crucially, it will have _no back-end code_, and can just be run in a browser, via a local webserver. The gearup will cover more on this setup.
 
-### Adding Dynamic Behavior
+### JavaScript: Dynamic Behavior
 
-Neither HTML nor CSS alone suffice to build a good web application. We need a way to add programmatic behavior to the page, and to do that, we probably want a programming language.
+Neither HTML nor CSS alone suffice to build a good web application. We need a way to add *dynamic behavior* to the page, and to do that, we probably want a programming language.
 
 There are dozens of options (including Java) but one tends to be far more popular than others: JavaScript. In fact, many popular web programming languages actually compile to JavaScript---which means browser developers can focus on optimizing JavaScript performance in their engine, confident in a broad impact. (If you took CS 0190 or CS 0111, the language you used the most---Pyret---compiles to JavaScript.)
 
 **JavaScript is responsible for _dynamic_ behavior in the page.**
 
-### TypeScript
+### TypeScript: JavaScript with Seatbelts
 
-We'll be using _TypeScript_ in 0320. TypeScript is (essentially) JavaScript with types, and as you get experience with JavaScript, you'll very quickly see why those types are a good thing. 
+We'll be using _TypeScript_ in 0320. TypeScript is (essentially) JavaScript with types, and as you get experience you'll very quickly see why those types are a good thing. It's quite easy to make mistakes involving types in JavaScript; just try entering an expression like `' ' == 0` in the browser console.
 
-TypeScript code is compiled to JavaScript by the TypeScript compiler. That's our job to run as the web developer, _not_ the client's job. Websites need to load quickly, and prefer a small memory footprint. 
+TypeScript code is compiled to JavaScript by the TypeScript compiler. That's our job to run as the web developer, _not_ the client's job. Websites need to load quickly.
 
-We'll also be using the React framework this semester; more on this soon.
-
+~~~admonish note title="React"
+We'll also be using the React framework this semester; more on this soon. You can think of React as a _way_ of programming websites in JavaScript or TypeScript, supported by many good libraries.
+~~~
 
 ### Getting Started 
 
@@ -157,9 +161,9 @@ When you run `npx tsc` or `npx tsc -w`, make absolutely sure that you are runnin
  -->
 ### Framing the Web App We Want
 
-I've put a draft of the puzzle in the livecode repository [here](https://github.com/cs0320/class-livecode/tree/main/F23/reactNYT). 
+I've put a draft of the puzzle in the live code repository [here](https://github.com/cs0320/class-livecode/tree/main/S24/reactNYT). 
 
-You can find the HTML [here](https://github.com/cs0320/class-livecode/blob/main/S23/reactNYT/public/index.html). There are a couple of new tags in the HTML, but they're just more semantic grouping tags, like `section` etc. We'll focus on the code today.
+You can find the HTML [here](https://github.com/cs0320/class-livecode/blob/main/S24/reactNYT/public/index.html). There are a couple of new tags in the HTML, but they're just more semantic grouping tags, like `section` etc. We'll focus on the code today.
 
 One thing is worth noting: the CSS has only two declarations. These correspond to the formatting cues assigned to correct and incorrect sequences in the history:
 
@@ -171,6 +175,8 @@ One thing is worth noting: the CSS has only two declarations. These correspond t
     background-color: red;
 }
 ```
+
+We could make the page a lot better-looking by doing more with CSS styling. But this is meant to be an example focused on the dynamic behavior only.
 
 ### Adding Dynamic Behavior
 
@@ -213,38 +219,34 @@ This doesn't get called anywhere yet, but it's something we can unit test. To do
 export {pattern};
 ```
 
-How do we write unit tests for TypeScript? Very similarly to how we write unit tests for Java. We'll use _Jest_, analogously to JUnit. I'll make a new file called `main.test.ts` to hold tests for this module. Here's one example:
+How do we write unit tests for TypeScript? Very similarly to how we write unit tests for Java. I'll make a new file called `pattern.test.ts` to hold tests for the pattern checking code:
 
 ```typescript!
-import { pattern } from './pattern'
+import { test, expect } from '@playwright/test';
+import { pattern } from '../src/pattern'
 
 test('pattern false if all empty', () => {
     const input = ['','','']
     const output = pattern(input)    
     expect(output).toBe(false);
   });
+
+test('pattern true for 1,2,3', () => {
+    const input = ['1','2','3']
+    const output = pattern(input)    
+    expect(output).toBe(true);
+  });
+
 ```
 
 The `test` construct defines a test case, which takes the form of an anonymous function (also called an "arrow function" or a "lambda"). The syntax means a function that takes no arguments (`() =>`) whose body defines two constants and runs an assertion.
 
-We'd like to write a _lot_ more of these. For now, we'll just run the test suite with this single test in it. (If you haven't yet, you'll first need to run `npm install` to download all the dependencies for this application. You might get some deprecation warnings; ignore those for today.)
-
-```
-npm test
-```
-produces something like this:
-```
-PASS  src/main.test.ts
-Test Suites: 1 passed, 1 total
-Tests:       1 passed, 1 total
-Snapshots:   0 total
-Time:        2.834 s
-Ran all test suites.
-
-Watch Usage: Press w to show more.
-```
+We'd like to write a _lot_ more of these. For now, we'll just run the test suite with this single test in it. (If you haven't yet, you'll first need to run `npm install` to download all the dependencies for this application. You might get some deprecation warnings; ignore those for today.) Then run: `npm test`. This will run our tests via the testing library we're using, which is called Playwright.
 
 
+~~~admonish note title="Playwright"
+Playwright allows a _lot_ more than what we've seen so far. It's built for front-end testing, so it makes a lot of things easy that JUnit doesn't. 
+~~~
 
 ## Why TypeScript, not JavaScript?
 
@@ -436,28 +438,13 @@ You can "opt in" to a less permissive version of JavaScript by enabling _strict 
  -->
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Adding Behavior
+## Adding Behavior on the Page
 
 We should add some behavior on the webpage. There are two ways we could go about this.
 * Script the application in plain ("vanilla") TypeScript. This would have the advantage of showing how web programming works at a low level (in short: callback functions and events---lots of overlap with the strategy pattern!)
 * Set up the application using a framework. This has the advantage of better resembling what you'll be using in class, and giving the application a better structure. 
 
-If you're curious about the plain TypeScript version, you can see it in last semester's [livecode](https://github.com/cs0320/class-livecode/blob/main/S23/vanillaNYT) repository. But we'll favor using a framework (React) here, and require it in your homework. 
+If you're curious about the plain TypeScript version, you can see it in last year's [livecode](https://github.com/cs0320/class-livecode/blob/main/old/S23/vanillaNYT) repository. **We'll favor using a framework (React) here, and require it in your homework.**
 
 So, let's introduce React. 
 
@@ -545,14 +532,17 @@ React provides two useful features (among others):
 * React manages your front-end app's state centrally, and when it detects a state change it propagates that change to a _virtual copy_ of the page. The actual page then only gets updated when it actually needs to be changed. This can improve efficiency of complex apps. To make this work, **you usually want to manage all state through React**.
 * React gives us a nice way to align the *visual layout* of the app with the program. Concretely, **a React component is a TypeScript function** that returns a **JSX** expression; JSX looks a lot like HTML with holes in it where we can plug in TypeScript.
 
+~~~admonish tip title="JSX" 
+Always keep in mind that **a React function component must return a JSX expression**. This might be plain HTML, but almost always it's got some JavaScript being evaluated inside squiggle-braces. 
+~~~
+
 We're also using Vite, a development server for React applications.
 
-#### Woah, wait, what about these class components I keep seeing online?
-    
-We don't use them. They are somewhat outdated, from the early days of React. You'll still see them referenced online, though. The React team strongly suggests that new development use functional components instead, though. We follow their advice, and so should you.
+~~~admonish tip title="Components"    
+React components will either be classes or functions. 
 
-<!-- All the code I'm going to show you was created from a [create-react-app](https://reactjs.org/docs/create-a-new-react-app.html) template and is deployed [at this Github Pages page](https://tnelson.github.io/reactNYT/) via the very nice [gh-pages](https://www.npmjs.com/package/gh-pages) package. It was surprisingly easy to deploy the front end, and since there is no back end to the application, deployment was a snap---from a public repository, anyway.
- -->
+We don't use "class components". They are outdated, from the early days of React. You'll still see them referenced online, though. The React team strongly suggests that new development use functional components instead, though. We follow their advice, and so should you. **Use function components.**
+~~~
 
 ### What are our components for this application?
 
@@ -575,7 +565,7 @@ I like to draw out a prototype UI, and circle different regions that represent i
 
 ### A starting template
 
-The complete livecode is available in [the repository](https://github.com/cs0320/class-livecode/tree/main/S23/reactNYT). I'll call out a few points about the code here.
+The complete livecode is available in [the repository](https://github.com/cs0320/class-livecode/tree/main/S24/reactNYT). I'll call out a few points about the code here.
 
 #### JSX 
 
@@ -613,26 +603,9 @@ You may notice some other configuration:
 
 That's a lot of moving parts! Front-end development tends to have more pieces, but just keep in mind: 
 * Browsers understand JavaScript;
-* TypeScript adds types to JavaScript, and gets compiled to JavaScript;
+* TypeScript adds types, and gets compiled to JavaScript;
 * React is a framework that makes building applications easier; and
 * Vite is a development server meant to make building React apps easier.
-
-<!-- ### CSS
-
-
-I added only a couple of new classes to the `css` file:
-
-```css
-.guess-round-false {
-  background: #a00;
-  border: 1px solid #999;  
-}
-.guess-round-true {
-  background: #0a0;
-  border: 1px solid #999;  
-}
-```
- -->
  
 ### Application state
 
@@ -683,10 +656,7 @@ See the completed livecode for details. Much of class will be a code-dive exerci
 * ...how the components refer to each other, forming a nested structure. The structure of the program echoes the graphical structure. If you're ever feeling "lost" in React, draw the picture of how the components should relate to each other. 
 
 
-<!-- ## Notable things
-
-#### State updates are asynchronous!
-
+~~~admonish warning title="React state updates are asynchronous!"
 Try adding a `console` write immediately after a state update (here's a snippet modified from the full code below):
 
 ```javascript=function ControlledInput(props) {
@@ -698,14 +668,14 @@ Try adding a `console` write immediately after a state update (here's a snippet 
   }></input>);
 }
 ```
- -->
 
+The `console.log` will print the old value, because React hasn't yet had a chance to run the update. In general, don't expect React state updates to take effect until after the currently running code has ended. (We'll talk more about this in preparation for your _next_ sprint.)
+~~~
 
  
- 
-## Testing in React
+## More Testing in React
 
-We'll be using and requiring _Playwright_ Mock and future sprints. You're strongly encouraged to use it on your term projects as well, since that's what we can best support. Playwright is a great library for scripting front-end tests. There's a [guiding principle](https://testing-library.com/docs/guiding-principles/) (quoted from a different testing library) that we'll follow for front-end testing:
+We'll be using and requiring _Playwright_ for Mock and future sprints. You're strongly encouraged to use it on your term projects as well, since that's what we can best support. Playwright is a great library for scripting front-end tests. There's a [guiding principle](https://testing-library.com/docs/guiding-principles/) (quoted from a different testing library) that we'll follow for front-end testing:
 
 > The more your tests resemble the way your software is used, the more confidence they can give you.
 
