@@ -248,6 +248,10 @@ We'd like to write a _lot_ more of these. For now, we'll just run the test suite
 Playwright allows a _lot_ more than what we've seen so far. It's built for front-end testing, so it makes a lot of things easy that JUnit doesn't. 
 ~~~
 
+~~~admonish tip title="Playwright" 
+Depending on how you install, you might get a warning to run `npx playwright install` when you first run tests. This is normal; just run the command as instructed.
+~~~
+
 ## Why TypeScript, not JavaScript?
 
 Since TypeScript compiles to JavaScript, and our browser understands JavaScript, let's set the types aside for now and just think about programming for the web.
