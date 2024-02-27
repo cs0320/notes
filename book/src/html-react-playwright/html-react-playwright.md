@@ -710,7 +710,7 @@ Maybe. But there's a price to pay in managing that specification and the effects
 
 <!-- (Since tests really do specify what correct behavior is, we'll use "specification" and "testing" interchangeably in this specific chapter of notes.) -->
 
-## Using RTL
+## Using Playwright to Test
 
 You can find some example uses of Playwright in the `reactNYT` livecode repository. In particular, look at the [`app.spec.tsx` file](https://github.com/cs0320/class-livecode/blob/main/F23/reactNYT/tests/app.spec.ts). Here's an example:
 
