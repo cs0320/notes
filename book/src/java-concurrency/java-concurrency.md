@@ -1,16 +1,14 @@
 # sp23 Concurrency (Java)
 
-###### tags: `Tag(fa23)`
-
 The material in these notes goes deeper than we can cover in class. If you're having issues with concurrency in Java on your term project, **read these notes**! If you're having trouble with the difference between promises (coming next lecture) and threads, **read these (and the next) notes!**
 
 ## Logistics 
 
-Your term project group forms are due today. Let's spend some time in class on group formation... 
+**Your term project group forms are due tonight.** Let's spend some time in class on group formation... 
 
 ## Livecode (Important)
 
-Today's examples will draw from the scripts and prompts in the [`oct17_concurrent_queue_manager`](https://github.com/cs0320/class-livecode/tree/main/F23/oct17_concurrent_queue_manager) livecode project. The livecode also contains material that isn't covered in class, including:
+Today's examples will draw from the scripts and prompts in the [`mar5_concurrent_queue_manager`](https://github.com/cs0320/class-livecode/tree/main/S24/mar5_concurrent_queue_manager) livecode project. The livecode also contains material that isn't covered in class, including:
 * a more advanced used of the adapter pattern (a relative of proxy) to merge together multiple student queues; and
 * a separate thread example showing how to leverage threads for performance (thread pools).
 
@@ -23,7 +21,7 @@ Continue to think defensively as you use concurrency and parallelism.
 
 ### Optional Reference Materials
 
-Save these for use later. 
+Save these for use later. Patterns (in OO) Generics (in Java) are extremely expressive, and if you want to learn more, use these resources.
 
 [The "Gang of Four" patterns book](https://www-oreilly-com.revproxy.brown.edu/library/view/design-patterns-elements/0201633612/?ar) discusses, in detail, many more patterns than we can cover in lecture.
 

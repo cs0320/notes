@@ -13,7 +13,7 @@
 [Lecture 6: More Mocking, CSV Review]()
 [Lecture 7: Generic Types and Wildcards, Fuzz Testing]()
 [Lecture 8: HTML/React/Playwright](./html-react-playwright/html-react-playwright.md)
-[Lecture 9]()
+[Lecture 9: Java Concurrency](./java-concurrency/java-concurrency.md)
 [Lecture 10]()
 [Lecture 11]()
 [Lecture 12]()
