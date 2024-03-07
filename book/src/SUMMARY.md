@@ -10,11 +10,13 @@
 [Lecture 4: Proxies and Adapters, Defensive Programming](./proxies-adapters/proxies-adapters.md)
 [Lecture 5: Web APIs and Integration Testing](./apis-integration/apis-integration.md)
 
-[Lecture 6: More Mocking, CSV Review]()
-[Lecture 7: Generic Types and Wildcards, Fuzz Testing]()
+[Lecture 6: Snow Day]()
+[Lecture 7: CSV Review]()
 [Lecture 8: HTML/React/Playwright](./html-react-playwright/html-react-playwright.md)
+ <!-- Generic Types and Wildcards, Fuzz Testing -->
+
 [Lecture 9: Java Concurrency](./java-concurrency/java-concurrency.md)
-[Lecture 10]()
+[Lecture 10: Promises and TypeScript Asynchrony](./promises-fetch-prs/promises-fetch-prs.md)
 [Lecture 11]()
 [Lecture 12]()
 [Lecture 13]()

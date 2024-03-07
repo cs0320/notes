@@ -1,25 +1,8 @@
-# sp23.11: Type/JavaScript Concurrency
+# TypeScript/JavaScript Asynchrony
 
-**THIS IS NOT FROM FALL 23**
+## JavaScript "Concurrency"
 
-###### tags: `Tag(sp23)`
-
-## Logistics
-
-Good job on Server! My experience is that many students struggle on this sprint; that's OK! I'm going to delay the review somewhat, to make sure we can cover what we need to today.
-
-Stay tuned for more info about final project groups. We'll be forming these quite soon!
-
-UTA applications are open! If you care about 0320 and what we're doing here, consider applying! (If you're struggling in 0320, that **doesn't** mean you shouldn't apply; I've had great TAs in the past who struggled -- or back when the course was ABC, didn't get an A.)
-
-## Generics Exercise (Continued)
-
-We didn't finish the generics exercise from last time, so we'll do that in the first 15 minutes of class today. See the Mar 2 notes, and the lecture capture from today.
-
-## JavaScript Concurrency
-
-Today's livecode is in the repository under [mar07_ts_concurrency_fetch](https://github.com/cs0320/class-livecode/tree/main/S23/mar07_ts_concurrency_fetch). Get the code to follow along. There's also more examples in the repository than we can cover in a single class, so you might find it useful for reference as well.
-
+Today's livecode is in the repository under [mar7_ts_fetch](https://github.com/cs0320/class-livecode/tree/main/S24/mar7_ts_fetch). Get the code to follow along. There's also more examples in the repository than we can cover in a single class, so you might find it useful for reference as well.
 
 On the surface, JavaScript has _really_ convenient support for concurrency. Try these in the browser console:
 
@@ -40,33 +23,29 @@ while(true) {}
 
 What's happening here? JavaScript -- a language built for the web -- is a language whose design is _deeply and unavoidably_ tangled with concurrency. 
 
-And yet, JavaScript itself (barring some modern extensions) is itself _single threaded_. Rather than using threads (as in Java) we usually use callback functions instead.
+And yet, JavaScript itself (barring some modern extensions) is _single threaded_. We don't create a new thread to wait for a web request to finish. Instead, we create a callback, like we would for a button being clicked. 
 
-**Remark:** as we discuss callbacks, think about the idea of _command registration_ from the Java REPL livecode, and the broader _strategy pattern_.
-
-E.g., in JavaScript (and TypeScript):
-* Click a button? The browser calls a registered callback for that button click event. 
-* Need to request information from a login database or API server? That's a callback that's invoked when the information is fetched.
-
-In principle, these callbacks are, well, _called_ as soon as possible. But it's not that simple.
+In principle, callbacks are _called_ as soon as possible. But "as soon as possible" is complicated.
 
 ### The Callback Queue
 
 Because TypeScript is single threaded, it can't actually invoke a callback while it's running some other piece of code. It has to wait until that code finishes, and then it looks at its _callback queue_ to see if it has callbacks waiting to be processed.
 
-Every time a callback is registered (as when the `setTimeout` above times out; the 0-argument function that invokes `console.log` is a callback) it is added to the queue. Crucially, these calls will only ever take place if they're popped off the queue. And they're only ever removed when the code currently being executed is finished.
+Every time a callback is registered (in the `setTimeout` example above, the 0-argument function that invokes `console.log` is a callback) it is added to the queue. Crucially, these calls will only ever take place if they're popped off the queue. And they're only ever removed when the code currently being executed is finished. 
 
 This will become extremely important when you start sending web requests from your frontend to your API server. **Callbacks are not threads**. 
 
+~~~admonish warning title="Repeating for emphasis"
+Callbacks are not threads.
+~~~
+
 ## Code Review Exercise
 
-Let's look at some code and anticipate potential errors related to concurrency. (We could run this in the browser console after removing types.) What's the value that you expect to be printed by this code?
-
-[Exercise link here!](https://forms.gle/cqqimsuDxsjdWyBf6)
+Let's look at some code and anticipate potential errors related to concurrency. (I've removed the types so that we can run this in the browser console.) What's the value that you expect to be printed by this code?
 
 ```javascript
-function sayHello(): number {
-    let toReturn: number = 0
+function sayHello(){
+    let toReturn = 0
     setTimeout(() => {
         toReturn = 500
     }, 0)
@@ -75,11 +54,7 @@ function sayHello(): number {
     }, 5000)
     return toReturn
 }
-
-function main(): void {
-    const num: number = sayHello()
-    console.log("Num:", num)
-}
+console.log(sayHello())
 ```
 
 ## Fetching Data in TypeScript
@@ -112,14 +87,18 @@ A promise can either be _resolved_, in which case the value exists within (but t
 
 **Aside:** Many modern languages have promise libraries, and promises are a common way to manage asynchronous computation (like web requests). This is not just about TypeScript/JavaScript.
 
-But because of how JavaScript works, the promise _cannot be resolved_ until the current code finishes running. That is, the `console.log` statement can't print the right answer until _after it executes_, because the right answer won't exist until then. Clearly, we need something different. 
+But because of how JavaScript works, the promise _cannot be resolved_ until the current code finishes running. That is, the `console.log` statement can't print the right answer until _after the `console.log` executes_, because the right answer won't exist until then. 
+
+Clearly, we need something to help make this work. 
 
 ### Extracting Promised Data with Callbacks
 
 Promises can be given callback functions to run when they're resolved:
 
 ```javascript
-fetch(url)
+// Make a web request...
+fetch(url) 
+    // ...and when the response arrives, print it to the console
     .then(response => console.log(response)) 
 ```
 
@@ -135,9 +114,9 @@ fetch(url)
 
 This is called a _chain_ of promises. Once the response is received, we convert it to an object. Once that conversion process is done, we print the result. 
 
-You can find more examples like this in the livecode repository.
+You can find more examples like this in the livecode repository. We'll also talk more about them in the gearup for this upcoming sprint.
 
-### What about Types?
+### What about types?
 
 `Promise<T>` is a generic type in TypeScript. By default, `fetch` returns a `Promise<any>`---beware, here. The `any` type exists, at least in part, for interoperability with JavaScript, and it disables many checks involving computation "downstream" of the `any` value. 
 
@@ -147,3 +126,8 @@ You can find more examples like this in the livecode repository.
 * a more complete series of attempts to extract Json from a fetched response, including how to make narrowing easy.
 
 We'll cover what we can in today's class session, but please read over the livecode too. I leave comments to try and make the livecode a good supplemental resource.
+
+
+## Classes in TypeScript 
+
+If you want to use `class`es in TypeScript, you may. I'd suggest reading the documentation [here](https://www.typescriptlang.org/docs/handbook/2/classes.html).
