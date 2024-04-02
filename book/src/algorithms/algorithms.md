@@ -179,8 +179,11 @@ where `GOAL` is the goal point, `CURR` is the current node (where we arere tryin
 
 Data structures like this rely heavily on _comparisons_, and there isn't one single comparison operation that works for every imaginable dataset. Another engineer who is using your data structure might want to provide their own, domain-appropriate comparisons. But if we code a particular comparison into the class, the engineer can't provide their own comparison metric.
 
-**Idea Check:** Does this make sense? Don't let me be an Architecture Astronaut! Can you think of ways a user of your kd-tree might want to influence what the $\leq$ operator is on data points?
-    
+~~~admonish tip title="Think Like an Engineer"
+This is an opportunity to exercise a little "technical empathy". We want to allow the other engineer to use our data structure with their own, domain-specific, definitions. This might involve multiple concepts: comparison, distance, and so on. 
+
+But don't be an "Architecture Astronaut"! Don't over-engineer things. 
+~~~
 
 ### OO and FP Agree on the Interface
     
