@@ -312,3 +312,65 @@ No. Consider deletion, for example.
 
 
 
+
+
+
+
+## Thinking about Algorithms
+
+Let's talk about a problem that you might see in an AI class: helping a robot navigate around a grid-world. The robot wants to find the reward (hidden somewhere in the world) while spending a minimal number of resources in the process. The robot can move up, down, left, or right.
+
+Here's an example: the little smiley face is the robot, and the dollar signs are the reward:
+
+![A 4-by-4 gridworld](https://i.imgur.com/kuUY9MJ.png)
+
+The filled-in squares represent obstacles: walls, mountains, pits, etc. For now, let's say that every move costs $1$ unit of time, or fuel, or whatever measure we're using. 
+
+Assuming we know the contents of the gridworld above, how can we plan a path from the robot to the reward?
+
+### Breadth-First Search and Dijkstra's Algorithm
+
+One option is to use Dijkstra's algorithm. Actually, since we're saying that every move has cost $1$, we're safe using a simpler variant: breadth-first search (BFS). BFS just builds a "wavefront" of exploration from the source until it finds the goal: distance-1 cells, then distance-2 cells, and so on. 
+
+Note that we're not talking about exploring with the robot in real time; we're executing the algorithm all at once, before the robot starts moving at all. So if I talk about "backtracking" I mean it in an algorithmic sense only. 
+
+Here's what BFS might look like on this grid world. We reach the goal after $5$ hops:
+
+![BFS on the above grid world](https://i.imgur.com/M00wXPY.png)
+
+This looks great! It's a simple algorithm, it's pretty efficient, and everything's great. Right? 
+
+It turns out that I've drawn the picture in a way that hides something from you. More formally, the _abstraction choices_ I made in drawing this picture _excluded_ some important aspects of the problem. 
+
+Here's the picture, slightly changed...
+
+![A bigger grid world](https://i.imgur.com/yMuEM4d.png)
+
+What's the problem? If the world is bigger, BFS will explore a lot of unproductive space before it finds the goal. (To see why, fill in the distance markings in the new cells I just added.)
+
+Neither BFS nor Dijkstra's algorithm takes advantage of any /real distance information/: they just look at the edge weights. Not all graphs make such information available, and not every geometric setting makes "distance" defined in a useful way. But here, we should be able to take advantage of it.
+
+### Greedy Best-First Search
+
+Here's an alternative. Let's build a search process that is entirely guided by _distance_, not by edge weights.  Every cell (implicitly; we're not actually going to have to compute them all) has such a distance.  We have a few choices of what distance metric to use here, but let's just use ordinary Euclidian distance:
+
+![Greedy Best-First Search on the same grid world](https://i.imgur.com/LPhLAXO.png)
+
+I haven't filled them all in, but the idea is to apply $\sqrt{(\Delta x)^2 + (\Delta y)^2}$ as needed to every cell. By this metric, the robot starts out at a distance $3$ from the goal. Moving up would get the robot closer: to distance $2$. Moving down would bring the robot further away: distance $4$. So the search process will move up first. In fact, for this example it will only explore the cells I've labeled. There's one branch caused by the obstacle, but it's quickly bypassed to discover the goal.
+
+#### The Good
+
+Greedy best-first search can be _much_ more efficient than Dijkstra's algorithm when working with graphs that represent positions in space. 
+
+#### The Bad
+
+What happens when edge weights aren't all $1$?
+
+![Changing one edge weight](https://i.imgur.com/XcEZyYT.png)
+
+GBFS still finds a path, but it isn't the _cheapest_ path. By changing an edge weight, we've made GBFS non-optimal. 
+
+### Synthesizing Ideas
+
+In the Pathfinding project, you'll combine these two algorithmic ideas to produce another pathfinding algorithm called A* (pronounced "A Star"). The core idea of A* is to begin with Dijkstra's algorithm, but include an estimated actual distance in the best-estimate calculations. You can read more about the algorithm in the project handout. 
+
