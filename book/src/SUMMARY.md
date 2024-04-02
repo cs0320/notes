@@ -2,22 +2,20 @@
 
 [How to read these notes](./home.md) 
 
-[Lecture 1: Success in 0320](./success-in-0320/success-in-0320.md)
+[Success in 0320](./success-in-0320/success-in-0320.md)
 
-[Lecture 2: More Strategies, More Testing](./comparators-and-testing/comparators-and-testing.md)
-[Lecture 3: Equality is Hard, Caching](./equality-contracts/equality-contracts.md)
+[More Strategies, More Testing](./comparators-and-testing/comparators-and-testing.md)
+[Equality is Hard, Caching](./equality-contracts/equality-contracts.md)
 
-[Lecture 4: Proxies and Adapters, Defensive Programming](./proxies-adapters/proxies-adapters.md)
-[Lecture 5: Web APIs and Integration Testing](./apis-integration/apis-integration.md)
+[Proxies and Adapters, Defensive Programming](./proxies-adapters/proxies-adapters.md)
+[Web APIs and Integration Testing](./apis-integration/apis-integration.md)
 
-[Lecture 6: Snow Day]()
-[Lecture 7: CSV Review]()
-[Lecture 8: HTML/React/Playwright](./html-react-playwright/html-react-playwright.md)
+[HTML/React/Playwright](./html-react-playwright/html-react-playwright.md)
  <!-- Generic Types and Wildcards, Fuzz Testing -->
 
-[Lecture 9: Java Concurrency](./java-concurrency/java-concurrency.md)
-[Lecture 10: Promises and TypeScript Asynchrony](./promises-fetch-prs/promises-fetch-prs.md)
-[Lecture 11]()
+[Java Concurrency](./java-concurrency/java-concurrency.md)
+[Promises and TypeScript Asynchrony](./promises-fetch-prs/promises-fetch-prs.md)
+[Thinking About Algorithms](./algorithms/algorithms.md)
 [Lecture 12]()
 [Lecture 13]()
 [Lecture 14]()

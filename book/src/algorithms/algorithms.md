@@ -1,13 +1,13 @@
 # Thinking About Algorithms Like An Engineer
 
-These notes are a combination of notes from prior semesters on multiple topics. Broadly, they discuss:
+These notes combine multiple sources from prior semesters. Broadly, they discuss:
 * data representations vs. interfaces; 
 * kd-trees; 
 * comparators (from the perspective of the kd-tree class as a consumer); 
 * bloom filters; and 
 * A* search.
 
-They aren't well-organized, because I put them together mid-semester, by request, in the hope they are interesting.
+They aren't well-organized, because I put them together mid-semester, by request, in the hope they are interesting. We probably won't be able to talk about everything here in class.
 
 ## Thinking About Data Representations
 
@@ -30,7 +30,9 @@ Don't conflate these two meanings. One is about the functionality you must provi
 </details>
 <br/>
 
-Keep this in mind when you're splitting up work: decide together on the operations (interface) each component needs from the others early, and keep other criteria broad ("I need you to give me worst-case $O(log(N))$ runtime for the `find` operation", not "I need you to use a Java `TreeList`"). 
+~~~admonish tip title="Think Like an Engineer"
+Keep this in mind when you're splitting up work: decide together on the operations (interface) each component needs from the others early, and keep other criteria broad ("I need you to give me the `find` operation", and then eventually "I need worst-case $O(log(N))$ runtime for the find operation"; don't skip right to  "I need you to use a Java `TreeList`"). 
+~~~
 
 Just like we can provide the `List` interface via many different data structures, we can provide algorithmic content like "find the nearest neighbor of an element" in many different ways. Let's look at one you may not have seen before.
 
@@ -49,9 +51,11 @@ Why is this hard? Because I'm doing the routing at a very high level: I'm workin
 
 In short, I need to find the _nearest neighbor_ to the target house, from among a set of post office addresses. 
 
-During Sprint 0, you essentially made a new interface that provided a "find nearest neighbor" functionality and implemented it using linear-time data structure. The new interface is "right" for the problem, but what about the data structure? 
+You could solve this using a list (or set, or any collection) to store the data points, and a `for` loop to iterate through them, seeking the nearest neighbor. The trouble is that a linear-time search won't scale as the dataset grows. Our first go-to data structure, the hash table, won't work for nearest-neighbor---hashing will lose information about locality and closeness that are so vital to solving this problem! 
 
-A linear-time search won't scale as the dataset grows. Our first go-to data structure, the hash table, won't work for nearest-neighbor---hashing will lose information about locality and closeness that are so vital to solving this problem! 
+~~~admonish tip title="Think Like an Engineer"
+In short, the _interface_ is right, but the _implementation_ isn't. Agree on what you need, and then figure out what the right implementation is afterward. It's OK to start with something inefficient, and it might even let you explore the problem enough that your second implementation is better than it would have been otherwise.
+~~~
 
 What would you use instead? 
 
@@ -207,35 +211,7 @@ A caller could create an object of this type, and pass it to the tree as needed.
 (You'll provide them a suitable interface, won't you?)
     
 Finally, remember you're free to ask something of _them_. For instance, if I write a comparator method that always returns `-1`, I'm setting myself up for frustration and debugging in the future **through no fault of yours!** Why isn't it your fault? Can it be there's some obligation I have, when I use [the `Comparator` interface](https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html)?
-
-#### Exercise    
     
-[Brief Note-Card Exercise](https://forms.gle/BLpaZdqcj5RFf7tK9)
-    
-### Strategies in REPL
-
-Could you have used the strategy pattern when designing your REPL in the Onboarding project? I don't mean the`Comparator` interface: that's just one example of the pattern! Rather, does it make sense to let someone extend the REPL with custom functionality? If so, can we do so in a way that doesn't make them modify the original REPL source at all, but rather lets them provide a function object, much like `Comparator` does?
-    
-If you pick the REPL component, you'll do exactly that in Sprint 1. But what's a "strategy" in this context?
-    
-<details>
-<summary>Think, then click!</summary>
-    A strategy for the REPL might be a method that takes in arguments and runs a specific command. E.g., something that implements an interface like this:
-    
-interface REPLCommand {        
-    void execute(String[] args);
-}
-
-Implemented well, the extensible REPL would allow me to define my own `REPLCommand` strategy objects and _register_ them with your REPL. Then, I could use your code without ever having to edit or---or even look at it, beyond your Javadoc!
-    
-What guarantees would you offer me, as the engineer trying to use your REPL class as a library? What requirements of "good behavior" might you ask of me? 
-    
-</details>
-
-
-
-
-
 
 ## Thinking About Tradeoffs: Bloom Filters
 
@@ -245,9 +221,10 @@ But what _else_ might we compromise on? Here's a thought: can we ever compriomis
 
 <details>
 <summary>Think, then click!</summary>
+
 The basic idea underlying hash tables is a compromise on correctness. They're just built to resolve that compromise internally. 
     
-Here's what I mean. If we assume that every record key hashes to a different table key, hash tables are a miracle (constant-time lookup). But this isn't true: collisions happen. So the table has a (worst-case) linear-time backup plan built in to recover from that compromise.
+Here's what I mean. If we assume that every record key hashes to a different table key, hash tables are a miracle (constant-time lookup). But this usually isn't true: collisions almost certainly happen. So the table has a (worst-case) linear-time backup plan built in to recover from that compromise.
 </details>
 <br/>
 
@@ -256,16 +233,18 @@ This idea of compromise on correctness is also valuable in algorithms. E.g., the
 Is that enough to build something useful out of? Would you maybe want more?
 
 <details>
+
 Yeah, you'd maybe like something along the lines of:
 * only wrong in one direction; and 
 * only wrong X% of the time. 
 
-Note again that we're back to what _guarantees_ a data structure or algorithm provides. When you're building or selecting a data structure or algorithm, consider the needs of your caller and/or end-user. In the case of these prime-testing algorithms, they can very quickly rule out many non-prime numbers, and do so fast enough that it's worth using them as a pre-test before applying a slow, but sound, algorithm.
-    
 **Technical aside:** I am oversimplifying the algorithm a bit, because there are a few other details. You might learn about these if you take a number theory class, or an algorithms class!
 
 </details>
-<br/>
+
+~~~admonish tip title="Think Like an Engineer"
+Note again that we're back to what _guarantees_ a data structure or algorithm provides. When you're building or selecting a data structure or algorithm, consider the needs of your caller and/or end-user. In the case of these prime-testing algorithms, they can very quickly rule out many non-prime numbers, and do so fast enough that it's worth using them as a pre-test before applying a slow, but sound, algorithm.
+~~~
 
 ## Bloom Filters
 
@@ -293,6 +272,7 @@ Now what happens if there's a collision?
 
 <details>
 <summary>Think, then click!</summary>
+
 The key that the 2nd arrival hashes to is _already set to 1_. The array now can't tell the difference between these two media: if a customer requests the second arrival but the first arrival isn't there, the array will report a false positive.
     
 But, either way, a lookup is very, very fast. We can always do a _real_ search through the local media catalogue if the array says we _might_ have what the customer wants. And if the array says it's not here, it definitely isn't.
@@ -300,13 +280,9 @@ But, either way, a lookup is very, very fast. We can always do a _real_ search t
 
 ### Scaling The Idea
 
-Bloom Filters are a generalization of this idea. More full details are in the assignment handout, but the basic idea is this: why not have _several_ hash functions, and use all the bits those hash functions produce for adding and looking up membership. That is, if we have 3 hash functions and they produce `{13, 2, 118}`, we'd set those 3 bits to true on arrival, and check those 3 bits on a membership check. 
+Bloom Filters are a generalization of this idea. The basic idea is this: why not have _several_ hash functions, and use all the bits those hash functions produce for adding and looking up membership? That is, if we have 3 hash functions and they produce `{13, 2, 118}`, we'd set those 3 bits to true on arrival, and check those 3 bits on a membership check. 
 
-The trick is in tuning the hash functions, and deciding how big the table needs to be. 
-
-#### Is that really the _only_ problem?
-
-No. Consider deletion, for example.
+The trick is in tuning the hash functions, and deciding how big the table needs to be. Other operations, like deletion, also need care to implement properly. 
 
 
 
@@ -315,8 +291,7 @@ No. Consider deletion, for example.
 
 
 
-
-## Thinking about Algorithms
+## Thinking about Algorithms: A* Search
 
 Let's talk about a problem that you might see in an AI class: helping a robot navigate around a grid-world. The robot wants to find the reward (hidden somewhere in the world) while spending a minimal number of resources in the process. The robot can move up, down, left, or right.
 
@@ -370,7 +345,23 @@ What happens when edge weights aren't all $1$?
 
 GBFS still finds a path, but it isn't the _cheapest_ path. By changing an edge weight, we've made GBFS non-optimal. 
 
-### Synthesizing Ideas
+### Synthesizing These Ideas
 
-In the Pathfinding project, you'll combine these two algorithmic ideas to produce another pathfinding algorithm called A* (pronounced "A Star"). The core idea of A* is to begin with Dijkstra's algorithm, but include an estimated actual distance in the best-estimate calculations. You can read more about the algorithm in the project handout. 
+~~~admonish tip title="Think Like an Engineer"
+We have just invented two different algorithms to solve the same problem. They have different advantages and disadvantages. Perhaps we can somehow _combine_ them to suit our needs...
+~~~
 
+We can combine these two algorithmic ideas to produce another pathfinding algorithm called A* (pronounced "A Star"). The core idea of A* is to begin with Dijkstra's algorithm, but include an *estimated actual distance* in the best-estimate calculations. Rather than looking at only the immediate neighborhood of the current node, A* recognizes that a candidate path must be extended by at least some minimal, "direct" distance in order to reach the goal. In physical space, this might be something like the Euclidian distance between the two points.
+
+Put another way, given two equal-length paths, the one ending closer to the goal should be considered first. The search can therefore be guided more intelligently. Dijkstra’s algorithm will often spend time exploring the “neighborhood” of the start node, but A* can be goal-directed. For example: between two candidate "next" edges with the same weight, if one would take you further from the goal, it is less likely to be the right edge to take.
+
+The beauty of the idea is that, to add in this awareness of overall distance, we just need to make one small change to Dijkstra's algorithm that adds a heuristic distance to the estimated path cost. Instead of `f(m) = w(n,m)` (where `n` is the current location and `w` is the edge-weight function) we'll use `f(m) = w(n,m) + h(n,m)`, where `h` is the heuristic function of our choice that approximates the "direct" distance from `n` to `m`. 
+In effect, Dijkstra's `h` function always returns `0`. 
+
+~~~admonish warning title="Not any heuristic will do!"
+A* won't report "wrong" paths. However, if `h` doesn't meet some criteria, it might report paths that are more expensive than they need to be. Put another way, a bad heuristic could cause A* to lose its guarantee of optimality. We rely implicitly on the _first_ visit to the goal node cooresponding to a cheapest path. But if `h` _over_-estimates the distance that will actually be taken, A* might explore a non-optimal path first---just like greedy best-first search did. 
+
+For more information about this, take an algorithms course.
+~~~
+
+**Exercise: what does A* do on the grid-world above, where we changed one of the edge weights?**
