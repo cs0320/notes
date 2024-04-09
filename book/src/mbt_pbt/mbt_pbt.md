@@ -51,7 +51,7 @@ About 90 seconds, and that's on a computer from several years ago. [Several year
 
 Here, we don't even need random inputs! Of course, if the function took 64-bit `double` values, the story would be different, and we'd check random inputs.
 
-See [the livecode for today](https://github.com/cs0320/class-livecode/tree/main/F23/oct26_mbt_pbt). We'll test my implementation of bubble sort via model-based testing. Concretely:
+See [the livecode for today](https://github.com/cs0320/class-livecode/tree/main/S24/apr9_mbt_pbt). We'll test my implementation of bubble sort via model-based testing. Concretely:
 * my bubble-sort method is the *program under test*; and 
 * Java's standard `Collections.sort` method is the *known-good* artifact.
 
@@ -62,10 +62,10 @@ See [the livecode for today](https://github.com/cs0320/class-livecode/tree/main/
 
 We have stopped talking about testing against _specific outputs_, and have started testing more abstract _properties_ of outputs. We don't want to know whether the output lists are exactly the same, but we want to know whether they match in terms of nearness to the input goal.
 
-## Property-Based Testing
+## Property-Based Testing (Outline)
 
 Is there any reason that our properties have to be written in terms of another implementation? No! 
 
 What makes a sorting implementation _correct_? If we can write this check as a method, we can apply the same idea, without needing a naive implementation to check against. 
 
-Again, see [the livecode for today](https://github.com/cs0320/class-livecode/tree/main/F23/oct26_mbt_pbt) for an exercise. Hint: consider what you need from a sort to call it correct. Is that something you can check in a test method? 
+Again, see the livecode for today for an exercise. **Hint: consider what you need from a sort to call it correct. Is that something you can check in a test method?**
