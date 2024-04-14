@@ -1,0 +1,436 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Equality is Hard, Caching - CSCI 0320 Notes</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../././mdbook-admonish.css">
+        <link rel="stylesheet" href=".././mdbook-admonish.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item affix "><a href="../home.html">How to read these notes</a></li><li class="chapter-item affix "><a href="../success-in-0320/success-in-0320.html">Success in 0320</a></li><li class="chapter-item affix "><a href="../comparators-and-testing/comparators-and-testing.html">More Strategies, More Testing</a></li><li class="chapter-item affix "><a href="../equality-contracts/equality-contracts.html" class="active">Equality is Hard, Caching</a></li><li class="chapter-item affix "><a href="../proxies-adapters/proxies-adapters.html">Proxies and Adapters, Defensive Programming</a></li><li class="chapter-item affix "><a href="../apis-integration/apis-integration.html">Web APIs and Integration Testing</a></li><li class="chapter-item affix "><a href="../html-react-playwright/html-react-playwright.html">HTML/React/Playwright</a></li><li class="chapter-item affix "><a href="../java-concurrency/java-concurrency.html">Java Concurrency</a></li><li class="chapter-item affix "><a href="../promises-fetch-prs/promises-fetch-prs.html">Promises and TypeScript Asynchrony</a></li><li class="chapter-item affix "><a href="../algorithms/algorithms.html">Thinking About Algorithms</a></li><li class="chapter-item affix "><a href="../generics-wildcards/generics-wildcards.html">Supplement: Generics and Wildcards</a></li><li class="chapter-item affix "><a href="../mbt_pbt/mbt_pbt.html">MBT and PBT</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CSCI 0320 Notes</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="sp243-equality-in-java-contracts"><a class="header" href="#sp243-equality-in-java-contracts">sp24.3: Equality in Java, Contracts</a></h1>
+<h2 id="logistics"><a class="header" href="#logistics">Logistics</a></h2>
+<ul>
+<li>If you're finding user stories 2 and 3 challenging, that's <em>normal</em>. Many students do not obtain all badges on CSV. </li>
+<li>I'm going to start the required in-class exercises sometime next week. If you're sick, traveling, etc. for a day or two, don't worry about mailing me; this is meant to be a lightweight thing. If you're out for <em>many</em> days, do reach out for accommodations. Otherwise, come to class and do the exercises.</li>
+<li>When you are serving as a partner in collab section, you're prioritizing <em>others'</em> issues, but keep in mind:
+<ul>
+<li>you may (collaboratively!) work on your own issues; and</li>
+<li>you can attend collab section as often as you want. </li>
+</ul>
+</li>
+<li>If you're not reading the notes or using the livecode, you're missing what might be useful advice for the sprints. For example, today I am not going to run through the full testing discussion at the start of these notes; you're responsible for reading it.</li>
+</ul>
+<p>If you haven't cloned the <a href="https://github.com/cs0320/class-livecode">livecode repo</a>, you need to do so <strong>NOW</strong>. Once you've cloned it, just run <code>git pull</code> in the repository before class, and you'll get my updates. Change anything you want; you don't have permission to push, so you can't ever mess up. Just re-clone and start over if needed!</p>
+<div id="admonition-opening-a-maven-project-in-intellij" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>Opening a Maven Project in IntelliJ</p>
+<p><a class="admonition-anchor-link" href="#admonition-opening-a-maven-project-in-intellij"></a></p>
+</div>
+<div>
+<p>Make sure you open the <code>pom.xml</code> file, not the directory. If you don't do this, IntelliJ will create a project without Maven. You want it to be aware that this is a Maven project so it will automatically obtain dependencies.</p>
+</div>
+</div>
+<h2 id="todays-testing-lesson-representation-vs-domain"><a class="header" href="#todays-testing-lesson-representation-vs-domain">Today's Testing Lesson: Representation vs. Domain</a></h2>
+<p>Back in 2019, engineers at Apple had to deal with a major security bug in Facetime, the video-chat app that many iOS users use. It seems to have been reported earliest on  <a href="https://twitter.com/MGT7500/status/1087171594756083713">Twitter</a>, but Apple didn't immediately (appear to) take the problem seriously. This isn't a class on PR or management, so we won't follow that line of discussion much further. </p>
+<p>The bug worked like this: suppose you wanted to spy on one of your Facetime contacts. You could start a video call with that contact, and then use &quot;add a person&quot; to invite your own number to the call. Now, even though your contact would see the invite, their microphone would be on, and sending you everything.  It turns out that, depending on whether and how the contact dismissed the call, their video could end up on as well!</p>
+<p>Ouch. </p>
+<p>How did Apple miss this? We don't know, but we can speculate on the kinds of tests they didn't have in place. </p>
+<p>Suppose that you were responsible for testing &quot;add a person&quot; in an app like Facetime. Concretely, you might try to add any arbitrary phone number. What kinds of phone-number inputs should you test? Keep in mind both the domain and boundary conditions.</p>
+<details>
+<summary><B>Think, then click!</B></summary>
+<ul>
+<li>toll-free numbers;</li>
+<li>premium numbers (there are scams that trick people into dialing these);</li>
+<li>the operator (0); </li>
+<li>emergency services (are these always the same in every country?);</li>
+<li>information and other special services;</li>
+<li>reserved phone numbers;</li>
+<li>in the U.S., same exchange vs. same area code vs. long-distance;</li>
+<li>local numbers outside the U.S. standard format;</li>
+<li>international connections; and even</li>
+<li><strong>this device's number!</strong></li>
+</ul>
+</details>
+<br/>
+<p>Again, this list isn't anywhere near exhaustive. But do you notice something important here? </p>
+<details>
+<summary><B>Think, then click!</B></summary>
+The inputs are numbers, and so if they happen to be represented internally as a number, you should also test the usual things you'd test for numbers (zero, something positive, MAXINT, ...). If they are represented as a String, perhaps there are similar things to test. 
+<p>But the added domain, that is, the fact that these are <i>phone</i> numbers, adds a lot more structure to the problem that you should exploit when writing tests.</p>
+</details>
+<br/>
+<p>Don't forget that your inputs have both an internal <i>representation</i> and a <i>domain-specific meaning</i>. Keep both in mind while you're testing.</p>
+<p>Now I'd like to do some live-coding!</p>
+<h2 id="equality-in-java-contracts"><a class="header" href="#equality-in-java-contracts">Equality in Java, Contracts</a></h2>
+<p>One of the first things you should do when learning a new programming language is figure out the rules of <em>equality</em>. Many languages even have multiple notions of equality (e.g., <code>==</code> vs. <code>equals</code> in Java, or <code>==</code> vs. <code>===</code> in TypeScript). </p>
+<p>Today we're going to dive into a few reasons why equality is complex in Java. The lessons here will affect work you do in future sprints, especially where defensive programming is concerned.</p>
+<p>Start by pulling the livecode repository, and opening the <code>S24/feb01-equality/pom.xml</code> file as a project in IntelliJ.</p>
+<h3 id="reviewing-equality-in-java-with-some-new-insights"><a class="header" href="#reviewing-equality-in-java-with-some-new-insights">Reviewing Equality in Java (with some new insights)</a></h3>
+<p>Let's proceed with a series of experiments. We'll record them in the <code>Main</code> class, so we can see the demo progressing. Each of these blocks can go in its own method, or we can just paste each into <code>main</code>. To make this easier to follow, I've defined a helper method called <code>print</code>.</p>
+<h4 id="string-equality"><a class="header" href="#string-equality">String Equality</a></h4>
+<pre><code class="language-java">String s1 = &quot;hi&quot;;
+String s2 = &quot;hi&quot;;
+print(&quot;s1 == s2&quot;, s1 == s2);
+</code></pre>
+<p>IntelliJ complains about this, telling us to use <code>.equals</code> to compare Strings. But why? <code>==</code> seems to work fine in this example. </p>
+<p>Both strings here are &quot;literals&quot;: they're given to the compiler as part of the source code, directly. What if we tried constructing some strings?</p>
+<pre><code class="language-java">String h = &quot;h&quot;;
+String i = &quot;i&quot;;
+String hi = h + i;
+print(&quot;s1 == hi&quot;, s1 == hi);
+</code></pre>
+<p>What's going on? The JVM automatically ensures there is only ever one copy of any string literal in memory. A string literal is a quote-delimited string constant like &quot;hi&quot;, &quot;h&quot;, and &quot;i&quot; above. So the variables <code>s1</code> and <code>s2</code> refer to the same object in memory, because of this hidden work by the JVM.</p>
+<p>But the String object that <code>hi</code> refers to is constructed from two string literals; it is not itself a string literal. Put another way, the String object that <code>hi</code> refers to comes from computation, rather than just being a constant in this source file. It's a <em>different object</em>, and so it's not <code>==</code> to <code>s1.</code></p>
+<p><strong>Lesson:</strong> It's just not safe to compare Java strings using <code>==</code>, because the JVM can and will allow multiple equivalent strings to exist simultaneously, and <code>==</code> checks whether the objects <em>are the same object</em>. Fortunately, <code>.equals</code> gives us what we need automatically:</p>
+<pre><code class="language-java">print(&quot;s1.equals(hi)&quot;, s1.equals(hi));
+</code></pre>
+<p>This is because the <code>String</code> class in Java defines its own <code>equals</code> method that checks for equivalent contents, rather than identical objects. </p>
+<p>Here's an example I like using. I've got a copy of Effective Java in my office. Suppose I ask you the question: &quot;Do you have this book?&quot; To answer, you need to know what I mean:</p>
+<ul>
+<li>do I just want to make sure you have an equivalent book---same title, same author, edition, etc.?</li>
+<li>do I want to make sure you give me back the book I've lent you?</li>
+</ul>
+<p>One of these is best implemented via <code>.equals</code> in a <code>Book</code> class that implements it. The other, where I'm really interested in <em>this book</em>, we would use <code>==</code>.</p>
+<h4 id="integer-equality"><a class="header" href="#integer-equality">Integer Equality</a></h4>
+<p>Types like <code>int</code> are <em>primitive</em> in Java; they aren't objects. This means we can compare primitive types, like <code>int</code>, using <code>==</code> safely: </p>
+<pre><code class="language-java">int five = 5;
+int six = 6;
+int elevenA = five + six;
+int elevenB = 11;
+// 11 is always 11
+print(&quot;elevenA == elevenB&quot;, elevenA == elevenB);
+</code></pre>
+<p>This becomes more complicated for &quot;wrapper&quot; classes, like <code>Integer</code>. IntelliJ will complain about this also, but it's useful as a demonstration:</p>
+<pre><code class="language-java">Integer fiveI = Integer.valueOf(5);
+Integer sixI = Integer.valueOf(6);
+Integer elevenObjectA = fiveI + sixI;
+Integer elevenObjectB = Integer.valueOf(11);
+print(&quot;elevenObjectA == elevenObjectB&quot;, elevenObjectA == elevenObjectB);
+</code></pre>
+<p>What do you think might be happening here?</p>
+<details>
+<summary>Think, then click!</summary>
+<p>These are <code>==</code> because the JVM does another hidden thing: for values between <code>-128</code> and <code>127</code> inclusive, <code>Integer.valueOf(v)</code> always returns a single canonical Integer object reference. Even if we switch to implicit conversion, and write something like <code>Integer fiveI = 5</code>, this calls <code>Integer.valueOf</code> under the hood.</p>
+</details>
+<p>To see this in effect, let's change the values:</p>
+<pre><code class="language-java">Integer twoHundredObject = Integer.valueOf(200);
+Integer twoHundredElevenObjectA = twoHundredObject + elevenObjectA;
+Integer twoHundredElevenObjectB = Integer.valueOf(211);
+print(&quot;twoHundredElevenObjectA == twoHundredElevenObjectB&quot;, twoHundredElevenObjectA == twoHundredElevenObjectB);
+</code></pre>
+<p>And, again, <code>.equals</code> gives us what we need, because it's been defined by the <code>Integer</code> wrapper class:</p>
+<pre><code class="language-java">print(&quot;twoHundredElevenObjectA.equals(twoHundredElevenObjectB)&quot;, twoHundredElevenObjectA.equals(twoHundredElevenObjectB));
+</code></pre>
+<p><em>Don't</em> confuse the primitive datatypes with their wrapper classes. You'll often need to use wrappers---e.g., if you want a <code>Map</code> with integer keys and values, you'll need to use <code>Map&lt;Integer, Integer&gt;</code>; <code>Map&lt;int,int&gt;</code> won't work. The <code>Map</code> interface is defined in terms of <em>objects</em>!</p>
+<h4 id="what-can-go-wrong-lists-example"><a class="header" href="#what-can-go-wrong-lists-example">What Can Go Wrong: Lists Example</a></h4>
+<p>Let's say we have a class meant to store X-Y coordinates:</p>
+<pre><code class="language-java">
+/**
+ * A point in 2-dimensional space.
+ */
+public class Point {
+    final double x;
+    final double y;
+
+    public Point(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public double x() { return x; }
+    public double y() { return y; }
+}
+</code></pre>
+<p>Notice that we haven't overridden <code>equals</code> in this class. The method will still be defined, but it will come from the parent class: <code>Object</code>.  Thus, because <code>equals</code> is doing object comparison, two different <code>Point</code> objects containing identical data aren't `==``:</p>
+<pre><code class="language-java">Point originA = new Point(0, 0);
+Point originB = new Point(0, 0);
+print(&quot;originA == originB&quot;, originA == originB);
+</code></pre>
+<p>We can write code that checks all their fields---assuming they're accessible, either directly or via getters:</p>
+<pre><code class="language-java">print(&quot;originA vs. originB fields&quot;, originA.x() == originB.x() &amp;&amp; originA.y() == originB.y());
+</code></pre>
+<p>This becomes a huge bother when there are many fields, and it relies on their values being accessible, reliable, consistent, etc. Worse, many built-in data structures rely on <code>equals</code> to decide (among other things) membership:</p>
+<pre><code class="language-java">List&lt;Point&gt; points = List.of(originA);
+// They are different objects! originB *isn't in the set*.
+print(&quot;points.contains(originB)&quot;, points.contains(originB));
+</code></pre>
+<p>Collections like <code>List</code> tend to use <code>.equal</code>, not <code>==</code>, but because we didn't override <code>equal</code>, the data structure ends up using object equality anyway. </p>
+<p>Ok, so let's make a new class, <code>PointWithEquals</code>, that actually overrides the <code>equal</code> method:</p>
+<pre><code class="language-java">PointWithEquals originC = new PointWithEquals(0, 0);
+PointWithEquals originD = new PointWithEquals(0, 0);
+
+// Now that we've defined .equals() properly...
+print(&quot;originD.equals(originC)&quot;, originD.equals(originC));
+List&lt;PointWithEquals&gt; betterPoints = List.of(originC);
+print(&quot;betterPoints.contains(originD)&quot;, betterPoints.contains(originD));
+</code></pre>
+<h4 id="what-can-go-wrong-sets-and-maps-example"><a class="header" href="#what-can-go-wrong-sets-and-maps-example">What Can Go Wrong: Sets and Maps Example</a></h4>
+<p>Let's try to use this new, more robust class---except with a <code>HashSet</code> this time:</p>
+<pre><code class="language-java">Set&lt;PointWithEquals&gt; betterPoints = new HashSet&lt;&gt;();
+PointWithEquals originC = new PointWithEquals(0, 0);
+PointWithEquals originD = new PointWithEquals(0, 0);
+betterPoints.add(originC);
+print(&quot;betterPoints.contains(originD)&quot;, betterPoints.contains(originD));
+</code></pre>
+<p>Why is this <code>HashMap</code> returning <code>false</code>, when the <code>List</code> in the previous example returned true? Let's investigate...</p>
+<pre><code class="language-java">betterPoints.add(originD);
+System.out.println(&quot;betterPoints.size(): &quot;+betterPoints.size());
+</code></pre>
+<p>The set is treating them as different objects, even though they are <code>.equal</code>! What's going on?</p>
+<details>
+<summary>Think, then click!</summary>
+<p>Checking for membership in a HashSet happens in two stages:</p>
+<ul>
+<li>what is in the set with the same hash value as the object we're searching for?</li>
+<li>are any of them <code>.equals</code> to the object we're searching for?</li>
+</ul>
+<p>We didn't redefine <code>hashCode</code> for our second point class, just <code>equals</code>.</p>
+</details>
+<p>If we make a third class, <code>PointWithBoth</code>, that overrides both methods, the set will report the results we expect:</p>
+<pre><code class="language-java">Set&lt;PointWithBoth&gt; evenBetterPoints = new HashSet&lt;&gt;();
+PointWithBoth originE = new PointWithBoth(0, 0);
+PointWithBoth originF = new PointWithBoth(0, 0);
+evenBetterPoints.add(originE);
+print(&quot;evenBetterPoints.contains(originF)&quot;, evenBetterPoints.contains(originF));
+</code></pre>
+<h3 id="what-makes-an-equals-method-good"><a class="header" href="#what-makes-an-equals-method-good">What Makes An <code>equals()</code> Method &quot;Good&quot;?</a></h3>
+<p>Consider the (IntelliJ-generated!) methods in the 2nd and 3rd point classes. How do we know they are correct? What could have gone wrong? In short: what do you think should be true of <em>any</em> <code>equals</code> method we write?</p>
+<p>Here's one example to get us started: <code>a.equals(a)</code> should return <code>true</code> for any object <code>a</code>. What else is there?</p>
+<p>Rather than trusting <em>me</em> to get it right, let's go straight to the authority. Open up <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#equals(java.lang.Object)">the JavaDocs for Object.equals</a> in Java. You'll see:</p>
+<blockquote>
+<p>The equals method implements an equivalence relation on non-null object references:</p>
+<p>It is reflexive: for any non-null reference value x, x.equals(x) should return true.
+It is symmetric: for any non-null reference values x and y, x.equals(y) should return true if and only if y.equals(x) returns true.
+It is transitive: for any non-null reference values x, y, and z, if x.equals(y) returns true and y.equals(z) returns true, then x.equals(z) should return true.
+It is consistent: for any non-null reference values x and y, multiple invocations of x.equals(y) consistently return true or consistently return false, provided no information used in equals comparisons on the objects is modified.
+For any non-null reference value x, x.equals(null) should return false.
+The equals method for class Object implements the most discriminating possible equivalence relation on objects; that is, for any non-null reference values x and y, this method returns true if and only if x and y refer to the same object (x == y has the value true).</p>
+<p>Note that it is generally necessary to override the hashCode method whenever this method is overridden, so as to maintain the general contract for the hashCode method, which states that equal objects must have equal hash codes.</p>
+</blockquote>
+<p>This is called a <em>contract</em> on the method. The documentation for <code>Object</code> is saying: if you extend this class, and you wrote your own <code>equals</code> method, you'd better make sure the following is true.</p>
+<p><strong>Exercise:</strong> try to come up with a situation where breaking one of these requirements would result in buggy behavior. You may use built-in data structures for these examples, or not, as you wish. </p>
+<h2 id="takeaways"><a class="header" href="#takeaways">Takeaways</a></h2>
+<p>Java's <code>record</code>s automatically define <code>equals</code> and <code>hashCode</code> for you---assuming that you wanted all fields of the record to be included in calculating these. This is one of many ways they are convenient. (Unfortunately, you can't have a <code>record</code> extend another to add more fields.)</p>
+<p><strong>Documenting the expectations</strong> you have for anyone using, or extending, your classes is not just best practice; it will save real time and frustration. Similarly, be willing to glance at the documentation for methods you're using---you might be surprised what you find.</p>
+<p>All of this will be important for how we evaluate your work in future sprints.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../comparators-and-testing/comparators-and-testing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../proxies-adapters/proxies-adapters.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../comparators-and-testing/comparators-and-testing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../proxies-adapters/proxies-adapters.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

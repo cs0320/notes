@@ -1,0 +1,266 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>MBT and PBT - CSCI 0320 Notes</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../././mdbook-admonish.css">
+        <link rel="stylesheet" href=".././mdbook-admonish.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item affix "><a href="../home.html">How to read these notes</a></li><li class="chapter-item affix "><a href="../success-in-0320/success-in-0320.html">Success in 0320</a></li><li class="chapter-item affix "><a href="../comparators-and-testing/comparators-and-testing.html">More Strategies, More Testing</a></li><li class="chapter-item affix "><a href="../equality-contracts/equality-contracts.html">Equality is Hard, Caching</a></li><li class="chapter-item affix "><a href="../proxies-adapters/proxies-adapters.html">Proxies and Adapters, Defensive Programming</a></li><li class="chapter-item affix "><a href="../apis-integration/apis-integration.html">Web APIs and Integration Testing</a></li><li class="chapter-item affix "><a href="../html-react-playwright/html-react-playwright.html">HTML/React/Playwright</a></li><li class="chapter-item affix "><a href="../java-concurrency/java-concurrency.html">Java Concurrency</a></li><li class="chapter-item affix "><a href="../promises-fetch-prs/promises-fetch-prs.html">Promises and TypeScript Asynchrony</a></li><li class="chapter-item affix "><a href="../algorithms/algorithms.html">Thinking About Algorithms</a></li><li class="chapter-item affix "><a href="../generics-wildcards/generics-wildcards.html">Supplement: Generics and Wildcards</a></li><li class="chapter-item affix "><a href="../mbt_pbt/mbt_pbt.html" class="active">MBT and PBT</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CSCI 0320 Notes</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="software-as-hammer-mbtpbt"><a class="header" href="#software-as-hammer-mbtpbt">Software as Hammer, MBT/PBT</a></h1>
+<p><strong>This is supplementary material, and doesn't correspond <em>exactly</em> to a lecture slot.</strong> In particular, we didn't do the &quot;hammer&quot; discussion, and the PBT portion is supported by the livecode. </p>
+<h2 id="is-software-like-a-hammer"><a class="header" href="#is-software-like-a-hammer">Is Software Like a Hammer?</a></h2>
+<p>Let's start with a short discussion.</p>
+<p>Some have said that software is like a hammer: it's a morally neutral tool that can be used for either good or evil. You can build a house with a hammer, or you can commit murder. </p>
+<h4 id="discussion-what-do-you-think-about-this"><a class="header" href="#discussion-what-do-you-think-about-this">Discussion: What do you think about this?</a></h4>
+<p>It's an appealing argument! In some ways, software might indeed be viewed as morally neutral. But, personally, I think that the &quot;hammer&quot; analogy is too glib. </p>
+<p>My father was a carpenter, and we had a <a href="https://en.wikipedia.org/wiki/Table_saw">table saw</a> in our garage. A table saw is a terrifying piece of machinery; it's got a large rotary blade that slices through wood as you push it along the table. It's also a <em>complex</em> piece of machinery: there are various levers and dials to control the height of the blade and other factors, but also numerous safety features. Dad's didn't have as many as modern saws have, but there was still an emergency stop button and a blade guard.</p>
+<p>My point is: software isn't a hammer. Software is more like a table saw. If you don't think about safety when you design a table saw, people are going to get badly hurt. </p>
+<p>Yeah, you can still hurt yourself with a hammer (I have, multiple times). But the greater the degree of potential harm, the more careful thought and added safety-features are called for. </p>
+<p>And don't get lured in by &quot;software is like a hammer&quot; statements. Something can be morally neutral in itself and still warrant careful design for safety (or a decision not to make it at all). </p>
+<p>There's a quote from Robert Oppenheimer I like, from the <a href="https://www.osti.gov/opennet/hearing">&quot;personnel hearing&quot;</a> in which he lost his clearance:</p>
+<blockquote>
+<p>&quot;When you see something that is technically sweet, you go ahead and do it and argue about what to do about it only after you’ve had your technical success. That is the way it was with the atomic bomb.&quot;</p>
+</blockquote>
+<h2 id="beyond-fuzz-testing"><a class="header" href="#beyond-fuzz-testing">Beyond Fuzz Testing</a></h2>
+<p>We previously saw <em>fuzz testing</em>, which sent randomly generated inputs to a program under test, and checked whether the program crashed. We can do a lot more with this idea of random inputs. But to do so, we need a broader view of what &quot;testing&quot; means. </p>
+<p>In fuzz testing, we didn't pay much attention to the <em>output</em> of the program. We just checked that it didn't raise an exception. The problem with doing more is that, if we've got <em>randomly</em>-generated inputs, we can't pair them with <em>manually</em>-generated outputs. So now the question is: where can we get &quot;correct&quot; outputs from?</p>
+<p>What if we had a known-good baseline implementation we were trying to optimize? 
+Consider building one of those clever, super-optimized implementations of a basic arithmetic function. These matter in a lot of domains (e.g. graphics). Suppose you're testing:</p>
+<pre><code class="language-java=">float fastFloor(float value) {
+    // ...
+}
+</code></pre>
+<p>How long do you think it would take to loop through every possible primitive 32-bit <code>float</code> value, and check whether or not <code>fastFloor</code> returns the same value as <code>Math.floor</code>?</p>
+<details>
+<summary>Think, then click!</summary>
+About 90 seconds, and that's on a computer from several years ago. [Several years ago.](https://randomascii.wordpress.com/2014/01/27/theres-only-four-billion-floatsso-test-them-all/)
+</details>
+<p>Here, we don't even need random inputs! Of course, if the function took 64-bit <code>double</code> values, the story would be different, and we'd check random inputs.</p>
+<p>See <a href="https://github.com/cs0320/class-livecode/tree/main/S24/apr9_mbt_pbt">the livecode for today</a>. We'll test my implementation of bubble sort via model-based testing. Concretely:</p>
+<ul>
+<li>my bubble-sort method is the <em>program under test</em>; and </li>
+<li>Java's standard <code>Collections.sort</code> method is the <em>known-good</em> artifact.</li>
+</ul>
+<h3 id="what-just-happened"><a class="header" href="#what-just-happened">What just happened?</a></h3>
+<p><strong>Something very important has just happened. Pay attention!</strong></p>
+<p>We have stopped talking about testing against <em>specific outputs</em>, and have started testing more abstract <em>properties</em> of outputs. We don't want to know whether the output lists are exactly the same, but we want to know whether they match in terms of nearness to the input goal.</p>
+<h2 id="property-based-testing-outline"><a class="header" href="#property-based-testing-outline">Property-Based Testing (Outline)</a></h2>
+<p>Is there any reason that our properties have to be written in terms of another implementation? No! </p>
+<p>What makes a sorting implementation <em>correct</em>? If we can write this check as a method, we can apply the same idea, without needing a naive implementation to check against. </p>
+<p>Again, see the livecode for today for an exercise. <strong>Hint: consider what you need from a sort to call it correct. Is that something you can check in a test method?</strong></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../generics-wildcards/generics-wildcards.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../generics-wildcards/generics-wildcards.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
