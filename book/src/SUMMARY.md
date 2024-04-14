@@ -16,7 +16,9 @@
 [Java Concurrency](./java-concurrency/java-concurrency.md)
 [Promises and TypeScript Asynchrony](./promises-fetch-prs/promises-fetch-prs.md)
 [Thinking About Algorithms](./algorithms/algorithms.md)
-[Lecture 12]()
+
+[Supplement: Generics and Wildcards](./generics-wildcards/generics-wildcards.md)
+[MBT and PBT](./mbt_pbt/mbt_pbt.md)
 [Lecture 13]()
 [Lecture 14]()
 [Lecture 15]()

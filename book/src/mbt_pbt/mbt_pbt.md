@@ -1,5 +1,7 @@
 # Software as Hammer, MBT/PBT
 
+**This is supplementary material, and doesn't correspond _exactly_ to a lecture slot.** In particular, we didn't do the "hammer" discussion, and the PBT portion is supported by the livecode. 
+
 ## Is Software Like a Hammer?
 
 Let's start with a short discussion.

@@ -1,16 +1,8 @@
-# fa23.7 Wildcards in Generics
+# Wildcards in Generics
 
-###### tags: `Tag(fa23)`
+**This is supplementary material, and doesn't correspond _exactly_ to a lecture slot.**
 
-Note: the 6th class used slides, not notes. Hence why this is number 7. 
-
-The material in this class also covered fuzzing; there may be some duplication with prior notes.
-
-
-## Generics (Part The Second)
-
-
-## Making Sense of Generics: the LSP <a name="lsp"></a>
+## Making Sense of Generics: the LSP
 
 Let's start with a puzzle about subtyping. We know that `Object` is a supertype of `Number`, which is a supertype of `Integer`. One thing this buys us is that we can plug in something with `Number` type anywhere an `Object` is expected, or pass an `Integer` to a method that accepts `Numbers`. 
 
@@ -103,7 +95,7 @@ Before we start, I want to cover a rule that can _really_ help clear up confusio
 This is the guiding principle that the above example violates, and it's worth keeping in mind as you work with generics in the future.   
 
 
-## Type variables and Wildcards <a name="wildcards"></a>
+## Type variables and Wildcards
 
 Let's get more concrete. What if we were trying to write the type for a sorting function? All we'd like to depend on is that elements of the type are comparable to other elements of that type:
 
@@ -154,8 +146,6 @@ Why? Because we could have assigned `someInts` to `someNums2` instead, or `someD
 </details>
 <BR/>
 
-
-See the end of the livecode example for more information.
     
 ## Fuzz Testing
 
