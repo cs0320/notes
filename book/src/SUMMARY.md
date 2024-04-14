@@ -19,7 +19,7 @@
 
 [Supplement: Generics and Wildcards](./generics-wildcards/generics-wildcards.md)
 [MBT and PBT](./mbt_pbt/mbt_pbt.md)
-[Lecture 13]()
+<!-- [Lecture 13]()
 [Lecture 14]()
 [Lecture 15]()
 [Lecture 16]()
@@ -32,4 +32,4 @@
 [Lecture 23]()
 [Lecture 24]()
 
-
+ -->
