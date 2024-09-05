@@ -2,13 +2,13 @@
 
 ## Logistics
 
-I am sending overrides every day, according to how many seats become available. The cap is shared between all sections, including 1340. C@B doesn't accurately report enrollments at the moment, because it doesn't combine these sections and it doesn't include active but not-yet-accepted overrides. 
+I am sending overrides every day as seats become available. The cap is shared between all sections, including 1340. C@B doesn't accurately report enrollments at the moment, because it doesn't combine these sections and it doesn't include active but not-yet-accepted overrides. 
 
 **NOTE WELL:**
 * If you **don't intend** to take 0320/1340, please drop (and/or remove the course from your cart) so that I see the seat and can add someone on the waitlist. 
-* If you **get an override**, accept it or decline it ASAP. If you hold onto it but don't accept it, I cannot admit another student.
+* If you **get an override**, accept it or decline it ASAP. If you hold onto it but don't accept it, it is harming my ability to admit. Especially this semester, when more courses are capped, propagation of availability is much slower. Please don't slow me down!
 * If you **do intend** to take the course, keep it in your cart so that I know you're interested. **I will not be giving overrides to students without 0320 in their cart** because you won't be seeing announcements, etc. that we send to the list or post on EdStem.
-* **You need the prerequisites** to take 0320 or 1340. If you haven't completed an intro sequence (including at other universities), you need permission from me. This is true even if CAB isn't smart enough to flag your override request. 
+* **You need the prerequisites** to take 0320 or 1340. If you haven't completed an intro sequence (including at other universities), you cannot take the course. 
 
 ## Welcome!
 
@@ -320,63 +320,41 @@ Notice how this process is leading us to the problem: that an exception being th
 
 I guess I need to rewrite my test. But wait. Isn't what we just did _cheating_? I let you see my code, and that might influence your solution to this project. 
 
-No. In 0320, we have an open collaboration policy---even about code. But in exchange, we need you to follow some basic professional standards. Things like:
-* always report and give credit to sources;
-* never deliberately short-circuit someone else's learning; 
-* never copy or adapt code that you can't explain (to a staff member, or me, or your partner, or yourself); and
-* never copy or adapt code that you haven't tested thoroughly.
+No. In 0320, we have an open collaboration policy---even about code. But in exchange, we need you to follow some basic professional standards. Things like: giving credit to sources, not short-circuiting anybody's learning, and never adapting code you don't understand or can't test well. See the missive for the full statement. 
 
-A failure to meet these basic professional standards would be a violation of Brown's academic code (it would also get you in trouble at work). To run a course with such an open policy is _risky_---if abused, it harms your learning and our ability to keep the course collaborative. I'm sorry to say that this means I would have to file an academic code case if these standards were violated, and then relentlessly pursue it.
+A failure to meet these basic professional standards would be a violation of Brown's academic code. It would also get you in trouble at work. To run a course with such an open policy is _risky_---if abused, it harms your learning and our ability to keep the course collaborative. So, to protect the format of the course, if these standards were violated I would have to file an academic code case and then relentlessly pursue it.
 
-<!-- However, I believe this policy can work well. It's realistic---the cases for violating the policy are cases any manager or tech lead would be extremely unhappy with! And since every team will have a TA serving as a manager, that's not a hypothetical. Also:
+But I won't have to do that, right?
 
-* The functionality of your code is only a small part of your evaluation in 0320. Someone who steals code, but can't test it well or explain it to another engineer, won't pass 0320. 
-* You may be asked to explain every line of code in your project. This goes double for the term project, where code walks are common. Moreover, on the term project, everyone is working on something different. Someone who doesn't contribute professionally to a term project won't pass 0320.
-* If that isn't enough, proceed assuming we will be running MoSS (and filtering for declared collaborations).
- -->
+### What About AI?
 
-<!-- ### What About AI?
+What about it? You'll be allowed to use it, just like any other resource. However, you'll need to conform to the above standards, just as if it were a collaborator. 
 
-We'll be addressing generative AI models during the semester. You're _not_ allowed to use them for your work in 0320, except when we explicitly say so. This includes, e.g., models that produce text or images, not just code. (Think about why we might have that policy in place. It's not that the tools are "bad"; the argument is more subtle.) We will be using them some, later in the semester.
-
-For now, *you don't need AI; you have each other.*
- -->
 ## How Does Grading Work?
 
-0320 is mandatory S/NC. We _do_ give S with distinction, and distinction is based on your responses to reflection exercises and participation in discussions. The course is divided into 2 parts: the _sprints_ and the _term project_. The sprints let you demonstrate command of new technical skills (which we measure by awarding "badges"). The term project lets you show you can apply those skills in a new context of your own (and also gives you a chance to make up for _some_ badges you might not have quite earned on the sprints). The missive covers exact requirements in more detail---read it!
+0320 is mandatory S/NC. We _do_ give S with distinction. The course is divided into 2 parts: the _sprints_ and the _term project_. The sprints let you demonstrate command of new technical skills (which we give formative feedback on). The term project lets you show you can apply those skills in a new context of your own.
 
-## Advice on Sprint 1: CSV
+### New: 1-week sprints and feedback
 
-Let's look at the first sprint to give you an idea how we'll evaluate you. First, notice that there are 3 "user stories" we're giving you. Think of these as user-level, rough specifications for what you need to provide. Also notice that not all the users are the same. In fact, you've got a job to do for an end-user (build a CSV counter utility) but also a job for _a developer who wants to use your code_. 
+New this semester, we've factored each of the former 2-week sprints out into 2 1-week sprints. This gives us a better cadence for feedback. You'll alternate between asycnhronous video demos and synchronous demos each week, and the demos are the primary way your mentors will generate feedback.
 
-The sprint lists 4 badges you can earn (and you need multiple instances of each badge throughout the semester):
-* testing;
-* code organization;
-* patterns; and 
-* defensive programming.
+You'll receive access to a spreadsheet where your mentors will leave formative feedback _every week_, along with whether you've met expectations for the week. We'll expect you to work on addressing this feedback between sprints. See the missive for more information.
 
-### Strategy Pattern
+### New: Demo Recipes
 
-You'll write a CSV parser for this sprint. Rather than _always and only_ returning something like `List<List<String>>`, though, you'll let your caller provide a _strategy_ object that says how to convert rows to objects of their choice. Because your parser should be completely agnostic about what kind of objects get produced by this strategy, you'll make it generic over some type `T`, just like `Student` earlier in this class. Your caller---the developer user---knows what `T` is, and is happy to tell your parser how to convert rows into instances of `T`. But the details _aren't your problem_. 
+We'll also be providing you with a "demo recipe" to help you prepare, and giving you access to the recipe your mentors will be using to guide their feedback. There are no secret rubrics in 0320. But we do want to see you meet expectations. 
 
-It's kind of like making peanut-butter sandwiches in bulk. Maybe *my* job is assembling the sandwiches. I should be able to make a sandwich out of any kind of bread---that is, anything that implements the `Bread` interface: I can slice it, I can spread things on it, etc. Your parser should be able to make any kind of dataset, so long as your caller has given you a strategy you understand. 
+### New: Collaboration Crests 
 
-We'll talk more about strategies throughout the semester, and other ways to embody them, but this should get you started. Think _generically_. Don't make unnecessary assumptions about types.
+We would like to more strongly encourage collaboration between students. You will be required to, e.g., have a design discussion with someone you don't know, do code review, and so on. See the missive for more information.
 
-### Code Organization
+### A Focus on Testing
 
-Here, we're looking for three things:
-* use packages; 
-* document your code; and 
-* use Git properly. 
+We'll talk more about testing on Tuesday, but it should go without saying that in 0320, we take testing seriously. The handouts contain *pretty good advice* on meeting our requirements. Read them. 
 
-Push regularly with reasonable commit messages. Don't just keep all your code in one directory. Group your classes according to which component they're part of, or according to some other sensible principle. **I shouldn't need to care about your CSV Search utility to use your CSV parser for my own, different, projects**.
+**It is a bedrock principle of 0320 that if you cannot demo or test something, it's not actually done.**
 
-### Testing
-
-Test your code. We'll talk more about testing next week, but it should go without saying that in 0320, we take testing seriously. The handout contains *good advice* on meeting our requirements for this sprint. Future sprints may reduce the level of detail we give.
-
-#### Test Coverage 
+#### Aside: Test Coverage 
 
 There are a few metrics for how good a test suite is. One is "test coverage", which measures how much of the code the suite exercises. Although we encourage you to run from the terminal using `mvn`, IntelliJ is probably the best way to get test-coverage information easily, without more configuration work. To do this, run a test file in IntelliJ, then select "Run with Coverage" from the "Run" menu:
 
@@ -400,16 +378,16 @@ On a similar note, there's diminishing returns on time to improve coverage. In a
 
 
 
-### Defensive Programming
+### A Focus on Defensive Programming
 
-This badge also includes error handling. Make sure you're handling error cases in a reasonable way. E.g., what happens if the code calling your CSV parser gives an invalid file name? (And numerous other scenarios...)
+In 0320, we try to handle errors in a reasonable way. This includes both expected and unexpected errors. 
 
-Keep in mind: you probably don't want to print an error message and exit as part of your CSV parser. Be considerate of the code calling yours---maybe they want to do something for error cases. For more advice on this, see _Effective Java_ on exceptions.
+Keep in mind: you probably don't want to print an error message from within your CSV parser. And you _really_ don't want to call `System.exit`. Be considerate of the code calling yours. Maybe they want to do something for error cases themselves, and would prefer an exception. For more advice on this, see _Effective Java_ on exceptions.
 
-Finally, it would be bad to use typecasting or `instanceof` on this assignment, outside of defining something like an `equals` or `hashCode` method. Typecasting is telling the compiler "I know best, not you"; that's not very defensive programming! Here's an example of what I mean: 
+Finally, it would be bad to use typecasting or `instanceof`, outside of defining something like an `equals` or `hashCode` method. Typecasting is telling the compiler "I know best, not you"; that's not very defensive programming! Here's an example of what I mean: 
 
 ```java 
 return (T) creator.create(row);
 ```
 
-That's the sort of thing I had to do when I was learning Java in the late 90's, before generics existed. If you find yourself doing something like that, it means you aren't using generics properly, and would be at risk of losing the strategy pattern and/or defensive-programming badges. 
+That's the sort of thing I had to do when I was learning Java in the late 90's, before generics existed. If you find yourself doing something like that, it means you aren't using generics properly.
