@@ -91,7 +91,7 @@ The collaboration policy is part of that. We'll use Git, an industry standard ve
 One advantage of using Git is that all the code from lecture will be available on a [public repository](https://github.com/cs0320/class-livecode) in the `F24` folder (for Fall 2024) and also in the `vignettes` subfolder, which I use for small examples that may or may not appear in class. You can clone the repository to experiment with the code on your own machine. **You should clone this repository as soon as you're able**; we'll use it for in-class exercises, and it gives you the ability to experiment with changing the code on your own machine. **Starting next week, I will assume that you have the repository cloned on your laptop, if you bring one.**
 
 ~~~admonish warning title="Class Prep and Spoilers"
-If a filename or package has `prep` in it, I'm including it as part of my class prep, and it likely contains spoilers for class, perhaps even intentional and unintentional bugs.
+If a filename or package has `prep` in it, I'm including it in the repository to help me structure the live coding session, and keep track of things like intentional and unintentional bugs. These are spoilers for class, and may not be reliable resources.
 ~~~
 
 ### A Little Bit of Generics
@@ -139,7 +139,7 @@ Looking at this code, you might have some questions. One is whether I can really
 
 For now, let's observe that the todo list for every student needs to contain `String` items. But there's no real reason for that. Our `mostCommonTodoItem()` method would work perfectly if we changed `String` to `Integer`. Or we changed `String` to `Object`, or even to some other more complicated type like `List<String>` (then each todo item would be its own list). But to make such a change, we need to modify _many_ places in the method, and copy it. We'd have `mostCommonTodoItem_String` and `mostCommonTodoItem_Int` and so on. That sounds like a lot of work. The code isn't _easily extensible_. 
 
-We can fix that using Java generics more deeply. Rather than saying `List<String>`, what we want to do is speak of a list of some arbitrary type---that the method *doesn't need to care* about the details of. Let's call that arbitrary type `T` for short. Then we might say that the `Student` class has a field `List<T> todos`, and write the method this way:
+We can fix that using Java generics. Rather than saying `List<String>`, what we want to do is speak of a list of some arbitrary type---that the method *doesn't need to care* about the details of. Let's call that arbitrary type `T` for short. Then we might say that the `Student` class has a field `List<T> todos`, and write the method this way:
 
 ```java
 public T mostCommonTodoItem() {
@@ -175,6 +175,10 @@ Student<String> tim = new Student<>(List.of("lecture notes", "email", "email", "
 Student<Integer> nim = new Student<>(List.of(1, 17, 3, 43, 1, 2, 5));
 ```
 This is exactly the same thing you do when you create a new `List` or `Set` or `HashMap`! All of these data structures are implemented using type variables. They are a _great_ way to make your code easy to use and extend. (We'll revisit generics and type variables a little later in the semester, but this is as much as you need for now.)
+
+~~~admonish note title="This isn't really about Java"
+Most programming languages, at least those with a static type system, support this sort of thing. Technically, it's an example of something called [*parametric polymorphism*](https://en.wikipedia.org/wiki/Parametric_polymorphism). Even Python's type-hint system allows it. 
+~~~
 
 While we're here editing this class, there's something I don't like. What happens if the list is empty? Then the method returns `null`. This feels unsafe, or at least not very communicative. We could be throwing an exception that has more meaning---like `IllegalArgumentException` (or maybe even our own exception type). I'll add this to the start of the method:
 
@@ -229,13 +233,7 @@ In future, we'll ask you to use branches---which are a great way to develop in p
 
 ## Testing with JUnit
 
-<p>
-<center>
-TA in audience: Well, uh, Tim, your code just broke some of our tests...
-</center>
-</p>
-
-Oh, dear. 
+Unfortunately, I forgot to do something really important. 
 
 Since this was an existing project, we had test cases written for it. I guess I should have run those tests _before_ pushing my update, huh? Let's have a look. Our tests use _JUnit_, a popular testing library for Java. How do we install JUnit? Just by adding it as a dependency in Maven, our Java package manager. Your Maven configuration usually lives in a single file: `pom.xml`. In my project, I have:
 
@@ -275,11 +273,13 @@ There are now some warnings in the test, because `Student` is now generic, and t
 
 But the test still fails. I guess I put in a bug by mistake. But I don't really understand how, or what the problem is. How do I work through the problem?
 
-
+~~~admonish warning title="Watch out!"
+This is a simple issue that you may immediately see and know how to fix. That's not the point. If it were something bigger, it would be difficult to fit it into class. So let's treat this as a real bug, and learn better how to diagnose such problems.
+~~~
  
 ## The 0320 Debugging Recipe
 
-I think I'm supposed to follow this [debugging recipe](https://hackmd.io/UtLhJAHFRj-MbEdhQAU7TA). And why don't _you all_ help me follow it? It starts in a strange way:
+I think I'm supposed to follow this [debugging recipe](./recipe.md). And why don't _you all_ help me follow it? It starts in a strange way:
 
 #### Rule One
 
@@ -289,31 +289,32 @@ I don't feel particularly angry, and I just had a sandwich. So I think I'm good 
 
 #### What's Wrong?
 
-* Assemble your knowledge. Write *no more than* two sentences for each question:
-    * What is the _purpose_ of the code you're working on?
-    * What _steps_ can you perform to reproduce the bug?
-    * What is the _expected behavior/result_, and what is the unexpected _actual behavior/result_?
-    * _Why_ do you expect the result that you expect?
-* Describe how you think the system operates as it approaches the unexpected actual result. Write your description as a series of steps. Use no more than one or two sentences for each step, but each step should be testable as a hypothesis about how the system works.
-
+Assemble your knowledge. Write no more than two sentences for each question:
+* What is the purpose of the code you're working on?
+* What steps can you perform to reproduce the bug?
+* What is the expected behavior/result, and what is the unexpected actual behavior/result?
+* Why do you expect the result that you expect?
 
 Let's give it a try.
-* I'm working on a method that finds the most common item in a list.
-* I can reproduce the bug by running the test suite for the `Student` class. The failing test creates a `Student` instance with an empty list, and then invokes the most-common method.
-* I expected this test to pass. I made the code objectively better, so tests shouldn't be failing.
-* The student is created, and its `todos` field contains a reference to that empty list. Then the method is called, the empty-list check is hit, my exception gets thrown, and the test should pass.
+> I'm working on a method that finds the most common item in a list.
+> I can reproduce the bug by running the test suite for the `Student` class. The failing test creates a `Student` instance with an empty list, and then invokes the most-common method.
+> I expected this test to pass. I made the code objectively better, so tests shouldn't be failing.
+
+#### Tell the Story
+
+Now describe how you think the system operates as it approaches the unexpected actual result. Write your description as a series of steps. Use no more than one or two sentences for each step, but each step should be testable as a hypothesis about how the system works.
+
+> The student is created, and its `todos` field contains a reference to that empty list. Then the method is called, the empty-list check is hit, my exception gets thrown, and the test should pass.
 
 #### Localization
 
-Confirm each step in your description is accurate. Use any reasonable means (e.g., print statements or a debugger). The first step where the program behaves unexpectedly is a *possible location* for the original bug. More commonly, it contains the call site for the actual buggy code. 
-Record this location, along with the expected and actual behavior.
+Confirm each step in your description is accurate. Use any reasonable means (e.g., print statements or a debugger). The **first step** where the program behaves unexpectedly is a *possible* location for the original bug. More commonly, it contains the call site for the actual buggy code.
 
-* I see the student is created, and I know the method is called because I added a `println` to check.
-* I see my exception is being returned, because I added a `println` to check.*
+> I see the student is created, and I know the method is called because I added a `println` to check.
+> I see my exception is being returned, because I added a `println` to check.*
+> But an exception is not the same as `null`. 
 
 Notice how this process is leading us to the problem: that an exception being thrown is not the same as returning `null`. This is a pretty simple bug, but the process of _narrowing your attention_ through experiments is a professional technique that works even in enormous enterprise systems.
-
-The debugging recipe has some additional prompts, mostly about what to do if you've found the location of the problem, more or less, but aren't sure how to move on from there. We'll follow the recipe in class several more times this semester!
 
 **We expect you to follow the recipe, especially during collab section. If you were my debugging partner, my answers to those questions may have pointed you directly to the problem!**
 
