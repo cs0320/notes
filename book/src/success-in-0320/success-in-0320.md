@@ -334,6 +334,8 @@ What about it? You'll be allowed to use it, just like any other resource. Howeve
 
 0320 is mandatory S/NC. We _do_ give S with distinction. The course is divided into 2 parts: the _sprints_ and the _term project_. The sprints let you demonstrate command of new technical skills (which we give formative feedback on). The term project lets you show you can apply those skills in a new context of your own.
 
+The missive talks at length about grading; I won't try to duplicate that information here. But some changes you might want to be aware of include the following.
+
 ### New: 1-week sprints and feedback
 
 New this semester, we've factored each of the former 2-week sprints out into 2 1-week sprints. This gives us a better cadence for feedback. You'll alternate between asycnhronous video demos and synchronous demos each week, and the demos are the primary way your mentors will generate feedback.
@@ -354,7 +356,7 @@ We'll talk more about testing on Tuesday, but it should go without saying that i
 
 **It is a bedrock principle of 0320 that if you cannot demo or test something, it's not actually done.**
 
-#### Aside: Test Coverage 
+## Aside: Test Coverage 
 
 There are a few metrics for how good a test suite is. One is "test coverage", which measures how much of the code the suite exercises. Although we encourage you to run from the terminal using `mvn`, IntelliJ is probably the best way to get test-coverage information easily, without more configuration work. To do this, run a test file in IntelliJ, then select "Run with Coverage" from the "Run" menu:
 
@@ -376,18 +378,3 @@ Don't view a high level of coverage as a guarantee! Coverage is imperfect; there
 On a similar note, there's diminishing returns on time to improve coverage. In a real, large code base, it's _far_ more difficult to move from 90% to 95% than it is to move from 50% to 65%. Don't spend all your time trying to improve coverage at the exclusion of all else, but don't neglect it either. Our sprints are small, compared to most real-world projects!
 ~~~
 
-
-
-### A Focus on Defensive Programming
-
-In 0320, we try to handle errors in a reasonable way. This includes both expected and unexpected errors. 
-
-Keep in mind: you probably don't want to print an error message from within your CSV parser. And you _really_ don't want to call `System.exit`. Be considerate of the code calling yours. Maybe they want to do something for error cases themselves, and would prefer an exception. For more advice on this, see _Effective Java_ on exceptions.
-
-Finally, it would be bad to use typecasting or `instanceof`, outside of defining something like an `equals` or `hashCode` method. Typecasting is telling the compiler "I know best, not you"; that's not very defensive programming! Here's an example of what I mean: 
-
-```java 
-return (T) creator.create(row);
-```
-
-That's the sort of thing I had to do when I was learning Java in the late 90's, before generics existed. If you find yourself doing something like that, it means you aren't using generics properly.
