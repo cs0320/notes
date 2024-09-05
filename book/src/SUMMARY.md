@@ -2,7 +2,8 @@
 
 [How to read these notes](./home.md) 
 
-[Success in 0320](./success-in-0320/success-in-0320.md)
+- [Success in 0320](./success-in-0320/success-in-0320.md)
+  - [Debugging Recipe](./success-in-0320/recipe.md)
 
 <!-- [More Strategies, More Testing](./comparators-and-testing/comparators-and-testing.md)
 [Equality is Hard, Caching](./equality-contracts/equality-contracts.md)

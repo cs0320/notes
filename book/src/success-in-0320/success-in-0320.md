@@ -5,9 +5,9 @@
 I am sending overrides every day as seats become available. The cap is shared between all sections, including 1340. C@B doesn't accurately report enrollments at the moment, because it doesn't combine these sections and it doesn't include active but not-yet-accepted overrides. 
 
 **NOTE WELL:**
-* If you **don't intend** to take 0320/1340, please drop (and/or remove the course from your cart) so that I see the seat and can add someone on the waitlist. 
-* If you **get an override**, accept it or decline it ASAP. If you hold onto it but don't accept it, it is harming my ability to admit. Especially this semester, when more courses are capped, propagation of availability is much slower. Please don't slow me down!
-* If you **do intend** to take the course, keep it in your cart so that I know you're interested. **I will not be giving overrides to students without 0320 in their cart** because you won't be seeing announcements, etc. that we send to the list or post on EdStem.
+* If you **don't intend** to take 0320/1340, please drop (and/or remove the course from your cart) so that the department sees the seat and can add someone on the waitlist. 
+* If you **get an override**, accept it or decline it ASAP. If you hold onto it but don't accept it, it is harming my ability to admit students who really want the course. Especially this semester, when more courses are capped, propagation of availability is much slower. Please don't slow us down!
+* If you **do intend** to take the course, keep it in your cart so that you see announcements, etc. that we send to the list or post on EdStem. Although the department is allocating seats this semester, I will be disinclined to add someone without the course in their cart.
 * **You need the prerequisites** to take 0320 or 1340. If you haven't completed an intro sequence (including at other universities), you cannot take the course. 
 
 ## Welcome!
