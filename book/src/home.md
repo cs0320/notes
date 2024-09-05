@@ -2,9 +2,9 @@
 
 Welcome to CSCI 0320/1340! 
 
-This page contains the _lecture notes_ for the course. With JavaScript enabled, the table of contents will allow you to select a specific chapter. Likewise, the search icon should allow you to search for arbitrary words throughout all the notes. The lecture indexing is for Spring 2024. 
+This page contains the _lecture notes_ for the course. With JavaScript enabled, the table of contents will allow you to select a specific chapter. Likewise, the search icon should allow you to search for arbitrary words throughout all the notes. The lecture indexing is for Fall 2024. Some lectures are mainly done via slides, in which case we will attempt to link the slides here as well. 
 
-Please note that some lectures will be done entirely via slides, etc.; those aren't present in this collection. 
+These notes are meant to be accompanied by the [course live code repository](https://github.com/cs0320/class-livecode), which contains a collection of code examples done in and out of class. The course assumes that students will review the live code.
 
 ~~~admonish warning title="These notes are not final!" 
 This outline is subject to change, and notes are often modified in response to TA feedback or student Q&A before class. Some notes will be greyed out and inaccessible in the table of contents.
@@ -27,10 +27,6 @@ stop and think, or do the related exercise, before expanding.
 ~~~
 
 ## Supplementary Material 
-
-### Livecode Repository 
-
-These notes are meant to be read in conjunction with the [course livecode repository](https://github.com/cs0320/class-livecode). Often, the notes and repository contain useful information that there isn't time to cover in class. 
 
 ### Effective Java 3rd Edition
 

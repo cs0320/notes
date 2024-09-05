@@ -1,11 +1,12 @@
-# sp24.1: Success In 0320 
+# Success In 0320 
 
 ## Logistics
 
-I am sending overrides every day, according to how many seats become available. The cap is shared between all sections, including 1340. So while I'm going over cap in total, CAB is not accurately reporting this. 
+I am sending overrides every day, according to how many seats become available. The cap is shared between all sections, including 1340. C@B doesn't accurately report enrollments at the moment, because it doesn't combine these sections and it doesn't include active but not-yet-accepted overrides. 
 
 **NOTE WELL:**
 * If you **don't intend** to take 0320/1340, please drop (and/or remove the course from your cart) so that I see the seat and can add someone on the waitlist. 
+* If you **get an override**, accept it or decline it ASAP. If you hold onto it but don't accept it, I cannot admit another student.
 * If you **do intend** to take the course, keep it in your cart so that I know you're interested. **I will not be giving overrides to students without 0320 in their cart** because you won't be seeing announcements, etc. that we send to the list or post on EdStem.
 * **You need the prerequisites** to take 0320 or 1340. If you haven't completed an intro sequence (including at other universities), you need permission from me. This is true even if CAB isn't smart enough to flag your override request. 
 
@@ -15,34 +16,38 @@ Welcome to 0320/1340! Before we get started, turn to the people sitting next you
 
 The most important part of 0320 is *collaboration*. With the exception of the very first assignment, everything in 0320 is group work. 
 * You'll be submitting your work to repositories that everyone in the class can (eventually) read.
-* You'll be helping one another solve bugs and design problems (even if you're in different project groups).
+* You'll be helping one another solve bugs and design problems (even if you're in different project groups; this is a requirement). 
 To make this work, we need a professional and friendly environment. 
 
 We'll be passing out index cards. I like to anonymously learn some important things about students in this class, so please fill one out, answering: 
-* What is a goal you have for 0320?
-* What is something you're afraid of in 0320?
-* What is something you need to succeed in 0320?
+* What is a **goal** you have for 0320?
+* What is something you **need** to succeed in 0320?
+* What is something you're **afraid** of in 0320?
 At the end of class, leave your card either here in front or on (one single) chair in the back so I can collect. 
 
 ### An Example: Collab Section
 
-In 0320, we don't have "hours" in the way you may be used to---although help is available frequently! We've made learning to collaborate professionally and debug together educational goals. In industry, it's not uncommon to help colleagues improve their code, find and fix bugs, and produce reliable and extensible designs. The one-on-one debugging hours format doesn't teach those skills. So we've split "hours" into multiple formats, all of which are supported by TAs, and which you can read about in the missive.
+In 0320, we don't have "hours" in the way you may be used to, although help is available frequently! In industry, it's not uncommon to help colleagues improve their code, find and fix bugs, and produce reliable and extensible designs&mdash;even if they are solving a problem you're unfamiliar with. The one-on-one debugging hours format doesn't teach those skills. Similarly, in industry, you're not graded by an autograder or low-level rubric; you'll have a mentor TA to whom you demo and get formative feedback from every week.
 
 **Speaking of TAs, let's introduce them!**
 
-The first sprint goes out today. Go to a gearup! Attend conceptual hours! Read lecture notes and livecode! Prototype early! (Paraphrasing Andy: *Start soon! Start yesterday!*)
+## Immediate Advice
+
+The first sprint goes out Monday, and there's a setup deliverable due before then. Please do it; you don't want to spend a lot of time early next week on setting up IntelliJ and so on.
+
+Go to gear up sections. This semester, they're on **Mondays and Tuesdays**. 
+
+Read [lecture notes](https://cs0320.github.io/notes/) and [livecode](https://github.com/cs0320/class-livecode)! Prototype early! (Paraphrasing Andy: *Start soon! Start yesterday!*)
 
 Please be aware that while this is an S/NC course, it is a lot of work. To quote a very wise remark from prior feedback: *"You will work very hard, but not get an A".* 
 
-### Tim's Hours
-
-My hours will be on Wednesdays at 1:30pm. These will usually be in [my Zoom](https://brown.zoom.us/my/tim.browncs), to maximize accessibility for those who are off-campus, sick, on the waitlist, etc. (It is possible my hours might move after shopping period.)
+My hours (at least for now) will be immediately after class on Thursdays. I'll be in CIT 355 and also on [my Zoom](https://brown.zoom.us/my/tim.browncs), to maximize accessibility for those who are off-campus, sick, on the waitlist, etc. It's OK to bring code, design, etc. questions to my hours, if you wish. 
 
 ### Reading for Next Time
 
 Non-technical reading: [Clever Manka](https://www.gutenberg.org/files/33002/33002-h/33002-h.htm#Page_165). It's short. 
 
-### Reading for the CSV Sprint
+### Reading for Sprints 1.1 and 1.2
 
 _Effective Java_ (3rd edition) items on:
 * general contracts and equality/hash, **Items 10, 11, and 12**;
@@ -55,25 +60,9 @@ You are not required to buy this book. It's available free to read online via Br
 
 **Be sure to read the notes and livecode. There is useful information in them that may not be covered in class.**
 
-## Lunchtime
+## Programming vs. Engineering
 
-Ok, now that we've talked for a while, let's...well, actually, I didn't have a chance to eat lunch. Fortunately, I've got some food items here in this bag. I have:
-* a loaf of sliced bread; 
-* some peanut butter (I tried to find sunflower-seed butter but couldn't in time for class); 
-* some bananas; and
-* a knife.
-
-I guess I'll make a sandwich. But it's been a long time since I've made a sandwich like this, so maybe _you_ can help me remember how to make it. How should I start?
-
-<p>
-<center>
-    (Chaos ensues.)
-</center>
-</p>
-
-I guess that good communication matters. Good abstractions, too.
-
-What if we took this lesson, and applied it to engineering? Let's say I asked you to open up your laptop and write me a sorting algorithm in the language of your choice. How would you react?
+Let's say I asked you to open up your laptop and write me a sorting algorithm in the language of your choice. How would you react?
 
 <details>
 <summary>Think, then click.</summary>
@@ -93,15 +82,17 @@ Don't misunderstand me: you'll all write _lots_ of code in this class. Your care
 
 ## The 0320 Mindset
 
-Our goal is not to teach you to do better at programming courses, or even computer science courses in general. Our goal is to teach you to be a better engineer, period. That goal has some natural consequences.
+**This may be the weirdest course you'll take during your time at Brown CS. It will also challenge you in new ways. That is deliberate.**
 
-**This may be the weirdest course you'll take during your time at Brown CS. That is deliberate. It will also challenge you in new ways, and that is also intentional.**
+Our goal is not to teach you to do better at programming courses, or even computer science courses in general. Our goal is to teach you to be a better engineer, period. That goal has some natural consequences.
 
 The collaboration policy is part of that. We'll use Git, an industry standard version control system. If you haven't had Git experience yet, that's OK! Here's an example of how it works on a project I just happen to have here on my laptop. By the way, I'm using IntelliJ to work on this code. This course strongly encourages you to use (and supports) IntelliJ; the gear up sections today and tomorrow can help you set it up.
 
-One advantage of using Git is that all the code from lecture will be available on a [public repository](https://github.com/cs0320/class-livecode) in the `S24` folder. You can clone the repository to experiment with the code on your own machine. **You should clone this repository as soon as you're able**; we'll use it for in-class exercises, and it gives you the ability to experiment with changing the code on your own machine. Starting next week, I will assume that you have the repository cloned on your laptop, if you bring one. 
+One advantage of using Git is that all the code from lecture will be available on a [public repository](https://github.com/cs0320/class-livecode) in the `F24` folder (for Fall 2024) and also in the `vignettes` subfolder, which I use for small examples that may or may not appear in class. You can clone the repository to experiment with the code on your own machine. **You should clone this repository as soon as you're able**; we'll use it for in-class exercises, and it gives you the ability to experiment with changing the code on your own machine. **Starting next week, I will assume that you have the repository cloned on your laptop, if you bring one.**
 
+~~~admonish warning title="Class Prep and Spoilers"
 If a filename or package has `prep` in it, I'm including it as part of my class prep, and it likely contains spoilers for class, perhaps even intentional and unintentional bugs.
+~~~
 
 ### A Little Bit of Generics
 
