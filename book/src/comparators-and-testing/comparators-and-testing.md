@@ -1,11 +1,11 @@
-# sp24.2: Testing, Strategies, and the Debugging Recipe
+# Testing, Strategies, and the Debugging Recipe
 
 ## Expectations
 
 This class session is designed to support your work on Sprint 1.1. In it, you'll find:
 * a conceptual discussion on unit testing; 
 * a worked example using the strategy pattern; and 
-* a concrete discussion and example on unit testing.
+* a concrete discussion and on unit testing.
 
 You'll be able to follow along and experiment with the end result by cloning the class livecode repository. 
 
