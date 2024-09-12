@@ -5,7 +5,8 @@
 - [Success in 0320](./success-in-0320/success-in-0320.md)
   - [Debugging Recipe](./success-in-0320/recipe.md)
 - [More Strategies, More Testing](./comparators-and-testing/comparators-and-testing.md)
-
+- [UIs, Testing More Than Methods](./mocking-console/mocking-console.md)
+- [OPTIONAL: Equality is Hard, Caching](./equality-contracts/equality-contracts.md)
 <!-- 
 [Equality is Hard, Caching](./equality-contracts/equality-contracts.md)
 

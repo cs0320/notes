@@ -1,5 +1,13 @@
 # User Interfaces, Testing More Than Methods 
 
+## Ice Breaker 
+
+The collaboration policy we have can sometimes be difficult to follow, or trust. So let's break the ice. Turn to your neighbor and show them what you have for Sprint 1.1 so far. 
+
+~~~admonish warning title="NO SHAMING!"
+We need to be both professional and understanding about this sort of thing. Also, keep in mind that quite a few students are joining the class late, etc. So if someone doesn't have much yet, be positive. The point is to fight the social tension against sharing code in this class.
+~~~
+
 ## Logistics 
 
 Make sure you're up to date on reading Ed announcements. Please fill out the new collab-section form by tomorrow night. We want to make sure we can take everyone's preferences into account. 
