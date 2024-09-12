@@ -6,6 +6,10 @@ Make sure you're up to date on reading Ed announcements. Please fill out the new
 
 Make an override request if you haven't already. I may have a couple seats.
 
+## Feedback Sheet
+
+We'll look over the feedback sheet. See the lecture capture for that; notes aren't a great medium for it.
+
 ## User Interfaces
 
 In the next Sprint, 1.2, you'll be creating a _user interface_. Admittedly, it might not be what you associate with the term. It's "just" a command-line application which you'll run at your terminal prompt, meant to search the CSV files you've been parsing. For many of you, this may be the first time you've created such a thing. 
