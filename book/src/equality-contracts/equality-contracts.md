@@ -1,12 +1,8 @@
 # sp24.3: Equality in Java, Contracts
-## Logistics
 
-* If you're finding user stories 2 and 3 challenging, that's _normal_. Many students do not obtain all badges on CSV. 
-* I'm going to start the required in-class exercises sometime next week. If you're sick, traveling, etc. for a day or two, don't worry about mailing me; this is meant to be a lightweight thing. If you're out for *many* days, do reach out for accommodations. Otherwise, come to class and do the exercises.
-* When you are serving as a partner in collab section, you're prioritizing _others'_ issues, but keep in mind:
-  * you may (collaboratively!) work on your own issues; and
-  * you can attend collab section as often as you want. 
-* If you're not reading the notes or using the livecode, you're missing what might be useful advice for the sprints. For example, today I am not going to run through the full testing discussion at the start of these notes; you're responsible for reading it.
+**THESE NOTES ARE FROM A PRIOR SEMESTER, AND PROVIDED FOR YOUR REFERENCE IN THE HOPE YOU WILL FIND THEM USEFUL!**
+
+## Logistics
 
 If you haven't cloned the [livecode repo](https://github.com/cs0320/class-livecode), you need to do so **NOW**. Once you've cloned it, just run `git pull` in the repository before class, and you'll get my updates. Change anything you want; you don't have permission to push, so you can't ever mess up. Just re-clone and start over if needed!
 
