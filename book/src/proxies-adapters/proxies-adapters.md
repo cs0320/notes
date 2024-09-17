@@ -1,10 +1,6 @@
 # Proxies and Adapters
 
-Today we'll cover some topics in *defensive programming* and introduce the *proxy* pattern. There will be two livecode examples, both [in the repo](https://github.com/cs0320/class-livecode/tree/main/S24/feb06_queue_manager) for today: 
-* a TA hours dispatcher; and 
-* a small caching example.
-
-Both are in the same project. 
+Today we'll cover some topics in *defensive programming* and introduce the *proxy* pattern. I will actually be live-coding this, so there may not be anything in the class-livecode repository to begin with. But I'll push the code we end up with after class.
 
 ~~~admonish warning title="In-class exercises are coming soon!"
 Today is the last day of shopping period. Some classes will contain exercises in various forms, and some may become "flipped", especially as the semester progresses.
