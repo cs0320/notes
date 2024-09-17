@@ -67,7 +67,7 @@ public class HoursDispatcher {
 }
 ```
 
-Remember: we're pretending that there's someone using our code, or someone whose code we're using, who is actively trying to break the queue or do some other kind of mischief---but that they won't _change_ our code. Even though, usually, the mischief is unintentional. Got any concerns?
+Remember: someone is going to use this library we're writing.  Got any concerns?
 
 * The fields should be `private`? 
 * Some of the fields should be `final`?
@@ -83,7 +83,7 @@ Ok, let's make those changes, and continue iterating.
 
 ### Keywords: `private` and `final`
 
-There are a few problems we might notice as we go. First, neither `private` nor `final` always protect you. Let's look very closely at one example: our `minutesLeft` field. We can make it `final` to prevent it from being modified---but that prevents value of the _field itself_ from being _reassigned_. It doesn't stop someone from calling (e.g.) `minutesLeft.put` themselves. That is:
+There are a few problems we might notice as we go. First, neither `private` nor `final` always protect you. Let's look very closely at one example: our `minutesLeft` field. We can make it `final` to prevent it from being modified&mdash;but it is the _field itself_ whose value cannot be modified. That is, we cannot make the field point to a different object after we've assigned one. The `final` keyword doesn't stop someone from calling (e.g.) `minutesLeft.put()` themselves. That is:
 
 **The reference to the object is protected, but the object remains mutable!**
 
@@ -101,10 +101,17 @@ A common technique is called a _defensive copy_: we'll just make a getter method
 
 ```
 
-I want to point out that, in general, this technique is very useful! In this case, however, there is a concern:
+<details>
+<summary>Click to see diagram</summary>
 
-* The `minutesLeft` field is mutable by design: we need to update the TA pool! The view provided by a defensive copy won't update, and so it really just provides the state of the pool at the time the getter was called. 
-* Whenever someone calls this method, we're manufacturing new objects that are supposed to represent the state of the queue, but different objects will disagree with each other.
+![Dispatcher 2](./dispatcher2.png)
+
+</details>
+
+In general, this technique is very useful! (Bloch mentions it in _Effective Java_.) In this case, however, it might not be perfect for our needs.
+
+* The `minutesLeft` field is mutable by design: we need to update the TA pool! The new object provided by a defensive copy won't update, its contents are set at the time it's created. So it's useful at first, but the caller will need to re-call the method when they want to update their view. 
+* Whenever someone calls this method, we're manufacturing new objects that are supposed to represent the state of the queue, but different objects will disagree with each other. There is no guarantee of consistency between what different callers will see. 
 
 We can make progress on fixing both of these. Maybe we keep a canonical copy around:
 
@@ -118,52 +125,46 @@ We can make progress on fixing both of these. Maybe we keep a canonical copy aro
     }
 ```
 
-But this doesn't solve the unchanging-view problem. In fact, it makes the issue worse: the view is set once by the first call, and never changes. This is fixable by checking whether `public_view_minutesLeft` has fallen behind `minutesLeft`, but even then those who called the method before won't have their references updated. 
+But this doesn't solve the unchanging-view problem. In fact, *it makes the issue worse*: the view is set once by the first call, and never changes, even if someone re-calls the method! This is fixable by checking whether `public_view_minutesLeft` has fallen behind `minutesLeft`, but even then those who called the method before won't have their references updated. We'd ideally like something _reactive_: think Google Sheets or Excel, where the value for a formula automatically updates when its dependencies do. 
 
-This solution is still moving in the right direction. We could certainly update the canonical copy _object_, rather than creating a new one. But then we've got another problem---any caller could mutate their canonical copy, which is the same one every other caller has! 
+~~~admonish note title="Reactive Languages"
+This is a larger topic than we can cover here, but for now, expect us to come back to reactivity. It's useful in many settings, especially user interfaces. 
+~~~
 
-So we need to enforce immutability on the canonical copy. It turns out that Java's standard library has a convenient way to do this.
+This solution is still moving in the right direction. We could certainly update the canonical copy _object_, rather than creating a new one. But then we've got another problem: any caller could call the `.put()` method of their canonical copy, and everyone has the same canonical copy. So one caller could taint the data another caller sees. Thus, we need to enforce immutability on the canonical copy. It turns out that Java's standard library has a convenient way to do this.
 
-<details>
-<summary>Click to see diagram</summary>
+Before we move to the next version of our class, let's step back and discuss a few important side topics.
 
-![Dispatcher 1](./dispatcher2.png)
+### Sidebar: Documenting Assumptions and Guarantees
 
-</details>
-
-
-
-### Documenting Assumptions and Guarantees
-
-How do we tell our caller what to expect? The types say _part_ of that, but they aren't enough on their own. For everything else, we need to write documentation. 
-
-Note that this is very different from "code comments". Code comments help a developer understand your code. In contrast, documentation is a kind of _specification_: you're communicating to someone what your code does, and what it needs, without them needing to understand the code itself. 
+How do we tell our caller what to expect? The types say _part_ of that, but they aren't enough on their own. For everything else, we need to write documentation. Note that this is very different from "code comments". Code comments help a developer understand your code. In contrast, documentation is a kind of _specification_: you're communicating to someone what your code does, and what it needs, without them needing to understand the code itself. 
 
 Documentation is thus much more important than code comments, and code comments are pretty important.
 
-I'll usually skip this in lecture, unless it's the topic of discussion---good documentation takes time.
+### Sidebar: Validating Input and Exceptions
 
-
-### Validating Input and Exceptions
-
-Defensive programming isn't just about protecting your own code from someone else's bugs, it's also about protecting others from themselves, you, their other dependencies, and your own dependencies. 
-
-It's always good to ask yourself, for every place your class is obtaining data, **what does a consistent state look like?** That is, what _properties_ define a good state for the class...
+Defensive programming isn't just about protecting your own code from someone else's bugs, it's also about protecting others from themselves, you, their other dependencies, and your own dependencies. It's always good to ask yourself, for every place your class is obtaining data, **what does a consistent state look like?** That is, what _properties_ define a good state for the class...
 
 For example, we should probably do something coherent in case our caller registers a TA with a negative amount of time available. This sounds like a job for exceptions.
 
-### Checked vs. Unchecked Exceptions
+#### Checked vs. Unchecked Exceptions
 
 You might have noticed that some exceptions get declared for methods that use them, and other don't. Take a look at the Javadoc for [NullPointerException](https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html). Since these can happen unexpectedly, it wouldn't be very ergonomic to ask programmers to write a `throws` declaration for them. Hence, these exceptions are _unchecked_: the type system won't (usually) consider them. Unchecked exceptions are those that descend from `RuntimeException` (like null pointer exceptions) or from `Error` (which is a category usually reserved for errors that are so bad that most applications _shouldn't_ try to catch and handle them, like internal JVM inconsistencies under which all bets are off).
 
-Usually you'll be communicating with your caller (and callee) via checked exceptions. A common situation is when a caller provides an argument that is invalid: the type is correct, but some other important criterion has failed. Often, the first choice is to throw the _unchecked_
-[IllegalArgumentException](https://docs.oracle.com/javase/7/docs/api/java/lang/IllegalArgumentException.html). This isn't a "stop everything, the world is broken" `Error`, and your caller can try to recover from it or not. Indeed, because this is an unchecked exception, they might not even think to catch it. Thus, _it is absolutely vital_ that you declare this error in your documentation, and preferably give it a `throws` clause even if Java doesn't require it.
+Usually you'll be communicating with your caller (and callee) via checked exceptions. But not always. A common situation is when a caller provides an argument that is invalid: the type is correct, but some other important criterion has failed. Often, the first choice is to throw the _unchecked_
+[IllegalArgumentException](https://docs.oracle.com/javase/7/docs/api/java/lang/IllegalArgumentException.html). This isn't a "stop everything, the world is broken" `Error`, and your caller can try to recover from it or not. But because this is an unchecked exception, they might not even think to catch it; they won't if you don't tell them it's a possibility. Thus, _it is absolutely vital_ that you document if you intentionally throw this exception in your documentation!
+
+~~~admonish warning title="DANGER!"
+Re-read that last sentence. If you throw unchecked exceptions, you _must_ tell your caller about it via documentation. There's no protection from the type system, and they may be taken by surprise. 
+
+This doesn't mean that unchecked exceptions are bad; sometimes they are very useful. But remember to communicate with others using your code.
+~~~
 
 Another option is to define our own, custom, _checked_ `Exception` class. We'd then _have_ to declare it in a `throws` clause. Custom exceptions are great if you want to pass back more context that's related to your method. Imagine what information you could give that would be helpful to your caller in:
 * debugging; or
 * sending high-quality error messages to end users.
 
-Remember: a string isn't a great way to send back structured information. A person may be able to read it, but if they want to do something more programmatic, they need to parse it. Don't make them do this! If the exception happened for complicated reasons (or maybe even if it didn't) make a custom exception that includes fields related to the problem, and document them.
+Remember that a string alone isn't a great way to send back useful information. A person may be able to read it, but if they want to do something more programmatic, they need to parse it. *Don't make them do this!* If the exception happened for complicated reasons (or maybe even if it didn't) make a custom exception that includes fields related to the problem, and document them.
 
 ### A Clever Fix: Unmodifiable Maps
 
@@ -191,7 +192,7 @@ That is, it creates a new **proxy** object that restricts what the caller can do
 return new UnmodifiableMap<>(m);
 ```
 
-And there is, indeed, a class inside the `Collections` class to embody these unmodifiable proxies:
+Hey, that's _dependency injection_! The `UnmodifiableMap` wraps some other `Map` instance, and takes that instance as a constructor parameter. The `UnmodifiableMap` class embodies these unmodifiable proxies. Here's a copy/paste of its declaration:
 
 ```java
 private static class UnmodifiableMap<K,V> implements Map<K,V>, Serializable { 
@@ -199,37 +200,51 @@ private static class UnmodifiableMap<K,V> implements Map<K,V>, Serializable {
 }    
 ```
 
-The specifics aren't too important; don't worry about `Serializable` or `static class`. What _is_ important is that they really are just creating a new kind of `Map` whose sole purpose is _defending_ another `Map` from modification. If you browse the code you can see various ways the authors have carefully considered potential threats. (In fact, skimming the Javadoc for `Collections` is a great idea in general. There are good lessons there.)
+Don't worry about `Serializable` or `static class`; these are not important! What _is_ important is that the Java standard library really is just creating a new kind of `Map` whose sole purpose is _defending_ another `Map` from modification. If you browse the code you can see various ways the authors have carefully considered potential threats. (In fact, skimming the Javadoc for `Collections` is a great idea in general. There are good lessons there.)
 
-When in doubt, return an _unmodifiable_ `Map`. It's quick and easy, and unless you really want the caller to be able to modify the underlying map, is significantly better than a defensive copy alone. We've:
+This solution fits our needs nicely. We'll just return an _unmodifiable_, canonical `Map` to every caller. It's quick and easy, and unless you really want the caller to be able to modify the underlying map, is significantly better than a defensive copy alone. We've:
 
 * protected the internal `minutesLeft` map from modification;
 * avoided memory bloat by using a canonical public-facing object; and
 * ensured that all callers get the same view.
 
-Unfortunately:
-* we've only protected one level of the reference structure: the `TA` keys of the map are still exposed to the caller, and if the `TA` class allows modification, we've just handed that ability over to the caller.
-* calling this specific method will only work if we want exactly the same interface given to the caller as we have internally (we store a map, so we produce an unmodifiable map). 
-
-**Aside:** Again, note that our assumption "the adversary is in the codebase" does need some moderation! If there really is a malicious developer on our team, we're probably in deep trouble. We're using the _fiction_ of the adversary to help us think of ways our code could be made safer or more robust against worst case possibilities.
-
 <details>
 <summary>Click to see diagram</summary>
 
-![Dispatcher 1](./dispatcher3.png)
+![Dispatcher 3](./dispatcher3.png)
+
+</details>
+
+This solution isn't perfect yet, but we'll stop here for today. It's good enough for our purposes. That said, there _are_ a few flaws. Can you spot some of them?
+
+<details>
+<summary>Think, then click!</summary>
+
+Here are a couple:
+* We've only protected one level of the reference structure: the `TA` keys of the map are still exposed to the caller, and if the `TA` class allows modification, we've just handed the ability to change `TA` state over to the caller.
+* Calling this specific method will only work if we want _exactly the same_ interface given to the caller as we have internally (we store a map, so we produce an unmodifiable map). 
 
 </details>
 
 
-## Bringing All That Together: Structural Patterns (like Proxy)
+## Bringing All That Together: The Proxy Pattern
 
-A _proxy_ class wraps another object and provides all the same interfaces, but might possibly restrict or change the exact behavior of the promised methods. This is an incredibly useful pattern, and it's related to other _structural patterns_ like _decorator_ (which adds in additional functionality) or _adapter_ (which modifies one interface into another). There are more than 20 patterns in the [classic book](https://learning.oreilly.com/library/view/design-patterns-elements/0201633612/fm.html), and we won't talk about them all explicitly in class.
+What we just did is an example of something called the _proxy pattern_. Yes, another pattern!
 
-Calling `Collections.unmodifiableMap` implements the proxy pattern for us, provided we're trying to proxy a `Collection` in a very specific way. But what if we want to proxy something else, or proxy in a different way---perhaps to only allow the addition of new `TA` entries, but not modification of old ones? 
+A _proxy_ class wraps another object and provides all the same interfaces, but might possibly restrict or change the exact behavior of the promised methods. This pattern is related to other _structural patterns_ like (e.g.):
+* _decorator_ (which adds in additional functionality to a class); or
+* _adapter_ (which modifies one interface into another). 
+There are more than 20 patterns in the [classic book](https://learning.oreilly.com/library/view/design-patterns-elements/0201633612/fm.html), and we won't talk about them all explicitly in class. 
 
-Let's build our own class for that. We'll define it _inside_ the class definition of `HoursDispatcher`---making it an _inner_ class. Instances of inner classes (by default, anyway) are tied to specific instances of the outer class, and get access to all the fields of the outer class. So our `LimitedTATimesMap` below will be able to reference, e.g., `minutesLeft`. 
+~~~admonish note title="Timeless Design Ideas"
+We stress the strategy pattern and proxy pattern in 0320/1340 because they are tools you'll be able to use over and over throughout your career, no matter what language you're working in. Moreover, their variants (like the above 2) are relatively simple adaptations of the basic idea. So they end up being multi-taskers. 
+~~~
 
-Because it provides the `Map` interface, we need to define quite a few methods. Most (like `size()`) are straightforward, and I'll omit almost all of them for brevity. Others, like `remove()`, we want to prohibit entirely, and so they just throw an `UnsupportedOperationException`. For `put()`, we'll make sure that the TA isn't already in the map; if they are, we'll throw the same exception. If not, we'll update the internal map.
+Calling `Collections.unmodifiableMap` implements the proxy pattern for us, provided we're trying to proxy a `Collection` in a very specific way. But what if we want to proxy something else, or proxy in a different way&mdash;perhaps to only allow the addition of new `TA` entries, but not modification of old ones? 
+
+Let's build our own class for that. We'll define it _inside_ the class definition of `HoursDispatcher`. This makes it an _inner_ class. Instances of inner classes (by default, anyway) are tied to specific instances of the outer class, and get access to all the fields of the outer class. So our `LimitedTATimesMap` method below will be able to reference, e.g., the `minutesLeft` field of its parent object. 
+
+Because our proxy class provides the `Map` interface, we need to define quite a few methods. Most (like `size()`) are straightforward, and I'll omit almost all of them for brevity. Others, like `remove()`, we want to prohibit entirely, and so they just throw an `UnsupportedOperationException` if they are called. For `put()`, we'll make sure that the TA isn't already in the map; if they are, we'll throw the same exception. If not, we'll update the internal map.
 
 ```java=
 class LimitedTATimesMap implements Map<String, Integer> {
@@ -251,23 +266,78 @@ class LimitedTATimesMap implements Map<String, Integer> {
 }
 ```
 
-## Caching
+## Application: Caching
 
-Since proxies _filter access_ to existing methods, they're very useful for adding on hidden efficiencies. Caching is a great example -- and something you'll be doing in your Server sprint. 
+Since proxies _filter access_ to existing methods, they're very useful for adding on features to an existing method, like caching or authentication. Here's a quick example of what I mean. Think about the the search functionality you're writing for Sprint 1.2. What happens if someone searches the same CSV data for the same thing twice in a row? Naively, the class would re-run the search, right?
 
-~~~admonish warning title="For your sprint!"
-See the lecture capture and the livecode example in the `caching` folder for more of the caching demo. 
-~~~
+```java=
+/** This is a toy example, and *not* meant to be as complete or well-engineered as your Sprint 1.2.
+    I'm using `Datasource` to represent some class that provides the data to search in. It might 
+    be a `Parser`, but it might be other things too. */
+public class Searcher {
+    private final Datasource source;
+    public Searcher(Datasource datasource) {
+        this.source = datasource; 
+    }
+
+    /** This doesn't do as much as your Sprint 1.2 needs to, but illustrates my point. */
+    public boolean search(String content) {
+        for(List<String> row : source.entries()) {
+            for(String value : row) {
+                if(value.equals(content)) return true;
+            }
+        }
+        return false;
+    }
+}
+```
+
+But we can use the proxy pattern to add some smarter _caching_ to this basic functionality. It will even let us _avoid modifying the original class_, provided that we engineered the original well. To do that, let's define an interface to implement. We'll go back and add `implements Searchable` to the original class. 
+
+```java= 
+/** Again, not quite as flexible as your Sprint 1.2. */
+public interface Searchable {
+    public boolean search(String content);
+}
+```
+
+Now anybody can write a class that also implements `Searchable`. They can use dependency injection to proxy another `Searchable` object, and add extra depth they need to `search()`. 
+
+```java=
+public class CachingSearcher implements Searchable {
+    private final Searcher wrapped;
+    private final HashMap<String, Boolean> foundCache = new HashMap<>();
+
+    public CachingSearcher(Searcher toWrap) {
+        this.wrapped = toWrap;
+    }
+
+    /** If the cache has a value, use it immediately. Otherwise ask the wrapped searcher what
+      to say. Then save its answer in our cache before returning its answer. */
+    @Override 
+    public boolean search(String content) {
+        if(foundCache.containsKey(content))
+            return foundCache.get(content);
+        boolean result = wrapped.search(content);
+        foundCache.put(content, result);
+        return result; 
+    }
+}
+```
+
+This is a _really_ simple caching approach. For one thing, it runs out of memory quickly at scale, because we keep accumulating entries. We might run out of memory if we don't have a way to evict entries that haven't been requested in a while. But that's algorithmics, not object-oriented design. We could use the same proxy pattern idea to implement even the most complex cache.
 
 ## Supplemental Material: More Advanced Structural Patterns
 
-We will cover the two ideas below at a later date. **They might still be useful reading as you prepare for the Server sprint.** 
+I'm not sure if time will permit covering these patterns at a later date. They're modifications of the basic proxy idea, and might be useful for you to know about, so I'm including them here in the notes as supplemental material. If we have time later in the semester, I'll talk about them!
+
+Note: I'm going to use this to also introduce some optional Java syntax you may not be aware of. In particular, Java has supported anonymous functions (which you may have heard referred to as _lambdas_) for years.
 
 ### Another Option: Adapter Pattern
 
-Let's try to protect the `TA` objects from modification.  One reasonable course would be to create a proxy class for `TA`s. However, what if the caller doesn't really _need_ `TA` objects, but just wants to know the names of all the TAs currently helping students?
+Let's try to protect the `TA` objects themselves from modification.  One reasonable course would be to create a proxy class for `TA`s. However, what if the caller doesn't really _need_ `TA` objects, but just wants to know the names of all the TAs currently helping students? Then we shouldn't return the objects!
 
-In that case, we can build an _adapter_ that converts the `Map<TA, Integer>` to a `Collection<String>`. There are many applications for this pattern: any time you have two libraries that need to interact but _don't agree_ on an interface, for instance. This is just one example.
+Let's build an _adapter_ that converts the `Map<TA, Integer>` to a `Collection<String>`. There are many applications for this pattern: any time you have two libraries that need to interact but _don't agree_ on an interface, for instance. This is just one example.
 
 The implementation is very similar to the proxy above (and I'll omit many methods that are straightforward):
 
@@ -294,15 +364,11 @@ What's a "stream"? [Something that's been around since Java 8](https://docs.orac
 
 You can do the above with anonymous classes, or with your own class that implements `Iterator<String>`, but I prefer this way.
 
-**Aside:** Note that I'll sometimes refer casually to a few different structural patterns as "proxies", but technically speaking they are different! In particular, we've just changed the interface: _adapter_ vs. _proxy_ might matter to your caller!
-
-
 ### Multiple Student Queues: Facade Pattern
 
 Suppose we have a *variety* of sources for student-signup data. How would we deal with not just one, but many `Iterator<Student>` objects being given to our `HoursDispatcher`? 
 
 Well, we have a design decision to make. Let's fill in a skeleton, and what we know how to do:
-
 
 ```java=
 
@@ -336,5 +402,6 @@ How should the contents of the iterators be woven together? Should we loop throu
     
 Should the contents of the queue be shuffled? What does it mean to shuffle a queue when new students may be arriving constantly?
     
-But, given a decision, we could implement a specific approach **and document it**. We could also ask for a strategy (and document that, too).     
 </details>
+
+Once we make these decisions, we could implement a specific approach **and document it**. We could also ask for a strategy (and document that, too).     

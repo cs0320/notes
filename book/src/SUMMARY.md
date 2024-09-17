@@ -6,11 +6,11 @@
   - [Debugging Recipe](./success-in-0320/recipe.md)
 - [More Strategies, More Testing](./comparators-and-testing/comparators-and-testing.md)
 - [UIs, Testing More Than Methods](./mocking-console/mocking-console.md)
-- [OPTIONAL: Equality is Hard, Caching](./equality-contracts/equality-contracts.md)
+  - [OPTIONAL: Equality is Hard, Caching](./equality-contracts/equality-contracts.md)
+- [Proxies and Adapters](./proxies-adapters/proxies-adapters.md)
+
 <!-- 
 [Equality is Hard, Caching](./equality-contracts/equality-contracts.md)
-
-[Proxies and Adapters, Defensive Programming](./proxies-adapters/proxies-adapters.md)
 [Web APIs and Integration Testing](./apis-integration/apis-integration.md) -->
 
 <!-- [HTML/React/Playwright](./html-react-playwright/html-react-playwright.md) -->
