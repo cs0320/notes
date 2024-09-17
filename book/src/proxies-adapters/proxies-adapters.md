@@ -43,14 +43,9 @@ You might hear these ideas discussed under "adversarial thinking". But keep in m
 Let's write a class whose job is to coordinate TA hours for a big course. There's a central signup queue (which will be provided to our class) from which we'll dispatch students to available TAs. We've already got `Student` and `TA` classes defined elsewhere, and they do what you'd expect.
 
 ```java
-package edu.brown.cs32.livecode.feb15;
-import java.util.Iterator;
-import java.util.Map;
-
 public class HoursDispatcher {
     Iterator<Student> queue;
     Map<TA, Integer> minutesLeft;
-    String statusMessage;
 
     HoursDispatcher(Iterator<Student> signups, String statusMessage) {
         this.queue = signups;
