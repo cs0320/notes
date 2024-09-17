@@ -1,6 +1,4 @@
-# fa23.4 Proxies (Defensive and Otherwise)
-
-**These notes are being worked on; expect changes up until class.**
+# Proxies and Adapters
 
 Today we'll cover some topics in *defensive programming* and introduce the *proxy* pattern. There will be two livecode examples, both [in the repo](https://github.com/cs0320/class-livecode/tree/main/S24/feb06_queue_manager) for today: 
 * a TA hours dispatcher; and 
@@ -9,44 +7,44 @@ Today we'll cover some topics in *defensive programming* and introduce the *prox
 Both are in the same project. 
 
 ~~~admonish warning title="In-class exercises are coming soon!"
-Today is the last day of shopping period. We may have a code-review exercise on Thursday if time permits.
+Today is the last day of shopping period. Some classes will contain exercises in various forms, and some may become "flipped", especially as the semester progresses.
 ~~~
 
-**Let's get ready for the next sprint.**
-
-## Defensive Programming: Context
+## Contracts
 
 If you write code someone else uses, there is an implicit agreement between you. They _provide your code with something_. You _give them something back_. In both directions, there is an obligation. You might tell them: 
 
->"The constructor of my `TAHours` class should take an instance of an object implementing the `Iterator` interface, and iterating ought to return `Student` objects."
+>"The constructor of my `TAHours` class should take an instance of an object implementing the `Iterator<Student>` interface.
 
-At a high level, that's an obligation on _their_ part. But you might also say: 
+At a high level, that's an obligation on _their_ part. They need to make sure the object they pass obeys that criterion. Fortunately, for this kind of obligation, Java's type system suffices to enforce it. 
+
+But you might also say: 
 
 >"At any point at which at least one TA is free, the next student in the given iterator will be dispatched to one of those TAs before any other student is dispatched."
 
-That's an obligation on _your_ part. 
+That's an obligation on _your_ part. And this time, the obligation is also a bit too subtle for Java's type system. 
 
-These sorts of *contracts* are everywhere in engineering, and software engineering is no exception. If you can't rely on your caller to conform to your preconditions, unspecified behavior might be, _in principle_ at least, on them. But if they can't rely on your code to provide what it promises, it's your fault. And if they don't know what to provide, or what to expect, *that's also your fault*---who trusts code that isn't clear about its job?
+These sorts of *contracts* are everywhere in engineering, and software engineering is no exception. If you can't rely on your caller to conform to your preconditions, unspecified behavior might be, _in principle_ at least, their fault. But if they can't rely on your code to provide what it promises, it's definitely your fault. And if they don't know what to provide, or what to expect, *that's also your fault*&mdash;who trusts code that isn't clear about its job and what it needs to do it?
 
 Often, these guarantees can be enforced by the type system. The stronger the type system, the more these contracts can be checked _before_ runtime. This is why Java generics were such a big win: mismatches in expectations could be found out early.
 
-Similarly, this is why _interfaces_ are so important. Every time you implement an interface, you are working to conform to the preconditions of some library. They say: "Give me a `Comparator` and I'll sort that list," so you'd better implement `Comparator`. 
+Similarly, this is why _interfaces_ are so important. Every time you implement an interface, you are working to conform to the preconditions of some library. They say: "Give me a `Comparator<T>` and I'll sort that list of `T`," so you'd better implement `Comparator<T>`. 
 
-But not every precondition or postcondition can be checked by the type system---at least, not in most languages, and certainly not in Java, Python, Typescript, and other languages you'll use in this class.
+But not every precondition or postcondition can be checked by the type system&mdash;at least, not in most languages, and certainly not in Java, Python, Typescript, and other languages you'll use in this class. Good code should still try to detect violations of its expectations early, and notify the caller about that violation in some useful way. Just saying "Oops, LOL, I guess you gave me invalid input shrug emoji" may be _fair_, but it's not going to make you feel better when your boss calls you to ask why Google Maps is down, or an airplane crashed, or some other consequence happened.
 
-Good code should still try to detect violations of its expectations early, and notify the caller about that violation in some useful way. Just saying "Oops, LOL, I guess you gave me invalid input shrug emoji" may be _fair_, but it's not going to make you feel better when your boss calls you to ask why Google Maps is down, or an airplane crashed, or some other consequence happened.
-
-Writing code that is _safe from bugs_ requires being more professional, and thinking adversarially about:
+Writing code that is _safe from bugs_ requires being more professional, and thinking critically about things like: 
 * potential ways that a caller might violate your preconditions;
 * potential ways that a caller might modify data unexpectedly; 
 * potential exceptions that code _you_ call might throw, or other error conditions from that code;
 * and much more. 
 
-Indeed, I write "thinking adversarially" because it's useful to imagine a truly malicious caller or callee _trying to break your code_ for fun or profit. Sure, most issues won't be malicious---probably they will just be honest mistakes. But I find thinking adversarially to be deeply beneficial for _defensive programming_.
+~~~admonish warning title="Adversarial Thinking" 
+You might hear these ideas discussed under "adversarial thinking". But keep in mind that most issues won't be malicious; probably they will just be honest mistakes. Nevertheless, it can be useful to imagine how your code might defend itself against an adversarial caller (or dependency) that is trying to exploit it. That leads into the security mindset, which we'll talk more about later in the semester. 
+~~~
 
 ## Defensive Programming
 
-Let's write a class whose job is to coordinate TA hours for a big class. There's a central signup queue (which will be provided to our class) from which we'll dispatch students to available TAs. We've already got `Student` and `TA` classes defined elsewhere, and they do what you'd expect.
+Let's write a class whose job is to coordinate TA hours for a big course. There's a central signup queue (which will be provided to our class) from which we'll dispatch students to available TAs. We've already got `Student` and `TA` classes defined elsewhere, and they do what you'd expect.
 
 ```java
 package edu.brown.cs32.livecode.feb15;
