@@ -1,19 +1,22 @@
-# fa23.5: Web APIs and Integration Testing with Mocks
+# Web APIs and Integration Testing with Mocks
 
-~~~admonish warning title="Server sprint is out!"
-Server goes out today. **Do not wait to get started.** Start with integrating your CSV code with SparkJava (which we're covering today).
+**Logistic announcement:** we're going to be swapping to `hours` for collab scheduling in the short term. Watch for this when you go to collab section. 
+
+Today's in-class code is [in the repository](https://github.com/cs0320/class-livecode/), within the `F24/sep19_nws_api` folder. Please pull the repository and make sure you can load this. Remember to load the `pom.xml` file _as a project_. This will tell IntelliJ to import dependencies, etc. for the project. If you open as a folder or file, IntelliJ won't auto-configure the project. 
+
+~~~admonish note title="Extra example that includes multiple endpoints, logging"
+Anticipating that some of you will want to add logging to a file whenever your server receives a request, I made [this proof-of-concept example](https://github.com/cs0320/class-livecode/tree/main/F24/vignettes/logging_poc) that shows how to set up logging actions before handlers are invoked. 
 ~~~
 
-Today's in-class code is [here](https://github.com/cs0320/class-livecode/tree/main/S24/feb08_nws_api). Please pull the repository and make sure you can load this. Remember to load the `pom.xml` file _as a project_. 
-
-Today's in-class exercise is [here](https://forms.gle/2TykFfqZVvJz4gjC6). If you are in the remote section, or have special circumstances you will be allowed to hand in the exercise within the next couple of days. Otherwise, the expectation is that everyone will complete the exercise (honestly) by the end of the day today. 
-
+~~~admonish warning title="Exercise!"
+Today's in-class exercise is [here](https://docs.google.com/forms/d/e/1FAIpQLSddyPHoDwtK-R_7mHpyv6GeU4ez059IcheK1lboGDs0nmVfvw/viewform?usp=sf_link).
+~~~
 
 ## Looking Ahead! 
 
-In the next sprint, you'll be building a _server_ that listens for requests. It gets its data from your CSV files but also from other servers on the Internet. We anticipate some of the major challenges to be:
-* setting the server up to listen properly (you'll use the _strategy pattern_ for this!);
-* serializing and deserializing data to and from other servers and your user; 
+In next week's sprint, 2.1, you'll be building a _server_ that listens for and responds to requests. It gets its data from your CSV files. In 2.2, you'll also be getting data from other servers on the Internet. We anticipate some of the major challenges to be:
+* setting the server up to listen properly (you'll use the _strategy pattern_ for this, because that's how the web-server library we use is engineered);
+* serializing and deserializing data to and from other servers; 
 * limited caching of prior results (you'll use the _proxy pattern_ for this!); and 
 * _integration testing_ your server by sending it fake requests. 
 
@@ -34,11 +37,11 @@ Your readings for this sprint include:
 
 Some of these reinforce concepts from class; others introduce deeper discussion than we have time for (e.g., much of the exceptions content). You're of course free to read more of Bloch if you wish; we strongly recommend it for learning about OO Java programming.
 
-We will have another class on generics in the near future, and Bloch's Item 31 would be a good companion to that. 
+We will have another class on generics in the future, and Bloch's Item 31 would be a good companion to that. 
 
 ## Livecode 
 
-The [livecode for today](https://github.com/cs0320/class-livecode/tree/main/S24/feb08_nws_api) supplements the Server gearup example. We'll talk about:
+The code for today supplements the gearup example you'll get on Monday. We'll talk about:
 * invoking (and creating) Web APIs; 
 * integration testing; and 
 * using "mocks" to avoid several different costs in development.
@@ -62,6 +65,8 @@ A few issues might be:
 * Web scraping is unstable. If a site's format changes, web-scraper scripts can break. APIs can have breaking changes too, but when they do, the changes usually come with a warning to users!
 * Web scraping is mostly a one-sided effort. While a site designer might work to ease the job of web scrapers, details can still require some guesswork on the part of the script author.
 </details>
+
+It turns out that ideas from web-scraping will remain useful though, when we get to testing front-end applications in a few weeks.
 
 ### Web APIs
 
@@ -88,6 +93,10 @@ Let's get weather information for Providence. Our geocordinates here are: `41.82
 #### Queries 
 
 There are a few things to notice right away. First, the URL we sent had a _host_ portion `(https://api.weather.gov`) and an _endpoint_ (called, confusingly, `points`) that represents the kind of query we're asking. Then there are _parameters_ to the query (`41.8268,-71.4029`). 
+
+~~~admonish note title="Why 4 significant digits, rather than 6?"
+Because last year, the API would give an error if we tried to provide 6 significant digits. So we truncate. 
+~~~
 
 #### Responses
 
@@ -199,7 +208,7 @@ What else do you notice about this data?
 <details>
 <summary>Think, then click!</summary>
     
-One thing is: you can ignore a lot of it. This first query gives us useful information for _further_ uses of the API. Another is that there's no actual weather information here...
+One thing is: **you can ignore a lot of it**. This first query gives us useful information for _further_ uses of the API. Another is that there's no actual weather information here...
     
 </details>
 </br>
@@ -217,6 +226,10 @@ The livecode example is an API server that sends requests to another API server:
 ### Setting up a server
 
 We'll use a library called Sparkjava to run our API servers. Sparkjava is relatively simple to set up: we just tell it which port to use (here, `3232`), which endpoints to listen at, and for each, a handler object (there's the strategy pattern again!) that processes requests.
+
+~~~admonish warning title="Sparkjava came first, but..."
+If you Google for 'spark', you're likely to get answers related to [Apache Spark](https://spark.apache.org), a more popular library that happens to be for data science, not web servers. Watch out!
+~~~
 
 In the livecode for today, you'll see the entry point in the `Server.java` file. The code looks something like this:
 

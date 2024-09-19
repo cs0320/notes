@@ -8,10 +8,7 @@
 - [UIs, Testing More Than Methods](./mocking-console/mocking-console.md)
   - [OPTIONAL: Equality is Hard, Caching](./equality-contracts/equality-contracts.md)
 - [Proxies and Adapters](./proxies-adapters/proxies-adapters.md)
-
-<!-- 
-[Equality is Hard, Caching](./equality-contracts/equality-contracts.md)
-[Web APIs and Integration Testing](./apis-integration/apis-integration.md) -->
+- [Web APIs and Integration Testing](./apis-integration/apis-integration.md) 
 
 <!-- [HTML/React/Playwright](./html-react-playwright/html-react-playwright.md) -->
  <!-- Generic Types and Wildcards, Fuzz Testing -->
