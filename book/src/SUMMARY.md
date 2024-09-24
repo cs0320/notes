@@ -10,6 +10,9 @@
 - [Proxies and Adapters](./proxies-adapters/proxies-adapters.md)
 - [Web APIs and Integration Testing](./apis-integration/apis-integration.md) 
 
+<!-- Slides: Last updated Sep. 24, 2024 -->
+- [Group Projects and Code Review (Slides)](./slides-links/groups-and-code-review.md) 
+
 <!-- [HTML/React/Playwright](./html-react-playwright/html-react-playwright.md) -->
  <!-- Generic Types and Wildcards, Fuzz Testing -->
 
