@@ -2,7 +2,8 @@
 
 ~~~admonish warning title="Additional Materials"
 Please be aware that these notes:
-* contain supplemental material, like the links below, that isn't covered in class; and
+* cover __2 separate class meetings__;
+* contain supplemental material, like the links below, which may not be covered in class; and
 * are meant to be accompanied by the full [NYT puzzle example](https://github.com/cs0320/class-livecode/tree/main/F24/reactNYT), which contains many comments for your reference.
 ~~~
 
