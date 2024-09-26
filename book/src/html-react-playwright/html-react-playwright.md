@@ -1,38 +1,38 @@
-# fa23.8+9: Webapps: HTML/CSS, TypeScript, React, Playwright
+# Webapps: HTML, CSS, and TypeScript
 
 ~~~admonish warning title="Additional Materials"
 Please be aware that these notes:
 * contain supplemental material, like the links below, that isn't covered in class; and
-* are meant to be accompanied by the full [reactNYT livecode](https://github.com/cs0320/class-livecode/tree/main/S24/reactNYT), which contains many comments and more examples for your reference.
+* are meant to be accompanied by the full [NYT puzzle example](https://github.com/cs0320/class-livecode/tree/main/F24/reactNYT), which contains many comments for your reference.
 ~~~
+
+Today we're going to start learning how to write webapps. In time, you'll have a working front-end web application, which you'll use to query the backend server you're finishing up now. 
 
 ## Quick Links
 
-[TypeScript documentation on "instanceof narrowing"](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)---a technique we'll sometimes use when writing web applications in TypeScript. Notice how different this is from what we're used to in Java. That doesn't make it good or bad, just different; TypeScript has to work differently because it was built as an add-on to JavaScript.
+~~~admonish note title="Read on!"
+I'm putting these links at the beginning to make them easier to find, but if this is your first time reading: **skip past this section to get to the content these links refer to first!**
+~~~
 
-You won't need classes to implement your Mock sprint (Sprint 3), but if you want to refer to documentation anyway, the [TypeScript docs on classes](https://www.typescriptlang.org/docs/handbook/2/classes.html) are worthwhile here. You might find TypeScript classes useful on future sprints.
+**TypeScript**: TypeScript is a programming language. You can write backend programs with it, but it is most commonly associated with web programming. We strongly suggest making use of the TypeScript documentation. In particular, ["instanceof narrowing"](https://www.typescriptlang.org/docs/handbook/2/narrowing.html), which we'll sometimes need to use. Notice how different this is from what we're used to in Java. That doesn't make it good or bad, just different. And TypeScript can do some useful things that Java can't easily manage.
 
-You will find the [React docs](https://beta.reactjs.org/) useful. This is especially true for the `useEffect` hook (not used in the NYT app) and `useState` hooks, which you may need depending on architecture. The `useEffect` hook helps if you want to control _side effects_ in your components. Remember that you are not in control of how often a function component is re-evaluated; **putting side effects directly in the function is not reliable**. Use hooks instead. 
+**OOP in TypeScript**: I'm deliberately _not_ using TypeScript's classes in any of my livecode examples. In the same way we'll be covering some OO design ideas, I want to also cover some functional design ideas. You can use whichever style you prefer on the term project. If you want to refer to documentation anyway, the [TypeScript docs on classes](https://www.typescriptlang.org/docs/handbook/2/classes.html) are available.
 
-Finally, [Playwright's documentation](https://playwright.dev/docs/intro), especially its [page on locators](https://playwright.dev/docs/locators#locate-by-role), will be useful for testing.
+**React**: React is a web framework for JavaScript and TypeScript. We'll use it to make web development a bit easier. You will find the [React docs](https://beta.reactjs.org/) useful. This is especially true for the `useEffect` hook (not used in the NYT app) and `useState` hooks (which you'll see today). You may need either or both throughout the next few weeks. The `useEffect` hook helps if you want to control _side effects_ in your components. Remember that you are not in control of how often a function component is re-evaluated; **putting side effects directly in the function is not reliable**. Use hooks instead. 
 
-The end of this document says a few words on `await`, which you'll see in the Playwright examples, but **you should not need to use `await` outside your test files.** We'll cover `await` and `async` more for your _next_ Sprint, REPL.
+**Playwright**: Playwright is a library for automated testing of web applications. It has a lot of useful features that I hope you'll use. [Playwright's documentation](https://playwright.dev/docs/intro), especially its [page on locators](https://playwright.dev/docs/locators#locate-by-role), will be useful for testing.
+
+Finally, the end of this document says a few words on the keywords `await` and `async`, which you'll see in the Playwright examples, but **you should not need to use `await` outside your test files.** We'll cover `await` and `async` more for your _next_ Sprint. For now, just use them in the way we describe for testing. 
 
 ## Logistics
 
-### Badges
-
-Badges are assigned after reflections are graded. Thus, I don't know how anyone did on Server yet. (You might be wondering about the many items on the code rubric; there are several badges on Server that won't require all of them.)
-
-Items on the rubric, especially for testing, also reinforce concepts we're likely to care even more about in the future. For example, if you tested "load a CSV, then load another CSV" but didn't test "load a CSV, then view it, then load a CSV, then view it", you aren't actually testing that the 2nd CSV is really visible after it's loaded. 
-
 ### A Word on "Talent"
 
-I'd caution against viewing success in either 0320 or CSCI generally as related to _talent_, for a couple reasons.  We don't talk enough about how talent depends on external factors and experience. Stephen Sondheim (who I imagine knew more about talent than most) said that "everybody is talented, it's just that some people get it developed and some don't." We can often (wrongly) think of "talent" in CSCI as when some skill or concept comes easily. But the development of talent requires time, support, work, etc. And even prodigies need that---e.g., Terrence Tao (who aced the math SATs when he was 8 years old) got a lot of tutoring support growing up, and (crucially) his family was able to provide it.
+I'd caution against viewing success in either 0320 or CSCI generally as related to _talent_, for a couple reasons.  We don't talk enough about how talent depends on external factors and experience. Stephen Sondheim (who I imagine knew more about talent than most) said that "everybody is talented, it's just that some people get it developed and some don't." We can often (wrongly) think of "talent" in CSCI as when some skill or concept comes easily. But the development of talent requires time, support, work, etc. And even prodigies need that&mdash;e.g., Terrence Tao (who aced the math SATs when he was 8 years old) got a lot of tutoring support growing up, and (crucially) his family was able to provide it.
 
 ## An Exercise 
 
-You'll start the "front end" part of 0320 today. In our context, that means web programming. **What's a (work-safe) website that you particularly like, and what's something the website's interface does that you'd like to learn how to do?**
+You'll start the "front end" part of 0320 on Monday. In our context, that means web programming. **What's a (work-safe) website that you particularly like, and what's something the website's interface does that you'd like to learn how to do?**
 
 ## Static HTML and CSS Basics
 
@@ -84,13 +84,11 @@ Notice that when I mouse over the first column in the table, my browser is highl
 
 ![](https://i.imgur.com/TD3UYKg.png)
 
-There are better ways of formatting this sort of data than tables. I took this from a webpage written more than a decade ago. 
+There are better ways of formatting this sort of data than tables. I took this from a webpage written more than a decade ago. However, HTML tables would be a great way to start displaying rows of tabular data on a webpage!
 
-**But note: HTML tables would be a great way to arrange CSV rows on the webpage for Mock!**
-
-#### Warning! 
-
+~~~admonish warning title="'Sources' isn't updated."
 Make sure you're looking at `Elements` or `Inspector`, not `Sources`. Once we start working with pages that change dynamically, `Sources` only shows the starting HTML (the source loaded in the file) without updates that are actually displayed. 
+~~~
 
 ## A Website I Liked
 
@@ -123,27 +121,21 @@ This site isn't great in terms of accessibility, yet. Notice that whether the pa
 
 ## Let's Build A Webapp!
 
-We're going to write a less complex version of that web app today. Crucially, it will have _no back-end code_, and can just be run in a browser, via a local webserver. The gearup will cover more on this setup.
+We're going to write a less complex version of that web app today. Crucially, it will have _no back-end code_, and can just be run in a browser, via a local webserver. **The gearup will cover more of this setup.**
 
-### JavaScript: Dynamic Behavior
+### JavaScript and TypeScript: Dynamic Behavior
 
 Neither HTML nor CSS alone suffice to build a good web application. We need a way to add *dynamic behavior* to the page, and to do that, we probably want a programming language.
 
-There are dozens of options (including Java) but one tends to be far more popular than others: JavaScript. In fact, many popular web programming languages actually compile to JavaScript---which means browser developers can focus on optimizing JavaScript performance in their engine, confident in a broad impact. (If you took CS 0190 or CS 0111, the language you used the most---Pyret---compiles to JavaScript.)
+There are dozens of options (including Java) but one tends to be far more popular than others: JavaScript. In fact, many popular web programming languages actually compile to JavaScript---which means browser developers can focus on optimizing JavaScript performance in their engine, confident in a broad impact. (If you took CS 0190 or CS 0111, the language you used the most---Pyret---compiles to JavaScript.) 
 
-**JavaScript is responsible for _dynamic_ behavior in the page.**
-
-### TypeScript: JavaScript with Seatbelts
+#### TypeScript: JavaScript with a Seatbelt
 
 We'll be using _TypeScript_ in 0320. TypeScript is (essentially) JavaScript with types, and as you get experience you'll very quickly see why those types are a good thing. It's quite easy to make mistakes involving types in JavaScript; just try entering an expression like `' ' == 0` in the browser console.
 
-TypeScript code is compiled to JavaScript by the TypeScript compiler. That's our job to run as the web developer, _not_ the client's job. Websites need to load quickly.
+But browsers don't understand TypeScript; they generally have highly optimized engines for running *JavaScript*. TypeScript code is compiled to JavaScript by the TypeScript compiler. That's our job to run as the web developer, _not_ the client's job. Websites need to load quickly, and so we need the pre-compiled JavaScript code ready to go when a client requests the webpage.
 
-~~~admonish note title="React"
-We'll also be using the React framework this semester; more on this soon. You can think of React as a _way_ of programming websites in JavaScript or TypeScript, supported by many good libraries.
-~~~
-
-### Getting Started 
+<!-- ### Getting Started  -->
 
 <!-- To install TypeScript and everything else, follow the instructions in this week's gearup. I've already installed everything I need to run, so that this class can focus on the programming.  I've also already initialized the TypeScript project in the `scripts` folder of this livecode.
 
@@ -159,6 +151,7 @@ in the folder containing the TypeScript configuration file `tsconfig.json`, whic
 
 When you run `npx tsc` or `npx tsc -w`, make absolutely sure that you are running it in the directory that contains `tsconfig.json` **and that you are not providing a filename argument**. The `tsc` utility will ignore the configuration provided in `tsconfig.json` if given a filename directly. Just run `npx tsc -w`.
  -->
+
 ### Framing the Web App We Want
 
 I've put a draft of the puzzle in the live code repository [here](https://github.com/cs0320/class-livecode/tree/main/S24/reactNYT). 
@@ -202,14 +195,12 @@ What do you notice about this TypeScript syntax, or about the style of coding in
 <summary>Think, then click!</summary>
 
 You might notice:
-* the function isn't tied to a class, like it would need to be in Java;
+* functions doesn't have to be methods in a class, like they would need to be in Java;
 * the function has type annotations on its parameters and return value, like methods in Java;
 * the function uses a strange `!==` operator;
 * ...
     
 </details>
-
-
 
 #### Unit Testing TypeScript
 
@@ -246,17 +237,13 @@ We'd like to write a _lot_ more of these. For now, we'll just run the test suite
 
 ~~~admonish note title="Playwright"
 Playwright allows a _lot_ more than what we've seen so far. It's built for front-end testing, so it makes a lot of things easy that JUnit doesn't. 
-~~~
 
-~~~admonish tip title="Playwright" 
-Depending on how you install, you might get a warning to run `npx playwright install` when you first run tests. This is normal; just run the command as instructed.
+Depending on how you install, you might need to run `npx playwright install` when you first run tests. This is normal; just run the command. Where `npm` manages your TypeScript and JavaScript packages, `npx` runs programs within packages. So `npx playwright install` runs an `install` command defined by Playwright. (It downloads various browser emulators.)
 ~~~
 
 ## Why TypeScript, not JavaScript?
 
-Since TypeScript compiles to JavaScript, and our browser understands JavaScript, let's set the types aside for now and just think about programming for the web.
-
-This is a good time to talk about how to learn a new programming language productively. 
+Since TypeScript compiles to JavaScript, and our browser understands JavaScript, let's set the types aside for now and just think about programming for the web. This is a good time to talk about how to learn a new programming language productively. 
 
 Yeah, it can be useful to read books and articles and ask questions on Ed and check StackOverflow and so on. But there's a sort of deeper checklist I like to follow when learning a new language, and as we follow it for JavaScript together we'll discover a few of the nastier surprise differences.
 
@@ -333,17 +320,14 @@ The details involve how JavaScript is implicitly converting between different ty
 
 ### Objects
 
+While we won't be using TypeScript _classes_, we can't avoid using _objects_. Objects are collections of fields; there's no sharp distinction between fields that are methods and fields that are data. If you've used Python before, these may remind you of dictionaries. For example:
+
 ```javascript
 cat = {talk: function() { console.log('meow'); }}
 cat.talk()
 ```
 
-Objects are collections of fields; there's no sharp distinction between fields that are methods and fields that are data. 
-
 **Takeaway:** In JavaScript, functions _are_ values.
-
-There are OO constructs in TypeScript, like `class`es, but they are built atop this foundation. We won't need to use classes for this week's example or the upcoming sprint.
-
 
 <!-- ### Prototypes
 
@@ -411,11 +395,9 @@ In JavaScript, `this` is set a few ways:
 Vitally, but confusingly: `this` is NOT set to an object, `X`, just because you call a function that you got by saying: `const f = X.m;`. It's context, not "the object".
    -->
 
+### Aside: Blank Space
 
-
-### Bonus: Blank Space
-
-How does Javascript handle blank space? How about the ultimate blank space: new lines?
+I'm including this because it is a strange thing about TypeScript/JavaScript and it's caused confusion before. Let's ask: how does JavaScript handle blank space? How about the ultimate blank space: new lines?
 
 ```javascript
 five = function() { return 
@@ -424,7 +406,7 @@ five = function() { return
 
 JavaScript automatically inserts semicolons where it believes they are needed. It turns out this often makes sense, but can be confusing. I found [this great StackOverflow thread](https://stackoverflow.com/questions/2846283/what-are-the-rules-for-javascripts-automatic-semicolon-insertion-asi) that explains the policy in detail.
 
-TypeScript/Javascript is powerful, and many of its quirks actually make perfect sense when writing web UIs. But still, beware, and treat your JavaScript programs like a science project: if you've got weird behavior, _experiment_. 
+The language is powerful, and many of its quirks actually make perfect sense when writing web UIs. But still, beware, and treat your JavaScript programs like a science project: if you've got weird behavior, _experiment_. 
 
 <!-- ### There's more
 
@@ -445,12 +427,12 @@ You can "opt in" to a less permissive version of JavaScript by enabling _strict 
 ## Adding Behavior on the Page
 
 We should add some behavior on the webpage. There are two ways we could go about this.
-* Script the application in plain ("vanilla") TypeScript. This would have the advantage of showing how web programming works at a low level (in short: callback functions and events---lots of overlap with the strategy pattern!)
-* Set up the application using a framework. This has the advantage of better resembling what you'll be using in class, and giving the application a better structure. 
+* Option 1: Write the application in plain ("vanilla") TypeScript. This would have the advantage of showing how web programming works at a low level (in short: callback functions and events: lots of overlap with the strategy pattern!) But this would require us to manage program state and update the state of the webpage all by ourselves, which can be complex. 
+* Option 2: Set up the application using a framework like React which helps manage state, update the page, and much more. 
 
-If you're curious about the plain TypeScript version, you can see it in last year's [livecode](https://github.com/cs0320/class-livecode/blob/main/old/S23/vanillaNYT) repository. **We'll favor using a framework (React) here, and require it in your homework.**
+<!-- If you're curious about the plain TypeScript version, you can see it in last year's [livecode](https://github.com/cs0320/class-livecode/blob/main/old/S23/vanillaNYT) repository. **We'll favor using a framework (React) here, and require it in your homework.** -->
 
-So, let's introduce React. 
+I like Option 2 for now. So, let's introduce React. 
 
 <!-- ## Reactivity
 
@@ -534,18 +516,16 @@ In other words, React is a UI-building framework that borrows concepts from reac
 
 React provides two useful features (among others):
 * React manages your front-end app's state centrally, and when it detects a state change it propagates that change to a _virtual copy_ of the page. The actual page then only gets updated when it actually needs to be changed. This can improve efficiency of complex apps. To make this work, **you usually want to manage all state through React**.
-* React gives us a nice way to align the *visual layout* of the app with the program. Concretely, **a React component is a TypeScript function** that returns a **JSX** expression; JSX looks a lot like HTML with holes in it where we can plug in TypeScript.
+* React gives us a nice way to align the *visual layout* of the app with the program. Concretely, **a React component is a TypeScript function** that returns a special kind of object that resembles HTML: a **JSX** expression. In effect, JSX is HTML **with holes in it** where we can plug in the result of running TypeScript code.
 
 ~~~admonish tip title="JSX" 
 Always keep in mind that **a React function component must return a JSX expression**. This might be plain HTML, but almost always it's got some JavaScript being evaluated inside squiggle-braces. 
 ~~~
 
-We're also using Vite, a development server for React applications.
+We're also using Vite, a development server for React applications. This makes it easier to get started. Notice that we're using a lot of helper libraries! This is normal in much of web development, and we want to get more practice managing this.
 
 ~~~admonish tip title="Components"    
-React components will either be classes or functions. 
-
-We don't use "class components". They are outdated, from the early days of React. You'll still see them referenced online, though. The React team strongly suggests that new development use functional components instead, though. We follow their advice, and so should you. **Use function components.**
+React components will either be classes or functions.  We don't use "class components". They are outdated, from the early days of React. You'll still see them referenced online, though. The React team strongly suggests that new development use functional components instead, though. We follow their advice, and so should you. **Use function components.**
 ~~~
 
 ### What are our components for this application?
@@ -569,7 +549,7 @@ I like to draw out a prototype UI, and circle different regions that represent i
 
 ### A starting template
 
-The complete livecode is available in [the repository](https://github.com/cs0320/class-livecode/tree/main/S24/reactNYT). I'll call out a few points about the code here.
+The complete livecode is available in [the repository](https://github.com/cs0320/class-livecode/tree/main/F24/reactNYT). I'll call out a few points about the code here.
 
 #### JSX 
 
@@ -774,8 +754,4 @@ We are deliberately delaying this topic to avoid adding more conceptual overhead
 #### Why aren't you adding types in these test files?
 
 While you must fill in types in your application files, we're **not** requiring you to fill in explicit type values within your test files. These files _are_ TypeScript; we're just letting TypeScript infer types on its own. 
-
-#### Exercise
-
-Maybe you can find some tests I _didn't write_? Since everyone should have the live-code repository cloned now, try adding another test, and then share (described broadly in English) what you added.
 
