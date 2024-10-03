@@ -176,7 +176,39 @@ Both of these are often frowned on in intro courses, outside of places like defi
 
 You have enough experience now to ask yourself: do I _need_ to typecast here? Are there any alternatives? This doesn't mean that we won't give you feedback or say "needs improvement" if you decide to use typecasting. Quite the opposite; I hope we can give you feedback if you're using it incorrectly! But sometimes casting and `instanceof` are what you need to get the job done. Let's look at an example. 
 
-**LINK**
+Suppose you're calling an external library method, which might throw either of two different exceptions. If the library doesn't give you any help in disambiguating them, and you need to treat them differently, what else can you do but use `instanceof`? 
+
+```java
+abstract class SpecialException extends Exception {}
+/** This exception type should be translated to different abstraction */
+class SomeExceptionToChange extends SpecialException {}
+/** This exception type should be logged and execution should continue */
+class SomeExceptionToLog extends SpecialException {}
+
+public class CastingExample {
+
+    /** Which will it throw? Who knows! */
+    static void doSomething() throws SpecialException {
+        if(Math.random() > 0.5) {
+            throw new SomeExceptionToChange();
+        } else {
+            throw new SomeExceptionToLog();
+        }
+    }
+
+    public static void main(String[] args) {
+        try {
+            doSomething();
+        } catch(SpecialException e) {
+            // What can we do here?
+        }
+    }
+}
+```
+
+## Narrowing 
+
+(See the lecture capture; we demoed narrowing in the union-types example from last time.)
 
 ## (Supplemental / to be moved) Fuzz Testing
 
