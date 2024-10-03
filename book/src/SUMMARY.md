@@ -16,7 +16,7 @@
 <!-- Prep for Sprint 3.1 -->
 - [Webapps: HTML, TypeScript, and Testing](./html-react-playwright/html-react-playwright.md)
  
- 
+[Generics, Typecasting, and Narrowing](./generics-wildcards/generics-wildcards.md) 
  
  <!-- Generic Types and Wildcards, Fuzz Testing -->
 
@@ -24,7 +24,7 @@
 [Promises and TypeScript Asynchrony](./promises-fetch-prs/promises-fetch-prs.md)
 [Thinking About Algorithms](./algorithms/algorithms.md)
 
-[Supplement: Generics and Wildcards](./generics-wildcards/generics-wildcards.md)
+
 [MBT and PBT](./mbt_pbt/mbt_pbt.md)
 <!-- [Lecture 13]()
 [Lecture 14]()

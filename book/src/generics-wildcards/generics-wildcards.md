@@ -1,6 +1,9 @@
-# Wildcards in Generics
+# Generics with Wildcards, Typecasting, and Narrowing
 
-**This is supplementary material, and doesn't correspond _exactly_ to a lecture slot.**
+I responded at length to [an Ed post about typecasting](https://edstem.org/us/courses/59996/discussion/5394626) yesterday, and I'd like to spend today talking about related issues. We'll break this down into 3 parts:
+* Subtleties with generics in Java 
+* Typecasting isn't always bad
+* Narrowing in TypeScript 
 
 ## Making Sense of Generics: the LSP
 
@@ -86,16 +89,14 @@ for(int i : someInts) {
 </details>
 <BR/>
 
-This is why Java does what it does. But sometimes we really do want to accept "a set of any kind of number" without knowing in advance exactly which type it is. And this is where generics become a little bit more complex. 
+This is why Java does what it does. But sometimes we really do want to accept "a set of any kind of number" without knowing in advance exactly which type it is. And this is where generics become a little bit more complex. Before we start, I want to cover a rule that can _really_ help clear up confusion about generic types. It's called the Liskov Substitution Principle or LSP. You can look up the full LSP if you want, but here I'm going to put a particular spin on it:
 
-Before we start, I want to cover a rule that can _really_ help clear up confusion about generic types. It's called the Liskov Substitution Principle or LSP. You can look up the full LSP if you want, but here I'm going to put a particular spin on it:
-
-> If you're able to safely use an object of type $T$  someplace, you should also be able to safely use an  object of type $S$, where $S$ is a subtype of $T$. 
+> If you're able to safely use an object of type $T$ someplace, you should also be able to safely use an object of type $S$, where $S$ is a subtype of $T$. 
 
 This is the guiding principle that the above example violates, and it's worth keeping in mind as you work with generics in the future.   
 
 
-## Type variables and Wildcards
+### Type variables and Wildcards
 
 Let's get more concrete. What if we were trying to write the type for a sorting function? All we'd like to depend on is that elements of the type are comparable to other elements of that type:
 
@@ -146,8 +147,38 @@ Why? Because we could have assigned `someInts` to `someNums2` instead, or `someD
 </details>
 <BR/>
 
-    
-## Fuzz Testing
+## Typecasting 
+
+You may have learned in the past that "typecasting is bad". To be clear, there are two operators involved in this general sentiment, each of which do different things:
+
+**Actual typecasting, sometimes called "downcasting", e.g.:**
+
+```java
+List<Integer> lst = new ArrayList<>();
+ArrayList<Integer> alist = (ArrayList<Integer>) lst; 
+```
+
+Here we are telling Java that _we know_ what type `lst` is, and to trust us when we try to put a reference of type `List` into a reference of type `ArrayList`. In this example, we have a good reason to be confident. But in general, it's a somewhat dangerous thing to do. 
+
+**Checking the type of an object, e.g.:**
+
+```java 
+if(lst instanceof ArrayList) {
+    System.out.println("It's an array list!")
+}
+```
+
+Both of these are often frowned on in intro courses, outside of places like defining `equals()` and `hashCode()` for a new class. But what makes those uses OK, and other uses not OK? Let's first identify a few reasons why these might cause trouble. 
+
+* Typecasting is forcing the type system to believe something, even if it's not true. *So you'd better be sure it's true!* Usually we'd do this with an `instanceof` check right before the cast.
+* Using `instanceof` with typecasting isn't exhaustive by default; you can write tests using `instanceof` and cast within an `if`, but it's easy for the `else` case to gloss over new possibilities that get added later, causing silent bugs. 
+* Typecasting can sometimes indicate bad issues with design, especially OO design. E.g., if you aren't properly using polymorphism with interfaces or superclasses, you might need to know the implementation class so you can call specific methods. This would have been the case if you'd needed to typecast in your CSV parser on Sprint 1.1, because generics and polymorphism should be enough there. But such situations aren't the entirety of all use cases for casting. Many are valid (and again, Java's library uses it more than you'd expect). 
+
+You have enough experience now to ask yourself: do I _need_ to typecast here? Are there any alternatives? This doesn't mean that we won't give you feedback or say "needs improvement" if you decide to use typecasting. Quite the opposite; I hope we can give you feedback if you're using it incorrectly! But sometimes casting and `instanceof` are what you need to get the job done. Let's look at an example. 
+
+**LINK**
+
+## (Supplemental / to be moved) Fuzz Testing
 
 Let's think about unit-testing on your CSV sprint. 
 
