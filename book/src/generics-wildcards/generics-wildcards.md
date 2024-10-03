@@ -206,6 +206,24 @@ public class CastingExample {
 }
 ```
 
+Well, it turns out that you can do something else _in this specific case_. Java lets you chain `catch` statements, so you could do this: 
+
+```java
+try {
+    doSomething();
+} catch(SomeExceptionToChange e) {
+    // handle this type
+} catch(SomeExceptionToLog e) {
+    // handle that type
+} catch(SpecialException e) {
+    // anything else...
+}
+```
+
+Of course, this is very very like using `instanceof`. The difference is that Java will enforce exhaustivity for you here. You cannot forget the last case, or you get a type error! So this form has more protection than `instanceof`. 
+
+But still, in some cases, you can't do without `instanceof`&mdash;like if you're overriding the `equals` method on some new class, because that method takes an `Object` reference. 
+
 ## Narrowing 
 
 (See the lecture capture; we demoed narrowing in the union-types example from last time.)
