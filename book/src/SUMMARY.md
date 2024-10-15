@@ -16,12 +16,15 @@
 <!-- Prep for Sprint 3.1 -->
 - [Webapps: HTML, TypeScript, and Testing](./html-react-playwright/html-react-playwright.md)
  
-[Generics, Typecasting, and Narrowing](./generics-wildcards/generics-wildcards.md) 
+- [Generics, Typecasting, and Narrowing](./generics-wildcards/generics-wildcards.md) 
+
+- [Java Concurrency](./java-concurrency/java-concurrency.md)
+- [Promises and TypeScript Asynchrony](./promises-fetch-prs/promises-fetch-prs.md)
  
  <!-- Generic Types and Wildcards, Fuzz Testing -->
 
-<!-- [Java Concurrency](./java-concurrency/java-concurrency.md)
-[Promises and TypeScript Asynchrony](./promises-fetch-prs/promises-fetch-prs.md)
+<!-- 
+
 [Thinking About Algorithms](./algorithms/algorithms.md)
 
 

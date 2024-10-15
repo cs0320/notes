@@ -8,7 +8,7 @@ The material in these notes goes deeper than we can cover in class. If you're ha
 
 ## Livecode (Important)
 
-Today's examples will draw from the scripts and prompts in the [`mar5_concurrent_queue_manager`](https://github.com/cs0320/class-livecode/tree/main/S24/mar5_concurrent_queue_manager) livecode project. The livecode also contains material that isn't covered in class, including:
+Today's examples will draw from the scripts and prompts in the concurrent queue manager livecode project. The livecode also contains material that isn't covered in class, including:
 * a more advanced used of the adapter pattern (a relative of proxy) to merge together multiple student queues; and
 * a separate thread example showing how to leverage threads for performance (thread pools).
 
@@ -17,7 +17,7 @@ Today's examples will draw from the scripts and prompts in the [`mar5_concurrent
 The reading will be in Chapter 11 of [Effective Java](https://www-oreilly-com.revproxy.brown.edu/library/view/effective-java/9780134686097/?ar). The whole chapter may be useful to you when you start to program with concurrency in Java. 
 Only _Item 78_ (the first in Chapter 11) is required reading. Please do read it; concurrency bugs are some of the most frustrating and time-consuming to encounter. Note especially that there are multiple things that can go wrong in a simple data access. Even if only _one_ thread is writing (unlike our example today) synchronization may still be needed to ensure that other threads _read_ the updated value consistently.
 
-Continue to think defensively as you use concurrency and parallelism.
+Continue to think defensively as you begin to use concurrency in your projects.
 
 ### Optional Reference Materials
 
@@ -274,5 +274,5 @@ Both of these approaches fix the problem.
 
 There are many, many ways to manage concurrency in Java and other languages. Next time we'll introduce the _future/promise_ approach, which is made simpler in TypeScript via the `async` and `await` keywords.
 
-There's another file, [ThreadPoolDemo.java](https://github.com/tnelson/cs32-livecode/blob/main/src/main/java/edu/brown/cs32/fall21/Oct12Prep/ThreadPoolDemo.java), in the livecode repo that demonstrates another way of working with threads in Java that's very well suited to applications where you need to carve up a lot of work (which you hope to parallelize across multiple cores) or don't yet know how much work you have to do. We won't cover it in lecture, but it could be a useful example for you on your projects.
+There's another file, `ThreadPoolDemo.java`, in the livecode repo that demonstrates another way of working with threads in Java that's very well suited to applications where you need to carve up a lot of work (which you hope to parallelize across multiple cores) or don't yet know how much work you have to do. We won't cover it in lecture, but it could be a useful example for you on your projects.
 

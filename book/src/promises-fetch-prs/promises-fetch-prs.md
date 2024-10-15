@@ -1,8 +1,10 @@
 # TypeScript/JavaScript Asynchrony
 
+**NOTE: these are provided in advance of class, but changes may be made and the livecode may not yet be accessible.**
+
 ## JavaScript "Concurrency"
 
-Today's livecode is in the repository under [mar7_ts_fetch](https://github.com/cs0320/class-livecode/tree/main/S24/mar7_ts_fetch). Get the code to follow along. There's also more examples in the repository than we can cover in a single class, so you might find it useful for reference as well.
+Today's livecode will be in the repository under [oct17_ts_fetch](https://github.com/cs0320/class-livecode/tree/main/F24/oct17_ts_fetch). Get the code to follow along. There's also more examples in the repository than we can cover in a single class, so you might find it useful for reference as well.
 
 On the surface, JavaScript has _really_ convenient support for concurrency. Try these in the browser console:
 
@@ -21,7 +23,7 @@ console.log('3')
 while(true) {}
 ```
 
-What's happening here? JavaScript -- a language built for the web -- is a language whose design is _deeply and unavoidably_ tangled with concurrency. 
+What's happening here? JavaScript&mdash;a language built for the web&mdash;is a language whose design is _deeply and unavoidably_ tangled with concurrency. 
 
 And yet, JavaScript itself (barring some modern extensions) is _single threaded_. We don't create a new thread to wait for a web request to finish. Instead, we create a callback, like we would for a button being clicked. 
 
@@ -127,7 +129,23 @@ You can find more examples like this in the livecode repository. We'll also talk
 
 We'll cover what we can in today's class session, but please read over the livecode too. I leave comments to try and make the livecode a good supplemental resource.
 
+## What about `async` and `await`? 
 
-## Classes in TypeScript 
+TypeScript provides two constructs that can often make working with promises easier: `async` (which tells the system that the function actually returns a _promise_, even if as written it returns a value), and `await` (which tells the system to invisibly inject callbacks as needed to act as though it is waiting for a certain operation to finish). You'll have already seen these used heavily in Playwright testing, because `await` is very convenient to, well _await_ the loading of a webpage. 
 
-If you want to use `class`es in TypeScript, you may. I'd suggest reading the documentation [here](https://www.typescriptlang.org/docs/handbook/2/classes.html).
+The key is remembering that `await` can only be used within an `async` function, and an `async` function always returns a promise. So if I write something like:
+
+```
+const f = async (url) => {
+    const response = await fetch(url)
+    return response;
+}
+```
+
+then the return type of `f` is actually `Promise<Response>`, not `Response`. You can confirm this via mouseover in VSCode.
+
+![A screenshot of VSCode showing the above code, with a mouseover indicating the return type is a promise.](await.png)
+
+As a consequence, if you use `async` and `await`, you end up either:
+* putting all the pertinent functionality you care about in `async` functions after `await`s, and thus can totally ignore the return value; or 
+* if you need to do something with the final return value outside an `async` context, use `.then()` on the return value&mdash;which, again, will be a promise outside an `async` context. 
