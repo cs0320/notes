@@ -1,0 +1,450 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Generics, Typecasting, and Narrowing - CSCI 0320 Notes</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../././mdbook-admonish.css">
+        <link rel="stylesheet" href=".././mdbook-admonish.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item affix "><a href="../home.html">How to read these notes</a></li><li class="chapter-item "><a href="../success-in-0320/success-in-0320.html"><strong aria-hidden="true">1.</strong> Success in 0320</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../success-in-0320/recipe.html"><strong aria-hidden="true">1.1.</strong> Debugging Recipe</a></li></ol></li><li class="chapter-item "><a href="../comparators-and-testing/comparators-and-testing.html"><strong aria-hidden="true">2.</strong> More Strategies, More Testing</a></li><li class="chapter-item "><a href="../mocking-console/mocking-console.html"><strong aria-hidden="true">3.</strong> UIs, Testing More Than Methods</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../equality-contracts/equality-contracts.html"><strong aria-hidden="true">3.1.</strong> OPTIONAL: Equality is Hard, Caching</a></li></ol></li><li class="chapter-item "><a href="../proxies-adapters/proxies-adapters.html"><strong aria-hidden="true">4.</strong> Proxies and Adapters</a></li><li class="chapter-item "><a href="../apis-integration/apis-integration.html"><strong aria-hidden="true">5.</strong> Web APIs and Integration Testing</a></li><li class="chapter-item "><a href="../slides-links/groups-and-code-review.html"><strong aria-hidden="true">6.</strong> Group Projects and Code Review (Slides)</a></li><li class="chapter-item "><a href="../html-react-playwright/html-react-playwright.html"><strong aria-hidden="true">7.</strong> Webapps: HTML, TypeScript, and Testing</a></li><li class="chapter-item expanded "><a href="../generics-wildcards/generics-wildcards.html" class="active"><strong aria-hidden="true">8.</strong> Generics, Typecasting, and Narrowing</a></li><li class="chapter-item "><a href="../java-concurrency/java-concurrency.html"><strong aria-hidden="true">9.</strong> Java Concurrency</a></li><li class="chapter-item "><a href="../promises-fetch-prs/promises-fetch-prs.html"><strong aria-hidden="true">10.</strong> Promises and TypeScript Asynchrony</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CSCI 0320 Notes</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="generics-with-wildcards-typecasting-and-narrowing"><a class="header" href="#generics-with-wildcards-typecasting-and-narrowing">Generics with Wildcards, Typecasting, and Narrowing</a></h1>
+<p>I responded at length to <a href="https://edstem.org/us/courses/59996/discussion/5394626">an Ed post about typecasting</a> yesterday, and I'd like to spend today talking about related issues. We'll break this down into 3 parts:</p>
+<ul>
+<li>Subtleties with generics in Java </li>
+<li>Typecasting isn't always bad</li>
+<li>Narrowing in TypeScript </li>
+</ul>
+<h2 id="making-sense-of-generics-the-lsp"><a class="header" href="#making-sense-of-generics-the-lsp">Making Sense of Generics: the LSP</a></h2>
+<p>Let's start with a puzzle about subtyping. We know that <code>Object</code> is a supertype of <code>Number</code>, which is a supertype of <code>Integer</code>. One thing this buys us is that we can plug in something with <code>Number</code> type anywhere an <code>Object</code> is expected, or pass an <code>Integer</code> to a method that accepts <code>Numbers</code>. </p>
+<p>How does this work with generic types? Here's a method: </p>
+<pre><code class="language-java">static Number sumAll(Collection&lt;Number&gt; numbers) {
+        int sum = 0;
+        for(Number num : numbers) {
+            sum += num.intValue(); // &quot;may involve rounding or truncation&quot;
+        }
+        return sum;
+}
+</code></pre>
+<h3 id="which-types-work-to-store-the-result-of-sumall"><a class="header" href="#which-types-work-to-store-the-result-of-sumall">Which types work to store the result of <code>sumAll</code>?</a></h3>
+<p>The method by itself typechecks just fine. Now let's call <code>sumAll</code>. We'll start by giving it an empty collection of numbers, and saving the result to a variable. <em>What types of variable can we store the return value of <code>sumAll</code> in?</em> Concretely, which of the 3 assignments below do you expect to produce a type error?</p>
+<pre><code class="language-java">    Collection&lt;Number&gt; someNums = new HashSet&lt;&gt;();
+    Number aNumber = sumAll(someNums);    // ?
+    Integer anInteger = sumAll(someNums); // ?
+    Object anObject = sumAll(someNums);   // ?
+
+</code></pre>
+<details>
+<summary><B>Think, then click!</B></summary>
+<p><code>Number</code> and <code>Object</code> both work OK, but <code>Integer</code> produces a type error. This is perhaps what we expected: after all, that's how subtyping works in languages like Java! The type system doesn't have enough info to know that the return value is always an <code>Integer</code> (although it <em>is</em>), and so it forces us to use variables of a less-specific type.</p>
+</details>
+<BR/>
+<h3 id="which-types-work-as-arguments-to-sumall"><a class="header" href="#which-types-work-as-arguments-to-sumall">Which types work as arguments to <code>sumAll</code>?</a></h3>
+<p>Now suppose we have 3 <code>Collection</code> objects we could pass in to <code>sumAll</code>. Keeping in mind the result of the last experiment, which of these do you expect to work?</p>
+<pre><code class="language-java">    Collection&lt;Number&gt; someNums = new HashSet&lt;&gt;();
+    Collection&lt;Integer&gt; someInts = new HashSet&lt;&gt;();
+    Collection&lt;Object&gt; someObjects = new HashSet&lt;&gt;();
+    
+    sumAll(someNums);     // ?
+    sumAll(someInts);     // ?
+    sumAll(someObjects);  // ?
+</code></pre>
+<details>
+<summary><B>Think, then click!</B></summary>
+<p>Only <code>someNums</code>, the <code>Collection&lt;Number&gt;</code>, works. Both of the others produce a type error. </p>
+<p>In spite of the fact that <code>Integer</code> <em>is</em> a subtype of <code>Number</code>, <code>Collection&lt;Integer&gt;</code> is not a subtype of <code>Collection&lt;Number&gt;</code>. The same goes for <code>List</code>, <code>Set</code>, and so on. </p>
+</details>
+<BR/>
+<h3 id="wait-what"><a class="header" href="#wait-what">Wait, what?</a></h3>
+<p>Why do you think this is the case? Is Java's type checker just bad? </p>
+<p>One way to explore whether or not this behavior is reasonable is to experiment. Suppose that Java had let us use a <code>Collection&lt;Integer&gt;</code> as a subtype of <code>Collection&lt;Number&gt;</code>. Can you write a program that would then produce a run-time type error? (Hint: you don't need more than a 2 or 3 lines; you don't even need to use the <code>someAll</code> function.)</p>
+<details>
+<summary><B>Think, then click!</B></summary>
+<p>Here's one: </p>
+<pre><code class="language-java">someNums = someInts; // the problematic line
+someNums.add(Math.PI); // adding a Number to a collection of Numbers
+for(int i : someInts) {
+    System.out.println(Integer.numberOfLeadingZeros(i));
+}
+</code></pre>
+</details>
+<BR/>
+<p>This is why Java does what it does. But sometimes we really do want to accept &quot;a set of any kind of number&quot; without knowing in advance exactly which type it is. And this is where generics become a little bit more complex. Before we start, I want to cover a rule that can <em>really</em> help clear up confusion about generic types. It's called the Liskov Substitution Principle or LSP. You can look up the full LSP if you want, but here I'm going to put a particular spin on it:</p>
+<blockquote>
+<p>If you're able to safely use an object of type <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span> someplace, you should also be able to safely use an object of type <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span>, where <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> is a subtype of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span>. </p>
+</blockquote>
+<p>This is the guiding principle that the above example violates, and it's worth keeping in mind as you work with generics in the future.</p>
+<h3 id="type-variables-and-wildcards"><a class="header" href="#type-variables-and-wildcards">Type variables and Wildcards</a></h3>
+<p>Let's get more concrete. What if we were trying to write the type for a sorting function? All we'd like to depend on is that elements of the type are comparable to other elements of that type:</p>
+<pre><code class="language-java">public static &lt;T extends Comparable&lt;T&gt;&gt; void sortSomeRecords(List&lt;T&gt; lst)
+</code></pre>
+<p>Hopefully the above example motivates why we needed the type variable: <em>any</em> kind of <code>Comparable</code> will do, so long as it can compare against its own type.</p>
+<p>Java also allows 
+<em>wildcard</em> type variables, which are written <code>?</code>. A wildcard represents a type variable that won't be used elsewhere, so doesn't require a unique name. But we couldn't have used a wildcard here, since we needed <code>T</code> both to say what type to compare against, and to label the argument.</p>
+<p>Java's standard library sorting function, however, uses both a type variable and a wildcard:</p>
+<pre><code class="language-java">public static &lt;T extends Comparable&lt;? super T&gt;&gt; void sort(List&lt;T&gt; list)
+</code></pre>
+<p>This allows <code>T</code> to implement comparisons against any of its supertypes. (By the way, the bit declaring <code>T</code> isn't part of the return type; it's just a note to the type checker.)</p>
+<h3 id="what-a-variable-means"><a class="header" href="#what-a-variable-means">What a variable means</a></h3>
+<p>Here are some things to try:</p>
+<pre><code class="language-java">someNums.add(1);    // setup (works)
+someNums.add(1.5);  // setup (works)
+
+Collection&lt; ? extends Number&gt; someNums2 = new HashSet&lt;&gt;();  // ?
+someNums2.add(1);       // ?
+someNums2.add(1.5);     // ?
+someNums2.add(null);    // ?
+someNums2 = someNums;   // ?
+</code></pre>
+<p>What's going on?</p>
+<details>
+<summary><B>Think, then click!</B></summary>
+<p><code>? extends Number</code> does not mean &quot;a list of objects which all extend <code>Number</code>&quot;. It means &quot;a list of objects of <em>one single type</em>, where that type extends number&quot;.</p>
+<p>We can assign <code>someNums</code> to <code>someNums2</code> because <code>someNums</code> is a collection of <code>Number</code> (which fits into the wildcard). But we cannot add an <code>Integer</code> to <code>someNums2</code>, not even if we try to typecast. </p>
+<p>Why? Because we could have assigned <code>someInts</code> to <code>someNums2</code> instead, or <code>someDoubles</code> or <code>someFloats</code>! Java has no guarantee (at least, not without a far more sophisticated and time-consuming code-crawl) that it will be safe to add an integer to whatever <code>someNums2</code> references. </p>
+</details>
+<BR/>
+<h2 id="typecasting"><a class="header" href="#typecasting">Typecasting</a></h2>
+<p>You may have learned in the past that &quot;typecasting is bad&quot;. To be clear, there are two operators involved in this general sentiment, each of which do different things:</p>
+<p><strong>Actual typecasting, sometimes called &quot;downcasting&quot;, e.g.:</strong></p>
+<pre><code class="language-java">List&lt;Integer&gt; lst = new ArrayList&lt;&gt;();
+ArrayList&lt;Integer&gt; alist = (ArrayList&lt;Integer&gt;) lst; 
+</code></pre>
+<p>Here we are telling Java that <em>we know</em> what type <code>lst</code> is, and to trust us when we try to put a reference of type <code>List</code> into a reference of type <code>ArrayList</code>. In this example, we have a good reason to be confident. But in general, it's a somewhat dangerous thing to do. </p>
+<p><strong>Checking the type of an object, e.g.:</strong></p>
+<pre><code class="language-java">if(lst instanceof ArrayList) {
+    System.out.println(&quot;It's an array list!&quot;)
+}
+</code></pre>
+<p>Both of these are often frowned on in intro courses, outside of places like defining <code>equals()</code> and <code>hashCode()</code> for a new class. But what makes those uses OK, and other uses not OK? Let's first identify a few reasons why these might cause trouble. </p>
+<ul>
+<li>Typecasting is forcing the type system to believe something, even if it's not true. <em>So you'd better be sure it's true!</em> Usually we'd do this with an <code>instanceof</code> check right before the cast.</li>
+<li>Using <code>instanceof</code> with typecasting isn't exhaustive by default; you can write tests using <code>instanceof</code> and cast within an <code>if</code>, but it's easy for the <code>else</code> case to gloss over new possibilities that get added later, causing silent bugs. </li>
+<li>Typecasting can sometimes indicate bad issues with design, especially OO design. E.g., if you aren't properly using polymorphism with interfaces or superclasses, you might need to know the implementation class so you can call specific methods. This would have been the case if you'd needed to typecast in your CSV parser on Sprint 1.1, because generics and polymorphism should be enough there. But such situations aren't the entirety of all use cases for casting. Many are valid (and again, Java's library uses it more than you'd expect). </li>
+</ul>
+<p>You have enough experience now to ask yourself: do I <em>need</em> to typecast here? Are there any alternatives? This doesn't mean that we won't give you feedback or say &quot;needs improvement&quot; if you decide to use typecasting. Quite the opposite; I hope we can give you feedback if you're using it incorrectly! But sometimes casting and <code>instanceof</code> are what you need to get the job done. Let's look at an example. </p>
+<p>Suppose you're calling an external library method, which might throw either of two different exceptions. If the library doesn't give you any help in disambiguating them, and you need to treat them differently, what else can you do but use <code>instanceof</code>? </p>
+<pre><code class="language-java">abstract class SpecialException extends Exception {}
+/** This exception type should be translated to different abstraction */
+class SomeExceptionToChange extends SpecialException {}
+/** This exception type should be logged and execution should continue */
+class SomeExceptionToLog extends SpecialException {}
+
+public class CastingExample {
+
+    /** Which will it throw? Who knows! */
+    static void doSomething() throws SpecialException {
+        if(Math.random() &gt; 0.5) {
+            throw new SomeExceptionToChange();
+        } else {
+            throw new SomeExceptionToLog();
+        }
+    }
+
+    public static void main(String[] args) {
+        try {
+            doSomething();
+        } catch(SpecialException e) {
+            // What can we do here?
+        }
+    }
+}
+</code></pre>
+<p>Well, it turns out that you can do something else <em>in this specific case</em>. Java lets you chain <code>catch</code> statements, so you could do this: </p>
+<pre><code class="language-java">try {
+    doSomething();
+} catch(SomeExceptionToChange e) {
+    // handle this type
+} catch(SomeExceptionToLog e) {
+    // handle that type
+} catch(SpecialException e) {
+    // anything else...
+}
+</code></pre>
+<p>Of course, this is very very like using <code>instanceof</code>. The difference is that Java will enforce exhaustivity for you here. You cannot forget the last case, or you get a type error! So this form has more protection than <code>instanceof</code>. </p>
+<p>But still, in some cases, you can't do without <code>instanceof</code>—like if you're overriding the <code>equals</code> method on some new class, because that method takes an <code>Object</code> reference. </p>
+<h2 id="narrowing"><a class="header" href="#narrowing">Narrowing</a></h2>
+<p>(See the lecture capture; we demoed narrowing in the union-types example from last time.)</p>
+<h2 id="supplemental--to-be-moved-fuzz-testing"><a class="header" href="#supplemental--to-be-moved-fuzz-testing">(Supplemental / to be moved) Fuzz Testing</a></h2>
+<p>Let's think about unit-testing on your CSV sprint. </p>
+<h3 id="generating-test-inputs"><a class="header" href="#generating-test-inputs">Generating Test Inputs</a></h3>
+<p>What do you think is harder to think of: test <em>inputs</em> or the corresponding <em>outputs</em>?</p>
+<p>Usually it's the inputs that are harder, because they require clever thinking about the space of inputs. Outputs are often (although not always) an exercise in running the program in your mind.</p>
+<p>Where else might we find test inputs, and what problems might occur with each source?</p>
+<ul>
+<li>someone else's tests? (same human biases, but ok, could help)</li>
+<li>monitor a real system (good idea; possibly different biases? overfitting to their use-case? may be ok, may not. could be expensive or affect performance.)</li>
+<li>random generation? (possibly a lot of weird values that aren't really reflective of reality, what's the distribution...?)</li>
+</ul>
+<p>Let's build on the &quot;random test generation&quot; idea. Suppose we could randomly generate inputs. What could we do with them? </p>
+<p>The simplest, but still incredibly powerful, technique is to probe for crashes. Just keep feeding the system random inputs and, if your generator is good, you're likely to eventually find those bizarre corner cases that lead to surprising exceptions. </p>
+<p>You don't need to do this in JUnit, or have a <code>Test</code> annotation or anything like that. We're just experimenting with the idea of fuzzing.</p>
+<h3 id="whats-a-surprising-exception"><a class="header" href="#whats-a-surprising-exception">What's a &quot;surprising exception&quot;?</a></h3>
+<p>There's a bit of a caveat here. Sometimes programs are <em>supposed</em> to throw an exception on certain inputs. Maybe the specification says that, &quot;for input integers less than zero, the method throws <code>UnsupportedOperationException</code>&quot;. Then fuzzing is a bit more involved than trying to provoke <em>any</em> exception. Instead, you might only look for exceptions like <code>NullPointerException</code> or other signals that indicate a bug, rather than a legitimate specified result.</p>
+<h3 id="takeaway"><a class="header" href="#takeaway">Takeaway</a></h3>
+<p>This might seem like a strange technique. But, in truth, it's used pretty commonly in industry where crash bugs are expensive, highly impactful, or affect many people. (Think: operating systems, device drivers, and cloud infrastructure, to name a few.)</p>
+<p>And, by the way: <strong>not all the inputs need to be random!</strong> You can still have deviously crafted inputs hard-coded; just include them at the beginning before you start random generation. This is true of everything else we do with random inputs.</p>
+<p>Here's an example from my solution to CSV.</p>
+<pre><code class="language-java">final static int NUM_TRIALS = 100;
+final static int MAX_STARS = 100;
+
+/**
+ * The throws clause for this method is immaterial; JUnit will 
+ * fail the test if any exception is thrown unless it's marked 
+ * *expected* inside the @Test annotation or it's explicitly 
+ * part of an assertion.
+ */
+
+@Test
+public void fuzzTestStars() throws EndOfCSVException {
+    for(int counter=0;counter&lt;NUM_TRIALS;counter++) {
+        // This helper produces a random CSV-formatted string
+        // that contains a set of encoded Star objects
+        String csvString = TestHelpers.getRandomStarCSV(MAX_STARS);
+       
+        // Note use of StringReader here, not FileReader
+        // Allowing /any/ Reader makes testing easier.
+        Reader csv = new StringReader(csvString);
+        List&lt;Star&gt; stars = GenericCSVParser.parseFrom(csv, new StarFactory());
+
+        // Fuzz testing -- just expect no exceptions, termination, ...
+    }
+}
+</code></pre>
+<p>We could improve this code in at least one big way. It's fixated on producing random CSV data for <code>Star</code> objects, and so we're not testing other kinds of random data. Still, <strong>this actually found a bug in my parser while I was developing it: I wasn't properly handling the behavior of my parser iterator if the file was empty</strong>.</p>
+<!-- NOTE: removed MBT and kd-tree context, see Spring 2022 notes for this -->
+<h3 id="aside-on-implementing-random-generators"><a class="header" href="#aside-on-implementing-random-generators">Aside on Implementing Random Generators</a></h3>
+<p>In Java, I like to use <code>java.util.concurrent.ThreadLocalRandom</code>, since it lets me produce many different random types. E.g.:</p>
+<pre><code class="language-java">final ThreadLocalRandom r = ThreadLocalRandom.current();
+long id = r.nextLong();
+double x = r.nextDouble(Double.MIN_VALUE, Double.MAX_VALUE);
+</code></pre>
+<p>To generate random strings, we can generate a random array of bytes, and convert that to a string. E.g.:</p>
+<pre><code class="language-java">byte[] bytes = new byte[length];
+r.nextBytes(bytes);
+String name = new String(bytes, Charset.forName(&quot;UTF-8&quot;));    
+</code></pre>
+<p>There's a limitation here. This does not guarantee an alpha-numeric string, or anything even remotely readable. Beware, since it might also contain control characters that will mess up some terminals if you print them! </p>
+<p>Moreover, since this string is UTF-8 encoded, it won't be able to contain most unicode characters, so we're focusing heavily on Latin characters. Fortunately, you can get more wide-ranging character sets with some quick changes. </p>
+<p>There's a &quot;random testing&quot; badge in 0320, so we'll be talking about this idea much more in the future. For now, keep in mind that not all tests need to be input-output pairs.</p>
+<p><strong>QUICK DISCUSSION</strong>: What's something you've written in <em>another</em> class here at Brown that would be well-suited to fuzz testing?</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../html-react-playwright/html-react-playwright.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../java-concurrency/java-concurrency.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../html-react-playwright/html-react-playwright.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../java-concurrency/java-concurrency.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,555 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Proxies and Adapters - CSCI 0320 Notes</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../././mdbook-admonish.css">
+        <link rel="stylesheet" href=".././mdbook-admonish.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item affix "><a href="../home.html">How to read these notes</a></li><li class="chapter-item "><a href="../success-in-0320/success-in-0320.html"><strong aria-hidden="true">1.</strong> Success in 0320</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../success-in-0320/recipe.html"><strong aria-hidden="true">1.1.</strong> Debugging Recipe</a></li></ol></li><li class="chapter-item "><a href="../comparators-and-testing/comparators-and-testing.html"><strong aria-hidden="true">2.</strong> More Strategies, More Testing</a></li><li class="chapter-item "><a href="../mocking-console/mocking-console.html"><strong aria-hidden="true">3.</strong> UIs, Testing More Than Methods</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../equality-contracts/equality-contracts.html"><strong aria-hidden="true">3.1.</strong> OPTIONAL: Equality is Hard, Caching</a></li></ol></li><li class="chapter-item expanded "><a href="../proxies-adapters/proxies-adapters.html" class="active"><strong aria-hidden="true">4.</strong> Proxies and Adapters</a></li><li class="chapter-item "><a href="../apis-integration/apis-integration.html"><strong aria-hidden="true">5.</strong> Web APIs and Integration Testing</a></li><li class="chapter-item "><a href="../slides-links/groups-and-code-review.html"><strong aria-hidden="true">6.</strong> Group Projects and Code Review (Slides)</a></li><li class="chapter-item "><a href="../html-react-playwright/html-react-playwright.html"><strong aria-hidden="true">7.</strong> Webapps: HTML, TypeScript, and Testing</a></li><li class="chapter-item "><a href="../generics-wildcards/generics-wildcards.html"><strong aria-hidden="true">8.</strong> Generics, Typecasting, and Narrowing</a></li><li class="chapter-item "><a href="../java-concurrency/java-concurrency.html"><strong aria-hidden="true">9.</strong> Java Concurrency</a></li><li class="chapter-item "><a href="../promises-fetch-prs/promises-fetch-prs.html"><strong aria-hidden="true">10.</strong> Promises and TypeScript Asynchrony</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CSCI 0320 Notes</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="proxies-and-adapters"><a class="header" href="#proxies-and-adapters">Proxies and Adapters</a></h1>
+<p>Today we'll cover some topics in <em>defensive programming</em> and introduce the <em>proxy</em> pattern. I will actually be live-coding this, so there may not be anything in the class-livecode repository to begin with. But I'll push the code we end up with after class.</p>
+<div id="admonition-in-class-exercises-are-coming-soon" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>In-class exercises are coming soon!</p>
+<p><a class="admonition-anchor-link" href="#admonition-in-class-exercises-are-coming-soon"></a></p>
+</div>
+<div>
+<p>Today is the last day of shopping period. Some classes will contain exercises in various forms, and some may become &quot;flipped&quot;, especially as the semester progresses.</p>
+</div>
+</div>
+<h2 id="contracts"><a class="header" href="#contracts">Contracts</a></h2>
+<p>If you write code someone else uses, there is an implicit agreement between you. They <em>provide your code with something</em>. You <em>give them something back</em>. In both directions, there is an obligation. You might tell them: </p>
+<blockquote>
+<p>&quot;The constructor of my <code>TAHours</code> class should take an instance of an object implementing the <code>Iterator&lt;Student&gt;</code> interface.</p>
+</blockquote>
+<p>At a high level, that's an obligation on <em>their</em> part. They need to make sure the object they pass obeys that criterion. Fortunately, for this kind of obligation, Java's type system suffices to enforce it. </p>
+<p>But you might also say: </p>
+<blockquote>
+<p>&quot;At any point at which at least one TA is free, the next student in the given iterator will be dispatched to one of those TAs before any other student is dispatched.&quot;</p>
+</blockquote>
+<p>That's an obligation on <em>your</em> part. And this time, the obligation is also a bit too subtle for Java's type system. </p>
+<p>These sorts of <em>contracts</em> are everywhere in engineering, and software engineering is no exception. If you can't rely on your caller to conform to your preconditions, unspecified behavior might be, <em>in principle</em> at least, their fault. But if they can't rely on your code to provide what it promises, it's definitely your fault. And if they don't know what to provide, or what to expect, <em>that's also your fault</em>—who trusts code that isn't clear about its job and what it needs to do it?</p>
+<p>Often, these guarantees can be enforced by the type system. The stronger the type system, the more these contracts can be checked <em>before</em> runtime. This is why Java generics were such a big win: mismatches in expectations could be found out early.</p>
+<p>Similarly, this is why <em>interfaces</em> are so important. Every time you implement an interface, you are working to conform to the preconditions of some library. They say: &quot;Give me a <code>Comparator&lt;T&gt;</code> and I'll sort that list of <code>T</code>,&quot; so you'd better implement <code>Comparator&lt;T&gt;</code>. </p>
+<p>But not every precondition or postcondition can be checked by the type system—at least, not in most languages, and certainly not in Java, Python, Typescript, and other languages you'll use in this class. Good code should still try to detect violations of its expectations early, and notify the caller about that violation in some useful way. Just saying &quot;Oops, LOL, I guess you gave me invalid input shrug emoji&quot; may be <em>fair</em>, but it's not going to make you feel better when your boss calls you to ask why Google Maps is down, or an airplane crashed, or some other consequence happened.</p>
+<p>Writing code that is <em>safe from bugs</em> requires being more professional, and thinking critically about things like: </p>
+<ul>
+<li>potential ways that a caller might violate your preconditions;</li>
+<li>potential ways that a caller might modify data unexpectedly; </li>
+<li>potential exceptions that code <em>you</em> call might throw, or other error conditions from that code;</li>
+<li>and much more. </li>
+</ul>
+<div id="admonition-adversarial-thinking" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>Adversarial Thinking</p>
+<p><a class="admonition-anchor-link" href="#admonition-adversarial-thinking"></a></p>
+</div>
+<div>
+<p>You might hear these ideas discussed under &quot;adversarial thinking&quot;. But keep in mind that most issues won't be malicious; probably they will just be honest mistakes. Nevertheless, it can be useful to imagine how your code might defend itself against an adversarial caller (or dependency) that is trying to exploit it. That leads into the security mindset, which we'll talk more about later in the semester.</p>
+</div>
+</div>
+<h2 id="defensive-programming"><a class="header" href="#defensive-programming">Defensive Programming</a></h2>
+<p>Let's write a class whose job is to coordinate TA hours for a big course. There's a central signup queue (which will be provided to our class) from which we'll dispatch students to available TAs. We've already got <code>Student</code> and <code>TA</code> classes defined elsewhere, and they do what you'd expect.</p>
+<pre><code class="language-java">public class HoursDispatcher {
+    Iterator&lt;Student&gt; queue;
+    Map&lt;TA, Integer&gt; minutesLeft;
+
+    HoursDispatcher(Iterator&lt;Student&gt; signups, String statusMessage) {
+        this.queue = signups;
+        this.statusMessage = statusMessage;
+    }
+
+    void addTA(TA ta, int minutes) {
+        minutesLeft.put(ta, minutes);
+    }
+}
+</code></pre>
+<p>Remember: someone is going to use this library we're writing.  Got any concerns?</p>
+<ul>
+<li>The fields should be <code>private</code>? </li>
+<li>Some of the fields should be <code>final</code>?</li>
+</ul>
+<p>Ok, let's make those changes, and continue iterating. </p>
+<details>
+<summary>Click to see diagram</summary>
+<p><img src="./dispatcher1.png" alt="Dispatcher 1" /></p>
+</details>
+<h3 id="keywords-private-and-final"><a class="header" href="#keywords-private-and-final">Keywords: <code>private</code> and <code>final</code></a></h3>
+<p>There are a few problems we might notice as we go. First, neither <code>private</code> nor <code>final</code> always protect you. Let's look very closely at one example: our <code>minutesLeft</code> field. We can make it <code>final</code> to prevent it from being modified—but it is the <em>field itself</em> whose value cannot be modified. That is, we cannot make the field point to a different object after we've assigned one. The <code>final</code> keyword doesn't stop someone from calling (e.g.) <code>minutesLeft.put()</code> themselves. That is:</p>
+<p><strong>The reference to the object is protected, but the object remains mutable!</strong></p>
+<p>We can make the field private, but then nobody can see the current state of the TA pool. It's reasonable to imagine that's bad; in real applications we often want to expose a view of some piece of state while disallowing modifications of that view. </p>
+<h3 id="defensive-copying"><a class="header" href="#defensive-copying">Defensive Copying</a></h3>
+<p>A common technique is called a <em>defensive copy</em>: we'll just make a getter method that returns a copy of the <code>Map</code>:</p>
+<pre><code class="language-java=">    public Map&lt;TA, Integer&gt; getMinutesLeft() {
+        // Defensive copy
+        return new HashMap&lt;&gt;(minutesLeft);        
+    }
+
+</code></pre>
+<details>
+<summary>Click to see diagram</summary>
+<p><img src="./dispatcher2.png" alt="Dispatcher 2" /></p>
+</details>
+<p>In general, this technique is very useful! (Bloch mentions it in <em>Effective Java</em>.) In this case, however, it might not be perfect for our needs.</p>
+<ul>
+<li>The <code>minutesLeft</code> field is mutable by design: we need to update the TA pool! The new object provided by a defensive copy won't update, its contents are set at the time it's created. So it's useful at first, but the caller will need to re-call the method when they want to update their view. </li>
+<li>Whenever someone calls this method, we're manufacturing new objects that are supposed to represent the state of the queue, but different objects will disagree with each other. There is no guarantee of consistency between what different callers will see. </li>
+</ul>
+<p>We can make progress on fixing both of these. Maybe we keep a canonical copy around:</p>
+<pre><code class="language-java=">    private Map&lt;TA, Integer&gt; public_view_minutesLeft;
+    public Map&lt;TA, Integer&gt; getMinutesLeft() {
+        // Canonical defensive copy
+        if(public_view_minutesLeft == null)
+            public_view_minutesLeft = new HashMap&lt;&gt;(minutesLeft);
+        return public_view_minutesLeft;
+    }
+</code></pre>
+<p>But this doesn't solve the unchanging-view problem. In fact, <em>it makes the issue worse</em>: the view is set once by the first call, and never changes, even if someone re-calls the method! This is fixable by checking whether <code>public_view_minutesLeft</code> has fallen behind <code>minutesLeft</code>, but even then those who called the method before won't have their references updated. We'd ideally like something <em>reactive</em>: think Google Sheets or Excel, where the value for a formula automatically updates when its dependencies do. </p>
+<div id="admonition-reactive-languages" class="admonition admonish-note">
+<div class="admonition-title">
+<p>Reactive Languages</p>
+<p><a class="admonition-anchor-link" href="#admonition-reactive-languages"></a></p>
+</div>
+<div>
+<p>This is a larger topic than we can cover here, but for now, expect us to come back to reactivity. It's useful in many settings, especially user interfaces.</p>
+</div>
+</div>
+<p>This solution is still moving in the right direction. We could certainly update the canonical copy <em>object</em>, rather than creating a new one. But then we've got another problem: any caller could call the <code>.put()</code> method of their canonical copy, and everyone has the same canonical copy. So one caller could taint the data another caller sees. Thus, we need to enforce immutability on the canonical copy. It turns out that Java's standard library has a convenient way to do this.</p>
+<p>Before we move to the next version of our class, let's step back and discuss a few important side topics.</p>
+<h3 id="sidebar-documenting-assumptions-and-guarantees"><a class="header" href="#sidebar-documenting-assumptions-and-guarantees">Sidebar: Documenting Assumptions and Guarantees</a></h3>
+<p>How do we tell our caller what to expect? The types say <em>part</em> of that, but they aren't enough on their own. For everything else, we need to write documentation. Note that this is very different from &quot;code comments&quot;. Code comments help a developer understand your code. In contrast, documentation is a kind of <em>specification</em>: you're communicating to someone what your code does, and what it needs, without them needing to understand the code itself. </p>
+<p>Documentation is thus much more important than code comments, and code comments are pretty important.</p>
+<h3 id="sidebar-validating-input-and-exceptions"><a class="header" href="#sidebar-validating-input-and-exceptions">Sidebar: Validating Input and Exceptions</a></h3>
+<p>Defensive programming isn't just about protecting your own code from someone else's bugs, it's also about protecting others from themselves, you, their other dependencies, and your own dependencies. It's always good to ask yourself, for every place your class is obtaining data, <strong>what does a consistent state look like?</strong> That is, what <em>properties</em> define a good state for the class...</p>
+<p>For example, we should probably do something coherent in case our caller registers a TA with a negative amount of time available. This sounds like a job for exceptions.</p>
+<h4 id="checked-vs-unchecked-exceptions"><a class="header" href="#checked-vs-unchecked-exceptions">Checked vs. Unchecked Exceptions</a></h4>
+<p>You might have noticed that some exceptions get declared for methods that use them, and other don't. Take a look at the Javadoc for <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html">NullPointerException</a>. Since these can happen unexpectedly, it wouldn't be very ergonomic to ask programmers to write a <code>throws</code> declaration for them. Hence, these exceptions are <em>unchecked</em>: the type system won't (usually) consider them. Unchecked exceptions are those that descend from <code>RuntimeException</code> (like null pointer exceptions) or from <code>Error</code> (which is a category usually reserved for errors that are so bad that most applications <em>shouldn't</em> try to catch and handle them, like internal JVM inconsistencies under which all bets are off).</p>
+<p>Usually you'll be communicating with your caller (and callee) via checked exceptions. But not always. A common situation is when a caller provides an argument that is invalid: the type is correct, but some other important criterion has failed. Often, the first choice is to throw the <em>unchecked</em>
+<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/IllegalArgumentException.html">IllegalArgumentException</a>. This isn't a &quot;stop everything, the world is broken&quot; <code>Error</code>, and your caller can try to recover from it or not. But because this is an unchecked exception, they might not even think to catch it; they won't if you don't tell them it's a possibility. Thus, <em>it is absolutely vital</em> that you document if you intentionally throw this exception in your documentation!</p>
+<div id="admonition-danger" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>DANGER!</p>
+<p><a class="admonition-anchor-link" href="#admonition-danger"></a></p>
+</div>
+<div>
+<p>Re-read that last sentence. If you throw unchecked exceptions, you <em>must</em> tell your caller about it via documentation. There's no protection from the type system, and they may be taken by surprise. </p>
+<p>This doesn't mean that unchecked exceptions are bad; sometimes they are very useful. But remember to communicate with others using your code.</p>
+</div>
+</div>
+<p>Another option is to define our own, custom, <em>checked</em> <code>Exception</code> class. We'd then <em>have</em> to declare it in a <code>throws</code> clause. Custom exceptions are great if you want to pass back more context that's related to your method. Imagine what information you could give that would be helpful to your caller in:</p>
+<ul>
+<li>debugging; or</li>
+<li>sending high-quality error messages to end users.</li>
+</ul>
+<p>Remember that a string alone isn't a great way to send back useful information. A person may be able to read it, but if they want to do something more programmatic, they need to parse it. <em>Don't make them do this!</em> If the exception happened for complicated reasons (or maybe even if it didn't) make a custom exception that includes fields related to the problem, and document them.</p>
+<h3 id="a-clever-fix-unmodifiable-maps"><a class="header" href="#a-clever-fix-unmodifiable-maps">A Clever Fix: Unmodifiable Maps</a></h3>
+<p>Let's go back to the defensive-programing problem we observed earlier.</p>
+<p>Java's library provides a useful tool: <code>Collections.unmodifiableMap</code>. This static method accepts a <code>Map</code> and produces an object that also implements the <code>Map</code> interface, but disallows modification. So we could replace the body of <code>getMinutesLeft()</code> with:</p>
+<pre><code class="language-java=">    private Map&lt;TA, Integer&gt; unmodifiable_minutesLeft;
+    public Map&lt;TA, Integer&gt; getMinutesLeft1() {    
+        if(unmodifiable_minutesLeft == null) {
+            unmodifiable_minutesLeft =
+                    Collections.unmodifiableMap(minutesLeft);
+        }
+        return unmodifiable_minutesLeft;
+</code></pre>
+<p>As stated in the <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Collections.html">Javadoc for this method</a>, it:</p>
+<blockquote>
+<p>Returns an unmodifiable view of the specified map. Query operations on the returned map &quot;read through&quot; to the specified map, and attempts to modify the returned map, whether direct or via its collection views, result in an <code>UnsupportedOperationException</code>.</p>
+</blockquote>
+<p>That is, it creates a new <strong>proxy</strong> object that restricts what the caller can do. If you look at the source code, you'll see a single-line method body:</p>
+<pre><code class="language-java">return new UnmodifiableMap&lt;&gt;(m);
+</code></pre>
+<p>Hey, that's <em>dependency injection</em>! The <code>UnmodifiableMap</code> wraps some other <code>Map</code> instance, and takes that instance as a constructor parameter. The <code>UnmodifiableMap</code> class embodies these unmodifiable proxies. Here's a copy/paste of its declaration:</p>
+<pre><code class="language-java">private static class UnmodifiableMap&lt;K,V&gt; implements Map&lt;K,V&gt;, Serializable { 
+    ...
+}    
+</code></pre>
+<p>Don't worry about <code>Serializable</code> or <code>static class</code>; these are not important! What <em>is</em> important is that the Java standard library really is just creating a new kind of <code>Map</code> whose sole purpose is <em>defending</em> another <code>Map</code> from modification. If you browse the code you can see various ways the authors have carefully considered potential threats. (In fact, skimming the Javadoc for <code>Collections</code> is a great idea in general. There are good lessons there.)</p>
+<p>This solution fits our needs nicely. We'll just return an <em>unmodifiable</em>, canonical <code>Map</code> to every caller. It's quick and easy, and unless you really want the caller to be able to modify the underlying map, is significantly better than a defensive copy alone. We've:</p>
+<ul>
+<li>protected the internal <code>minutesLeft</code> map from modification;</li>
+<li>avoided memory bloat by using a canonical public-facing object; and</li>
+<li>ensured that all callers get the same view.</li>
+</ul>
+<details>
+<summary>Click to see diagram</summary>
+<p><img src="./dispatcher3.png" alt="Dispatcher 3" /></p>
+</details>
+<p>This solution isn't perfect yet, but we'll stop here for today. It's good enough for our purposes. That said, there <em>are</em> a few flaws. Can you spot some of them?</p>
+<details>
+<summary>Think, then click!</summary>
+<p>Here are a couple:</p>
+<ul>
+<li>We've only protected one level of the reference structure: the <code>TA</code> keys of the map are still exposed to the caller, and if the <code>TA</code> class allows modification, we've just handed the ability to change <code>TA</code> state over to the caller.</li>
+<li>Calling this specific method will only work if we want <em>exactly the same</em> interface given to the caller as we have internally (we store a map, so we produce an unmodifiable map). </li>
+</ul>
+</details>
+<h2 id="bringing-all-that-together-the-proxy-pattern"><a class="header" href="#bringing-all-that-together-the-proxy-pattern">Bringing All That Together: The Proxy Pattern</a></h2>
+<p>What we just did is an example of something called the <em>proxy pattern</em>. Yes, another pattern!</p>
+<p>A <em>proxy</em> class wraps another object and provides all the same interfaces, but might possibly restrict or change the exact behavior of the promised methods. This pattern is related to other <em>structural patterns</em> like (e.g.):</p>
+<ul>
+<li><em>decorator</em> (which adds in additional functionality to a class); or</li>
+<li><em>adapter</em> (which modifies one interface into another). 
+There are more than 20 patterns in the <a href="https://learning.oreilly.com/library/view/design-patterns-elements/0201633612/fm.html">classic book</a>, and we won't talk about them all explicitly in class. </li>
+</ul>
+<div id="admonition-timeless-design-ideas" class="admonition admonish-note">
+<div class="admonition-title">
+<p>Timeless Design Ideas</p>
+<p><a class="admonition-anchor-link" href="#admonition-timeless-design-ideas"></a></p>
+</div>
+<div>
+<p>We stress the strategy pattern and proxy pattern in 0320/1340 because they are tools you'll be able to use over and over throughout your career, no matter what language you're working in. Moreover, their variants (like the above 2) are relatively simple adaptations of the basic idea. So they end up being multi-taskers.</p>
+</div>
+</div>
+<p>Calling <code>Collections.unmodifiableMap</code> implements the proxy pattern for us, provided we're trying to proxy a <code>Collection</code> in a very specific way. But what if we want to proxy something else, or proxy in a different way—perhaps to only allow the addition of new <code>TA</code> entries, but not modification of old ones? </p>
+<p>Let's build our own class for that. We'll define it <em>inside</em> the class definition of <code>HoursDispatcher</code>. This makes it an <em>inner</em> class. Instances of inner classes (by default, anyway) are tied to specific instances of the outer class, and get access to all the fields of the outer class. So our <code>LimitedTATimesMap</code> method below will be able to reference, e.g., the <code>minutesLeft</code> field of its parent object. </p>
+<p>Because our proxy class provides the <code>Map</code> interface, we need to define quite a few methods. Most (like <code>size()</code>) are straightforward, and I'll omit almost all of them for brevity. Others, like <code>remove()</code>, we want to prohibit entirely, and so they just throw an <code>UnsupportedOperationException</code> if they are called. For <code>put()</code>, we'll make sure that the TA isn't already in the map; if they are, we'll throw the same exception. If not, we'll update the internal map.</p>
+<pre><code class="language-java=">class LimitedTATimesMap implements Map&lt;String, Integer&gt; {
+    @Override
+    public int size() {
+        return minutesLeft.size();
+    }
+    @Override
+    public Integer remove(Object key) {
+        throw new UnsupportedOperationException(&quot;remove&quot;);
+    }
+    @Override
+    public Integer put(TA key, Integer value) {
+        if(minutesLeft.containsKey(key))
+            throw new UnsupportedOperationException(&quot;put&quot;);
+        return minutesLeft.put(key, value);
+    }
+    // other methods are straightforward or throw an exception
+}
+</code></pre>
+<h2 id="application-caching"><a class="header" href="#application-caching">Application: Caching</a></h2>
+<p>Since proxies <em>filter access</em> to existing methods, they're very useful for adding on features to an existing method, like caching or authentication. Here's a quick example of what I mean. Think about the the search functionality you're writing for Sprint 1.2. What happens if someone searches the same CSV data for the same thing twice in a row? Naively, the class would re-run the search, right?</p>
+<pre><code class="language-java=">/** This is a toy example, and *not* meant to be as complete or well-engineered as your Sprint 1.2.
+    I'm using `Datasource` to represent some class that provides the data to search in. It might 
+    be a `Parser`, but it might be other things too. */
+public class Searcher {
+    private final Datasource source;
+    public Searcher(Datasource datasource) {
+        this.source = datasource; 
+    }
+
+    /** This doesn't do as much as your Sprint 1.2 needs to, but illustrates my point. */
+    public boolean search(String content) {
+        for(List&lt;String&gt; row : source.entries()) {
+            for(String value : row) {
+                if(value.equals(content)) return true;
+            }
+        }
+        return false;
+    }
+}
+</code></pre>
+<p>But we can use the proxy pattern to add some smarter <em>caching</em> to this basic functionality. It will even let us <em>avoid modifying the original class</em>, provided that we engineered the original well. To do that, let's define an interface to implement. We'll go back and add <code>implements Searchable</code> to the original class. </p>
+<pre><code class="language-java=">/** Again, not quite as flexible as your Sprint 1.2. */
+public interface Searchable {
+    public boolean search(String content);
+}
+</code></pre>
+<p>Now anybody can write a class that also implements <code>Searchable</code>. They can use dependency injection to proxy another <code>Searchable</code> object, and add extra depth they need to <code>search()</code>. </p>
+<pre><code class="language-java=">public class CachingSearcher implements Searchable {
+    private final Searcher wrapped;
+    private final HashMap&lt;String, Boolean&gt; foundCache = new HashMap&lt;&gt;();
+
+    public CachingSearcher(Searcher toWrap) {
+        this.wrapped = toWrap;
+    }
+
+    /** If the cache has a value, use it immediately. Otherwise ask the wrapped searcher what
+      to say. Then save its answer in our cache before returning its answer. */
+    @Override 
+    public boolean search(String content) {
+        if(foundCache.containsKey(content))
+            return foundCache.get(content);
+        boolean result = wrapped.search(content);
+        foundCache.put(content, result);
+        return result; 
+    }
+}
+</code></pre>
+<p>This is a <em>really</em> simple caching approach. For one thing, it runs out of memory quickly at scale, because we keep accumulating entries. We might run out of memory if we don't have a way to evict entries that haven't been requested in a while. But that's algorithmics, not object-oriented design. We could use the same proxy pattern idea to implement even the most complex cache.</p>
+<h2 id="supplemental-material-more-advanced-structural-patterns"><a class="header" href="#supplemental-material-more-advanced-structural-patterns">Supplemental Material: More Advanced Structural Patterns</a></h2>
+<p>I'm not sure if time will permit covering these patterns at a later date. They're modifications of the basic proxy idea, and might be useful for you to know about, so I'm including them here in the notes as supplemental material. If we have time later in the semester, I'll talk about them!</p>
+<p>Note: I'm going to use this to also introduce some optional Java syntax you may not be aware of. In particular, Java has supported anonymous functions (which you may have heard referred to as <em>lambdas</em>) for years.</p>
+<h3 id="another-option-adapter-pattern"><a class="header" href="#another-option-adapter-pattern">Another Option: Adapter Pattern</a></h3>
+<p>Let's try to protect the <code>TA</code> objects themselves from modification.  One reasonable course would be to create a proxy class for <code>TA</code>s. However, what if the caller doesn't really <em>need</em> <code>TA</code> objects, but just wants to know the names of all the TAs currently helping students? Then we shouldn't return the objects!</p>
+<p>Let's build an <em>adapter</em> that converts the <code>Map&lt;TA, Integer&gt;</code> to a <code>Collection&lt;String&gt;</code>. There are many applications for this pattern: any time you have two libraries that need to interact but <em>don't agree</em> on an interface, for instance. This is just one example.</p>
+<p>The implementation is very similar to the proxy above (and I'll omit many methods that are straightforward):</p>
+<pre><code class="language-java=">class OnDutyTAsView implements Collection&lt;String&gt; {
+    @Override
+    public int size() {
+        return minutesLeft.size();
+    }
+    @Override
+    public Iterator&lt;String&gt; iterator() {
+        // FP approach (concise); can also use an anonymous class
+        return minutesLeft.keySet().stream().map(ta -&gt; ta.name).iterator();
+    }
+    // other methods straightforward or throw exception
+}
+</code></pre>
+<p>Notice that the view presents a <code>Collection</code> interface, but it isn't a <code>HashSet</code> or <code>ArrayList</code>. It's a new way for callers to access the <code>minutesLeft</code> map in a restricted, safe way. All callers will share the same up-to-date adapter reference, but none will be able to modify the map or the objects it contains.</p>
+<p>What's a &quot;stream&quot;? <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html">Something that's been around since Java 8</a>! It's an interface that supports functional operators like <code>map</code> and <code>filter</code>, among many others. According to the docs, it's:</p>
+<blockquote>
+<p>A sequence of elements supporting sequential and parallel aggregate operations.</p>
+</blockquote>
+<p>You can do the above with anonymous classes, or with your own class that implements <code>Iterator&lt;String&gt;</code>, but I prefer this way.</p>
+<h3 id="multiple-student-queues-facade-pattern"><a class="header" href="#multiple-student-queues-facade-pattern">Multiple Student Queues: Facade Pattern</a></h3>
+<p>Suppose we have a <em>variety</em> of sources for student-signup data. How would we deal with not just one, but many <code>Iterator&lt;Student&gt;</code> objects being given to our <code>HoursDispatcher</code>? </p>
+<p>Well, we have a design decision to make. Let's fill in a skeleton, and what we know how to do:</p>
+<pre><code class="language-java=">
+public class IteratorAggregator&lt;T&gt; implements Iterator&lt;T&gt; {
+    List&lt;Iterator&lt;T&gt;&gt; queues = new ArrayList&lt;&gt;();
+
+    IteratorAggregator(Collection&lt;Iterator&lt;T&gt;&gt; startQueues) {
+        queues.addAll(startQueues);
+    }
+
+    @Override
+    public boolean hasNext() {
+        // &quot;Lambda can be replaced with method reference):
+        // return queues.stream().anyMatch(Iterator::hasNext);
+        return queues.stream().anyMatch(it -&gt; it.hasNext());
+    }
+
+    @Override
+    public T next() {
+        // We have a design decision to make...
+        return null;
+    }
+}
+</code></pre>
+<p>What's the decision?</p>
+<details>
+<summary>Think, then click!</summary>
+How should the contents of the iterators be woven together? Should we loop through the iterators round-robin, and make new arrivals wait until that iterator comes around again? Or should we have a priority system where we'll always take values from earlier iterators, even if the later iterators never get to go? 
+<p>Should the contents of the queue be shuffled? What does it mean to shuffle a queue when new students may be arriving constantly?</p>
+</details>
+<p>Once we make these decisions, we could implement a specific approach <strong>and document it</strong>. We could also ask for a strategy (and document that, too).</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../equality-contracts/equality-contracts.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../apis-integration/apis-integration.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../equality-contracts/equality-contracts.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../apis-integration/apis-integration.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

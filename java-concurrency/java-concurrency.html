@@ -1,0 +1,432 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Java Concurrency - CSCI 0320 Notes</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../././mdbook-admonish.css">
+        <link rel="stylesheet" href=".././mdbook-admonish.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item affix "><a href="../home.html">How to read these notes</a></li><li class="chapter-item "><a href="../success-in-0320/success-in-0320.html"><strong aria-hidden="true">1.</strong> Success in 0320</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../success-in-0320/recipe.html"><strong aria-hidden="true">1.1.</strong> Debugging Recipe</a></li></ol></li><li class="chapter-item "><a href="../comparators-and-testing/comparators-and-testing.html"><strong aria-hidden="true">2.</strong> More Strategies, More Testing</a></li><li class="chapter-item "><a href="../mocking-console/mocking-console.html"><strong aria-hidden="true">3.</strong> UIs, Testing More Than Methods</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../equality-contracts/equality-contracts.html"><strong aria-hidden="true">3.1.</strong> OPTIONAL: Equality is Hard, Caching</a></li></ol></li><li class="chapter-item "><a href="../proxies-adapters/proxies-adapters.html"><strong aria-hidden="true">4.</strong> Proxies and Adapters</a></li><li class="chapter-item "><a href="../apis-integration/apis-integration.html"><strong aria-hidden="true">5.</strong> Web APIs and Integration Testing</a></li><li class="chapter-item "><a href="../slides-links/groups-and-code-review.html"><strong aria-hidden="true">6.</strong> Group Projects and Code Review (Slides)</a></li><li class="chapter-item "><a href="../html-react-playwright/html-react-playwright.html"><strong aria-hidden="true">7.</strong> Webapps: HTML, TypeScript, and Testing</a></li><li class="chapter-item "><a href="../generics-wildcards/generics-wildcards.html"><strong aria-hidden="true">8.</strong> Generics, Typecasting, and Narrowing</a></li><li class="chapter-item expanded "><a href="../java-concurrency/java-concurrency.html" class="active"><strong aria-hidden="true">9.</strong> Java Concurrency</a></li><li class="chapter-item "><a href="../promises-fetch-prs/promises-fetch-prs.html"><strong aria-hidden="true">10.</strong> Promises and TypeScript Asynchrony</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CSCI 0320 Notes</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="sp23-concurrency-java"><a class="header" href="#sp23-concurrency-java">sp23 Concurrency (Java)</a></h1>
+<p>The material in these notes goes deeper than we can cover in class. If you're having issues with concurrency in Java on your term project, <strong>read these notes</strong>! If you're having trouble with the difference between promises (coming next lecture) and threads, <strong>read these (and the next) notes!</strong></p>
+<h2 id="logistics"><a class="header" href="#logistics">Logistics</a></h2>
+<p><strong>Your term project group forms are due tonight.</strong> Let's spend some time in class on group formation... </p>
+<h2 id="livecode-important"><a class="header" href="#livecode-important">Livecode (Important)</a></h2>
+<p>Today's examples will draw from the scripts and prompts in the concurrent queue manager livecode project. The livecode also contains material that isn't covered in class, including:</p>
+<ul>
+<li>a more advanced used of the adapter pattern (a relative of proxy) to merge together multiple student queues; and</li>
+<li>a separate thread example showing how to leverage threads for performance (thread pools).</li>
+</ul>
+<h2 id="logistics-reading"><a class="header" href="#logistics-reading">Logistics: Reading</a></h2>
+<p>The reading will be in Chapter 11 of <a href="https://www-oreilly-com.revproxy.brown.edu/library/view/effective-java/9780134686097/?ar">Effective Java</a>. The whole chapter may be useful to you when you start to program with concurrency in Java. 
+Only <em>Item 78</em> (the first in Chapter 11) is required reading. Please do read it; concurrency bugs are some of the most frustrating and time-consuming to encounter. Note especially that there are multiple things that can go wrong in a simple data access. Even if only <em>one</em> thread is writing (unlike our example today) synchronization may still be needed to ensure that other threads <em>read</em> the updated value consistently.</p>
+<p>Continue to think defensively as you begin to use concurrency in your projects.</p>
+<h3 id="optional-reference-materials"><a class="header" href="#optional-reference-materials">Optional Reference Materials</a></h3>
+<p>Save these for use later. Patterns (in OO) Generics (in Java) are extremely expressive, and if you want to learn more, use these resources.</p>
+<p><a href="https://www-oreilly-com.revproxy.brown.edu/library/view/design-patterns-elements/0201633612/?ar">The &quot;Gang of Four&quot; patterns book</a> discusses, in detail, many more patterns than we can cover in lecture.</p>
+<p><a href="http://www.angelikalanger.com/GenericsFAQ/JavaGenericsFAQ.html">Angelika Langer's Java Generics FAQ</a> is a wonderfully detailed reference for Java generics. </p>
+<h2 id="motivating-concurrency"><a class="header" href="#motivating-concurrency">Motivating Concurrency</a></h2>
+<p>Let's go back to the hours queue dispatcher. You can find a more complete version of the example in the project linked at the beginning of these notes.</p>
+<p>If we run the <code>main</code> method in the <code>Main</code> class of this new example, we'll get something like this (possibly with TAs changed from year to year):</p>
+<pre><code>Dispatcher: Welcome to TA hours! Today we're discussing Concurrency
+Dispatcher: Hi Nim; you'll be seen by Galen
+Galen says: Hello Nim!
+Galen says: Goodbye Nim, I hope that helped!!
+Dispatcher: Hi Alice; you'll be seen by Jenny
+Jenny says: Hello Alice!
+Jenny says: Goodbye Alice, I hope that helped!!
+Dispatcher: Hi Bob; you'll be seen by Galen
+Galen says: Hello Bob!
+Galen says: Goodbye Bob, I hope that helped!!
+Dispatcher: Hi Charli; you'll be seen by Jenny
+Jenny says: Hello Charli!
+Jenny says: Goodbye Charli, I hope that helped!!
+Dispatcher: Hi Boatswain; you'll be seen by Galen
+Galen says: Hello Boatswain!
+Galen says: Goodbye Boatswain, I hope that helped!!
+Dispatcher: Hi Bucky; you'll be seen by Jenny
+Jenny says: Hello Bucky!
+Jenny says: Goodbye Bucky, I hope that helped!!
+Dispatcher: Nobody waiting in queue, will check again in three seconds.
+</code></pre>
+<p>By itself, this doesn't look too bad. But what happens if we watch the timing of these events? </p>
+<pre><code>11:27:21 Dispatcher: Welcome to TA hours! Today we're discussing Concurrency
+11:27:21 Dispatcher: Hi Nim; you'll be seen by Galen
+11:27:21 Galen says: Hello Nim!
+11:27:22 Galen says: Goodbye Nim, I hope that helped!!
+11:27:22 Dispatcher: Hi Alice; you'll be seen by Jenny
+11:27:22 Jenny says: Hello Alice!
+11:27:24 Jenny says: Goodbye Alice, I hope that helped!!
+11:27:24 Dispatcher: Hi Bob; you'll be seen by Galen
+11:27:24 Galen says: Hello Bob!
+11:27:25 Galen says: Goodbye Bob, I hope that helped!!
+11:27:25 Dispatcher: Hi Charli; you'll be seen by Jenny
+11:27:25 Jenny says: Hello Charli!
+11:27:27 Jenny says: Goodbye Charli, I hope that helped!!
+11:27:27 Dispatcher: Hi Boatswain; you'll be seen by Galen
+11:27:27 Galen says: Hello Boatswain!
+11:27:29 Galen says: Goodbye Boatswain, I hope that helped!!
+11:27:29 Dispatcher: Hi Bucky; you'll be seen by Jenny
+11:27:29 Jenny says: Hello Bucky!
+11:27:30 Jenny says: Goodbye Bucky, I hope that helped!!
+11:27:30 Dispatcher: Nobody waiting in queue, will check again in three seconds.
+11:27:33 Dispatcher: Nobody waiting in queue, will check again in three seconds.
+</code></pre>
+<p>This doesn't look so great. We have some problems to solve. If you look at the code, you might see other problems too. Here are three:</p>
+<ul>
+<li>Challenge 1: the dispatcher is waiting for <em>an individual TA</em> to finish helping a student before allocating the next TA. Lots of TAs will be idle, and students will wait a lot longer.</li>
+<li>Challenge 2: maybe we'd like to add TAs while the dispatcher is running.</li>
+<li>Challenge 3: how can new students join the queue?</li>
+</ul>
+<p>All of these problems are related to today's topic: <em>concurrency</em>:</p>
+<ul>
+<li>We'd like TAs to be able to help students without holding up the dispatcher from allocating other students to other TAs. <em>We need the dispatcher to run concurrently with the TAs.</em></li>
+<li>We need a way for the <code>Main</code> class to call <code>dispatcher.addTA()</code> after the dispatcher starts running. But right now, there's no way for the <code>Main</code> class to run independently of the dispatcher. <em>We need the dispatcher to run concurrently with the <code>main()</code> method.</em></li>
+<li>We need a way for new students to be added to the queue. This is the same problem as above!</li>
+</ul>
+<p>Concerns like these pop up all the time in engineering. (The problem isn't just that the way I've written the dispatcher library is not very realistic.)</p>
+<h2 id="how-does-concurrency-help-us"><a class="header" href="#how-does-concurrency-help-us">How does concurrency help us?</a></h2>
+<p>A program is <em>concurrent</em> if it involves multiple simultaneous threads of execution. Note that this doesn't necessarily mean that these multiple threads really are running at the same time, just that they are &quot;executing&quot;. We will make a distinction in this class between concurrency and <em>parallelism</em>, where threads really are executing at the same time, usually on multi-core hardware or in the cloud. A parallel program is always concurrent, but a concurrent program may or may not actually be parallel. </p>
+<p>To illustrate this idea, consider what your computer is doing right now. You're probably running more programs than you can count, even before you think about what your operating system is doing. How many CPU cores do you have? Probably not more than a dozen (and likely fewer). So not all of the concurrency that's happening can be parallelized: you'd need hundreds of cores for that! Instead, your operating system runs a <em>scheduler</em> program which allocates slices of time to different threads of execution. </p>
+<p>Concurrency is more common than you might imagine. Because we're working with Java, <em>every</em> program you write is concurrent, even a &quot;Hello World!&quot; program. Why?</p>
+<details>
+<summary><B>Think, then click!</B></summary>
+<p>The garbage collector!</p>
+</details>
+<h3 id="using-concurrency-to-get-what-we-want"><a class="header" href="#using-concurrency-to-get-what-we-want">Using concurrency to get what we want</a></h3>
+<p>Imagine logically splitting our big program into separate, independent &quot;threads&quot; of execution: one that runs the dispatcher, another that runs when a TA helps a student, and so on. We just need to separate them from each other, and help them communicate.</p>
+<p>So far we've only had one thread: the one that starts up in our <code>main</code> method. How do we get another, and which should it correspond to?</p>
+<details>
+<summary><B>Think, then click!</B></summary>
+<p>There are a few options. But let's start simply, and not try to solve <em>all</em> the challenges at once. We'll have every TA correspond to their own thread, and have those threads woken up by the dispatcher.</p>
+</details>
+<h3 id="runnables-and-threads"><a class="header" href="#runnables-and-threads">Runnables and Threads</a></h3>
+<p>Java has an interface called <code>Runnable</code>, which requires the implementation of a <code>run()</code> method. It's also got a class called <code>Thread</code>, which has a constructor that accepts a <code>Runnable</code> and a method called <code>start()</code>. So, as a first cut, let's make <code>TA</code> implement <code>Runnable</code>, and whenever we dispatch a student to that TA, we run the thread.</p>
+<pre><code class="language-java">public class TA implements Runnable {
+    
+    // ...
+    
+    public void seeStudent(Student student) throws TABusyException {
+        if(helping != null)
+            throw new TABusyException();
+        helping = student;
+        new Thread(this).start(); // NOT the same as .run()
+    }
+
+    // ...
+    
+    @Override
+    public void run() {
+        // help the student (simulate by pausing for 1.5 seconds -- we're VERY EFFICIENT)
+        System.out.println(timestamp()+&quot; &quot;+name+ &quot; says: Hello &quot;+helping+&quot;!&quot;);
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            System.out.println(&quot;Oops -- terminated!&quot;); // not a great message
+            System.exit(1);
+        }
+        System.out.println(timestamp()+&quot; &quot;+name+ &quot; says: Goodbye &quot;+helping+&quot;, I hope that helped!!&quot;);
+        helping = null;
+
+    }
+}
+</code></pre>
+<p>Now, when we run, we'll see:</p>
+<pre><code>11:45:32 Dispatcher: Welcome to TA hours! Today we're discussing Concurrency
+11:45:32 Dispatcher: Hi Nim; you'll be seen by Galen
+11:45:32 Dispatcher: Hi Alice; you'll be seen by Jenny
+11:45:32 Galen says: Hello Nim!
+11:45:32 Jenny says: Hello Alice!
+11:45:33 Jenny says: Goodbye Alice, I hope that helped!!
+11:45:33 Galen says: Goodbye Nim, I hope that helped!!
+11:45:33 Dispatcher: Hi Bob; you'll be seen by Jenny
+11:45:33 Dispatcher: Hi Charli; you'll be seen by Galen
+11:45:33 Jenny says: Hello Bob!
+11:45:33 Galen says: Hello Charli!
+11:45:35 Galen says: Goodbye Charli, I hope that helped!!
+11:45:35 Jenny says: Goodbye Bob, I hope that helped!!
+11:45:35 Dispatcher: Hi Boatswain; you'll be seen by Galen
+11:45:35 Dispatcher: Hi Bucky; you'll be seen by Jenny
+11:45:35 Galen says: Hello Boatswain!
+11:45:35 Jenny says: Hello Bucky!
+11:45:35 Dispatcher: Nobody waiting in queue, will check again in three seconds.
+11:45:36 Jenny says: Goodbye Bucky, I hope that helped!!
+11:45:36 Galen says: Goodbye Boatswain, I hope that helped!!
+11:45:38 Dispatcher: Nobody waiting in queue, will check again in three seconds.
+11:45:41 Dispatcher: Nobody waiting in queue, will check again in three seconds.
+</code></pre>
+<p>Much better! </p>
+<h3 id="concurrency-vs-parallelism-again"><a class="header" href="#concurrency-vs-parallelism-again">Concurrency vs. Parallelism (Again)</a></h3>
+<p>The <code>TA</code> thread and the main thread really are running separately. It's not clear whether they are truly running <em>in parallel</em>, though: the operating system and Java runtime decide that, in part based on how many cores the hardware has available. </p>
+<h2 id="what-could-go-wrong"><a class="header" href="#what-could-go-wrong">What Could Go Wrong?</a></h2>
+<p>Concurrency seems really powerful. But are there any risks associated with it? Let's investigate. </p>
+<p>Suppose we want to record how many students have been seen before the dispatcher terminates. One natural way to do this is by adding a <code>static</code> counter to the dispatcher class:</p>
+<pre><code class="language-java">static int studentsSeen = 0;
+</code></pre>
+<p>Now, every <code>TA</code> can increment this counter in its <code>run</code> method, when the student has been helped:</p>
+<pre><code class="language-java">HoursDispatcher.studentsSeen += 1;
+</code></pre>
+<p>If we tell the dispatcher to print this counter out, we'll see output like this at the end of the queue:</p>
+<pre><code>11:56:10 Dispatcher: Nobody waiting in queue, will check again in three seconds. So far we helped 6 students.
+</code></pre>
+<p>And indeed that's what we see. But let's see how this works <em>at scale</em>. Instead of using these names, we'll create a hundred TAs, and a few thousand students who need to be helped! To keep things simple, we'll just have one queue of students.</p>
+<pre><code class="language-java">List&lt;Student&gt; oneQueue = new ArrayList&lt;&gt;();
+final int numStudents = 30000;
+final int numTas = 1000;
+for(int i = 1;i&lt;=numStudents; i++)
+    oneQueue.add(new Student(&quot;Student&quot;+i));
+HoursDispatcher dispatcher = new HoursDispatcher(oneQueue.iterator(), &quot;Concurrency 2&quot;);
+for(int i = 1;i&lt;=numTas;i++)
+    dispatcher.addTA(new TA(&quot;TA&quot;+i), 120);
+dispatcher.dispatch();
+</code></pre>
+<p>So that we can simulate helping so many students without waiting, let's reduce the delay time to help a student: students will be helped instantaneously! We'll also remove the printing in the <code>TA</code> class, since that slows things down. </p>
+<p>We might see something like this:</p>
+<p><code>12:10:52 Dispatcher: Nobody waiting in queue, will check again in three seconds. So far we helped 299993 students.</code></p>
+<p>Uh oh.</p>
+<p>What's going on? (By the way, this issue might be less likely to happen if we left the printing in.)</p>
+<details>
+<summary>Think, then click!</summary>
+<p>I've made the classic <em>thread safety</em> mistake. Incrementing that counter isn't <em>atomic</em>: two threads might be trying to edit it at once. Suppose they both fetch the current value at once, add 1 to that value, and then write. If that sequene of operations happens, the counter will only be increased by one.</p>
+</details>
+</br>
+<p>This sort of issue is <em>pervasive</em> in multi-threaded programming. Do the reading---you'll save yourselves a lot of pain.</p>
+<h2 id="how-can-we-fix-this"><a class="header" href="#how-can-we-fix-this">How Can We Fix This?</a></h2>
+<p>The first approach is old-school synchronization:</p>
+<pre><code class="language-java">synchronized (HoursDispatcher.class) {
+    HoursDispatcher.studentsSeen += 1;
+}
+</code></pre>
+<p>This will tell Java that only one <code>TA</code> can be running that increment operation at a time. (The argument to <code>synchronized</code> helps disambiguate between multiple dimensions of synchronization we might have happening).</p>
+<p>Another approach is to use <em>thread safe objects</em> from Java's standard library. In particular, I could have used an <code>AtomicInteger</code> for the counter:</p>
+<pre><code class="language-java">static AtomicInteger studentsSeen = new AtomicInteger(0);
+
+...
+    
+HoursDispatcher.studentsSeen.incrementAndGet();
+</code></pre>
+<p>Both of these approaches fix the problem.</p>
+<h2 id="more-concurrency-tips"><a class="header" href="#more-concurrency-tips">More Concurrency Tips <A name="tips"></A></a></h2>
+<p>There are many, many ways to manage concurrency in Java and other languages. Next time we'll introduce the <em>future/promise</em> approach, which is made simpler in TypeScript via the <code>async</code> and <code>await</code> keywords.</p>
+<p>There's another file, <code>ThreadPoolDemo.java</code>, in the livecode repo that demonstrates another way of working with threads in Java that's very well suited to applications where you need to carve up a lot of work (which you hope to parallelize across multiple cores) or don't yet know how much work you have to do. We won't cover it in lecture, but it could be a useful example for you on your projects.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../generics-wildcards/generics-wildcards.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../promises-fetch-prs/promises-fetch-prs.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../generics-wildcards/generics-wildcards.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../promises-fetch-prs/promises-fetch-prs.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
