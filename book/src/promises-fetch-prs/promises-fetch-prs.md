@@ -1,7 +1,5 @@
 # TypeScript/JavaScript Asynchrony
 
-**NOTE: these are provided in advance of class, but changes may be made and the livecode may not yet be accessible.**
-
 ## JavaScript "Concurrency"
 
 Today's livecode will be in the repository under [oct17_ts_fetch](https://github.com/cs0320/class-livecode/tree/main/F24/oct17_ts_fetch). Get the code to follow along. There's also more examples in the repository than we can cover in a single class, so you might find it useful for reference as well.
@@ -25,7 +23,7 @@ while(true) {}
 
 What's happening here? JavaScript&mdash;a language built for the web&mdash;is a language whose design is _deeply and unavoidably_ tangled with concurrency. 
 
-And yet, JavaScript itself (barring some modern extensions) is _single threaded_. We don't create a new thread to wait for a web request to finish. Instead, we create a callback, like we would for a button being clicked. 
+And yet, JavaScript itself (barring [some modern extensions](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers), which are best used for expensive tasks that would block important things like UI interactivity) is _single threaded_.  We don't create a new thread to wait for a web request to finish. Instead, we create a callback, like we would for a button being clicked. 
 
 In principle, callbacks are _called_ as soon as possible. But "as soon as possible" is complicated.
 
@@ -81,7 +79,7 @@ Thinking about what we just learned about concurrency, and what we know about Ty
 
 If it's synchronous, then the page-load process might be delayed noticably. And slowing down page loading to the point a user notices is a cardinal sin on the web: it's "in the folklore" that [a small delay can lead to a drop in revenue](https://news.ycombinator.com/item?id=273900).
 
-But if it's asynchronous (i.e., doesn't block) then what will be printed? Hopefully not `undefined` or `null`---the data will get here sometime! Instead, `fetch` returns a datatype whose entire purpose is to represent data that doesn't yet exist: a _promise_.
+But if it's asynchronous (i.e., doesn't block) then what will be printed? Hopefully not `undefined` or `null`&mdash;the data will almost certainly get here _eventually_. So `fetch` returns a datatype whose entire purpose is to represent data that doesn't yet exist: a _promise_.
 
 ![](https://i.imgur.com/bvFibPk.png)
 
@@ -90,6 +88,10 @@ A promise can either be _resolved_, in which case the value exists within (but t
 **Aside:** Many modern languages have promise libraries, and promises are a common way to manage asynchronous computation (like web requests). This is not just about TypeScript/JavaScript.
 
 But because of how JavaScript works, the promise _cannot be resolved_ until the current code finishes running. That is, the `console.log` statement can't print the right answer until _after the `console.log` executes_, because the right answer won't exist until then. 
+
+~~~admonish note title="But how does `console.log` work, then?"
+Because the _browser_ has multiple threads. It's only JavaScript evaluation that is single threaded. So we can see the update in the browser console before the currently-running JavaScript finishes. 
+~~~
 
 Clearly, we need something to help make this work. 
 
