@@ -1,7 +1,5 @@
 # Software as Hammer, MBT/PBT
 
-**This is supplementary material, and doesn't correspond _exactly_ to a lecture slot.** In particular, we didn't do the "hammer" discussion, and the PBT portion is supported by the livecode. 
-
 ## Is Software Like a Hammer?
 
 Let's start with a short discussion.
@@ -14,20 +12,11 @@ It's an appealing argument! In some ways, software might indeed be viewed as mor
 
 My father was a carpenter, and we had a [table saw](https://en.wikipedia.org/wiki/Table_saw) in our garage. A table saw is a terrifying piece of machinery; it's got a large rotary blade that slices through wood as you push it along the table. It's also a _complex_ piece of machinery: there are various levers and dials to control the height of the blade and other factors, but also numerous safety features. Dad's didn't have as many as modern saws have, but there was still an emergency stop button and a blade guard.
 
-My point is: software isn't a hammer. Software is more like a table saw. If you don't think about safety when you design a table saw, people are going to get badly hurt. 
+My point is: software isn't a hammer. Software is more like a table saw. If you don't think about safety when you design a table saw, people are going to get badly hurt. Yeah, you can still hurt yourself with a hammer (I have, multiple times). But the greater the degree of potential harm, the more careful thought and added safety-features are called for. 
 
-Yeah, you can still hurt yourself with a hammer (I have, multiple times). But the greater the degree of potential harm, the more careful thought and added safety-features are called for. 
-
-And don't get lured in by "software is like a hammer" statements. Something can be morally neutral in itself and still warrant careful design for safety (or a decision not to make it at all). 
-
-There's a quote from Robert Oppenheimer I like, from the ["personnel hearing"](https://www.osti.gov/opennet/hearing) in which he lost his clearance:
+So don't get lured in by "software is like a hammer" statements. Something can be morally neutral in itself and still warrant careful design for safety (or a decision not to make it at all). There's a quote from Robert Oppenheimer I like, from the ["personnel hearing"](https://www.osti.gov/opennet/hearing) in which he lost his clearance:
 
 > "When you see something that is technically sweet, you go ahead and do it and argue about what to do about it only after you’ve had your technical success. That is the way it was with the atomic bomb."
-
-
-
-
-
 
 ## Beyond Fuzz Testing
 
@@ -48,26 +37,35 @@ How long do you think it would take to loop through every possible primitive 32-
 
 <details>
 <summary>Think, then click!</summary>
+
 About 90 seconds, and that's on a computer from several years ago. [Several years ago.](https://randomascii.wordpress.com/2014/01/27/theres-only-four-billion-floatsso-test-them-all/)
+
 </details>
 
-Here, we don't even need random inputs! Of course, if the function took 64-bit `double` values, the story would be different, and we'd check random inputs.
+Here, we don't even need random inputs! Of course, if the function took 64-bit `double` values, the story would be different, because there are too many of those to loop through exhaustively in a reasonable timeframe. So, in that case, we'd fall back to checking random inputs.
 
-See [the livecode for today](https://github.com/cs0320/class-livecode/tree/main/S24/apr9_mbt_pbt). We'll test my implementation of bubble sort via model-based testing. Concretely:
-* my bubble-sort method is the *program under test*; and 
-* Java's standard `Collections.sort` method is the *known-good* artifact.
+### Model Based Testing
 
-### What just happened?
-
+_Model-based Testing_ is using a separate artifact that _models_ the desired behavior of the system as either an oracle for correctness or a means of guiding test input generation. Today we'll look at the former: see [the livecode for today](https://github.com/cs0320/class-livecode/tree/main/F24/oct29_mbt_pbt), where we'll test my implementation of bubble sort. Concretely:
+* My bubble-sort method is the *program under test*. We want to evaluate whether or not it is correct.
+* Java's standard `Collections.sort` method is the *known-good* artifact. It will serve as our oracle of correctness.
 
 **Something very important has just happened. Pay attention!**
 
-We have stopped talking about testing against _specific outputs_, and have started testing more abstract _properties_ of outputs. We don't want to know whether the output lists are exactly the same, but we want to know whether they match in terms of nearness to the input goal.
+### What just happened?
 
-## Property-Based Testing (Outline)
+We have stopped talking about testing against _specific outputs_, and have started testing more abstract _properties_ of outputs. In fuzz testing, the property was "doesn't crash". For (this type of) model-based testing, we want to check whether the output lists are exactly the same. But we don't need to encode a specific output, which lets us use randomness to generate inputs and mine for bugs while we sleep.
+
+Other kinds of model-based testing include using modeling languages to sketch desired behavior, or using something like a state machine model to generate traces of user interactions to test (e.g.) data structures or user interfaces.
+
+## Property-Based Testing 
+
+**TIM IS ACTIVELY EDITING THIS SECTION!**
 
 Is there any reason that our properties have to be written in terms of another implementation? No! 
 
 What makes a sorting implementation _correct_? If we can write this check as a method, we can apply the same idea, without needing a naive implementation to check against. 
 
 Again, see the livecode for today for an exercise. **Hint: consider what you need from a sort to call it correct. Is that something you can check in a test method?**
+
+We don't want to know whether the output lists are exactly the same, but we want to know whether they match in terms of nearness to the input goal.

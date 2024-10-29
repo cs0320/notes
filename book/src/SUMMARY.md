@@ -21,14 +21,14 @@
 - [Java Concurrency](./java-concurrency/java-concurrency.md)
 - [Promises and TypeScript Asynchrony](./promises-fetch-prs/promises-fetch-prs.md)
  
+- [MBT and PBT](./mbt_pbt/mbt_pbt.md)
+
  <!-- Generic Types and Wildcards, Fuzz Testing -->
 
 <!-- 
 
 [Thinking About Algorithms](./algorithms/algorithms.md)
 
-
-[MBT and PBT](./mbt_pbt/mbt_pbt.md)
 <!-- [Lecture 13]()
 [Lecture 14]()
 [Lecture 15]()
