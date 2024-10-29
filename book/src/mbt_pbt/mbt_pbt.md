@@ -119,3 +119,9 @@ If we can write a set of properties as a method, we can just use that as our ora
 ```
 
 This powerful technique is called _property-based testing_. 
+
+~~~admonish note title="Further Reading"
+Tim has a paper about teaching PBT, which you can check out [here](https://cs.brown.edu/~tbn/publications/wnk-pj20-pbt.pdf) if you're interested.
+
+There are also many, many PBT libraries that help with random input generation. For example, if you use Python, [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) is great. For other languages, look for the phrase "QuickCheck", which is the name of the original PBT library, which was written for Haskell. For better or worse, Java has _multiple_ such libraries.
+~~~
