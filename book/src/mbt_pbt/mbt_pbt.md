@@ -58,14 +58,64 @@ We have stopped talking about testing against _specific outputs_, and have start
 
 Other kinds of model-based testing include using modeling languages to sketch desired behavior, or using something like a state machine model to generate traces of user interactions to test (e.g.) data structures or user interfaces.
 
+### Be Careful!
+
+How you choose to use the oracle matters. Using _equality_ to compare a result from the oracle and a result from the implementation under test is great sometimes, but not always. To see why, try randomly generating more than just integers&mdash;in particular, try records. The code is in the repository. What happens, and why? 
+
+<details>
+<summary>Think, then click!</summary>
+
+Our comparison fails! The Java-library `sort` and my bubble sort implementation disagree on something. But this disagreement can only happen for more complicated data than integers. Here's an example:
+
+```
+org.opentest4j.AssertionFailedError: 
+Expected :[Student[id=-4, credits=0], Student[id=5, credits=5], Student[id=5, credits=-4]]
+Actual   :[Student[id=-4, credits=0], Student[id=5, credits=-4], Student[id=5, credits=5]]
+```
+
+We have two students who, by the definition of our `compare` method, ought to be considered equal: they have the same student ID! (Note that this is regardless of whether we implemented `.equal` for the record type.) But the two sorts produced different _sub_-orderings for those students. One of these sorts is a _stable_ sort: it preserves the original order of equal elements. The other is not, and may re-order equal elements. 
+
+And yet, both sorts are correct (assuming we didn't require the sort to be stable). 
+
+This problem comes up frequently. Whenever you have a problem that has more than one correct answer, direct comparison of results is perilous. Consider basically every graph or optimization problem: shortest path, change-making, graph coloring, optimal scheduling, ... They all often have multiple correct answers. We'll call these _relational_ problems, because one input can correspond to more than one correct output.
+
+</details>
+
+So how do we deal with this issue? By broadening the way we think about correctness.
+
 ## Property-Based Testing 
 
-**TIM IS ACTIVELY EDITING THIS SECTION!**
+What makes a sorting implementation _correct_? Let's set aside oracles like alternative implementations and models. What makes us look at an output and say "yes, that's right" given an input? 
 
-Is there any reason that our properties have to be written in terms of another implementation? No! 
+<details>
+<summary>Think, then click!</summary>
 
-What makes a sorting implementation _correct_? If we can write this check as a method, we can apply the same idea, without needing a naive implementation to check against. 
+Here are some properties: 
+* the output is sorted;
+* the output has the same elements as the input. 
 
-Again, see the livecode for today for an exercise. **Hint: consider what you need from a sort to call it correct. Is that something you can check in a test method?**
+We touched on this briefly before, but let's be more concrete about what we mean by "the same elements". Really, we mean that the input is a permutation of the output. We need to be precise, since we're about to write a Java method that checks for these properties!
 
-We don't want to know whether the output lists are exactly the same, but we want to know whether they match in terms of nearness to the input goal.
+</details>
+
+If we can write a set of properties as a method, we can just use that as our oracle! Try filling this in, reflecting the properties we want from a correct sort.  
+
+```java 
+// uncomment the test annotation to enable the test
+    // @Test
+    public void pbtSortStudentRecords() {
+        long numIterations = 10000;
+
+        for(int trial=0;trial<numIterations;trial++) {
+            List<Student> input = randomStudentList(3, -5, 5);
+            List<Student> output = new ArrayList<>(items);
+            ExampleSort.bubbleSort(output);    
+
+            // What makes a sort _correct_?
+            // EXERCISE: Write some code that compares `input` and `output` in a 
+            // property-focused way, not via direct comparison.
+        }
+    }
+```
+
+This powerful technique is called _property-based testing_. 
