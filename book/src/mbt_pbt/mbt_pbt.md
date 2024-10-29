@@ -125,3 +125,14 @@ Tim has a paper about teaching PBT, which you can check out [here](https://cs.br
 
 There are also many, many PBT libraries that help with random input generation. For example, if you use Python, [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) is great. For other languages, look for the phrase "QuickCheck", which is the name of the original PBT library, which was written for Haskell. For better or worse, Java has _multiple_ such libraries.
 ~~~
+
+## What's the takeaway?
+
+Two things:
+
+First, randomly generating test inputs is practical and, if done well, powerful. You can use this to mine for bugs while doing other things. 
+
+Second, in situations where there are _multiple correct answers_ a program might give, the traditional, `actual_output == expected_output` mode of testing is risky at best. You'll be over-fitting your test suite to whatever your implementation produces today. Then someone comes along and makes a small change, and the program remains correct but a bunch of test cases suddenly break. We can use model-based and property-based testing to avoid that problem. 
+
+Broaden your perspective on testing, and you become a better developer.
+
