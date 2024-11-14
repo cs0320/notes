@@ -7,7 +7,7 @@ These notes combine multiple sources from prior semesters. Broadly, they discuss
 * bloom filters; and 
 * A* search.
 
-They aren't well-organized, because I put them together mid-semester, by request, in the hope they are interesting. We probably won't be able to talk about everything here in class.
+They aren't super well organized, becauase I put them together for a voted-on lecture in the hope they are interesting. We probably won't be able to talk about everything here in class.
 
 ## Thinking About Data Representations
 
@@ -48,16 +48,15 @@ Why is this hard? Because I'm doing the routing at a very high level: I'm workin
 
 ![](https://hackmd.io/_uploads/SyUQYG9mY.png)
 
-
 In short, I need to find the _nearest neighbor_ to the target house, from among a set of post office addresses. 
 
 You could solve this using a list (or set, or any collection) to store the data points, and a `for` loop to iterate through them, seeking the nearest neighbor. The trouble is that a linear-time search won't scale as the dataset grows. Our first go-to data structure, the hash table, won't work for nearest-neighbor---hashing will lose information about locality and closeness that are so vital to solving this problem! 
 
 ~~~admonish tip title="Think Like an Engineer"
-In short, the _interface_ is right, but the _implementation_ isn't. Agree on what you need, and then figure out what the right implementation is afterward. It's OK to start with something inefficient, and it might even let you explore the problem enough that your second implementation is better than it would have been otherwise.
+Agree on what you need from the interface, and then figure out what the right implementation is afterward. It's OK to start with something inefficient, and it might even let you explore the problem enough that your second implementation is better than it would have been otherwise.
 ~~~
 
-What would you use instead? 
+What would you use instead, if you wanted better performance? 
 
 <details>
 <summary><B>Think, then click!</B></summary>

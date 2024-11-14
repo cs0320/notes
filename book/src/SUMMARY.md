@@ -23,11 +23,13 @@
  
 - [MBT and PBT](./mbt_pbt/mbt_pbt.md)
 
+- [Thinking About Algorithms](./algorithms/algorithms.md)
+
+
  <!-- Generic Types and Wildcards, Fuzz Testing -->
 
 <!-- 
 
-[Thinking About Algorithms](./algorithms/algorithms.md)
 
 <!-- [Lecture 13]()
 [Lecture 14]()
