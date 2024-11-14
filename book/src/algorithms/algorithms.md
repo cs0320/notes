@@ -264,7 +264,7 @@ Like with kd-trees, Bloom filters build on a simpler idea; in this case, it's ha
 
 Start with an array of bits. We can use that to implement an approximate membership check: just hash the key you're looking for, and see if the bit in that cell of the array is `true`, rather than `false`.
 
-Here's an example. Suppose we're in charge of Amazon's Prime TV service, and we want to very quickly tell whether a certain CDN node has a show that a local customer requests. We could add a bit array to every node, and when a new piece of media arrived (say, the first chunk of a new series), we'd hash the name of the media and set the corresponding bit to `1`. Like this:
+Here's an example. Suppose we're in charge of Amazon's Prime TV service, and we want to very quickly tell whether a certain content-delivery network (CDN) node has a show that a local customer requests. We could add a bit array to every node, and when a new piece of media arrived (say, the first chunk of a new series), we'd hash the name of the media and set the corresponding bit to `1`. Like this:
 
 ![](https://i.imgur.com/mfzLIUa.png)
 
@@ -278,13 +278,19 @@ Now what happens if there's a collision?
 The key that the 2nd arrival hashes to is _already set to 1_. The array now can't tell the difference between these two media: if a customer requests the second arrival but the first arrival isn't there, the array will report a false positive.
     
 But, either way, a lookup is very, very fast. We can always do a _real_ search through the local media catalogue if the array says we _might_ have what the customer wants. And if the array says it's not here, it definitely isn't.
+
 </details>
+
+In short: this data structure allows _false positives_ but not false negatives. Even so, the false positives might make it seem useless, until you think of it as just one part of an overall solution. The table of bits is _fast_, likely much faster than a real, no-false-positives membership query. If we expect most query responses to be negative, why not try something like:
+* When a query arrives, hash it and check the table of bits. 
+  * If the answer is "no", then we can return false right away.
+  * If the answer is "yes", then we perform the slower, real check and return its result.
 
 ### Scaling The Idea
 
-Bloom Filters are a generalization of this idea. The basic idea is this: why not have _several_ hash functions, and use all the bits those hash functions produce for adding and looking up membership? That is, if we have 3 hash functions and they produce `{13, 2, 118}`, we'd set those 3 bits to true on arrival, and check those 3 bits on a membership check. 
+_Bloom Filters_ are a generalization of this table-of-bits idea. Wwhy not have _several_ hash functions, and use all the bits those hash functions produce for adding and looking up membership? That is, if we have 3 hash functions and they produce `{13, 2, 118}`, we'd set bits `13`, `2` and `118` to true on arrival, and check those same 3 bits on a membership check. 
 
-The trick is in tuning the hash functions, and deciding how big the table needs to be. Other operations, like deletion, also need care to implement properly. 
+We still have the potential for false positives: two keys might hash to the same values across all hash functions, and even if they don't, multiple keys might have separately flipped all of those bits before our query. But, if we tune things right, it's a lot less likely than it was before. The trick is in picking the hash functions and deciding how big the table needs to be. Other operations, like deletion, also need care to implement properly. 
 
 
 
