@@ -1,34 +1,33 @@
 # Security And Threat Modeling (All Too Briefly)
 
-**These notes are an outline, not a complete text. Read accordingly! They are also a draft, and may change before class.**
-
+Today's notes are more of an outline.
 
 ## Taxis
 
-Unfortunately, the article I was planning to discuss today, [Of Taxis and Rai
-nbows](https://tech.vijayp.ca/of-taxis-and-rainbows-f6bc289679a1), is no longer accessible. The corresponding [Hacker News thread](https
-://news.ycombinator.com/item?id=7926358) is still present, however. 
+Today's discussion: [Of Taxis and Rainbows](https://medium.com/vijay-pandurangan/of-taxis-and-rainbows-f6bc289679a1). There's also a corresponding [Hacker News thread](https://news.ycombinator.com/item?id=7926358).
 
 (1) Let's talk about the core anonymization issue that the article reported on.
-   - what's in the data, and what was anonymized?
-   - what did they do to anon the data before release?
-   - what went wrong? (how was the anon. circumvented?)
-   - is this attack a generally useful technique? for what?
-   - what could have been done differently? 
+   - What's in the data, and what was anonymized?
+   - What did they do to anonymize the data before release?
+   - What went wrong? (how was the anon. circumvented?)
+   - Is this attack a generally useful technique? for what?
+   - What could have been done differently? 
    
-Takeaway: anonymization is hard, and impossible to undo mistakes. think carefully, and seek professional advice. Here, the FOIA request was answered in *2 days*. Is that enough time?
+(1) Takeaways: 
+* True anonymization is hard, and it's difficult if not impossible to undo mistakes. 
+* Often the interests of historians, social scientists, journalists and others may be competing with privacy interests. There is not always a single right answer, and there certainly isn't an absolute answer that is right for all such cases.
+* When presented with such a situation in tech, think carefully. Seek advice if it's available on both the technical and non-technical angles. Here, the FOIA request was answered in *2 days*. 
 
 (2) What could an adversary do with this data? 
-   - vs. driver, taxi?
-   - don't get distracted by the anon issue: what about the passengers?     
-   - is there any risk of correlation with other data?
-   - are there possible defenses? 
+   - What can they do by de-anonymizing the driver and taxi?
+   - Don't get distracted by the anonymization issue! What about the _passengers_?
+   - Is there any risk of correlation with other data?
+   - Are there possible defenses? 
 
 (3) Let's analyze this Hacker News exchange. There were 2 arguments I thought were interesting near the top:
   - "NYC is too dense for reasonable correlation"
   - "nobody who lives in a non-dense part of NYC can afford to take a taxi anyway"
-    
-
+   
 New York City is a lot more than skyscrapers. It includes, say, Staten Island:
 
 ![](https://i.imgur.com/TYsQNas.png)
@@ -38,14 +37,13 @@ Here's a random Google street view:
 ![](https://i.imgur.com/bDID3iU.jpg)
 
     
-(4) is it always possible to do data science w/o compromising people's privacy? 
-   - No. (Take Malte's 2390.)
+Take Malte's 2390, Julia's 1952B, and other such courses if you think this sort of thing is interesting. Most importantly, if you think of "social implications" as a separate thing from engineering, stop. It's not always inseparable, but it frequently is. As with much else, there's nuance.
 
 ## Threat Modeling
 
-There are a small set of [slides](https://docs.google.com/presentation/d/1eHmC45zwT6-uv4Cjz_WllQceZxXC1wDiMZQ-SFqhjdc/edit?usp=sharing) to accompany today's notes.
+There are a small set of [slides](https://docs.google.com/presentation/d/1GtXY7pU0c7iP-ab_JrlaHVMaPS_ckVBNPL6sdGDIDuY/edit?usp=sharing) to accompany today's notes.
 
-What kinds of security threats are there? Are they always technical? How can engineers who aren't security experts (and one class doesn't make you an expert) avoid gaps in their mental model of security?
+What kinds of security threats are there? Are they always technical? How can engineers who aren't security experts (and taking one security class doesn't make you an expert) avoid gaps in their mental model of security?
 
 I'd like to set the stage with two examples: one global and one local. 
 
@@ -60,7 +58,7 @@ Combining multiple security mistakes tends to add up to more than the sum of the
 
 ### Example 2: Phishing Email
 
-Here's a screenshot of a real email someone received earlier this semester.
+Here's a screenshot of a real email someone received a couple of years ago.
 
 ![](https://i.imgur.com/mxbNDq4.png)
 
@@ -85,10 +83,6 @@ red
 
 You're asked to determine if these four cards obey a simple rule: _if the card's number is even, then the card's color is red_. The question is, _which cards do you need to turn over to check the rule_?
 
-
-
-
-
 ### Example 2:
 
 Suppose you're shown four cards. The deck these cards have been taken from have drink orders on one side (either juice or beer), and ages (between 1 and 100) on the other. At first, you only see one side of each. Perhaps you see:
@@ -104,7 +98,6 @@ You're asked to determine if these four cards obey a simple rule: _if the drink 
 
 ### Psychological Context
 
-
 These are called [Wason Selection Task]s(https://en.wikipedia.org/wiki/Wason_selection_task) and have been studied extensively in psychology. 
 
 Surprisingly, humans tend to do poorly on the first task, but far better on the second. Why? Because context matters. If you can **catch someone outside of their security mindset** with an apparently rote task, you have a higher chance of exploiting them.
@@ -113,7 +106,7 @@ Good security involves far more than just the software. But whether or not we're
 
 ## Aside: The GDPR
 
-We've mentioned the [GDPR](https://gdpr.eu) before in earlier assignments. On your term projects, we'll be asking about compliance in demo meetings. You'll be expected to at least make some effort at GDPR compliance, and in places you weren't able to, discuss why. (Given the timeframe, many times the answer will be "there wasn't enough time, but if there had been, we'd have done the following specific thing...").
+You may have heard of the [GDPR](https://gdpr.eu). On your term projects, it's a good idea to consider how you would comply with the law; we may ask (e.g.) how you would support deletion of a user's data (although we don't expect you to necessarily have time to implement your ideas).
 
 Why should you care about laws like the GDPR? Setting aside ethical and empathetic concerns, if you ever intend to build software that's used in Europe, you ought to be aware of compliance requirements.
 
@@ -139,9 +132,9 @@ Here are 6 very broad classes of goal, which together comprise the S.T.R.I.D.E. 
 
 We're going to get practice with STRIDE using the cards by [Adam Shostack](https://adam.shostack.org) (a noted security expert) for a game called [Elevation of Privilege](https://github.com/adamshostack/eop). Adam is the author of my favorite book on threat modeling, which is [available in the Brown library](https://bruknow.library.brown.edu/permalink/01BU_INST/9mvq88/alma991043215908506966). I strongly recommend using this book as a guide to _mitigating_ the kinds of threats we'll identify today. 
 
-Happily, this semester I have actual hard-copies of this game to play in class today. We'll use this game to motivate a discussion. 
+Happily, this semester I have actual hard-copies of this game to use in class today. We won't have time to play the game, but I want to use them as props to think about potential threats your term projects will face. **Everyone should leave with at least one threat in mind.** 
 
-### Step 1: Diagramming
+<!-- ### Step 1: Diagramming
 
 What would a diagram of the Sprint 3--4 application look like? Here's a general process to follow:
 * Draw some vertexes that correspond to entitites where data is produced, consumed, held, processed, etc. The detail can be either coarse or fine, depending on our needs and our knowledge of the system. You might have vertexes for:
@@ -186,4 +179,4 @@ Here are some examples (not at all exhaustive), mostly taken from the book:
 * Someone might send many consecutive expensive SQL requests.
 * The logs could fill up.
 * If the database can run arbitrary commands, then the client gains access to them as well.
-</details>
+</details> -->

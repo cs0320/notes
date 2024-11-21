@@ -25,6 +25,8 @@
 
 - [Thinking About Algorithms](./algorithms/algorithms.md)
 
+- [Privacy and (sketching) Threat Modeling](./security/security_and_threat_modeling.md)
+
 
  <!-- Generic Types and Wildcards, Fuzz Testing -->
 
