@@ -1,0 +1,345 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Promises and TypeScript Asynchrony - CSCI 0320 Notes</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../././mdbook-admonish.css">
+        <link rel="stylesheet" href=".././mdbook-admonish.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item affix "><a href="../home.html">How to read these notes</a></li><li class="chapter-item "><a href="../success-in-0320/success-in-0320.html"><strong aria-hidden="true">1.</strong> Success in 0320</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../success-in-0320/recipe.html"><strong aria-hidden="true">1.1.</strong> Debugging Recipe</a></li></ol></li><li class="chapter-item "><a href="../comparators-and-testing/comparators-and-testing.html"><strong aria-hidden="true">2.</strong> More Strategies, More Testing</a></li><li class="chapter-item "><a href="../mocking-console/mocking-console.html"><strong aria-hidden="true">3.</strong> UIs, Testing More Than Methods</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../equality-contracts/equality-contracts.html"><strong aria-hidden="true">3.1.</strong> OPTIONAL: Equality is Hard, Caching</a></li></ol></li><li class="chapter-item "><a href="../proxies-adapters/proxies-adapters.html"><strong aria-hidden="true">4.</strong> Proxies and Adapters</a></li><li class="chapter-item "><a href="../apis-integration/apis-integration.html"><strong aria-hidden="true">5.</strong> Web APIs and Integration Testing</a></li><li class="chapter-item "><a href="../slides-links/groups-and-code-review.html"><strong aria-hidden="true">6.</strong> Group Projects and Code Review (Slides)</a></li><li class="chapter-item "><a href="../html-react-playwright/html-react-playwright.html"><strong aria-hidden="true">7.</strong> Webapps: HTML, TypeScript, and Testing</a></li><li class="chapter-item "><a href="../generics-wildcards/generics-wildcards.html"><strong aria-hidden="true">8.</strong> Generics, Typecasting, and Narrowing</a></li><li class="chapter-item "><a href="../java-concurrency/java-concurrency.html"><strong aria-hidden="true">9.</strong> Java Concurrency</a></li><li class="chapter-item expanded "><a href="../promises-fetch-prs/promises-fetch-prs.html" class="active"><strong aria-hidden="true">10.</strong> Promises and TypeScript Asynchrony</a></li><li class="chapter-item "><a href="../mbt_pbt/mbt_pbt.html"><strong aria-hidden="true">11.</strong> MBT and PBT</a></li><li class="chapter-item "><a href="../algorithms/algorithms.html"><strong aria-hidden="true">12.</strong> Thinking About Algorithms</a></li><li class="chapter-item "><a href="../security/security_and_threat_modeling.html"><strong aria-hidden="true">13.</strong> Privacy and (sketching) Threat Modeling</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CSCI 0320 Notes</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="typescriptjavascript-asynchrony"><a class="header" href="#typescriptjavascript-asynchrony">TypeScript/JavaScript Asynchrony</a></h1>
+<h2 id="javascript-concurrency"><a class="header" href="#javascript-concurrency">JavaScript &quot;Concurrency&quot;</a></h2>
+<p>Today's livecode will be in the repository under <a href="https://github.com/cs0320/class-livecode/tree/main/F24/oct17_ts_fetch">oct17_ts_fetch</a>. Get the code to follow along. There's also more examples in the repository than we can cover in a single class, so you might find it useful for reference as well.</p>
+<p>On the surface, JavaScript has <em>really</em> convenient support for concurrency. Try these in the browser console:</p>
+<pre><code>console.log('1')
+setTimeout(() =&gt; console.log('2'), 5000)
+console.log('3')
+</code></pre>
+<p>But just under that surface, complexity lurks:</p>
+<pre><code>console.log('1')
+setTimeout(() =&gt; console.log('2'), 5000)
+console.log('3')
+while(true) {}
+</code></pre>
+<p>What's happening here? JavaScript—a language built for the web—is a language whose design is <em>deeply and unavoidably</em> tangled with concurrency. </p>
+<p>And yet, JavaScript itself (barring <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers">some modern extensions</a>, which are best used for expensive tasks that would block important things like UI interactivity) is <em>single threaded</em>.  We don't create a new thread to wait for a web request to finish. Instead, we create a callback, like we would for a button being clicked. </p>
+<p>In principle, callbacks are <em>called</em> as soon as possible. But &quot;as soon as possible&quot; is complicated.</p>
+<h3 id="the-callback-queue"><a class="header" href="#the-callback-queue">The Callback Queue</a></h3>
+<p>Because TypeScript is single threaded, it can't actually invoke a callback while it's running some other piece of code. It has to wait until that code finishes, and then it looks at its <em>callback queue</em> to see if it has callbacks waiting to be processed.</p>
+<p>Every time a callback is registered (in the <code>setTimeout</code> example above, the 0-argument function that invokes <code>console.log</code> is a callback) it is added to the queue. Crucially, these calls will only ever take place if they're popped off the queue. And they're only ever removed when the code currently being executed is finished. </p>
+<p>This will become extremely important when you start sending web requests from your frontend to your API server. <strong>Callbacks are not threads</strong>. </p>
+<div id="admonition-repeating-for-emphasis" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>Repeating for emphasis</p>
+<p><a class="admonition-anchor-link" href="#admonition-repeating-for-emphasis"></a></p>
+</div>
+<div>
+<p>Callbacks are not threads.</p>
+</div>
+</div>
+<h2 id="code-review-exercise"><a class="header" href="#code-review-exercise">Code Review Exercise</a></h2>
+<p>Let's look at some code and anticipate potential errors related to concurrency. (I've removed the types so that we can run this in the browser console.) What's the value that you expect to be printed by this code?</p>
+<pre><code class="language-javascript">function sayHello(){
+    let toReturn = 0
+    setTimeout(() =&gt; {
+        toReturn = 500
+    }, 0)
+    setTimeout(() =&gt; {
+        toReturn = 100
+    }, 5000)
+    return toReturn
+}
+console.log(sayHello())
+</code></pre>
+<h2 id="fetching-data-in-typescript"><a class="header" href="#fetching-data-in-typescript">Fetching Data in TypeScript</a></h2>
+<p>In TypeScript, you can use the <code>fetch</code> function to send a web request:</p>
+<pre><code class="language-typescript">export function printGridInfo() {    
+    const lat: number = 39.7456
+    const lon: number = -97.0892
+    const url: string = `https://api.weather.gov/points/${lat},${lon}`
+    console.log(`Requesting: ${url}`)
+
+    /* 
+      Try #1
+    */
+    const json = fetch(`https://api.weather.gov/points/${lat},${lon}`)
+    console.log(json)
+</code></pre>
+<p>Thinking about what we just learned about concurrency, and what we know about TypeScript, do you expect <code>fetch</code> to be synchronous or asynchronous? That is, will it &quot;block&quot; execution until it finishes?</p>
+<p>If it's synchronous, then the page-load process might be delayed noticably. And slowing down page loading to the point a user notices is a cardinal sin on the web: it's &quot;in the folklore&quot; that <a href="https://news.ycombinator.com/item?id=273900">a small delay can lead to a drop in revenue</a>.</p>
+<p>But if it's asynchronous (i.e., doesn't block) then what will be printed? Hopefully not <code>undefined</code> or <code>null</code>—the data will almost certainly get here <em>eventually</em>. So <code>fetch</code> returns a datatype whose entire purpose is to represent data that doesn't yet exist: a <em>promise</em>.</p>
+<p><img src="https://i.imgur.com/bvFibPk.png" alt="" /></p>
+<p>A promise can either be <em>resolved</em>, in which case the value exists within (but the value is still a promise object, not the data!) or <em>rejected</em>, in which case the promise contains an error. Until either of those events occurs, the promise exists in a state of potential only.</p>
+<p><strong>Aside:</strong> Many modern languages have promise libraries, and promises are a common way to manage asynchronous computation (like web requests). This is not just about TypeScript/JavaScript.</p>
+<p>But because of how JavaScript works, the promise <em>cannot be resolved</em> until the current code finishes running. That is, the <code>console.log</code> statement can't print the right answer until <em>after the <code>console.log</code> executes</em>, because the right answer won't exist until then. </p>
+<div id="admonition-but-how-does-consolelog-work-then" class="admonition admonish-note">
+<div class="admonition-title">
+<p>But how does <code>console.log</code> work, then?</p>
+<p><a class="admonition-anchor-link" href="#admonition-but-how-does-consolelog-work-then"></a></p>
+</div>
+<div>
+<p>Because the <em>browser</em> has multiple threads. It's only JavaScript evaluation that is single threaded. So we can see the update in the browser console before the currently-running JavaScript finishes.</p>
+</div>
+</div>
+<p>Clearly, we need something to help make this work. </p>
+<h3 id="extracting-promised-data-with-callbacks"><a class="header" href="#extracting-promised-data-with-callbacks">Extracting Promised Data with Callbacks</a></h3>
+<p>Promises can be given callback functions to run when they're resolved:</p>
+<pre><code class="language-javascript">// Make a web request...
+fetch(url) 
+    // ...and when the response arrives, print it to the console
+    .then(response =&gt; console.log(response)) 
+</code></pre>
+<p>The function passed to the <code>then</code> call will execute once a real value exists for the response. The <code>.json()</code> method returns a promise itself, so we need to provide a callback for that, too, now: </p>
+<pre><code class="language-javascript">fetch(url)
+    .then(response =&gt; response.json()) 
+    .then(responseObject =&gt; {         
+           console.log(responseObject)         
+    }) 
+</code></pre>
+<p>This is called a <em>chain</em> of promises. Once the response is received, we convert it to an object. Once that conversion process is done, we print the result. </p>
+<p>You can find more examples like this in the livecode repository. We'll also talk more about them in the gearup for this upcoming sprint.</p>
+<h3 id="what-about-types"><a class="header" href="#what-about-types">What about types?</a></h3>
+<p><code>Promise&lt;T&gt;</code> is a generic type in TypeScript. By default, <code>fetch</code> returns a <code>Promise&lt;any&gt;</code>---beware, here. The <code>any</code> type exists, at least in part, for interoperability with JavaScript, and it disables many checks involving computation &quot;downstream&quot; of the <code>any</code> value. </p>
+<p><strong>See the livecode for more content.</strong> In particular, there's:</p>
+<ul>
+<li>a demo that reinforces how promises <em>are not threads</em>;</li>
+<li>a demo of some pitfalls when using async/await, if you choose to do so; </li>
+<li>a more complete series of attempts to extract Json from a fetched response, including how to make narrowing easy.</li>
+</ul>
+<p>We'll cover what we can in today's class session, but please read over the livecode too. I leave comments to try and make the livecode a good supplemental resource.</p>
+<h2 id="what-about-async-and-await"><a class="header" href="#what-about-async-and-await">What about <code>async</code> and <code>await</code>?</a></h2>
+<p>TypeScript provides two constructs that can often make working with promises easier: <code>async</code> (which tells the system that the function actually returns a <em>promise</em>, even if as written it returns a value), and <code>await</code> (which tells the system to invisibly inject callbacks as needed to act as though it is waiting for a certain operation to finish). You'll have already seen these used heavily in Playwright testing, because <code>await</code> is very convenient to, well <em>await</em> the loading of a webpage. </p>
+<p>The key is remembering that <code>await</code> can only be used within an <code>async</code> function, and an <code>async</code> function always returns a promise. So if I write something like:</p>
+<pre><code>const f = async (url) =&gt; {
+    const response = await fetch(url)
+    return response;
+}
+</code></pre>
+<p>then the return type of <code>f</code> is actually <code>Promise&lt;Response&gt;</code>, not <code>Response</code>. You can confirm this via mouseover in VSCode.</p>
+<p><img src="await.png" alt="A screenshot of VSCode showing the above code, with a mouseover indicating the return type is a promise." /></p>
+<p>As a consequence, if you use <code>async</code> and <code>await</code>, you end up either:</p>
+<ul>
+<li>putting all the pertinent functionality you care about in <code>async</code> functions after <code>await</code>s, and thus can totally ignore the return value; or </li>
+<li>if you need to do something with the final return value outside an <code>async</code> context, use <code>.then()</code> on the return value—which, again, will be a promise outside an <code>async</code> context. </li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../java-concurrency/java-concurrency.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../mbt_pbt/mbt_pbt.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../java-concurrency/java-concurrency.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../mbt_pbt/mbt_pbt.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

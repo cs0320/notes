@@ -1,0 +1,325 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>MBT and PBT - CSCI 0320 Notes</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../././mdbook-admonish.css">
+        <link rel="stylesheet" href=".././mdbook-admonish.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item affix "><a href="../home.html">How to read these notes</a></li><li class="chapter-item "><a href="../success-in-0320/success-in-0320.html"><strong aria-hidden="true">1.</strong> Success in 0320</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../success-in-0320/recipe.html"><strong aria-hidden="true">1.1.</strong> Debugging Recipe</a></li></ol></li><li class="chapter-item "><a href="../comparators-and-testing/comparators-and-testing.html"><strong aria-hidden="true">2.</strong> More Strategies, More Testing</a></li><li class="chapter-item "><a href="../mocking-console/mocking-console.html"><strong aria-hidden="true">3.</strong> UIs, Testing More Than Methods</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../equality-contracts/equality-contracts.html"><strong aria-hidden="true">3.1.</strong> OPTIONAL: Equality is Hard, Caching</a></li></ol></li><li class="chapter-item "><a href="../proxies-adapters/proxies-adapters.html"><strong aria-hidden="true">4.</strong> Proxies and Adapters</a></li><li class="chapter-item "><a href="../apis-integration/apis-integration.html"><strong aria-hidden="true">5.</strong> Web APIs and Integration Testing</a></li><li class="chapter-item "><a href="../slides-links/groups-and-code-review.html"><strong aria-hidden="true">6.</strong> Group Projects and Code Review (Slides)</a></li><li class="chapter-item "><a href="../html-react-playwright/html-react-playwright.html"><strong aria-hidden="true">7.</strong> Webapps: HTML, TypeScript, and Testing</a></li><li class="chapter-item "><a href="../generics-wildcards/generics-wildcards.html"><strong aria-hidden="true">8.</strong> Generics, Typecasting, and Narrowing</a></li><li class="chapter-item "><a href="../java-concurrency/java-concurrency.html"><strong aria-hidden="true">9.</strong> Java Concurrency</a></li><li class="chapter-item "><a href="../promises-fetch-prs/promises-fetch-prs.html"><strong aria-hidden="true">10.</strong> Promises and TypeScript Asynchrony</a></li><li class="chapter-item expanded "><a href="../mbt_pbt/mbt_pbt.html" class="active"><strong aria-hidden="true">11.</strong> MBT and PBT</a></li><li class="chapter-item "><a href="../algorithms/algorithms.html"><strong aria-hidden="true">12.</strong> Thinking About Algorithms</a></li><li class="chapter-item "><a href="../security/security_and_threat_modeling.html"><strong aria-hidden="true">13.</strong> Privacy and (sketching) Threat Modeling</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CSCI 0320 Notes</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="software-as-hammer-mbtpbt"><a class="header" href="#software-as-hammer-mbtpbt">Software as Hammer, MBT/PBT</a></h1>
+<h2 id="is-software-like-a-hammer"><a class="header" href="#is-software-like-a-hammer">Is Software Like a Hammer?</a></h2>
+<p>Let's start with a short discussion.</p>
+<p>Some have said that software is like a hammer: it's a morally neutral tool that can be used for either good or evil. You can build a house with a hammer, or you can commit murder. </p>
+<h4 id="discussion-what-do-you-think-about-this"><a class="header" href="#discussion-what-do-you-think-about-this">Discussion: What do you think about this?</a></h4>
+<p>It's an appealing argument! In some ways, software might indeed be viewed as morally neutral. But, personally, I think that the &quot;hammer&quot; analogy is too glib. </p>
+<p>My father was a carpenter, and we had a <a href="https://en.wikipedia.org/wiki/Table_saw">table saw</a> in our garage. A table saw is a terrifying piece of machinery; it's got a large rotary blade that slices through wood as you push it along the table. It's also a <em>complex</em> piece of machinery: there are various levers and dials to control the height of the blade and other factors, but also numerous safety features. Dad's didn't have as many as modern saws have, but there was still an emergency stop button and a blade guard.</p>
+<p>My point is: software isn't a hammer. Software is more like a table saw. If you don't think about safety when you design a table saw, people are going to get badly hurt. Yeah, you can still hurt yourself with a hammer (I have, multiple times). But the greater the degree of potential harm, the more careful thought and added safety-features are called for. </p>
+<p>So don't get lured in by &quot;software is like a hammer&quot; statements. Something can be morally neutral in itself and still warrant careful design for safety (or a decision not to make it at all). There's a quote from Robert Oppenheimer I like, from the <a href="https://www.osti.gov/opennet/hearing">&quot;personnel hearing&quot;</a> in which he lost his clearance:</p>
+<blockquote>
+<p>&quot;When you see something that is technically sweet, you go ahead and do it and argue about what to do about it only after you’ve had your technical success. That is the way it was with the atomic bomb.&quot;</p>
+</blockquote>
+<h2 id="beyond-fuzz-testing"><a class="header" href="#beyond-fuzz-testing">Beyond Fuzz Testing</a></h2>
+<p>We previously saw <em>fuzz testing</em>, which sent randomly generated inputs to a program under test, and checked whether the program crashed. We can do a lot more with this idea of random inputs. But to do so, we need a broader view of what &quot;testing&quot; means. </p>
+<p>In fuzz testing, we didn't pay much attention to the <em>output</em> of the program. We just checked that it didn't raise an exception. The problem with doing more is that, if we've got <em>randomly</em>-generated inputs, we can't pair them with <em>manually</em>-generated outputs. So now the question is: where can we get &quot;correct&quot; outputs from?</p>
+<p>What if we had a known-good baseline implementation we were trying to optimize? 
+Consider building one of those clever, super-optimized implementations of a basic arithmetic function. These matter in a lot of domains (e.g. graphics). Suppose you're testing:</p>
+<pre><code class="language-java=">float fastFloor(float value) {
+    // ...
+}
+</code></pre>
+<p>How long do you think it would take to loop through every possible primitive 32-bit <code>float</code> value, and check whether or not <code>fastFloor</code> returns the same value as <code>Math.floor</code>?</p>
+<details>
+<summary>Think, then click!</summary>
+<p>About 90 seconds, and that's on a computer from several years ago. <a href="https://randomascii.wordpress.com/2014/01/27/theres-only-four-billion-floatsso-test-them-all/">Several years ago.</a></p>
+</details>
+<p>Here, we don't even need random inputs! Of course, if the function took 64-bit <code>double</code> values, the story would be different, because there are too many of those to loop through exhaustively in a reasonable timeframe. So, in that case, we'd fall back to checking random inputs.</p>
+<h3 id="model-based-testing"><a class="header" href="#model-based-testing">Model Based Testing</a></h3>
+<p><em>Model-based Testing</em> is using a separate artifact that <em>models</em> the desired behavior of the system as either an oracle for correctness or a means of guiding test input generation. Today we'll look at the former: see <a href="https://github.com/cs0320/class-livecode/tree/main/F24/oct29_mbt_pbt">the livecode for today</a>, where we'll test my implementation of bubble sort. Concretely:</p>
+<ul>
+<li>My bubble-sort method is the <em>program under test</em>. We want to evaluate whether or not it is correct.</li>
+<li>Java's standard <code>Collections.sort</code> method is the <em>known-good</em> artifact. It will serve as our oracle of correctness.</li>
+</ul>
+<p><strong>Something very important has just happened. Pay attention!</strong></p>
+<h3 id="what-just-happened"><a class="header" href="#what-just-happened">What just happened?</a></h3>
+<p>We have stopped talking about testing against <em>specific outputs</em>, and have started testing more abstract <em>properties</em> of outputs. In fuzz testing, the property was &quot;doesn't crash&quot;. For (this type of) model-based testing, we want to check whether the output lists are exactly the same. But we don't need to encode a specific output, which lets us use randomness to generate inputs and mine for bugs while we sleep.</p>
+<p>Other kinds of model-based testing include using modeling languages to sketch desired behavior, or using something like a state machine model to generate traces of user interactions to test (e.g.) data structures or user interfaces.</p>
+<h3 id="be-careful"><a class="header" href="#be-careful">Be Careful!</a></h3>
+<p>How you choose to use the oracle matters. Using <em>equality</em> to compare a result from the oracle and a result from the implementation under test is great sometimes, but not always. To see why, try randomly generating more than just integers—in particular, try records. The code is in the repository. What happens, and why? </p>
+<details>
+<summary>Think, then click!</summary>
+<p>Our comparison fails! The Java-library <code>sort</code> and my bubble sort implementation disagree on something. But this disagreement can only happen for more complicated data than integers. Here's an example:</p>
+<pre><code>org.opentest4j.AssertionFailedError: 
+Expected :[Student[id=-4, credits=0], Student[id=5, credits=5], Student[id=5, credits=-4]]
+Actual   :[Student[id=-4, credits=0], Student[id=5, credits=-4], Student[id=5, credits=5]]
+</code></pre>
+<p>We have two students who, by the definition of our <code>compare</code> method, ought to be considered equal: they have the same student ID! (Note that this is regardless of whether we implemented <code>.equal</code> for the record type.) But the two sorts produced different <em>sub</em>-orderings for those students. One of these sorts is a <em>stable</em> sort: it preserves the original order of equal elements. The other is not, and may re-order equal elements. </p>
+<p>And yet, both sorts are correct (assuming we didn't require the sort to be stable). </p>
+<p>This problem comes up frequently. Whenever you have a problem that has more than one correct answer, direct comparison of results is perilous. Consider basically every graph or optimization problem: shortest path, change-making, graph coloring, optimal scheduling, ... They all often have multiple correct answers. We'll call these <em>relational</em> problems, because one input can correspond to more than one correct output.</p>
+</details>
+<p>So how do we deal with this issue? By broadening the way we think about correctness.</p>
+<h2 id="property-based-testing"><a class="header" href="#property-based-testing">Property-Based Testing</a></h2>
+<p>What makes a sorting implementation <em>correct</em>? Let's set aside oracles like alternative implementations and models. What makes us look at an output and say &quot;yes, that's right&quot; given an input? </p>
+<details>
+<summary>Think, then click!</summary>
+<p>Here are some properties: </p>
+<ul>
+<li>the output is sorted;</li>
+<li>the output has the same elements as the input. </li>
+</ul>
+<p>We touched on this briefly before, but let's be more concrete about what we mean by &quot;the same elements&quot;. Really, we mean that the input is a permutation of the output. We need to be precise, since we're about to write a Java method that checks for these properties!</p>
+</details>
+<p>If we can write a set of properties as a method, we can just use that as our oracle! Try filling this in, reflecting the properties we want from a correct sort.</p>
+<pre><code class="language-java">// uncomment the test annotation to enable the test
+    // @Test
+    public void pbtSortStudentRecords() {
+        long numIterations = 10000;
+
+        for(int trial=0;trial&lt;numIterations;trial++) {
+            List&lt;Student&gt; input = randomStudentList(3, -5, 5);
+            List&lt;Student&gt; output = new ArrayList&lt;&gt;(items);
+            ExampleSort.bubbleSort(output);    
+
+            // What makes a sort _correct_?
+            // EXERCISE: Write some code that compares `input` and `output` in a 
+            // property-focused way, not via direct comparison.
+        }
+    }
+</code></pre>
+<p>This powerful technique is called <em>property-based testing</em>. </p>
+<div id="admonition-further-reading" class="admonition admonish-note">
+<div class="admonition-title">
+<p>Further Reading</p>
+<p><a class="admonition-anchor-link" href="#admonition-further-reading"></a></p>
+</div>
+<div>
+<p>Tim has a paper about teaching PBT, which you can check out <a href="https://cs.brown.edu/~tbn/publications/wnk-pj20-pbt.pdf">here</a> if you're interested.</p>
+<p>There are also many, many PBT libraries that help with random input generation. For example, if you use Python, <a href="https://hypothesis.readthedocs.io/en/latest/">Hypothesis</a> is great. For other languages, look for the phrase &quot;QuickCheck&quot;, which is the name of the original PBT library, which was written for Haskell. For better or worse, Java has <em>multiple</em> such libraries.</p>
+</div>
+</div>
+<h2 id="whats-the-takeaway"><a class="header" href="#whats-the-takeaway">What's the takeaway?</a></h2>
+<p>Two things:</p>
+<p>First, randomly generating test inputs is practical and, if done well, powerful. You can use this to mine for bugs while doing other things. </p>
+<p>Second, in situations where there are <em>multiple correct answers</em> a program might give, the traditional, <code>actual_output == expected_output</code> mode of testing is risky at best. You'll be over-fitting your test suite to whatever your implementation produces today. Then someone comes along and makes a small change, and the program remains correct but a bunch of test cases suddenly break. We can use model-based and property-based testing to avoid that problem. </p>
+<p>Broaden your perspective on testing, and you become a better developer.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../promises-fetch-prs/promises-fetch-prs.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../algorithms/algorithms.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../promises-fetch-prs/promises-fetch-prs.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../algorithms/algorithms.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
