@@ -2,13 +2,12 @@
 
 ## Logistics
 
-I am sending overrides every day as seats become available. The cap is shared between all sections, including 1340. C@B doesn't accurately report enrollments at the moment, because it doesn't combine these sections and it doesn't include active but not-yet-accepted overrides. 
+As of right now, there is room in the class. You shouldn't need an override in most circumstances; just enroll.
 
-**NOTE WELL:**
-* If you **don't intend** to take 0320/1340, please drop (and/or remove the course from your cart) so that the department sees the seat and can add someone on the waitlist. 
-* If you **get an override**, accept it or decline it ASAP. If you hold onto it but don't accept it, it is harming my ability to admit students who really want the course. Especially this semester, when more courses are capped, propagation of availability is much slower. Please don't slow us down!
-* If you **do intend** to take the course, keep it in your cart so that you see announcements, etc. that we send to the list or post on EdStem. Although the department is allocating seats this semester, I will be disinclined to add someone without the course in their cart.
-* **You need the prerequisites** to take 0320 or 1340. If you haven't completed an intro sequence (including at other universities), you cannot take the course. 
+* I check override requests every day. If you're a Master's student, you'll need an override in CAB but I will almost certainly grant it.
+* If you **get an override**, please accept ASAP so that Brown and the department get accurate enrollment estimates. 
+* If you **are still shopping**, keep 0320 in your cart so that you see announcements, etc. that we send to the list or post on EdStem. 
+* **You need the prerequisites** to take 0320 or 1340. If you haven't completed 0200, 0190, or a comparable course, you cannot take 0320 yet. (If you're a transfer student and concerned, let's talk; I was also a transfer student as an undergrad so I have some understanding of potential worries.)
 
 ## Welcome!
 
@@ -25,27 +24,31 @@ We'll be passing out index cards. I like to anonymously learn some important thi
 * What is something you're **afraid** of in 0320?
 At the end of class, leave your card either here in front or on (one single) chair in the back so I can collect. 
 
-### An Example: Collab Section
+### 0320 is Different
 
-In 0320, we don't have "hours" in the way you may be used to, although help is available frequently! In industry, it's not uncommon to help colleagues improve their code, find and fix bugs, and produce reliable and extensible designs&mdash;even if they are solving a problem you're unfamiliar with. The one-on-one debugging hours format doesn't teach those skills. Similarly, in industry, you're not graded by an autograder or low-level rubric; you'll have a mentor TA to whom you demo and get formative feedback from every week.
+You'll want to read the missive. You may not need to read _all_ of it super deeply yet, but you should note the ways that 0320 is different from what you're used to. E.g., you'll be getting formative feedback every week from a mentor. 
 
-**Speaking of TAs, let's introduce them!**
+<!-- In industry, it's not uncommon to help colleagues improve their code, find and fix bugs, and produce reliable and extensible designs&mdash;even if they are solving a problem you're unfamiliar with. The one-on-one debugging hours format doesn't teach those skills. Similarly, in industry, you're not graded by an autograder or low-level rubric; you'll have a mentor TA to whom you demo and get formative feedback from every week. -->
+
+**Speaking of mentors, let's introduce the TAs!**
 
 ## Immediate Advice
 
-The first sprint goes out Monday, and there's a setup deliverable due before then. Please do it; you don't want to spend a lot of time early next week on setting up IntelliJ and so on.
+The first sprint goes out Monday, and there's a setup deliverable due before then. Please do it soon; you don't want to spend a lot of time early next week on setting up IntelliJ and so on.
 
-Go to gear up sections. This semester, they're on **Mondays and Tuesdays**. 
+Go to gear up sections. This semester, they're on **Mondays and Tuesdays**. Switching doesn't require a "conference" switch in CAB. 
 
-Read [lecture notes](https://cs0320.github.io/notes/) and [livecode](https://github.com/cs0320/class-livecode)! Prototype early! (Paraphrasing Andy: *Start soon! Start yesterday!*)
+Read [lecture notes](https://cs0320.github.io/notes/) and [livecode](https://github.com/cs0320/class-livecode). More than reading the code examples, pull the code and experiment with them! I try to strike a balance between depth and drill in class, which means that when we have in-class work, these resources will be vital references. (Today, for example, I won't talk through every bullet point in these notes.)
+
+Prototype early. (Paraphrasing Andy: *Start soon! Start yesterday!*)
 
 Please be aware that while this is an S/NC course, it is a lot of work. To quote a very wise remark from prior feedback: *"You will work very hard, but not get an A".* 
 
-My hours (at least for now) will be immediately after class on Thursdays. I'll be in CIT 355 and also on [my Zoom](https://brown.zoom.us/my/tim.browncs), to maximize accessibility for those who are off-campus, sick, on the waitlist, etc. It's OK to bring code, design, etc. questions to my hours, if you wish. 
+My hours (at least for now) will be at 3pm (shortly after class)on Thursdays. I'll be in CIT 355 by default. If you need to join on Zoom (e.g., if you're sick, or off-campys) let me know and I'll make sure to open [my Zoom](https://brown.zoom.us/my/tim.browncs) to maximize accessibility. It's OK to bring code, design, etc. questions to my hours, if you wish. I want to be available.
 
 ### Reading for Next Time
 
-Non-technical reading: [Clever Manka](https://www.gutenberg.org/files/33002/33002-h/33002-h.htm#Page_165). It's short. 
+Non-technical reading: [Clever Manka](https://www.gutenberg.org/files/33002/33002-h/33002-h.htm#Page_165). It's short. Read it. **What does it have to do with software engineering?**
 
 ### Reading for Sprints 1.1 and 1.2
 
@@ -57,8 +60,6 @@ _Effective Java_ (3rd edition) items on:
 Items in Chapter 4 may be useful for those who haven't done object-oriented programming recently. Especially **Items 15, 17, and 19**. 
 
 You are not required to buy this book. It's available free to read online via Brown's library. 
-
-**Be sure to read the notes and livecode. There is useful information in them that may not be covered in class.**
 
 ## Programming vs. Engineering
 
@@ -78,9 +79,26 @@ If you'd written insertion sort over lists of integers, but I needed to sort lis
 
 Get in the habit of **asking questions**.  It will save you time and pain in the future. 
 
+**Communicate** clearly and often. It will save you time and pain in the future. 
+
+**Document your assumptions and needs**. It will save you time and pain in the future.
+
 Don't misunderstand me: you'll all write _lots_ of code in this class. Your career in CSCI so far has likely trained you to write a lot of code. But just writing code is, frankly, _not good enough_.
 
-## The 0320 Mindset
+## What makes "good software"?
+
+There are many valid viewpoints on this. In the context of 0320, we're going to think about a few dimensions. 
+* Is the software _ready for change_? (Can it be extended easily, and without modifying the original code?)
+* Is the software _safe from bugs_? (Not just "bug free", but resilient to the bugs of other software that might call it, or that it might call.)
+* Is the software _easy to understand_? (Is it well documented? Is it designed in a way that other engineers will be able to follow without a lot of work? Is it clear how to use it?)
+* Is the software _fit to purpose_? (Does it do what it is supposed to do? Figuring that out involves _a lot of work_, because other people are involved.)
+
+That last category is incredibly broad. For me, it incorporates issues beyond functional correctness like:
+* performance, 
+* security, 
+* harm minimization, etc.
+
+## The 0320 Collaboration Standard
 
 **This may be the weirdest course you'll take during your time at Brown CS. It will also challenge you in new ways. That is deliberate.**
 
@@ -88,7 +106,7 @@ Our goal is not to teach you to do better at programming courses, or even comput
 
 The collaboration policy is part of that. We'll use Git, an industry standard version control system. If you haven't had Git experience yet, that's OK! Here's an example of how it works on a project I just happen to have here on my laptop. By the way, I'm using IntelliJ to work on this code. This course strongly encourages you to use (and supports) IntelliJ; the gear up sections today and tomorrow can help you set it up.
 
-One advantage of using Git is that all the code from lecture will be available on a [public repository](https://github.com/cs0320/class-livecode) in the `F24` folder (for Fall 2024) and also in the `vignettes` subfolder, which I use for small examples that may or may not appear in class. You can clone the repository to experiment with the code on your own machine. **You should clone this repository as soon as you're able**; we'll use it for in-class exercises, and it gives you the ability to experiment with changing the code on your own machine. **Starting next week, I will assume that you have the repository cloned on your laptop, if you bring one.**
+One advantage of using Git is that all the code from lecture will be available on a [public repository](https://github.com/cs0320/class-livecode) in the `S25` folder (for Spring 2025) and also in the `vignettes` subfolder, which I use for small examples that may or may not appear in class. You can clone the repository to experiment with the code on your own machine. **You should clone this repository as soon as you're able**; we'll use it for in-class exercises, and it gives you the ability to experiment with changing the code on your own machine. **Starting next week, I will assume that you have the repository cloned on your laptop, if you bring one.**
 
 ~~~admonish warning title="Class Prep and Spoilers"
 If a filename or package has `prep` in it, I'm including it in the repository to help me structure the live coding session, and keep track of things like intentional and unintentional bugs. These are spoilers for class, and may not be reliable resources.
@@ -177,7 +195,7 @@ Student<Integer> nim = new Student<>(List.of(1, 17, 3, 43, 1, 2, 5));
 This is exactly the same thing you do when you create a new `List` or `Set` or `HashMap`! All of these data structures are implemented using type variables. They are a _great_ way to make your code easy to use and extend. (We'll revisit generics and type variables a little later in the semester, but this is as much as you need for now.)
 
 ~~~admonish note title="This isn't really about Java"
-Most programming languages, at least those with a static type system, support this sort of thing. Technically, it's an example of something called [*parametric polymorphism*](https://en.wikipedia.org/wiki/Parametric_polymorphism). Even Python's type-hint system allows it. 
+Most programming languages, at least those with a static type system, support this sort of thing. Technically, it's an example of something called [*parametric polymorphism*](https://en.wikipedia.org/wiki/Parametric_polymorphism). Even Python's type-hint system allows it. So does TypeScript.
 ~~~
 
 While we're here editing this class, there's something I don't like. What happens if the list is empty? Then the method returns `null`. This feels unsafe, or at least not very communicative. We could be throwing an exception that has more meaning---like `IllegalArgumentException` (or maybe even our own exception type). I'll add this to the start of the method:
@@ -328,31 +346,23 @@ But I won't have to do that, right?
 
 ### What About AI?
 
-What about it? You'll be allowed to use it, just like any other resource. However, you'll need to conform to the above standards, just as if it were a collaborator. 
+What about it? You'll be allowed to use it, just like any other resource. However, you'll need to conform to the above standards, just as if it were a collaborator. I generally say more in response to your note-card responses.
 
 ## How Does Grading Work?
 
 0320 is mandatory S/NC. We _do_ give S with distinction. The course is divided into 2 parts: the _sprints_ and the _term project_. The sprints let you demonstrate command of new technical skills (which we give formative feedback on). The term project lets you show you can apply those skills in a new context of your own.
 
-The missive talks at length about grading; I won't try to duplicate that information here. But some changes you might want to be aware of include the following.
+The missive talks at length about grading; I won't try to duplicate all that information here. However, here are some key features of 0320's grading.
 
-### New: 1-week sprints and feedback
+**1-week sprints:** You'll have a deliverable every week. This gives us a better cadence for feedback. You'll alternate between asycnhronous video demos and synchronous demos each week, and the demos are the primary way your mentors will generate feedback.
 
-New this semester, we've factored each of the former 2-week sprints out into 2 1-week sprints. This gives us a better cadence for feedback. You'll alternate between asycnhronous video demos and synchronous demos each week, and the demos are the primary way your mentors will generate feedback.
+**Feedback Spreadsheet:** You'll receive access to a spreadsheet where your mentors will leave formative feedback _every week_, along with whether you've met expectations for the week. We'll expect you to work on addressing this feedback between sprints. 
 
-You'll receive access to a spreadsheet where your mentors will leave formative feedback _every week_, along with whether you've met expectations for the week. We'll expect you to work on addressing this feedback between sprints. See the missive for more information.
+**No Hidden Rubrics:** All guidance that we give TAs for grading we'll give to you as well. We'll also be providing you with a "demo recipe" to help you prepare. There are no secret rubrics or hidden test suites in 0320; we want you to know what our expectations are. 
 
-### New: Demo Recipes
+**Collaboration Crests:** We would like to more strongly encourage collaboration between students. You'll need to earn a certain number of crests throughout the semester, and report how you've earned them on your feedback sheet. **The details have changed since Fall 2024, to give you more choice in how you earn crests.**
 
-We'll also be providing you with a "demo recipe" to help you prepare, and giving you access to the recipe your mentors will be using to guide their feedback. There are no secret rubrics in 0320. But we do want to see you meet expectations. 
-
-### New: Collaboration Crests 
-
-We would like to more strongly encourage collaboration between students. You will be required to, e.g., have a design discussion with someone you don't know, do code review, and so on. See the missive for more information.
-
-### A Focus on Testing
-
-We'll talk more about testing on Tuesday, but it should go without saying that in 0320, we take testing seriously. The handouts contain *pretty good advice* on meeting our requirements. Read them. 
+**Testing Matters:** We'll talk more about testing on Tuesday, but it should go without saying that in 0320, we take testing seriously. The handouts contain *pretty good advice* on meeting our requirements. Read them. 
 
 **It is a bedrock principle of 0320 that if you cannot demo or test something, it's not actually done.**
 

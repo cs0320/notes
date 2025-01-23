@@ -1,6 +1,8 @@
-# sp23: Beyond Testing 
+# Beyond Testing: Verification and Constraints
 
-Today's class will introduce a useful idea that's meant to prompt thought and discussion about what methods exist _beyond_ testing. Some of the material is on the [slides](https://docs.google.com/presentation/d/1t0vAy0TLxSewg0SQM9aQGD9sZVAkSf1MJ99IuhZFIjU/edit?usp=sharing), although I recommend the notes.
+~~~admonish note title="Slides"
+Some of the material is on the [slides](https://docs.google.com/presentation/d/1t0vAy0TLxSewg0SQM9aQGD9sZVAkSf1MJ99IuhZFIjU/edit?usp=sharing), although I recommend the notes.
+~~~
 
 Computers are powerful assistive devices. Earlier in the semester, we talked about how computers can help us write tests---ideas like fuzz testing, model-based testing, and property-based testing. Today we'll go even further in that direction. But first, a story.
 
@@ -55,13 +57,20 @@ It's not perfect to use the number of transistors as proxy for complexity---ther
 
 (I'm not joking.)
 
+## Basic Example: Puzzles
 
-## Symbolic/Concolic Execution (Demo, Outline)
+**(Outline: do the lights-puzzle temporal Forge example.)**
 
-Consider this C function:
+Keys:
+* we're working _declaratively_; and 
+* we're working _symbolically_. 
+
+## Concolic Execution 
+
+Consider this function:
 
 ```
-int get_sign(int x) {
+int do_something(int x) {
   if (x == 0)
     return 0;
   if(x == 17) 
@@ -77,10 +86,19 @@ int get_sign(int x) {
 
 How would you go about producing a high-coverage test suite for it?
 
-There exist tools that, for small but possibly intricate programs, can produce very high (or possibly total) coverage test suites. I really like one called [KLEE](http://klee.github.io). 
+There exist tools that, for small but possibly intricate programs, can produce very high coverage test suites. I really like one called [KLEE](http://klee.github.io). They work by combining two ideas:
+* *Symbolic execution*: Imagine evaluating the above code, not on a concrete value like `5` or `-123` but on a set of constraints that define the allowable range of inputs, like `x: Int | x != 0`. In fact, that constraint, that `x` is an `int` value but not `0` is what you might have left after passing through the first `if` statement. 
+* *Solving for concrete values*: Given such a constraint, we can use a solver like Forge to produce concrete values that can serve as test cases. So we might take that constraint and produce `x = 5`. In practice, we'd get a constraint for every branch, and solve for each separately, getting (perhaps): `0`, `17`, `20`, `-1`, and `1`.
+
+The key is that constraint solvers can be used to augment other forms of reasoning about programs. 
+
+## Model Checking Software and Hardware
+
+When we wrote the puzzle in Forge and asked for a solution, we were using a solver to _path find_. We asked "does there exist a path from a starting state to a goal state"? 
 
 
-### What if we asked GPT-3 or ChatGPT for the same thing?
+
+<!-- ### What if we asked GPT-3 or ChatGPT for the same thing?
 
 I asked ChatGPT for a high-coverage test suite for the above program. Here's the response:
 
@@ -126,7 +144,7 @@ I asked ChatGPT for a high-coverage test suite for the above program. Here's the
 
 What do you notice?
 
-How might tools like this and tools like KLEE interoperate in the future?
+How might tools like this and tools like KLEE interoperate in the future? -->
 
 ## Takeaways
 
