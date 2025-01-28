@@ -2,18 +2,57 @@
 
 ## Expectations
 
-This class session is designed to support your work on Sprint 1.1. In it, you'll find:
+This chapter is designed to support your work on sprints 1.1 and 1.2. In it, you'll find:
+* a quick intro to some technical terms from agile development; 
 * a conceptual discussion on unit testing; 
 * a worked example using the strategy pattern; and 
 * a concrete discussion and on unit testing.
 
-You'll be able to follow along and experiment with the end result by cloning the class livecode repository. 
+You'll be able to follow along and experiment with the end result by cloning the [class livecode repository](https://github.com/cs0320/class-livecode). 
+
+```admonish warning title="Do this now!"
+Now is a good time to clone the livecode repository if you haven't already. We will be using it for in-class exercises soon, and it's also meant to be a reference for the sprints. 
+```
 
 ## Note on CSV
 
 Many questions are being answered in Ed already. You might benefit from skimming the topics, or searching. We are trying to promote discussion and thought, not give "the answer". If you ask "Is this right?" we might not answer with a boolean. That's just life.
 
 Keep in mind, you should not need to use `instanceof` or typecasting outside of methods like overriding `.equals` or `.hashCode` in a new class. We'll also be understanding if you must typecast in your test suites, although you should not need to do this for the first 2 sprints.
+
+## Agile Terminology
+
+We're going to be using a few terms of art in 0320. While we do put a bit of our own spin on these (largely because this is a class, and not a full-time job) it's important to understand what's going on. 
+
+### Agile Development 
+
+We say that a development methodology is _agile_ if, broadly speaking, it prioritizes sthe ability to change plans in response to regularly-sought feedback. Once we try to define it more precisely, you'll find multiple competing definitions, and many competing methodologies that purport to be "agile". Usually, you'll see the term used in contrast to "waterfall" development, where the software project proceeds along a linear path, like this:
+* Requirements 
+* Specifications
+* Design 
+* Implementation
+* Testing
+* Maintenance
+
+Of course, all of these "phases" still exist in an agile project! The difference is that (e.g.) customer feedback on an early demo might result in changes to the requirements, or some trouble with testing an early prototype might mean changing the design to make testing easier. To make this possible, agile projects usually start development early, expecting that some, or even most, of that prototype code will be replaced later. But **something must be possible to demo at every stage**, or feedback is hard to obtain.
+
+### Sprints
+
+Agile development is often divided into short periods of development effort: _sprints_. The duration of a sprint varies depending on the project and company. In 0320, we've organized development into one-week sprints with relatively small requirements for each. Each sprint builds on the last. 
+
+Organizing sprints is an important skill for project managers. Timelines need estimates (and the ability to alter those estimates when needed), tickets need to be managed, and so on. We'll gloss over most of this in 0320, although your term project will need some attention to project-management tasks like these.
+
+### User Stories 
+
+A _user story_ is a short description of desired behavior. You'll often find these used in requirements documents for agile projects. There are a few templates, but we (mostly) follow the "As a USER-ROLE I can NEEDED-BEHAVIOR so that TASK-OR-BENEFIT" pattern. Look at the user stories in sprint 1.1, and you should see this pattern. 
+
+It's important to remember that, although they follow a template, user stories are _informal_: they may not be enough by themselves to really describe what the customer needs. To help bridge this gap, they are often accompanied by _acceptance criteria_, which give additional lower-level requirements. But these are still fairly informal, and there's often a need for more precise specification to be agreed upon between developers! 
+
+But what makes a good user story? A user story describes a narrow, _demoable_ piece of functionality that can reasonably be accomplished in a single sprint. Often, you might start with a rough user story and realize that it's too big, and then split it into multiple stories. If users request an enhancement to an existing story, commonly these would be added as new stories (and more infrequently as additional acceptance criteria).
+
+~~~admonish warning title="Developers are users too!"
+If you're building a software package that is intended for other developers to use, _they are potential users_! In this class we will be giving you user stories from the developer-user perspective in addition to the end-user perspective. Your API design, documentation, etc. will matter to developer users.
+~~~
 
 ## Clever Manka 
 
@@ -259,7 +298,7 @@ So we'd put an ambassador ahead of a minister, but it would be ok to put a high 
 
 We're not done though. The order of precedence is complicated by some real-life norms that any *real* software would need to address. When we come back from the break, we'll look at a small challenge and a bigger challenge. 
 
-## Design Challenges
+### Design Challenges
 
 #### Small Challenge: countries may give precedence to Nuncios, at their discretion
 
@@ -273,7 +312,7 @@ New titles get added (or removed), treaties get revised, and the world changes. 
 
 This means that we probably don't want to write a sort that hard-codes in the above ordering, or even a sort that takes a boolean to resolve the nuncio question. We want a sort that uses the **strategy pattern**.
 
-## Comparators
+### Comparators
 
 A `Comparator` is an object that implements a `compare` method that tells a caller whether its two arguments are `<`, `>`, or `equal`. It's one of the most common uses of the strategy pattern in Java, and it's perfect for our needs. I wrote a `PrecedenceComparator` below. I've left comments that touch on some of the features used, and raise some design questions we'll go over in lecture.
 
