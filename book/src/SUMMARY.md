@@ -5,8 +5,8 @@
 - [Success in 0320](./success-in-0320/success-in-0320.md)
   - [Debugging Recipe](./success-in-0320/recipe.md)
 - [More Strategies, More Testing](./comparators-and-testing/comparators-and-testing.md)
-<!-- - [UIs, Testing More Than Methods](./mocking-console/mocking-console.md)
-  - [OPTIONAL: Equality is Hard, Caching](./equality-contracts/equality-contracts.md) -->
+- [UIs, Testing More Than Methods](./mocking-console/mocking-console.md)
+  - [OPTIONAL: Equality is Hard, Caching](./equality-contracts/equality-contracts.md) 
 <!-- - [Proxies and Adapters](./proxies-adapters/proxies-adapters.md) -->
 <!-- - [Web APIs and Integration Testing](./apis-integration/apis-integration.md)  -->
 
