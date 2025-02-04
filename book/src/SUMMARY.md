@@ -7,7 +7,8 @@
 - [More Strategies, More Testing](./comparators-and-testing/comparators-and-testing.md)
 - [UIs, Testing More Than Methods](./mocking-console/mocking-console.md)
   - [OPTIONAL: Equality is Hard, Caching](./equality-contracts/equality-contracts.md) 
-<!-- - [Proxies and Adapters](./proxies-adapters/proxies-adapters.md) -->
+- [Proxies and Adapters](./proxies-adapters/proxies-adapters.md) 
+
 <!-- - [Web APIs and Integration Testing](./apis-integration/apis-integration.md)  -->
 
 <!-- Slides: Last updated Sep. 24, 2024 -->

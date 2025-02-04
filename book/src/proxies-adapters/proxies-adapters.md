@@ -1,6 +1,12 @@
 # Proxies and Adapters
 
-Today we'll cover some topics in *defensive programming* and introduce the *proxy* pattern. I will actually be live-coding this, so there may not be anything in the class-livecode repository to begin with. But I'll push the code we end up with after class.
+~~~admonish note title="Relationship to sprints"
+In Sprint 2.1, we'll begin expecting some _defensive programming_ from you. Today covers a few of those techniques. In Sprint 2.2, many of you will need to implement a _proxy_, which we also cover today. 
+
+These are different ideas, but proxies can often be used for defensive purposes. 
+~~~
+
+Today we'll cover some topics in *defensive programming* and introduce the *proxy* pattern. I will actually be live-coding some of this, so there may not be anything in the class-livecode repository to begin with. But I'll push the code we end up with after class.
 
 ~~~admonish warning title="In-class exercises are coming soon!"
 Today is the last day of shopping period. Some classes will contain exercises in various forms, and some may become "flipped", especially as the semester progresses.
@@ -138,6 +144,11 @@ Defensive programming isn't just about protecting your own code from someone els
 
 For example, we should probably do something coherent in case our caller registers a TA with a negative amount of time available. This sounds like a job for exceptions.
 
+
+If someone is calling your code, and they are in a better position to handle the error than your code is, you'll often communicate the error to them with an exception. But give this some thought: **what's the best way to communicate the error to them?** Does it contain useful context? Is it in terms of something they will understand and expect?
+
+
+
 #### Checked vs. Unchecked Exceptions
 
 You might have noticed that some exceptions get declared for methods that use them, and other don't. Take a look at the Javadoc for [NullPointerException](https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html). Since these can happen unexpectedly, it wouldn't be very ergonomic to ask programmers to write a `throws` declaration for them. Hence, these exceptions are _unchecked_: the type system won't (usually) consider them. Unchecked exceptions are those that descend from `RuntimeException` (like null pointer exceptions) or from `Error` (which is a category usually reserved for errors that are so bad that most applications _shouldn't_ try to catch and handle them, like internal JVM inconsistencies under which all bets are off).
@@ -146,7 +157,7 @@ Usually you'll be communicating with your caller (and callee) via checked except
 [IllegalArgumentException](https://docs.oracle.com/javase/7/docs/api/java/lang/IllegalArgumentException.html). This isn't a "stop everything, the world is broken" `Error`, and your caller can try to recover from it or not. But because this is an unchecked exception, they might not even think to catch it; they won't if you don't tell them it's a possibility. Thus, _it is absolutely vital_ that you document if you intentionally throw this exception in your documentation!
 
 ~~~admonish warning title="DANGER!"
-Re-read that last sentence. If you throw unchecked exceptions, you _must_ tell your caller about it via documentation. There's no protection from the type system, and they may be taken by surprise. 
+Re-read that last sentence. If you throw unchecked exceptions, you _must_ tell your caller about it via documentation. There's no protection from the type system, and they may be taken by surprise. Surprises in engineering are always bad; the only question is how much damage they will do.
 
 This doesn't mean that unchecked exceptions are bad; sometimes they are very useful. But remember to communicate with others using your code.
 ~~~
@@ -212,7 +223,7 @@ This solution isn't perfect yet, but we'll stop here for today. It's good enough
 <summary>Think, then click!</summary>
 
 Here are a couple:
-* We've only protected one level of the reference structure: the `TA` keys of the map are still exposed to the caller, and if the `TA` class allows modification, we've just handed the ability to change `TA` state over to the caller.
+* We've only protected one level of the reference structure: the `TA` keys of the map are still exposed to the caller, and if the `TA` class itself allows modification, we've just handed the ability to change `TA` state over to the caller.
 * Calling this specific method will only work if we want _exactly the same_ interface given to the caller as we have internally (we store a map, so we produce an unmodifiable map). 
 
 </details>
@@ -320,7 +331,7 @@ This is a _really_ simple caching approach. For one thing, it runs out of memory
 
 ## Supplemental Material: More Advanced Structural Patterns
 
-I'm not sure if time will permit covering these patterns at a later date. They're modifications of the basic proxy idea, and might be useful for you to know about, so I'm including them here in the notes as supplemental material. If we have time later in the semester, I'll talk about them!
+These other patterns are modifications of the basic proxy idea, and might be useful for you to know about, so I'm including them here in the notes as reading material. But it's unlikely we'll have lecture time for them. 
 
 Note: I'm going to use this to also introduce some optional Java syntax you may not be aware of. In particular, Java has supported anonymous functions (which you may have heard referred to as _lambdas_) for years.
 
