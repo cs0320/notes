@@ -9,7 +9,7 @@
   - [OPTIONAL: Equality is Hard, Caching](./equality-contracts/equality-contracts.md) 
 - [Proxies and Adapters](./proxies-adapters/proxies-adapters.md) 
 
-<!-- - [Web APIs and Integration Testing](./apis-integration/apis-integration.md)  -->
+- [Web APIs](./apis-integration/apis-integration.md)
 
 <!-- Slides: Last updated Sep. 24, 2024 -->
 <!-- - [Group Projects and Code Review (Slides)](./slides-links/groups-and-code-review.md)  -->

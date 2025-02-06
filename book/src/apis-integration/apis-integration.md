@@ -1,8 +1,6 @@
 # Web APIs and Integration Testing with Mocks
 
-**Logistic announcement:** we're going to be swapping to `hours` for collab scheduling in the short term. Watch for this when you go to collab section. 
-
-Today's in-class code is [in the repository](https://github.com/cs0320/class-livecode/), within the `F24/sep19_nws_api` folder. Please pull the repository and make sure you can load this. Remember to load the `pom.xml` file _as a project_. This will tell IntelliJ to import dependencies, etc. for the project. If you open as a folder or file, IntelliJ won't auto-configure the project. 
+Today's in-class code is [in the repository](https://github.com/cs0320/class-livecode/), within the `S25/feb6_nws_api` folder. Please pull the repository and make sure you can load this. Remember to load the `pom.xml` file _as a project_. This will tell IntelliJ to import dependencies, etc. for the project. If you open as a folder or file, IntelliJ won't auto-configure the project. 
 
 ~~~admonish note title="Extra example that includes multiple endpoints, logging"
 Anticipating that some of you will want to add logging to a file whenever your server receives a request, I made [this proof-of-concept example](https://github.com/cs0320/class-livecode/tree/main/F24/vignettes/logging_poc) that shows how to set up logging actions before handlers are invoked. 
@@ -16,9 +14,10 @@ Today's in-class exercise is [here](https://docs.google.com/forms/d/e/1FAIpQLSdd
 
 In next week's sprint, 2.1, you'll be building a _server_ that listens for and responds to requests. It gets its data from your CSV files. In 2.2, you'll also be getting data from other servers on the Internet. We anticipate some of the major challenges to be:
 * setting the server up to listen properly (you'll use the _strategy pattern_ for this, because that's how the web-server library we use is engineered);
-* serializing and deserializing data to and from other servers; 
-* limited caching of prior results (you'll use the _proxy pattern_ for this!); and 
-* _integration testing_ your server by sending it fake requests. 
+* serializing and deserializing data to and from other servers; and
+* limited caching of prior results (you'll use the _proxy pattern_ for this!).
+
+**For testing:** You'll be using Postman to write example API queries to exercise your API. For now, we won't automate inspecting the responses, but we will get there in time. 
 
 <center>
 <img src="./server_arch.png" width="50%"/>
@@ -42,8 +41,7 @@ We will have another class on generics in the future, and Bloch's Item 31 would 
 ## Livecode 
 
 The code for today supplements the gearup example you'll get on Monday. We'll talk about:
-* invoking (and creating) Web APIs; 
-* integration testing; and 
+* invoking (and creating) Web APIs; and
 * using "mocks" to avoid several different costs in development.
 
 This example does *not* cover caching, which you'll need for the sprint. For that, see the previous livecode. Although it does have an empty class that demonstrates the shape.
@@ -259,20 +257,15 @@ Our philosophy is generally that you'll be able to test most everything you do, 
 
 One way is to write unit tests. E.g., if we have a CSV data source (hint: you do!), we should have unit tests for that. If we have a source that goes to the National Weather Service to fetch forecasts, we should test that. 
 
-But neither of those will test the _server_. How can we do that?
+But neither of those will test the _server_. How can we do that? We need to test the combination of a number of units: the code that accesses the data source, code (if any) that processes the raw data, the API handlers of our server... When you're testing the _integration_ of multiple components in your application (such as our server tests) this is called _integration testing_. 
 
-<details>
-<summary>Think, then click!</summary>
-    
-Write a test class that starts up your server locally, sends it web requests, and evaluates the response. (This will all be done on your local computer; no internet connection needed.) 
-    
-</details>
 
-This is exactly what the testing in the livecode demo does. When you're testing the _integration_ of multiple components in your application (such as our server tests) this is called _integration testing_. 
+One way, which is what we did in prior semesters, is to write a test class that starts up our server locally, sends it web requests, and evaluates the response&mdash;all done on the local computer, no Internet connection needed. In Spring 2025, we're instead using a tool called Postman, which can help us script API requests and examine responses. For the moment, we'll just use it as a library of example queries that we can manually inspect results for. 
+
 
 ### Mocking (a remarkably powerful technique)
 
-Consider what happens when I run the integration tests in the livecode. These generate web requests to our server, and then (assuming normal operation), our server will send a series of web requests to the NWS API. 
+Consider what happens when I run integration tests, whether we're rolling them manually in Java or using Postman. These generate web requests to our server, and then (assuming normal operation), our server will send a series of web requests to the NWS API. 
 
 This is reasonable, but has a number of problems. What issues have I introduced into my testing because *running the tests requires the NWS API*?
 
@@ -285,11 +278,9 @@ At the very least, the more I test (and I should test often!), the more I'll be 
     
 </details>
 
-Hence the `MockedNWSAPISource` class, which implements the same interface that the _real_ data source class does. Instead of getting me the real forecast, however, it always returns a constant temperature. No NWS needed.
+Hence the `MockedNWSAPISource` class, which implements the same interface that the _real_ data source class does. Instead of getting me the real forecast, however, it always returns a constant temperature. No NWS needed. 
 
 You'll use mocking in every sprint from now until the class is over; we've only barely discovered how important it is as a technique. And the patterns we have learned so far are perfect for implementing mocking well. To start with, a data source can be a strategy provided by the caller (real or mock). 
-
-To see all this in action, **run the livecode**. Try the tests. Experiment with them. After the gearup, you'll have two examples to help you structure your Server sprint. 
 
 
 <!-- 
