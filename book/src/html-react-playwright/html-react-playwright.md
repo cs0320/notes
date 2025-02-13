@@ -16,9 +16,9 @@ Please be aware that these notes:
 
 ## Quick Links
 
-~~~admonish note title="Read on!"
+```admonish note title="Read on!"
 I'm putting these links at the beginning to make them easier to find, but if this is your first time reading: **skip past this section to get to the content these links refer to first!**
-~~~
+```
 
 **TypeScript**: TypeScript is a programming language. You can write backend programs with it, but it is most commonly associated with web programming. We strongly suggest making use of the TypeScript documentation. In particular, ["instanceof narrowing"](https://www.typescriptlang.org/docs/handbook/2/narrowing.html), which we'll sometimes need to use. Notice how different this is from what we're used to in Java. That doesn't make it good or bad, just different. And TypeScript can do some useful things that Java can't easily manage.
 
