@@ -15,7 +15,7 @@
 - [Group Projects and Code Review (Slides)](./slides-links/groups-and-code-review.md) 
 
 <!-- Prep for Sprint 3.1 -->
-<!-- - [Webapps: HTML, TypeScript, and Testing](./html-react-playwright/html-react-playwright.md) -->
+- [Webapps: HTML, TypeScript, and Testing](./html-react-playwright/html-react-playwright.md)
  
 <!-- - [Generics, Typecasting, and Narrowing](./generics-wildcards/generics-wildcards.md)  -->
 
