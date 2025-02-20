@@ -2,11 +2,9 @@
 
 Today we're going to start learning how to write webapps. In time, you'll have a working front-end web application, which you'll use to query the backend server you're finishing up now. 
 
-```admonish warning title="Why now? Is this related to the homework?"
-There's a whole week before the front-end sprints start! So, you might wonder why I'm spending time on TypeScript now, instead of doing more in Java. Experience shows that, especially since the front-end sprints will use a language many of you won't have used before, taking time to introduce front-end more gradually is a good idea.
+## Why now? Is this related to the homework?
 
-If you're reading this in the Spring semester, long weekend means that we only have one class to work with next week. 
-``` 
+There's a whole week before the front-end sprints start! So, you might wonder why I'm spending time on TypeScript now, instead of doing more in Java. Experience shows that, especially since the front-end sprints will use a language many of you won't have used before, taking time to introduce front-end more gradually is a good idea. (If you're reading this in the Spring semester, long weekend means that we only have one class to work with next week.)
 
 Please be aware that these notes:
 * cover __multiple class meetings__ (and thus may change, as I prepare for class each day);
