@@ -1,0 +1,433 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>UIs, Testing More Than Methods - CSCI 0320 Notes</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../././mdbook-admonish.css">
+        <link rel="stylesheet" href=".././mdbook-admonish.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item affix "><a href="../home.html">How to read these notes</a></li><li class="chapter-item "><a href="../success-in-0320/success-in-0320.html"><strong aria-hidden="true">1.</strong> Success in 0320</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../success-in-0320/recipe.html"><strong aria-hidden="true">1.1.</strong> Debugging Recipe</a></li></ol></li><li class="chapter-item "><a href="../comparators-and-testing/comparators-and-testing.html"><strong aria-hidden="true">2.</strong> More Strategies, More Testing</a></li><li class="chapter-item expanded "><a href="../mocking-console/mocking-console.html" class="active"><strong aria-hidden="true">3.</strong> UIs, Testing More Than Methods</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../equality-contracts/equality-contracts.html"><strong aria-hidden="true">3.1.</strong> OPTIONAL: Equality is Hard, Caching</a></li></ol></li><li class="chapter-item "><a href="../proxies-adapters/proxies-adapters.html"><strong aria-hidden="true">4.</strong> Proxies and Adapters</a></li><li class="chapter-item "><a href="../apis-integration/apis-integration.html"><strong aria-hidden="true">5.</strong> Web APIs</a></li><li class="chapter-item "><a href="../slides-links/groups-and-code-review.html"><strong aria-hidden="true">6.</strong> Group Projects and Code Review (Slides)</a></li><li class="chapter-item "><a href="../html-react-playwright/html-react-playwright.html"><strong aria-hidden="true">7.</strong> Webapps: HTML, TypeScript, and Testing</a></li><li class="chapter-item "><a href="../java-concurrency/java-concurrency.html"><strong aria-hidden="true">8.</strong> Java Concurrency</a></li><li class="chapter-item "><a href="../promises-fetch-prs/promises-fetch-prs.html"><strong aria-hidden="true">9.</strong> Promises and TypeScript Asynchrony</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CSCI 0320 Notes</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="user-interfaces-testing-more-than-methods"><a class="header" href="#user-interfaces-testing-more-than-methods">User Interfaces, Testing More Than Methods</a></h1>
+<h2 id="ice-breaker"><a class="header" href="#ice-breaker">Ice Breaker</a></h2>
+<p>The collaboration policy we have can sometimes be difficult to follow, or trust. So let's break the ice. Turn to your neighbor and show them what you have for Sprint 1.1 so far. </p>
+<div id="admonition-no-shaming" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>NO SHAMING!</p>
+<p><a class="admonition-anchor-link" href="#admonition-no-shaming"></a></p>
+</div>
+<div>
+<p>We need to be both professional and understanding about this sort of thing. Also, keep in mind that quite a few students are joining the class late, etc. So if someone doesn't have much yet, be positive. The point is to fight the social tension against sharing code in this class.</p>
+</div>
+</div>
+<h2 id="user-interfaces"><a class="header" href="#user-interfaces">User Interfaces</a></h2>
+<p>In the next Sprint, 1.2, you'll be creating a <em>user interface</em>. Admittedly, it might not be what you associate with the term. It's &quot;just&quot; a command-line application which you'll run at your terminal prompt, meant to search the CSV files you've been parsing. For many of you, this may be the first time you've created such a thing. </p>
+<p><strong>Exercise: what makes a good user interface?</strong> </p>
+<details>
+<summary>Think, then click!</summary>
+<p>Whatever the <em>user</em> needs. If you can drive a car, imagine how many iterations it took to get the steering wheel right. Yes, that's a user interface. In class, I'll be passing around a slide rule—something most of us think of as an archaic tool for engineers from a bygone era. But it, too, was a carefully designed user interface: slide rules allowed a skilled user to make sophisticated calculations. </p>
+<p>I'm not a skilled user. But I still think they're interesting.</p>
+</details>
+<p>The point is: don't limit your view of what a user interface can be. Even a programing language is a user interface. </p>
+<h3 id="testing-user-interfaces"><a class="header" href="#testing-user-interfaces">Testing User Interfaces</a></h3>
+<p>Engineers test everything they can, within the bounds of their budget and time constraints. So if we're making a user interface, we ought to be able to test that interface. But how? </p>
+<p>If you took 0150, most of your projects had a graphical user interface. Did you test your projects? You might initially say &quot;no&quot;, because (at least, at time of writing this) 0150 doesn't spend a lot of time on unit testing the way some other intro courses do. But I'd argue that 0150 students perhaps <em>test more than students in any other intro course</em>. You're just doing it <em>manually</em>. </p>
+<p>Manual testing has its place, but it's not cost effective. So we'll strive to automate our tests, even the ones that manipulate a user interface.</p>
+<h3 id="testing-a-console-application"><a class="header" href="#testing-a-console-application">Testing a Console Application</a></h3>
+<p><strong>Exercise:</strong> How do you think you could test a command-line application automatically?</p>
+<p>Here's how I'd suggest approaching the problem. </p>
+<h4 id="what-resources-are-available-to-you"><a class="header" href="#what-resources-are-available-to-you">What resources are available to you?</a></h4>
+<p>A command-line application takes input from the keyboard and prints output to the screen. Concretely, the application interacts with the console using three stream objects:</p>
+<ul>
+<li><code>System.in</code>, which reads input from the console and provides it to the application; </li>
+<li><code>System.out</code>, which reads output from the application and provides it to the console; and </li>
+<li><code>System.err</code>, which works the same as <code>System.out</code>, but it usually used for error messages.</li>
+</ul>
+<p>Perhaps we can use these objects in some way to automate interaction with our program.</p>
+<h4 id="what-kinds-of-tests-do-you-want-to-write"><a class="header" href="#what-kinds-of-tests-do-you-want-to-write">What kinds of tests do you want to write?</a></h4>
+<p>Many applications have some state in them, and ours is no exception. If I forget to load a CSV file before I search it, I should get a very different result from if I load the file before searching. Similarly, if I have the ability to change files with a command, I should probably check that the new file is actually loaded, and searching will reference it instead of the old file. </p>
+<p>So let's think about this as scripting <em>interactions</em> with the prompt, and not just specific outputs we'd get when entering a single command. Context and past commands could matter. </p>
+<!-- <details>
+<summary>Think, then click!</summary>
+
+One approach would be to write a "wrapper" application that runs the program, sends actual keystroke signals, and monitors the actual screen output. It's possible to do this, usually via a shell script or other program whose first action is to run the program under test as a "child" process. Some autograders are built this way.  -->
+<!-- We could also do everything in a JUnit class, and overwrite `System.in`, `System.out`, and `System.err`. These are just objects like any other, and the `System` class exposes them for our use whenever we want to print output or write input. We can't _directly_ overwrite them, but the Java API provides a way to replace them with new objects of the same type.  -->
+<!-- 
+Both of the above techniques have their place. But they're _single-taskers_, and if I'm going to spend lecture time on a technique for testing UIs, I want a _multi-tasker_&mdash;something that will be useful again and again for many different engineering problems. And we'll invent it together, by combining two different "big ideas".
+
+</details> -->
+<h3 id="mocking-the-surprising-value-of-fakes"><a class="header" href="#mocking-the-surprising-value-of-fakes">Mocking: the surprising value of fakes</a></h3>
+<p>What follows might be, alongside the strategy pattern, one of the most timeless and universal design ideas we cover in 0320. It's not just about testing command-line applications! Take the time to experiment with this general idea in different contexts throughout the semester; you won't regret it. </p>
+<p><strong>Exercise:</strong> How do you know you aren't a brain in a jar right now? That is, are you <em>sure</em> you're in class (or in your room, reading these notes), and not hooked up, Matrix-style, to a system that is sending you manufactured sense inputs and receiving the outputs of your nerves?</p>
+<p>There's no hidden answer for this exercise, because it's a deep question. If you really want to explore these issues <em>literally</em>, there are many excellent philosophy and cognitive-science courses at Brown. Take one! </p>
+<p>The real exercise is this. <strong>Why is this thought-experiment important in software engineering?</strong></p>
+<p>Let's run with the idea.  Suppose we created fake (or &quot;mock&quot;) versions of <code>System.in</code>, <code>System.out</code>, and <code>System.err</code>. We can do this; we just need to know a little bit about the types of those objects and how to make mocking them convenient. </p>
+<div id="admonition-the-code-is-available" class="admonition admonish-note">
+<div class="admonition-title">
+<p>The code is available.</p>
+<p><a class="admonition-anchor-link" href="#admonition-the-code-is-available"></a></p>
+</div>
+<div>
+<p>You can find the end result of all this in <a href="https://github.com/cs0320/class-livecode/tree/main/S25/vignettes/mocking_input_output">the livecode repository</a>, under <code>vignettes/mocking_input_output</code>. </p>
+<p>The example is taken from an older version of 0320 that asked students to build their own extensible command prompt in Java, which we called a &quot;command processor&quot;. The starter application is the <code>BasicCommandProcessor</code> class. The modified, final version is the <code>CommandProcessor</code> class. Note how it interacts with the corresponding JUnit test class. </p>
+<p>You should be able to adapt much of this example for your own needs on sprint 1.2. In particular, we don't expect you to know about buffers and streams and so on. The important thing is that you notice how we're able to <em>fake</em> communication with a real user.</p>
+</div>
+</div>
+<p>We'll start with a simple, toy command-line application. All it does is read data from input and match against hard-coded commands. (We can do a <em>lot</em> better than this, but that's a topic for another time.) Here's the pertinent part of its code:</p>
+<pre><code class="language-java">public void run() {
+    // This is a &quot;try with resources&quot;; the resource will automatically
+    // be closed if necessary. Prefer this over finally blocks.
+    // See: https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html
+    try (BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
+        String input;
+        while ((input = br.readLine()) != null) {
+            if (input.equalsIgnoreCase(&quot;EXIT&quot;)) {
+                return;
+            } else if (input.equalsIgnoreCase(&quot;HI&quot;)) {
+                System.out.println(&quot;Hi!&quot;);
+            } else if (input.equalsIgnoreCase(&quot;GREETINGS&quot;)) {
+                System.out.println(&quot;Delightful to meet you, I'm sure.&quot;);
+            } else {
+                System.err.println(&quot;ERROR: Invalid command.&quot;);
+                // Keep running, though!
+            }
+        }
+    } catch (IOException ex) {
+        System.err.println(&quot;ERROR: Error reading input.&quot;);
+        System.exit(1); // exit with error status
+    }
+}
+</code></pre>
+<p>This code uses <code>System.in</code>, etc. directly. But let's set that aside.</p>
+<p>For now, let's focus on making &quot;fake&quot; input and output objects. To do this, we'll create what's called a <em>pipe</em>, a stream with two sides. In place of <code>System.in</code> we eventually want a pipe where:</p>
+<ul>
+<li>one side can accept text from our test method; and </li>
+<li>the other side acts indistinguishably from the actual <code>System.in</code>. 
+In place of <code>System.out</code> and <code>System.err</code>, we eventually want a pipe where:</li>
+<li>one side acts indistinguishably from <code>System.out</code>; and </li>
+<li>the other side lets our text method read from it. </li>
+</ul>
+<p>Doing this requires a bit of careful weaving objects together, but here's how we can create the mock <code>System.in</code>: </p>
+<pre><code class="language-java">// This is an *output* stream from the *caller's* perspective...
+PipedOutputStream out = new PipedOutputStream();
+// ...but an *input* stream from the *callee's* perspective. Connect them!
+PipedInputStream in = new PipedInputStream(out);
+OutputStreamWriter keyboard = new OutputStreamWriter(out, UTF_8);
+</code></pre>
+<div id="admonition-notice-the-comments" class="admonition admonish-note">
+<div class="admonition-title">
+<p>Notice the comments.</p>
+<p><a class="admonition-anchor-link" href="#admonition-notice-the-comments"></a></p>
+</div>
+<div>
+<p>I've added comments in both of these helper objects to underscore the shift in <em>perspective</em> between the caller and callee. It's easy (at least, it is for me!) to get disoriented in these situations. For <code>System.in</code>, the caller would be our test suite, and the callee would be the application. For the other 2 streams, the relationship is reversed.</p>
+</div>
+</div>
+<p>The <code>keyboard</code> object (which isn't a real keyboard!) can accept input just like <code>System.out</code> can, so we can easily write JUnit tests using it. But, because we've connected it to the <code>out</code> object in its constructor, and <code>out</code> is connected to <code>in</code>, anything we write to <code>keyboard</code> can be read from <code>in</code> as if it were <code>System.in</code>. The fake <code>System.err</code> and <code>System.in</code> work similarly (see the repository for the code). </p>
+<p>There are a couple potential snags. I'll list them in order of anticipated increasing annoyance for you. </p>
+<ul>
+<li>Because of how buffered streams work, you need to remember to call <code>keyboard.flush()</code> after writing text to it, or it won't be visible immediately on the other side of the pipe. If you don't <code>flush()</code> the stream appropriately, your test suite may lock up.</li>
+<li>You need to remember to send line-separators! Our application reads <em>lines</em>, and if you don't send a complete line... the application may wait forever. Just use <code>System.lineSeparator()</code> for this. </li>
+<li>Different systems have different default buffer sizes. If the input side of one of our pipes fills up before the output side knows to read from it (or is allowed to), the test suite will freeze because nobody can make any further progress. So we want a reasonably sized buffer. </li>
+<li>You probably wonder where these strange classes came from. Or rather, where did I learn about them? Am I just a magical Java wizard? Well, maybe, but in this case I got them from Copilot. Learning how to do obscure things in very common languages is a great application for generative AI. If there's a big problem, I find out right away and refine my prompt. If there's a small problem (there's at least one, and there might be more!) I'm only using this to prototype testing my UI. </li>
+</ul>
+<div id="admonition-is-your-example-locking-up" class="admonition admonish-note">
+<div class="admonition-title">
+<p>Is your example locking up?</p>
+<p><a class="admonition-anchor-link" href="#admonition-is-your-example-locking-up"></a></p>
+</div>
+<div>
+<p>If you try this technique and your test suite freezes, re-read the first three points above. </p>
+<ul>
+<li>If you don't <code>flush()</code> the stream that sends to the application, the application may not be notified. </li>
+<li>If you don't send a newline after a command, the application (as written) will keep reading until it finds one. </li>
+<li>If you're sending or receiving a lot of data, try increasing the buffer size in the mock constructors.</li>
+</ul>
+</div>
+</div>
+<div id="admonition-lacking-a-diagram" class="admonition admonish-note">
+<div class="admonition-title">
+<p>Lacking a diagram...</p>
+<p><a class="admonition-anchor-link" href="#admonition-lacking-a-diagram"></a></p>
+</div>
+<div>
+<p>Ideally there would be an image here, diagramming how the pipes are connected. But the word pipe really is well-chosen. Follow the flow of object names in the above 3 lines, and if you wonder how it all works, try experimenting in the livecode repository; that's what it's for!</p>
+</div>
+</div>
+<p>One question remains. How do we actually make sure these mock objects are <em>used</em> by the application? After all, the code refers directly to <code>System.in</code>, etc.! </p>
+<h3 id="dependency-injection"><a class="header" href="#dependency-injection">Dependency Injection</a></h3>
+<p>Consider what you are doing for Sprint 1.1: your parser constructor takes a strategy object that tells the parser how to post-process each row. In essence, the parser has a &quot;hole&quot; in it: it doesn't actually know how to do this post-processing. That makes the parser simpler to write, and allows another developer to configure the parser fairly deeply when creating it. Maybe we can build on that idea, here. </p>
+<p>More concretely, what if the strategy object provided to the application wasn't just a method for creating data, like in Sprint 1.1, or a method for ordering objects, like the comparators in the last class, but our mock objects? That is, what if creating the application went from this:</p>
+<pre><code class="language-java">BasicCommandProcessor proc = new BasicCommandProcessor();
+</code></pre>
+<p>to something like this:</p>
+<pre><code class="language-java">CommandProcessor proc = new CommandProcessor(mockIn, mockOut, mockErr);
+</code></pre>
+<p>We could then save these objects like any other field, and use them in place of the originals. For example, instead of </p>
+<pre><code class="language-java">System.err.println(&quot;ERROR: Error reading input.&quot;);
+</code></pre>
+<p>we could write:</p>
+<pre><code class="language-java">mockErr.println(&quot;ERROR: Error reading input.&quot;);
+</code></pre>
+<p>It turns out this works perfectly. We just have to remember to inject the right dependencies:</p>
+<ul>
+<li>For a real application interacting with a real user, we'll pass in the actual Java objects <code>System.in</code>, etc. </li>
+<li>When in our test class, we'll create and pass in mocked versions. 
+and to very carefully pre-arrange our input and process our output. Here's code from an example test case in the repository. Notice how we need to print the input commands <em>before running</em>, and we need to make sure to end with <code>exit</code>—or else the application will never stop, and we'll never be able to reach the assertions! </li>
+</ul>
+<pre><code class="language-java">// Once we start the application, this test method will be unable to add anything else. So we must pre-populate
+// a fixed series of commands. Then run the application.
+mockIn.println(&quot;hi&quot;);
+mockIn.println(&quot;greetings&quot;);
+mockIn.println(&quot;notacommand&quot;);
+mockIn.println(&quot;exit&quot;);
+
+proc.run();
+
+// Now read from the output and error streams, line by line. But: be careful. If we call readLine() for one of
+// the streams and there's nothing there, the program will freeze, because the call will *wait* for something
+// to appear in the stream... and that will not happen. So we test before every line we ready to make sure the
+// stream has something for us first. (This is a way to protect us from a buggy _test method_.)
+// To see why this is important, try commenting out one of the commands above!
+assertTrue(mockOut.terminal().ready());
+String out1 = mockOut.terminal().readLine();
+assertTrue(mockOut.terminal().ready());
+String out2 = mockOut.terminal().readLine();
+assertTrue(mockErr.terminal().ready());
+String err1 = mockErr.terminal().readLine();
+
+assertEquals(&quot;Hi!&quot;, out1);
+assertEquals(&quot;Delightful to meet you, I'm sure.&quot;, out2);
+assertEquals(&quot;ERROR: Invalid command.&quot;, err1);
+</code></pre>
+<p>I strongly encourage you to <em>experiment with this example</em> for yourself. Keep in mind the above warnings: sending a newline character, always stopping the application as the last command queued up, etc. It's easy to get this wrong at first, and that's OK. Debug with print statements (versus the real <code>System.out</code> since you'll be in a test method) and diagnose where the problem is happening.</p>
+<p>There's a third big idea, which we'll get to soon, called <em>threads</em>. Threads will solve many of these problems and make the technique even more powerful.</p>
+<div id="admonition-why-the-name-dependency-injection" class="admonition admonish-note">
+<div class="admonition-title">
+<p>Why the name 'dependency injection'?</p>
+<p><a class="admonition-anchor-link" href="#admonition-why-the-name-dependency-injection"></a></p>
+</div>
+<div>
+<p>The object being provided in the constructor is a <em>dependency</em>: the class needs it to function. And the object isn't created in that class, but rather passed in (&quot;injected&quot;) from outside.</p>
+</div>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../comparators-and-testing/comparators-and-testing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../equality-contracts/equality-contracts.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../comparators-and-testing/comparators-and-testing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../equality-contracts/equality-contracts.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
