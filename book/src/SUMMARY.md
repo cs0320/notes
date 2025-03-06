@@ -20,7 +20,7 @@
 <!-- - [Generics, Typecasting, and Narrowing](./generics-wildcards/generics-wildcards.md)  -->
 
 - [Java Concurrency](./java-concurrency/java-concurrency.md)
-<!-- - [Promises and TypeScript Asynchrony](./promises-fetch-prs/promises-fetch-prs.md) -->
+- [Promises and TypeScript Asynchrony](./promises-fetch-prs/promises-fetch-prs.md)
  
 <!-- - [MBT and PBT](./mbt_pbt/mbt_pbt.md) -->
 

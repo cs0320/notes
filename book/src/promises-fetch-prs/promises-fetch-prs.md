@@ -2,7 +2,7 @@
 
 ## JavaScript "Concurrency"
 
-Today's livecode will be in the repository under [oct17_ts_fetch](https://github.com/cs0320/class-livecode/tree/main/F24/oct17_ts_fetch). Get the code to follow along. There's also more examples in the repository than we can cover in a single class, so you might find it useful for reference as well.
+Today's livecode will be in the repository under [mar06_ts_fetch](https://github.com/cs0320/class-livecode/tree/main/S25/mar06_ts_fetch). Get the code to follow along. There's also more examples in the repository than we can cover in a single class, so you might find it useful for reference as well.
 
 On the surface, JavaScript has _really_ convenient support for concurrency. Try these in the browser console:
 
@@ -144,7 +144,7 @@ const f = async (url) => {
 }
 ```
 
-then the return type of `f` is actually `Promise<Response>`, not `Response`. You can confirm this via mouseover in VSCode.
+then the return type of `f` is actually `Promise<Response>`, not `Response`. You can confirm this via mouseover in VSCode, or by `console.log`.
 
 ![A screenshot of VSCode showing the above code, with a mouseover indicating the return type is a promise.](await.png)
 
