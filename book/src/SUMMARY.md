@@ -22,7 +22,7 @@
 - [Java Concurrency](./java-concurrency/java-concurrency.md)
 - [Promises and TypeScript Asynchrony](./promises-fetch-prs/promises-fetch-prs.md)
  
-<!-- - [MBT and PBT](./mbt_pbt/mbt_pbt.md) -->
+- [MBT and PBT](./mbt_pbt/mbt_pbt.md) 
 
 <!-- - [Thinking About Algorithms](./algorithms/algorithms.md) -->
 

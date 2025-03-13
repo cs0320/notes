@@ -1,5 +1,11 @@
 # Software as Hammer, MBT/PBT
 
+~~~admonish warning title="Spring 2025"
+While these notes are still useful, and contain similar content to what we'll do in class this semester, they were the Fall 2024 version. For Spring, I wanted to provide this resource _and also_ a more "real", live version of the ideas in TypeScript, using LLMs some. You can find Spring 2025's livecode here:
+* [March 13](https://github.com/cs0320/class-livecode/tree/main/S25/mar13_mbt_llm): "nearest neighbor", naive reference version and (buggy) LLM-generated version.
+* [March 18](): hasn't happened yet!
+~~~
+
 ## Is Software Like a Hammer?
 
 Let's start with a short discussion.
@@ -18,9 +24,102 @@ So don't get lured in by "software is like a hammer" statements. Something can b
 
 > "When you see something that is technically sweet, you go ahead and do it and argue about what to do about it only after you’ve had your technical success. That is the way it was with the atomic bomb."
 
+
+
+
+## Fuzz Testing
+
+Let's think about unit-testing something like your CSV parser or searcher.
+
+### Generating Test Inputs
+
+What do you think is harder to think of: test _inputs_ or the corresponding _outputs_?
+
+Usually it's the inputs that are harder, because they require clever thinking about the space of inputs. Outputs are often (although not always) an exercise in running the program in your mind.
+
+Where else might we find test inputs, and what problems might occur with each source?
+
+- someone else's tests? (same human biases, but ok, could help)
+- monitor a real system (good idea; possibly different biases? overfitting to their use-case? may be ok, may not. could be expensive or affect performance.)
+- random generation? (possibly a lot of weird values that aren't really reflective of reality, what's the distribution...?)
+
+Let's build on the "random test generation" idea. Suppose we could randomly generate inputs. What could we do with them? 
+
+The simplest, but still incredibly powerful, technique is to probe for crashes. Just keep feeding the system random inputs and, if your generator is good, you're likely to eventually find those bizarre corner cases that lead to surprising exceptions. 
+
+You don't need to do this in JUnit, or have a `Test` annotation or anything like that. We're just experimenting with the idea of fuzzing. And, of course, this isn't about Java; you can do the same in any language!
+
+### What's a "surprising exception"?
+
+There's a bit of a caveat here. Sometimes programs are _supposed_ to throw an exception on certain inputs. Maybe the specification says that, "for input integers less than zero, the method throws `UnsupportedOperationException`". Then fuzzing is a bit more involved than trying to provoke _any_ exception. Instead, you might only look for exceptions like `NullPointerException` or other signals that indicate a bug, rather than a legitimate specified result.
+
+### Takeaway
+
+This might seem like a strange technique. But, in truth, it's used pretty commonly in industry where crash bugs are expensive, highly impactful, or affect many people. (Think: operating systems, device drivers, and cloud infrastructure, to name a few.) 
+
+And, by the way: **not all the inputs need to be random!** You can still have deviously crafted inputs hard-coded; just include them at the beginning before you start random generation. This is true of everything else we do with random inputs.
+
+Here's an example from my solution to CSV.  
+
+```java
+final static int NUM_TRIALS = 100;
+final static int MAX_STARS = 100;
+
+/**
+ * The throws clause for this method is immaterial; JUnit will 
+ * fail the test if any exception is thrown unless it's marked 
+ * *expected* inside the @Test annotation or it's explicitly 
+ * part of an assertion.
+ */
+
+@Test
+public void fuzzTestStars() throws EndOfCSVException {
+    for(int counter=0;counter<NUM_TRIALS;counter++) {
+        // This helper produces a random CSV-formatted string
+        // that contains a set of encoded Star objects
+        String csvString = TestHelpers.getRandomStarCSV(MAX_STARS);
+       
+        // Note use of StringReader here, not FileReader
+        // Allowing /any/ Reader makes testing easier.
+        Reader csv = new StringReader(csvString);
+        List<Star> stars = GenericCSVParser.parseFrom(csv, new StarFactory());
+
+        // Fuzz testing -- just expect no exceptions, termination, ...
+    }
+}
+```
+
+We could improve this code in at least one big way. It's fixated on producing random CSV data for `Star` objects, and so we're not testing other kinds of random data. Still, **this actually found a bug in my parser while I was developing it: I wasn't properly handling the behavior of my parser iterator if the file was empty**.
+
+### Aside on Implementing Random Generators
+
+In Java, I like to use `java.util.concurrent.ThreadLocalRandom`, since it lets me produce many different random types. E.g.:
+
+```java
+final ThreadLocalRandom r = ThreadLocalRandom.current();
+long id = r.nextLong();
+double x = r.nextDouble(Double.MIN_VALUE, Double.MAX_VALUE);
+```
+
+To generate random strings, we can generate a random array of bytes, and convert that to a string. E.g.:
+
+```java
+byte[] bytes = new byte[length];
+r.nextBytes(bytes);
+String name = new String(bytes, Charset.forName("UTF-8"));    
+```
+
+There's a limitation here. This does not guarantee an alpha-numeric string, or anything even remotely readable. Beware, since it might also contain control characters that will mess up some terminals if you print them! 
+
+Moreover, since this string is UTF-8 encoded, it won't be able to contain most unicode characters, so we're focusing heavily on Latin characters. Fortunately, you can get more wide-ranging character sets with some quick changes. 
+
+There's a "random testing" badge in 0320, so we'll be talking about this idea much more in the future. For now, keep in mind that not all tests need to be input-output pairs.
+
+**QUICK DISCUSSION**: What's something you've written in _another_ class here at Brown that would be well-suited to fuzz testing?
+ 
 ## Beyond Fuzz Testing
 
-We previously saw *fuzz testing*, which sent randomly generated inputs to a program under test, and checked whether the program crashed. We can do a lot more with this idea of random inputs. But to do so, we need a broader view of what "testing" means. 
+We can do a lot more with this idea of random inputs. But to do so, we need a broader view of what "testing" means. 
 
 In fuzz testing, we didn't pay much attention to the _output_ of the program. We just checked that it didn't raise an exception. The problem with doing more is that, if we've got *randomly*-generated inputs, we can't pair them with *manually*-generated outputs. So now the question is: where can we get "correct" outputs from?
 
@@ -46,7 +145,9 @@ Here, we don't even need random inputs! Of course, if the function took 64-bit `
 
 ### Model Based Testing
 
-_Model-based Testing_ is using a separate artifact that _models_ the desired behavior of the system as either an oracle for correctness or a means of guiding test input generation. Today we'll look at the former: see [the livecode for today](https://github.com/cs0320/class-livecode/tree/main/F24/oct29_mbt_pbt), where we'll test my implementation of bubble sort. Concretely:
+_Model-based Testing_ uses a separate artifact as either an "oracle of correctness" or a means of guiding random input generation. 
+
+To see what we did in Java last semester (Fall 2024) see [the livecode](https://github.com/cs0320/class-livecode/tree/main/F24/oct29_mbt_pbt), where we'll test my implementation of bubble sort. Concretely:
 * My bubble-sort method is the *program under test*. We want to evaluate whether or not it is correct.
 * Java's standard `Collections.sort` method is the *known-good* artifact. It will serve as our oracle of correctness.
 
