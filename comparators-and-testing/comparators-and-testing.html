@@ -1,0 +1,685 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>More Strategies, More Testing - CSCI 0320 Notes</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../././mdbook-admonish.css">
+        <link rel="stylesheet" href=".././mdbook-admonish.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item affix "><a href="../home.html">How to read these notes</a></li><li class="chapter-item "><a href="../success-in-0320/success-in-0320.html"><strong aria-hidden="true">1.</strong> Success in 0320</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../success-in-0320/recipe.html"><strong aria-hidden="true">1.1.</strong> Debugging Recipe</a></li></ol></li><li class="chapter-item expanded "><a href="../comparators-and-testing/comparators-and-testing.html" class="active"><strong aria-hidden="true">2.</strong> More Strategies, More Testing</a></li><li class="chapter-item "><a href="../mocking-console/mocking-console.html"><strong aria-hidden="true">3.</strong> UIs, Testing More Than Methods</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../equality-contracts/equality-contracts.html"><strong aria-hidden="true">3.1.</strong> OPTIONAL: Equality is Hard, Caching</a></li></ol></li><li class="chapter-item "><a href="../proxies-adapters/proxies-adapters.html"><strong aria-hidden="true">4.</strong> Proxies and Adapters</a></li><li class="chapter-item "><a href="../apis-integration/apis-integration.html"><strong aria-hidden="true">5.</strong> Web APIs</a></li><li class="chapter-item "><a href="../slides-links/groups-and-code-review.html"><strong aria-hidden="true">6.</strong> Group Projects and Code Review (Slides)</a></li><li class="chapter-item "><a href="../html-react-playwright/html-react-playwright.html"><strong aria-hidden="true">7.</strong> Webapps: HTML, TypeScript, and Testing</a></li><li class="chapter-item "><a href="../java-concurrency/java-concurrency.html"><strong aria-hidden="true">8.</strong> Java Concurrency</a></li><li class="chapter-item "><a href="../promises-fetch-prs/promises-fetch-prs.html"><strong aria-hidden="true">9.</strong> Promises and TypeScript Asynchrony</a></li><li class="chapter-item "><a href="../mbt_pbt/mbt_pbt.html"><strong aria-hidden="true">10.</strong> MBT and PBT</a></li><li class="chapter-item "><a href="../slides-links/requirements-and-firebase.html"><strong aria-hidden="true">11.</strong> Requirements and Firebase (Slides)</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CSCI 0320 Notes</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="testing-strategies-and-the-debugging-recipe"><a class="header" href="#testing-strategies-and-the-debugging-recipe">Testing, Strategies, and the Debugging Recipe</a></h1>
+<h2 id="expectations"><a class="header" href="#expectations">Expectations</a></h2>
+<p>This chapter is designed to support your work on sprints 1.1 and 1.2. In it, you'll find:</p>
+<ul>
+<li>a quick intro to some technical terms from agile development; </li>
+<li>a conceptual discussion on unit testing; </li>
+<li>a worked example using the strategy pattern; and </li>
+<li>a concrete discussion and on unit testing.</li>
+</ul>
+<p>You'll be able to follow along and experiment with the end result by cloning the <a href="https://github.com/cs0320/class-livecode">class livecode repository</a>. </p>
+<div id="admonition-do-this-now" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>Do this now!</p>
+<p><a class="admonition-anchor-link" href="#admonition-do-this-now"></a></p>
+</div>
+<div>
+<p>Now is a good time to clone the livecode repository if you haven't already. We will be using it for in-class exercises soon, and it's also meant to be a reference for the sprints.</p>
+</div>
+</div>
+<h2 id="note-on-csv"><a class="header" href="#note-on-csv">Note on CSV</a></h2>
+<p>Many questions are being answered in Ed already. You might benefit from skimming the topics, or searching. We are trying to promote discussion and thought, not give &quot;the answer&quot;. If you ask &quot;Is this right?&quot; we might not answer with a boolean. That's just life.</p>
+<p>Keep in mind, you should not need to use <code>instanceof</code> or typecasting outside of methods like overriding <code>.equals</code> or <code>.hashCode</code> in a new class. We'll also be understanding if you must typecast in your test suites, although you should not need to do this for the first 2 sprints.</p>
+<h2 id="agile-terminology"><a class="header" href="#agile-terminology">Agile Terminology</a></h2>
+<p>We're going to be using a few terms of art in 0320. While we do put a bit of our own spin on these (largely because this is a class, and not a full-time job) it's important to understand what's going on. </p>
+<h3 id="agile-development"><a class="header" href="#agile-development">Agile Development</a></h3>
+<p>We say that a development methodology is <em>agile</em> if, broadly speaking, it prioritizes sthe ability to change plans in response to regularly-sought feedback. Once we try to define it more precisely, you'll find multiple competing definitions, and many competing methodologies that purport to be &quot;agile&quot;. Usually, you'll see the term used in contrast to &quot;waterfall&quot; development, where the software project proceeds along a linear path, like this:</p>
+<ul>
+<li>Requirements </li>
+<li>Specifications</li>
+<li>Design </li>
+<li>Implementation</li>
+<li>Testing</li>
+<li>Maintenance</li>
+</ul>
+<p>Of course, all of these &quot;phases&quot; still exist in an agile project! The difference is that (e.g.) customer feedback on an early demo might result in changes to the requirements, or some trouble with testing an early prototype might mean changing the design to make testing easier. To make this possible, agile projects usually start development early, expecting that some, or even most, of that prototype code will be replaced later. But <strong>something must be possible to demo at every stage</strong>, or feedback is hard to obtain.</p>
+<h3 id="sprints"><a class="header" href="#sprints">Sprints</a></h3>
+<p>Agile development is often divided into short periods of development effort: <em>sprints</em>. The duration of a sprint varies depending on the project and company. In 0320, we've organized development into one-week sprints with relatively small requirements for each. Each sprint builds on the last. </p>
+<p>Organizing sprints is an important skill for project managers. Timelines need estimates (and the ability to alter those estimates when needed), tickets need to be managed, and so on. We'll gloss over most of this in 0320, although your term project will need some attention to project-management tasks like these.</p>
+<h3 id="user-stories"><a class="header" href="#user-stories">User Stories</a></h3>
+<p>A <em>user story</em> is a short description of desired behavior. You'll often find these used in requirements documents for agile projects. There are a few templates, but we (mostly) follow the &quot;As a USER-ROLE I can NEEDED-BEHAVIOR so that TASK-OR-BENEFIT&quot; pattern. Look at the user stories in sprint 1.1, and you should see this pattern. </p>
+<p>It's important to remember that, although they follow a template, user stories are <em>informal</em>: they may not be enough by themselves to really describe what the customer needs. To help bridge this gap, they are often accompanied by <em>acceptance criteria</em>, which give additional lower-level requirements. But these are still fairly informal, and there's often a need for more precise specification to be agreed upon between developers! </p>
+<p>But what makes a good user story? A user story describes a narrow, <em>demoable</em> piece of functionality that can reasonably be accomplished in a single sprint. Often, you might start with a rough user story and realize that it's too big, and then split it into multiple stories. If users request an enhancement to an existing story, commonly these would be added as new stories (and more infrequently as additional acceptance criteria).</p>
+<div id="admonition-developers-are-users-too" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>Developers are users too!</p>
+<p><a class="admonition-anchor-link" href="#admonition-developers-are-users-too"></a></p>
+</div>
+<div>
+<p>If you're building a software package that is intended for other developers to use, <em>they are potential users</em>! In this class we will be giving you user stories from the developer-user perspective in addition to the end-user perspective. Your API design, documentation, etc. will matter to developer users.</p>
+</div>
+</div>
+<h2 id="clever-manka"><a class="header" href="#clever-manka">Clever Manka</a></h2>
+<p>There's a fairy tale I like: <em>Clever Manka</em>, from a 1920's compilation called The Shoemaker's Apron, available on Project Gutenburg <a href="https://www.gutenberg.org/files/33002/33002-h/33002-h.htm#Page_165">here</a>. I'll reproduce the text in full here, within these spoiler tags. </p>
+<details>
+<summary>Clever Manka</summary>
+<blockquote>
+<p>There was once a rich farmer who was as grasping and unscrupulous as he was rich. He was always driving a hard bargain and always getting the better of his poor neighbors. One of these neighbors was a humble shepherd who in return for service was to receive from the farmer a heifer. When the time of payment came the farmer refused to give the shepherd the heifer and the shepherd was forced to lay the matter before the burgomaster.</p>
+<p>The burgomaster, who was a young man and as yet not very experienced, listened to both sides and when he had deliberated he said:</p>
+<p>&quot;Instead of deciding this case, I will put a riddle to you both and the man who makes the best answer shall have the heifer. Are you agreed?&quot;</p>
+<p>The farmer and the shepherd accepted this proposal and the burgomaster said:</p>
+<p>&quot;Well then, here is my riddle: What is the swiftest thing in the world? What is the sweetest thing? What is the richest? Think out your answers and bring them to me at this same hour tomorrow.&quot;</p>
+<p>The farmer went home in a temper.</p>
+<p>&quot;What kind of a burgomaster is this young fellow!&quot; he growled. &quot;If he had let me keep the heifer I'd have sent him a bushel of pears. But now I'm in a fair way of losing the heifer for I can't think of any answer to his foolish riddle.&quot;</p>
+<p>&quot;What is the matter, husband?&quot; his wife asked.</p>
+<p>&quot;It's that new burgomaster. The old one would have given me the heifer without any argument, but this young man thinks to decide the case by asking us riddles.&quot;</p>
+<p>When he told his wife what the riddle was, she cheered him greatly by telling him that she knew the answers at once.</p>
+<p>&quot;Why, husband,&quot; said she, &quot;our gray mare must be the swiftest thing in the world. You know yourself nothing ever passes us on the road. As for the sweetest, did you ever taste honey any sweeter than ours? And I'm sure there's nothing richer than our chest of golden ducats that we've been laying by these forty years.&quot;</p>
+<p>The farmer was delighted.</p>
+<p>&quot;You're right, wife, you're right! That heifer remains ours!&quot;</p>
+<p>The shepherd when he got home was downcast and sad. He had a daughter, a clever girl named Manka, who met him at the door of his cottage and asked:</p>
+<p>&quot;What is it, father? What did the burgomaster say?&quot;</p>
+<p>The shepherd sighed.</p>
+<p>&quot;I'm afraid I've lost the heifer. The burgomaster set us a riddle and I know I shall never guess it.&quot;</p>
+<p>&quot;Perhaps I can help you,&quot; Manka said. &quot;What is it?&quot;</p>
+<p>So the shepherd gave her the riddle and the next day as he was setting out for the burgomaster's, Manka told him what answers to make.</p>
+<p>When he reached the burgomaster's house, the farmer was already there rubbing his hands and beaming with self-importance.</p>
+<p>The burgomaster again propounded the riddle and then asked the farmer his answers.</p>
+<p>The farmer cleared his throat and with a pompous air began:</p>
+<p>&quot;The swiftest thing in the world? Why, my dear sir, that's my gray mare, of course, for no other horse ever passes us on the road. The sweetest? Honey from my beehives, to be sure. The richest? What can be richer than my chest of golden ducats!&quot;</p>
+<p>And the farmer squared his shoulders and smiled triumphantly.</p>
+<p>&quot;H'm,&quot; said the young burgomaster, dryly. Then he asked:</p>
+<p>&quot;What answers does the shepherd make?&quot;</p>
+<p>The shepherd bowed politely and said:</p>
+<p>&quot;The swiftest thing in the world is thought for thought can run any distance in the twinkling of an eye. The sweetest thing of all is sleep for when a man is tired and sad what can be sweeter? The richest thing is the earth for out of the earth come all the riches of the world.&quot;</p>
+<p>&quot;Good!&quot; the burgomaster cried. &quot;Good! The heifer goes to the shepherd!&quot;</p>
+<p>Later the burgomaster said to the shepherd:</p>
+<p>&quot;Tell me, now, who gave you those answers? I'm sure they never came out of your own head.&quot;</p>
+<p>At first the shepherd tried not to tell, but when the burgomaster pressed him he confessed that they came from his daughter, Manka. The burgomaster, who thought he would like to make another test of Manka's cleverness, sent for ten eggs. He gave them to the shepherd and said:</p>
+<p>&quot;Take these eggs to Manka and tell her to have them hatched out by tomorrow and to bring me the chicks.&quot;</p>
+<p>When the shepherd reached home and gave Manka the burgomaster's message, Manka laughed and said: &quot;Take a handful of millet and go right back to the burgomaster. Say to him: 'My daughter sends you this millet. She says that if you plant it, grow it, and have it harvested by tomorrow, she'll bring you the ten chicks and you can feed them the ripe grain.'&quot;</p>
+<p>When the burgomaster heard this, he laughed heartily.</p>
+<p>&quot;That's a clever girl of yours,&quot; he told the shepherd. &quot;If she's as comely as she is clever, I think I'd like to marry her. Tell her to come to see me, but she must come neither by day nor by night, neither riding nor walking, neither dressed nor undressed.&quot;</p>
+<p>When Manka received this message she waited until the next dawn when night was gone and day not yet arrived. Then she wrapped herself in a fishnet and, throwing one leg over a goat's back and keeping one foot on the ground, she went to the burgomaster's house.</p>
+<p>Now I ask you: did she go dressed? No, she wasn't dressed. A fishnet isn't clothing. Did she go undressed? Of course not, for wasn't she covered with a fishnet? Did she walk to the burgomaster's? No, she didn't walk for she went with one leg thrown over a goat. Then did she ride? Of course she didn't ride for wasn't she walking on one foot?</p>
+<p>When she reached the burgomaster's house she called out:</p>
+<p>&quot;Here I am, Mr. Burgomaster, and I've come neither by day nor by night, neither riding nor walking, neither dressed nor undressed.&quot;</p>
+</blockquote>
+<p>The young burgomaster was so delighted with Manka's cleverness and so pleased with her comely looks that he proposed to her at once and in a short time married her.
+&gt;
+&gt;&quot;But understand, my dear Manka,&quot; he said, &quot;you are not to use that cleverness of yours at my expense. I won't have you interfering in any of my cases. In fact if ever you give advice to any one who comes to me for judgment, I'll turn you out of my house at once and send you home to your father.&quot;
+&gt;
+&gt;All went well for a time. Manka busied herself in her house-keeping and was careful not to interfere in any of the burgomaster's cases.
+&gt;
+&gt;Then one day two farmers came to the burgomaster to have a dispute settled. One of the farmers owned a mare which had foaled in the marketplace. The colt had run under the wagon of the other farmer and thereupon the owner of the wagon claimed the colt as his property.
+&gt;
+&gt;The burgomaster, who was thinking of something else while the case was being presented, said carelessly:
+&gt;
+&gt;&quot;The man who found the colt under his wagon is, of course, the owner of the colt.&quot;
+&gt;
+&gt;As the owner of the mare was leaving the burgomaster's house, he met Manka and stopped to tell her about the case. Manka was ashamed of her husband for making so foolish a decision and she said to the farmer:
+&gt;
+&gt;&quot;Come back this afternoon with a fishing net and stretch it across the dusty road. When the burgomaster sees you he will come out and ask you what you are doing. Say to him that you're catching fish. When he asks you how you can expect to catch fish in a dusty road, tell him it's just as easy for you to catch fish in a dusty road as it is for a wagon to foal. Then he'll see the injustice of his decision and have the colt returned to you. But remember one thing: you mustn't let him find out that it was I who told you to do this.&quot;
+&gt;
+&gt;That afternoon when the burgomaster chanced to look out the window he saw a man stretching a fishnet across the dusty road. He went out to him and asked:
+&gt;
+&gt;&quot;What are you doing?&quot;
+&gt;
+&gt;&quot;Fishing.&quot;
+&gt;
+&gt;&quot;Fishing in a dusty road? Are you daft?&quot;
+&gt;
+&gt;&quot;Well,&quot; the man said, &quot;it's just as easy for me to catch fish in a dusty road as it is for a wagon to foal.&quot;
+&gt;
+&gt;Then the burgomaster recognized the man as the owner of the mare and he had to confess that what he said was true.
+&gt;
+&gt;&quot;Of course the colt belongs to your mare and must be returned to you. But tell me,&quot; he said, &quot;who put you up to this? You didn't think of it yourself.&quot;
+&gt;
+&gt;The farmer tried not to tell but the burgomaster questioned him until he found out that Manka was at the bottom of it. This made him very angry. He went into the house and called his wife.
+&gt;
+&gt;&quot;Manka,&quot; he said, &quot;do you forget what I told you would happen if you went interfering in any of my cases? Home you go this very day. I don't care to hear any excuses. The matter is settled. You may take with you the one thing you like best in my house for I won't have people saying that I treated you shabbily.&quot;
+&gt;
+&gt;Manka made no outcry.
+&gt;
+&gt;&quot;Very well, my dear husband, I shall do as you say: I shall go home to my father's cottage and take with me the one thing I like best in your house. But don't make me go until after supper. We have been very happy together and I should like to eat one last meal with you. Let us have no more words but be kind to each other as we've always been and then part as friends.&quot;
+&gt;
+&gt;The burgomaster agreed to this and Manka prepared a fine supper of all the dishes of which her husband was particularly fond. The burgomaster opened his choicest wine and pledged Manka's health. Then he set to, and the supper was so good that he ate and ate and ate. And the more he ate, the more he drank until at last he grew drowsy and fell sound asleep in his chair. Then without awakening him Manka had him carried out to the wagon that was waiting to take her home to her father.
+&gt;
+&gt;The next morning when the burgomaster opened his eyes, he found himself lying in the shepherd's cottage.
+&gt;
+&gt;&quot;What does this mean?&quot; he roared out.
+&gt;
+&gt;&quot;Nothing, dear husband, nothing!&quot; Manka said. &quot;You know you told me I might take with me the one thing I liked best in your house, so of course I took you! That's all.&quot;
+&gt;
+&gt;For a moment the burgomaster rubbed his eyes in amazement. Then he laughed loud and heartily to think how Manka had outwitted him.
+&gt;
+&gt;&quot;Manka,&quot; he said, &quot;you're too clever for me. Come on, my dear, let's go home.&quot;
+&gt;
+&gt;So they climbed back into the wagon and drove home.
+&gt;
+&gt;The burgomaster never again scolded his wife but thereafter whenever a very difficult case came up he always said:
+&gt;
+&gt;&quot;I think we had better consult my wife. You know she's a very clever woman.&quot;</p>
+</details>
+<p>Stories like this appear in numerous places throughout the world. For example, India has the story of <a href="https://en.wikipedia.org/wiki/Hiranyakashipu">Hiranyakashipu</a>, a king with a boon protecting him from death &quot;by day or by night&quot;, &quot;indoors and out&quot;, etc. Narasimha, an avatar of Vishnu, finds a way around the riddle. So I might claim that humans find something universally valuable about them.</p>
+<p>What in the world does a fairy tale have to do with <em>testing</em>?</p>
+<div id="admonition-using-these-notes" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>Using these notes</p>
+<p><a class="admonition-anchor-link" href="#admonition-using-these-notes"></a></p>
+</div>
+<div>
+<p><B>If you're reading these notes without having been in lecture</B>: think about these questions first, before you read the answer! If you don't, you'll be robbing yourself of a chance to participate and learn. (The collapsible sections are meant to help you avoid spoilers while you think.)</p>
+</div>
+</div>
+<p>Don't worry about whether your answer is the same as mine. Especially in 0320, there are often many different good answers, even to technical questions.</p>
+<details>
+<summary><B>Think, then click!</B></summary>
+<p>Clever Manka is a <em>boundary condition tale</em>. There is something special about boundary conditions and how they challenge our preconceptions. <strong>As testers, we should give boundaries the respect they deserve.</strong></p>
+<p>(Are you aware of more mythological or literary settings for this sort of boundary-condition riddle? Share them with Tim!)</p>
+</details>
+<h2 id="boundary-conditions-testing-and-defensive-programming"><a class="header" href="#boundary-conditions-testing-and-defensive-programming">Boundary Conditions: Testing and Defensive Programming</a></h2>
+<p>Here's an example: &quot;I have tested a positive number, and I have tested a negative number.&quot; Surely all numbers are positive or negative. <strong>(Is this true?)</strong></p>
+<p>Here's another example: &quot;I have tested this function, which accepts a Java <code>Boolean</code>, on both values: true and false.&quot; <strong>(What's missing?)</strong></p>
+<p>Never assume that the obvious partition of the space actually covers the space; be on the lookout for special cases, outliers, and even new dimensions about which to think. This isn't only about testing, either---see, for example, the <a href="https://gist.github.com/timvisee/fcda9bbdff88d45cc9061606b4b923ca">Falsehoods Programmers Believe About Time</a>. Part of programming defensively is trying to avoid making unnecessary assumptions, while still allowing for extensibility. Keep this in mind as we start to code (and test) together.</p>
+<h2 id="live-coding-seating-order"><a class="header" href="#live-coding-seating-order">Live Coding: Seating Order</a></h2>
+<p>You can follow along with today's live coding in <a href="https://github.com/cs0320/class-livecode">this Github repo</a>, in the <code>F24/sep10-seatingsorting</code> directory. <strong>Open the <code>pom.xml</code> &quot;as a project&quot; in IntelliJ.</strong></p>
+<div id="admonition-livecode-in-class" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>Livecode in class</p>
+<p><a class="admonition-anchor-link" href="#admonition-livecode-in-class"></a></p>
+</div>
+<div>
+<p>We will not usually be doing &quot;livecode&quot; from scratch. That would take up too much time. Instead, we'll use this opportunity to practice reading code that exists. Today, I'll be walking you through some design choices I made, some issues, and some useful techniques.</p>
+</div>
+</div>
+<p>International diplomacy is complicated. Countries host a diplomatic corps of various ambassadors, envoys, etc. from other nations, and there is an elaborate protocol around order of precedence. Who gets the good seats? Who among a group is the one a new arrival will present papers to? </p>
+<p>There are historical reasons for all this. Before communication was instantaneous and reliable, ambassadors had significant power to make decisions for their country, and so being an ambassador was a big deal. This isn't a history class, though, so let's focus on the engineering. </p>
+<h3 id="diplomats-records-and-enums"><a class="header" href="#diplomats-records-and-enums">Diplomats: Records and Enums</a></h3>
+<p>I've written a <code>Diplomat.java</code> file, containing a <em>record</em>. I like records for reasons I've recorded in the file:</p>
+<pre><code class="language-java">/**
+ * NOTE: records are a modern Java feature that make defining dataclasses convenient.
+ * A record is immutable, and toString(), equals(), etc. are automatically defined.
+ *
+ * If you like Python, this is similar to @dataclass
+ */
+public record Diplomat(Rank rank, String name) {
+
+    /**
+     *  (Simplified) ambassadorial ranks c. 1961
+     *  See: https://en.wikipedia.org/wiki/Diplomatic_rank#Ranks
+     */
+    public enum Rank {
+        NUNCIO, AMBASSADOR, HIGH_COMMISSIONER,
+        MINISTER, ENVOY, CHARGE_DAFFAIRES
+    }
+
+}
+</code></pre>
+<p>Enumerations (<code>enum</code>) are a nice way to limit possibilities. If we'd used numbers or strings as the type of a diplomat's rank, we'd have to worry about what our program would do if someone had a strange rank like <code>-172653</code> or <code>&quot;242RT#$#GR@@@#&quot;</code>. This is an example of <strong>defensive programming</strong>: we've limited room for unexpected errors.</p>
+<p>Speaking of defensive programming, there's one more issue here. Do you see it? (Remember our conversation about <code>null</code> from last time...)</p>
+<details>
+<summary>Think, then click!</summary>
+<p>The value <code>null</code> can be used as a <code>Rank</code>, and so we could create a <code>Diplomat</code> object without a rank. Similarly, we could pass <code>null</code> for their name. We can fix this by adding some <em>validation</em> to the record. Records make this easy via &quot;compact&quot; constructors:</p>
+<pre><code class="language-java">    public Diplomat {
+        // Values are initialized by the record infrastructure. But we want extra validation:
+        if (rank == null || name == null)
+            throw new IllegalArgumentException(&quot;A diplomat must have non-null rank and name.&quot;);
+    }    
+</code></pre>
+<p>Notice that there is no <code>()</code> after <code>Diplomat</code>, like you may be used to when defining a contructor of no arguments. The record still initializes its fields—the constructor is defined implicitly. But we get to provide additional computation with this new syntax. In this case, we'll forbid diplomats that lack either a rank or name. This is another kind of <strong>defensive programming</strong>, because our library isn't meant to work if diplomats have no rank.</p>
+</details>
+</br>
+<p><strong>Exercise:</strong> Make sure you can get this code from the livecode repository. Then make this change (the code is commented out, later in the file). Try creating a nameless or rankless <code>Diplomat</code> in the <code>Main</code> class (i.e., one with <code>null</code> as its name or rank). Print it out. </p>
+<h3 id="determining-order-of-precedence"><a class="header" href="#determining-order-of-precedence">Determining Order of Precedence</a></h3>
+<p>Let's write code that can sort a list of <code>Diplomat</code> objects in their order of diplomatic predecence. Since this isn't a history or international-relations class, we'll simplify things. Let's say that for <em>our</em> fictional country, the order goes in three levels:</p>
+<ul>
+<li><code>NUNCIO</code>, <code>AMBASSADOR</code>, and <code>HIGH_COMMISSIONER</code>; then</li>
+<li><code>MINISTER</code> and <code>ENVOY</code>; then</li>
+<li><code>CHARGE_DAFFAIRES</code>.</li>
+</ul>
+<p>So we'd put an ambassador ahead of a minister, but it would be ok to put a high commissioner above or below an ambassador, since they're at the same tier of ranks.</p>
+<p>We're not done though. The order of precedence is complicated by some real-life norms that any <em>real</em> software would need to address. When we come back from the break, we'll look at a small challenge and a bigger challenge. </p>
+<h3 id="design-challenges"><a class="header" href="#design-challenges">Design Challenges</a></h3>
+<h4 id="small-challenge-countries-may-give-precedence-to-nuncios-at-their-discretion"><a class="header" href="#small-challenge-countries-may-give-precedence-to-nuncios-at-their-discretion">Small Challenge: countries may give precedence to Nuncios, at their discretion</a></h4>
+<p><a href="https://en.wikipedia.org/wiki/Nuncio">Nuncios</a> are ambassadors from the Holy See, that is from the Pope, separately from the country of Vatican City. Some traditionally Catholic countries will always list their nuncio first in any order of precedence. </p>
+<p>This means that we need some way of adjusting the <em>comparison</em> used for sorting. Maybe nuncios are before anything else, or maybe they're considered equal to ambassadors. It depends on the country. </p>
+<h4 id="larger-challenge-conventions-change-over-time"><a class="header" href="#larger-challenge-conventions-change-over-time">Larger challenge: conventions change over time</a></h4>
+<p>New titles get added (or removed), treaties get revised, and the world changes. Ideally, we'd like our program to allow countries some flexibility in how they order their diplomats, <em>beyond</em> the nuncio question above. </p>
+<p>This means that we probably don't want to write a sort that hard-codes in the above ordering, or even a sort that takes a boolean to resolve the nuncio question. We want a sort that uses the <strong>strategy pattern</strong>.</p>
+<h3 id="comparators"><a class="header" href="#comparators">Comparators</a></h3>
+<p>A <code>Comparator</code> is an object that implements a <code>compare</code> method that tells a caller whether its two arguments are <code>&lt;</code>, <code>&gt;</code>, or <code>equal</code>. It's one of the most common uses of the strategy pattern in Java, and it's perfect for our needs. I wrote a <code>PrecedenceComparator</code> below. I've left comments that touch on some of the features used, and raise some design questions we'll go over in lecture.</p>
+<pre><code class="language-java">package edu.brown.cs32.live.diplomacy;
+
+import java.util.Comparator;
+
+// Avoid the need to precede ranks with &quot;Diplomat.Rank.&quot;
+import edu.brown.cs32.live.diplomacy.Diplomat.Rank;
+
+/**
+ * Comparator that implements the order of precedence for members of a diplomatic corps.
+ * This can determine (e.g.) seating order, or who among a group is spoken to first.
+ *
+ * The rules vary by country, and this isn't a faithful implementation; don't use this code
+ * to seat real diplomats at a real banquet!
+ */
+
+public class PrecedenceComparator implements Comparator&lt;Diplomat&gt; {
+
+    /**
+     * If present, a diplomatic rank to always give precedence over others.
+     *
+     * NOTE: We could have just used &quot;null&quot; to represent the case where this isn't present.
+     *   What are the plusses and minuses of this design choice?
+     *   Could it be that there are multiple &quot;OK&quot; answers?
+     */
+    private final Rank givePrecedence;
+
+    /**
+     *  Create an order of precedence where a certain diplomatic rank is given precedence over all others.
+     *  When this rank is not involved, the standard precedence is used.
+     *
+     *  Real world example:
+     *  According to the Vienna Convention, nuncios (ecclesiastical diplomats from the Holy See), have equal
+     *  rank to ambassadors. However, the host country is allowed to grant seniority to a nuncio over others.
+     * @param givePrecedence diplomatic title that should always be treated as senior
+     */
+    public PrecedenceComparator(Diplomat.RANK givePrecedence) {
+        if(givePrecedence == null)
+            throw new IllegalArgumentException(&quot;givePrecedence field of 1-argument constructor must be non-null; use&quot; +
+                    &quot; the 0-argument constructor to not automatically prefer any rank.&quot;);
+        this.givePrecedence = givePrecedence;
+    }
+
+    /**
+     * Create an order of precedence where the standard precedence is used.
+     *
+     * NOTE: we may come to regret using null for this.
+     */
+    public PrecedenceComparator() {
+        this.givePrecedence = null;
+    }
+
+    @Override
+    public int compare(Diplomat o1, Diplomat o2) {
+        // By documentation (see mouseover): Negative if o1 &lt; o2; zero if o1 == o2; positive if o1 &gt; o2
+        //   the sign of compare(x,y) must be the same as compare(y,x), and compare must be transitive.
+
+        if(o1.rank() == this.givePrecedence) return -1;
+        if(o2.rank() == this.givePrecedence) return 1;
+
+        // NOTE: I personally like Java 17's pattern-matching switch expressions for these situations.
+        // I find them easier to read than complicated if-statements, and I will get a warning if I don't give a case
+        // for every possibile enum value. That means I can *LEAVE OUT* the &quot;default&quot; case and trust the compiler to
+        // warn me if I ever add a new value to this enum. &quot;Default&quot; cases check at runtime, and can lie around for
+        // years and cause subtle bugs when new values get added.
+
+        return switch(o1.rank()) {
+            case NUNCIO, AMBASSADOR, HIGH_COMMISSIONER -&gt;
+                    switch(o2.rank()) {
+                        case NUNCIO, AMBASSADOR, HIGH_COMMISSIONER -&gt; 0;
+                        case ENVOY, MINISTER, CHARGE_DAFFAIRES -&gt; -1;
+                    };
+            case MINISTER, ENVOY -&gt;
+                    switch(o2.rank()) {
+                        case NUNCIO, AMBASSADOR, HIGH_COMMISSIONER -&gt; 1;
+                        case ENVOY, MINISTER -&gt; 0;
+                        case CHARGE_DAFFAIRES -&gt; -1;
+                    };
+            case CHARGE_DAFFAIRES -&gt;
+                    switch(o2.rank()) {
+                        case NUNCIO, AMBASSADOR, HIGH_COMMISSIONER, ENVOY, MINISTER -&gt; 1;
+                        case CHARGE_DAFFAIRES -&gt; 0;
+                    };
+        };
+    }
+}
+</code></pre>
+<p>I've also written a little sorting algorithm of my own. The method takes the list to sort <em>and</em> a comparator. </p>
+<p><strong>Exercise: what happens if we allow <code>Diplomat</code> object with <code>null</code> rank? Do we get a noisy failure, or a silent failure?</strong></p>
+<h3 id="making-diplomat-resilient"><a class="header" href="#making-diplomat-resilient">Making <code>Diplomat</code> Resilient</a></h3>
+<p>It's <strong>both</strong>! There's a noisy failure for one constructor, and silent failure for the other---where the <code>null</code>-ranked <code>Diplomat</code> gets precedence!</p>
+<p>Let's inject a check into the constructor of <code>Diplomat</code>. That's a better place for it.</p>
+<pre><code class="language-java">/**
+ * Define the constructor ourselves (don't use the one that &quot;record&quot; gives
+ * us) so that we can validate input values. This is called a *compact*
+ * constructor, and works only for records. Note that it's _not_ the same
+ * as a 0-argument constructor Diplomat().
+ */
+//    public Diplomat {
+//        // Values are initialized by the record infrastructure. But we want extra validation:
+//        if (rank == null || name == null)
+//            throw new IllegalArgumentException(&quot;A diplomat must have non-null rank and name.&quot;);
+//    }
+</code></pre>
+<p>There are other things we could (or should) do, too. For example, making our comparator not treat a <em>lack</em> of precedence rank the same as giving predecence to <code>null</code>.</p>
+<p>That went by pretty quickly---clone or pull the livecode repository, and try this out!</p>
+<h2 id="testing-sorting"><a class="header" href="#testing-sorting">Testing Sorting</a></h2>
+<p>I've got a JUnit test class written to test my sorting method. Note that we're <em>not</em> testing sorting of diplomats yet. That would tangle the functionality of the two methods. Instead, let's try to focus on testing <em>my implementation of bubblesort</em>.</p>
+<pre><code class="language-java">package edu.brown.cs32.live.sorting;
+
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+
+/**
+ * Test the bubble-sort implementation in the Sorts class.
+ * Note that we are *NOT* testing how bubble sort works with the diplomatic ordering.
+ * Instead, we'll just use the natural ordering that exists on naturally comparable objects.
+ */
+public class TestSorts {
+
+    @Test
+    public void testBubbleEmpty() {
+        List&lt;Integer&gt; lst = new ArrayList&lt;&gt;(List.of());
+        // NOTE: Comparator.naturalOrder() saves us from having to write a comparator strategy for integers.
+        // If you mouse over it, you'll see a fairly complex generic type. We'll cover that in a future class.
+        Sorts.bubbleSort(lst, Comparator.naturalOrder());
+        assertEquals(0, lst.size());
+    }
+
+    // NOTE: Run &quot;with coverage&quot; to see line-coverage info.
+    // Are there any pieces of the code that I haven't yet exercised?
+    // (We're looking for at least 50% line coverage for this sprint, but
+    //  only for *your* classes, not the kd-tree stuff.)
+}
+</code></pre>
+<p>If we run this, all tests pass. </p>
+<p><img src="https://i.imgur.com/nZS5USG.png" alt="" />
+<img src="https://i.imgur.com/MI6C2c2.png" alt="" /></p>
+<p>But do you notice something missing about the test suite? Is there important stuff I'm not exercising (keeping in mind we're interested only in the <em>sort</em> so far, not in the diplomat comparator.) We can get a hint by running <em>with coverage</em>. (You might need to run once without coverage before this option is enabled.)</p>
+<p><img src="https://i.imgur.com/9Wo9c35.png" alt="" /></p>
+<p>Here's the result:</p>
+<p><img src="https://i.imgur.com/ZmpnmuN.png" alt="" /></p>
+<p>Notice the <strong>20%</strong> under &quot;line&quot; coverage. My suite has only exercises a fifth of the lines in the <code>edu.brown.cs32.live.sorting</code> package. Since this contains only my sorting method, I'm worried---the method's hardly being tested at all! If we click into the method, we'll see green and red bars shown to the left of the code:</p>
+<p><img src="https://i.imgur.com/vaoVmpv.png" alt="" /></p>
+<p>We've only tested the empty list input, and so none of those later lines ran at all. We should fix this.</p>
+<p><strong>Exercise:</strong> Add a test of your own!</p>
+<p>Let's add this test:</p>
+<pre><code class="language-java">    @Test
+    public void testBubbleFiveDifferentReverse() {
+        List&lt;Integer&gt; lst = new ArrayList&lt;&gt;(List.of(5,4,3,2,1));
+        // NOTE: Comparator.naturalOrder() saves us from having to write a comparator strategy for integers.
+        // If you mouse over it, you'll see a fairly complex generic type. We'll cover that in a future class.
+        Sorts.bubbleSort(lst, Comparator.naturalOrder());
+        assertEquals(List.of(1,2,3,4,5), lst);
+    }
+
+</code></pre>
+<p>Unfortunately, this test <em>fails</em>. We do get up to 60% coverage, though. (We're looking for at least 50% from you on this sprint.)</p>
+<pre><code>Expected :[1, 2, 3, 4, 5]
+Actual   :[5, 4, 3, 2, 1]
+</code></pre>
+<p>Our sorting code seems to be sorting in <em>reverse</em> order, rather than increasing order. Let's write another test to help us triangulate the behavior.</p>
+<pre><code class="language-java">    @Test
+    public void testBubbleFiveMixedOneDuplicate() {
+        List&lt;Integer&gt; lst = new ArrayList&lt;&gt;(List.of(5,1,3,2,3));
+        // NOTE: Comparator.naturalOrder() saves us from having to write a comparator strategy for integers.
+        // If you mouse over it, you'll see a fairly complex generic type. We'll cover that in a future class.
+        Sorts.bubbleSort(lst, Comparator.naturalOrder());
+        assertEquals(List.of(1,2,3,3,5), lst);
+    }
+</code></pre>
+<p>Notice how we've slowly widened the scope of assumptions we're violating in the tests. First, we pass something non-sorted, and then we pass something with duplicates and partial sortedness. We're now at 100% line coverage! Unfortunately, the result is even more confusing. My method is <em>not</em> sorting in reverse order; it's just plain wrong:</p>
+<pre><code>Expected :[1, 2, 3, 3, 5]
+Actual   :[5, 3, 3, 3, 3]
+</code></pre>
+<h2 id="debugging-breadth-first-vs-depth-first"><a class="header" href="#debugging-breadth-first-vs-depth-first">Debugging: Breadth-First vs. Depth-First</a></h2>
+<p>Good debugging involves balancing two equally important instincts:</p>
+<ul>
+<li>breadth-first exploration to rule out potential causes and maintain productive focus; and</li>
+<li>depth-first exploration, narrowly focused on a specific <em>idea</em> about the cause. </li>
+</ul>
+<p>If you skip to depth-first too quickly, you may waste a lot of time. Our debugging recipe is meant to scaffold this process. Let's follow it in this case. </p>
+<h3 id="what-do-we-know"><a class="header" href="#what-do-we-know">What Do We Know?</a></h3>
+<p>I'm trying to write an implementation of bubblesort. It should sort the given list in increasing order, according to the comparator provided.</p>
+<p>Run <code>testBubbleFiveMixedOneDuplicate</code> to reproduce the bug. </p>
+<pre><code>Expected :[1, 2, 3, 3, 5]
+Actual   :[5, 3, 3, 3, 3]
+</code></pre>
+<p>This is wrong because the <em>2</em> and <em>1</em> are both dropped from the input list. </p>
+<h3 id="what-computational-steps-happen"><a class="header" href="#what-computational-steps-happen">What Computational Steps Happen?</a></h3>
+<ul>
+<li>The input list <code>[5,1,3,2,3]</code> is created</li>
+<li>The input list is passed to <code>bubbleSort</code> along with the natural ordering (increasing) for integers.</li>
+<li>The sorting method loops through every index of the list (<code>ii</code>)</li>
+<li>then it loops through every index greater than <code>ii</code> (<code>jj</code>)</li>
+<li>If the value at <code>ii</code> is greater than the value at <code>jj</code>, the values are swapped in the list. </li>
+<li>The list is modified in-place, so there's no return value. </li>
+</ul>
+<h3 id="localization"><a class="header" href="#localization">Localization</a></h3>
+<p>Either my expectations are wrong, or my story is. In this case, I'm pretty sure the sort is modifying the list incorrectly---the result needs to include all the same elements! So there's a problem with my story somewhere. Either one of the steps isn't true, or one of the steps is not detailed enough to <em>be</em> untrue. Let's run some experiments! </p>
+<h4 id="is-the-correct-input-list-being-received-by-bubblesort"><a class="header" href="#is-the-correct-input-list-being-received-by-bubblesort">Is the correct input list being received by <code>bubbleSort?</code></a></h4>
+<p>We'll test this via <code>System.out.println</code>. Looks correct. We can now ignore the possibility that the list isn't created properly, or isn't be passed correctly. </p>
+<h4 id="is-the-loop-working-as-expected"><a class="header" href="#is-the-loop-working-as-expected">Is the loop working as expected?</a></h4>
+<p>We'll test this via <code>System.out.println</code>, too. Looks correct: we see <code>ii</code> increasing and <code>jj</code> starting and stopping at the correct indexes.</p>
+<h4 id="is-the-swap-working-as-expected"><a class="header" href="#is-the-swap-working-as-expected">Is the swap working as expected?</a></h4>
+<p>We'll test this via <code>System.out.println</code>, too. But something's going wrong: we don't see the value at <code>ii</code> preserved by the swap. We now have a <em>more specific location</em> for the bug. </p>
+<h3 id="fixing-the-bug"><a class="header" href="#fixing-the-bug">Fixing The Bug</a></h3>
+<p>At this point, we know which lines of code to focus on. We can step through them with a debugger or with more print statements, to discover how to fix the issue. </p>
+<h3 id="some-notes"><a class="header" href="#some-notes">Some Notes</a></h3>
+<p>I've been programming a long time and I still catch myself failing to follow the debugging recipe. I think I know what's going on and I turn out to be <em>wrong</em>, and spend a lot of time deep-diving into a location that isn't actually the source of the issue. In fact, last year I was working on a demo for React programming, and spent <em>2 hours</em> debugging something (the wrong thing) because I jumped ahead before thinking carefully.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../success-in-0320/recipe.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../mocking-console/mocking-console.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../success-in-0320/recipe.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../mocking-console/mocking-console.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
