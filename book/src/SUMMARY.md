@@ -24,6 +24,10 @@
  
 - [MBT and PBT](./mbt_pbt/mbt_pbt.md) 
 
+<!-- Slides: Last updated Sep. 24, 2024 -->
+- [Requirements and Firebase (Slides)](./slides-links/requirements-and-firebase.md) 
+
+
 <!-- - [Thinking About Algorithms](./algorithms/algorithms.md) -->
 
 <!-- - [Privacy and (sketching) Threat Modeling](./security/security_and_threat_modeling.md) -->
