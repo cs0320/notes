@@ -27,10 +27,11 @@
 <!-- Slides: Last updated Sep. 24, 2024 -->
 - [Requirements and Firebase (Slides)](./slides-links/requirements-and-firebase.md) 
 
+- [Taxis and Rainbows, Threat Modeling](./security/security_and_threat_modeling.md)
 
 <!-- - [Thinking About Algorithms](./algorithms/algorithms.md) -->
 
-<!-- - [Privacy and (sketching) Threat Modeling](./security/security_and_threat_modeling.md) -->
+<!--  -->
 
 
  <!-- Generic Types and Wildcards, Fuzz Testing -->

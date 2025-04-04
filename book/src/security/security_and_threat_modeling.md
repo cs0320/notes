@@ -1,6 +1,6 @@
 # Security And Threat Modeling (All Too Briefly)
 
-Today's notes are more of an outline.
+Today's notes are more of an outline. They are accompanied by the [slides](https://docs.google.com/presentation/d/12EreXpahlzzdT707pictF1hadaKqG9UtRndU1qvItB0/edit?usp=sharing).
 
 ## Taxis
 
