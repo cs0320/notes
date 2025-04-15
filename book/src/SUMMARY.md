@@ -29,10 +29,7 @@
 
 - [Taxis and Rainbows, Threat Modeling](./security/security_and_threat_modeling.md)
 
-<!-- - [Thinking About Algorithms](./algorithms/algorithms.md) -->
-
-<!--  -->
-
+- [Thinking About Algorithms](./algorithms/algorithms.md)
 
  <!-- Generic Types and Wildcards, Fuzz Testing -->
 

@@ -7,7 +7,7 @@ These notes combine multiple sources from prior semesters. Broadly, they discuss
 * bloom filters; and 
 * A* search.
 
-They aren't super well organized, becauase I put them together for a voted-on lecture in the hope they are interesting. We probably won't be able to talk about everything here in class.
+They aren't super well organized, becauase I put them together last semester for a voted-on lecture in the hope they are interesting. We probably won't be able to talk about everything here in class!
 
 ## Thinking About Data Representations
 
