@@ -31,22 +31,7 @@
 
 - [Thinking About Algorithms](./algorithms/algorithms.md)
 
+- [Beyond Testing (Closing)](./beyond-testing/beyond_testing.md)
+
  <!-- Generic Types and Wildcards, Fuzz Testing -->
 
-<!-- 
-
-
-<!-- [Lecture 13]()
-[Lecture 14]()
-[Lecture 15]()
-[Lecture 16]()
-[Lecture 17]()
-[Lecture 18]()
-[Lecture 19]()
-[Lecture 20]()
-[Lecture 21]()
-[Lecture 22]()
-[Lecture 23]()
-[Lecture 24]()
-
- -->

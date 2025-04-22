@@ -59,8 +59,6 @@ It's not perfect to use the number of transistors as proxy for complexity---ther
 
 ## Basic Example: Puzzles
 
-**(Outline: do the lights-puzzle temporal Forge example.)**
-
 Keys:
 * we're working _declaratively_; and 
 * we're working _symbolically_. 
@@ -148,7 +146,7 @@ How might tools like this and tools like KLEE interoperate in the future? -->
 
 ## Takeaways
 
-There are many, many techniques to use if you want to go beyond testing. We can't do justice to the idea in a half class meeting, but if you're interested in tools and algorithms for _modeling_ systems and _reasoning_ about them together, you might be interested in taking CSCI 1710---which I'm offering in the Spring!
+There are many, many techniques to use if you want to go beyond testing. We can't do justice to the idea in a half class meeting, but if you're interested in tools and algorithms for _modeling_ systems and _reasoning_ about them together, you might be interested in taking CSCI 1710---which I'm offering in the Spring! We also have a course on program verification coming in the Fall.
 
 
 
