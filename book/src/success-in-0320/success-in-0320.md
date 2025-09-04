@@ -2,16 +2,17 @@
 
 ## Logistics
 
-As of right now, there is room in the class. You shouldn't need an override in most circumstances; just enroll.
+**We have been moved to B&H.**
 
-* I check override requests every day. If you're a Master's student, you'll need an override in CAB but I will almost certainly grant it.
-* If you **get an override**, please accept ASAP so that Brown and the department get accurate enrollment estimates. 
-* If you **are still shopping**, keep 0320 in your cart so that you see announcements, etc. that we send to the list or post on EdStem. 
+* I check override requests every day after the course starts. 
+* If you need and **get an override**, please accept ASAP so that Brown and the department get accurate enrollment estimates. CAB does not report active overrides in the enrollment total, so delaying prevents others from getting in.
+* If you **are still shopping**, keep 0320 in your cart so that you see announcements, etc. that we send to the list or post on EdStem. **If you do not have 0320/1340 in your cart, I will not grant you an override.**
 * **You need the prerequisites** to take 0320 or 1340. If you haven't completed 0200, 0190, or a comparable course, you cannot take 0320 yet. (If you're a transfer student and concerned, let's talk; I was also a transfer student as an undergrad so I have some understanding of potential worries.)
 
-## Welcome!
+When I say "0320" in the course notes, I mean both 0320 and 1340. 
 
-Welcome to 0320/1340! Before we get started, turn to the people sitting next you to now and introduce yourself. 
+## Welcome!
+Before we get started, turn to the people sitting next you to now and introduce yourself. 
 
 The most important part of 0320 is *collaboration*. With the exception of the very first assignment, everything in 0320 is group work. 
 * You'll be submitting your work to repositories that everyone in the class can (eventually) read.
@@ -26,40 +27,33 @@ At the end of class, leave your card either here in front or on (one single) cha
 
 ### 0320 is Different
 
-You'll want to read the missive. You may not need to read _all_ of it super deeply yet, but you should note the ways that 0320 is different from what you're used to. E.g., you'll be getting formative feedback every week from a mentor. 
+You'll want to read the missive. You may not need to read _all_ of it super deeply yet, but you should note the ways that 0320 is different from what you're used to. E.g., you'll be getting formative feedback every week from a mentor. Like in industry, you will not be graded by an autograder.
 
-<!-- In industry, it's not uncommon to help colleagues improve their code, find and fix bugs, and produce reliable and extensible designs&mdash;even if they are solving a problem you're unfamiliar with. The one-on-one debugging hours format doesn't teach those skills. Similarly, in industry, you're not graded by an autograder or low-level rubric; you'll have a mentor TA to whom you demo and get formative feedback from every week. -->
+### TA Introductions
 
 **Speaking of mentors, let's introduce the TAs!**
 
+
+
 ## Immediate Advice
 
-The first sprint goes out Monday, and there's a setup deliverable due before then. Please do it soon; you don't want to spend a lot of time early next week on setting up IntelliJ and so on.
+The first sprint goes out Monday, and there's a setup deliverable due before then. Please do it soon; you don't want to spend a lot of time early next week on setting up VSCode and so on.
 
-Go to gear up sections. This semester, they're on **Mondays and Tuesdays**. Switching doesn't require a "conference" switch in CAB. 
+Go to gear up sections. This semester, they're on **Mondays and Tuesdays** (with one exception around IPD). Switching doesn't require a "conference" switch in CAB. 
 
 Read [lecture notes](https://cs0320.github.io/notes/) and [livecode](https://github.com/cs0320/class-livecode). More than reading the code examples, pull the code and experiment with them! I try to strike a balance between depth and drill in class, which means that when we have in-class work, these resources will be vital references. (Today, for example, I won't talk through every bullet point in these notes.)
 
 Prototype early. (Paraphrasing Andy: *Start soon! Start yesterday!*)
 
-Please be aware that while this is an S/NC course, it is a lot of work. To quote a very wise remark from prior feedback: *"You will work very hard, but not get an A".* 
-
-My hours (at least for now) will be at 3pm (shortly after class)on Thursdays. I'll be in CIT 355 by default. If you need to join on Zoom (e.g., if you're sick, or off-campys) let me know and I'll make sure to open [my Zoom](https://brown.zoom.us/my/tim.browncs) to maximize accessibility. It's OK to bring code, design, etc. questions to my hours, if you wish. I want to be available.
+Be aware that while this is an S/NC course, it is a lot of work. To quote a very wise remark from prior feedback: *"You will work very hard, but not get an A".* 
 
 ### Reading for Next Time
 
-Non-technical reading: [Clever Manka](https://www.gutenberg.org/files/33002/33002-h/33002-h.htm#Page_165). It's short. Read it. **What does it have to do with software engineering?**
+Read the missive. 
 
-### Reading for Sprints 1.1 and 1.2
+Also, a short non-technical reading: [Clever Manka](https://www.gutenberg.org/files/33002/33002-h/33002-h.htm#Page_165). Read it. **What does it have to do with software engineering?**
 
-_Effective Java_ (3rd edition) items on:
-* general contracts and equality/hash, **Items 10, 11, and 12**;
-* generics, **Items 26, 29, and 30**; and
-* exceptions, **Items 69, 70, 72, 73**.
-
-Items in Chapter 4 may be useful for those who haven't done object-oriented programming recently. Especially **Items 15, 17, and 19**. 
-
-You are not required to buy this book. It's available free to read online via Brown's library. 
+There will be readings, but you won't need to pay for them.
 
 ## Programming vs. Engineering
 
@@ -83,7 +77,7 @@ Get in the habit of **asking questions**.  It will save you time and pain in the
 
 **Document your assumptions and needs**. It will save you time and pain in the future.
 
-Don't misunderstand me: you'll all write _lots_ of code in this class. Your career in CSCI so far has likely trained you to write a lot of code. But just writing code is, frankly, _not good enough_.
+Don't misunderstand me: you'll work with a lot of code in this class. But just writing code is, frankly, _not good enough_.
 
 ## What makes "good software"?
 
@@ -106,13 +100,159 @@ Our goal is not to teach you to do better at programming courses, or even comput
 
 The collaboration policy is part of that. We'll use Git, an industry standard version control system. If you haven't had Git experience yet, that's OK! Here's an example of how it works on a project I just happen to have here on my laptop. By the way, I'm using IntelliJ to work on this code. This course strongly encourages you to use (and supports) IntelliJ; the gear up sections today and tomorrow can help you set it up.
 
-One advantage of using Git is that all the code from lecture will be available on a [public repository](https://github.com/cs0320/class-livecode) in the `S25` folder (for Spring 2025) and also in the `vignettes` subfolder, which I use for small examples that may or may not appear in class. You can clone the repository to experiment with the code on your own machine. **You should clone this repository as soon as you're able**; we'll use it for in-class exercises, and it gives you the ability to experiment with changing the code on your own machine. **Starting next week, I will assume that you have the repository cloned on your laptop, if you bring one.**
+One advantage of using Git is that all the code from lecture will be available on a [public repository](https://github.com/cs0320/class-livecode) in the `F25` folder (for Fall 2025) and also in the `vignettes` subfolder, which I use for small examples that may or may not appear in class. You can clone the repository to experiment with the code on your own machine. **You should clone this repository as soon as you're able**; we'll use it for in-class exercises, and it gives you the ability to experiment with changing the code on your own machine. **Starting next week, I will assume that you have the repository cloned on your laptop, if you bring one.**
 
 ~~~admonish warning title="Class Prep and Spoilers"
 If a filename or package has `prep` in it, I'm including it in the repository to help me structure the live coding session, and keep track of things like intentional and unintentional bugs. These are spoilers for class, and may not be reliable resources.
 ~~~
 
-### A Little Bit of Generics
+
+## TypeScript
+
+We're going to be using TypeScript for nearly all of this course. Last year, we used Java for the "back end" and TypeScript on the "front end", and it was tough to devote enough time to general TypeScript practice. So we're doing everything in one language. The first two weeks give you an introduction.
+
+TypeScript is essentially "JavaScript with types". It transpiles to JavaScript, meaning that Node and your browser only need to "understand" JavaScript. Why do we need types here, though?
+
+### Equality
+
+When I'm learning a new language, I like to identify language features that I rely on, and experiment with them. Coming up with these facets isn't always easy, which is why we're doing it together. For instance, let's check out _equality_, a deceptively simple yet subtle idea that many languages differ on. We've got a couple options for our experiments:
+* If we were interested in _web_ behavior, I'd use the console of whatever browser I wanted. (Safari's JS console is Command-Option-C, if you've enabled developer tools.
+* If we were interested in general _program_ behavior, I'd just run Node. Node is a runtime library for JavaScript that's often used for backend servers&mdash;the same sort of setting you might see a Java program used for. 
+
+Behavior isn't always the same between these. We'll get to that later. For now, let's use Node.
+
+
+```javascript
+> 15 == "15"
+true
+> 15 == true
+false
+> 1 == true
+true
+0 == false
+true
+```
+
+Already we've learned a great deal. JavaScript's `==` operator performs type conversion before comparing values. It allows us to pretend that the number `1` is "true" and that the number `0` is "false", but other numbers aren't equivalent to either. 
+
+Those of you who have programmed in Racket before: notice this is different from Racket! In Racket, every non-false value (Racket calls false `#f`) is considered true. The same is true in many other languages.
+
+JavaScript has a second equality operator, `===`, that checks for equality _without_ type conversion. So:
+
+```javascript
+> 15 === "15"
+false
+```
+
+Java also has two different types of equality (`==` and the `.equals` method), but there the difference has nothing to do with implicit type conversion, but with references vs. structural equality. JavaScript's implicit conversion adds an extra layer of complexity.
+
+### Arithmetic
+
+Let's try a few arithmetic operators that are often overloaded across different languages.
+
+```javascript
+> '1' + 1
+'11'
+
+> 1 + '1'
+'11'
+
+> 1 - '1'
+0
+
+> '1' - 1
+0
+```
+
+JavaScript tries to "do the reasonable thing" whenever possible. This can lead to surprising bugs; When in doubt, use explicit conversion functions (e.g., `parseInt`). In fact, let's try a couple more (Credit for these to [Gary Bernhardt](https://www.destroyallsoftware.com/talks/wat) from 2012---it's 4 minutes long; watch it.) For context, `[]` denotes an array or list in JavaScript and `{}` denotes an object.
+
+```javascript
+> [] + []
+""
+
+> {} + {}
+'[object Object][object Object]'
+
+> [] + {}
+[object Object]
+```
+
+Do you see why TypeScript is helpful, now? JavaScript lets you throw off the constraints of the type system, but those constraints are like a safety belt on a roller coaster.
+
+#### Supplemental: What's Really Happening?
+
+The details involve how JavaScript is implicitly converting between different types. Before applying `+`, it converts to a "primitive" type, which for an object is a string. An empty array is converted to the empty string. And so on. The details would consume a full class, or more! Just beware, and embrace types.
+
+### Objects
+
+While we won't be using TypeScript _classes_ much in 0320, we can't avoid using _objects_. Objects are collections of fields; there's no sharp distinction between fields that are methods and fields that are data. If you've used Python before, these may remind you of dictionaries. For example:
+
+```javascript
+> const cat = {talk: function() { console.log('meow'); }}
+undefined
+```
+
+This defines a value for the variable `cat`. The console (in both a browser and in Node) displays `undefined` because that's the return value of the definition statement.
+
+```javascript
+> cat.talk
+function talk()
+```
+
+The value of `cat.talk` is a _function_. We can pass it around the same way we would a string or a number. But we can also call it:
+
+```javascript
+> cat.talk()
+meow
+undefined
+```
+
+Again, the _console_ is printing the "meow" and then saying what the return value was. You won't need to worry about this apparent double result when you're working with TypeScript in general.
+
+Don't get too attached to the method-style syntax, however. Objects in TypeScript are more flexible. A field is a field, no matter what it contains:
+
+```javascript
+> cat["talk"]
+function talk()
+> cat["talk"]()
+meow
+undefined
+```
+
+You'll get a lot more practice with TypeScript over the next 2 weeks.
+
+## What About AI?
+
+FILL NEW FOR FALL 2025
+
+
+<!-- !!!!!!!!!!
+
+What about it? You'll be allowed to use it, just like any other resource. However, you'll need to conform to the above standards, just as if it were a collaborator. I generally say more in response to your note-card responses. -->
+
+## How Does Grading Work?
+
+FILL FALL 2025
+
+<!-- 0320 is mandatory S/NC. We _do_ give S with distinction. The course is divided into 2 parts: the _sprints_ and the _term project_. The sprints let you demonstrate command of new technical skills (which we give formative feedback on). The term project lets you show you can apply those skills in a new context of your own.
+
+The missive talks at length about grading; I won't try to duplicate all that information here. However, here are some key features of 0320's grading.
+
+**1-week sprints:** You'll have a deliverable every week. This gives us a better cadence for feedback. You'll alternate between asynchronous video demos and synchronous demos each week, and the demos (*and your answers to questions they ask*) are the primary way your mentors will generate feedback.
+
+**Feedback Spreadsheet:** You'll receive access to a spreadsheet where your mentors will leave formative feedback _every week_, along with whether you've met expectations for the week. We'll expect you to work on addressing this feedback between sprints. 
+
+**No Hidden Rubrics:** All guidance that we give TAs for grading we'll give to you as well. We'll also be providing you with a "demo recipe" to help you prepare. There are no secret rubrics or hidden test suites in 0320; we want you to know what our expectations are. 
+
+**Collaboration Crests:** We would like to more strongly encourage collaboration between students. You'll need to earn a certain number of crests throughout the semester, and report how you've earned them on your feedback sheet. **The details have changed since Fall 2024, to give you more choice in how you earn crests.**
+
+**Testing Matters:** We'll talk more about testing on Tuesday, but it should go without saying that in 0320, we take testing seriously. The handouts contain *pretty good advice* on meeting our requirements. Read them. 
+
+**It is a bedrock principle of 0320 that if you cannot demo or test something, it's not actually done.**
+ -->
+
+
+<!-- ### A Little Bit of Generics
 
 In today's project I've got a very basic `Student` class. Every `Student` has a todo list, and the contents of their todo list are passed in the constructor. 
 
@@ -204,9 +344,9 @@ While we're here editing this class, there's something I don't like. What happen
         if(this.todos.isEmpty()) {
             throw new IllegalArgumentException();
         }
-```
+``` -->
 
-Great! So we've made 2 improvements to the code: one which makes it more generic, and one that makes it a little more useful to the program that's calling it. 
+<!-- Great! So we've made 2 improvements to the code: one which makes it more generic, and one that makes it a little more useful to the program that's calling it. 
 
 Now that we've made this change, I'll just *commit* the change to my local repository. First, I'll tell Git that I want it to include the change I just made:
 
@@ -343,30 +483,9 @@ No. In 0320, we have an open collaboration policy---even about code. But in exch
 A failure to meet these basic professional standards would be a violation of Brown's academic code. It would also get you in trouble at work. To run a course with such an open policy is _risky_---if abused, it harms your learning and our ability to keep the course collaborative. So, to protect the format of the course, if these standards were violated I would have to file an academic code case and then relentlessly pursue it.
 
 But I won't have to do that, right?
+ -->
 
-### What About AI?
-
-What about it? You'll be allowed to use it, just like any other resource. However, you'll need to conform to the above standards, just as if it were a collaborator. I generally say more in response to your note-card responses.
-
-## How Does Grading Work?
-
-0320 is mandatory S/NC. We _do_ give S with distinction. The course is divided into 2 parts: the _sprints_ and the _term project_. The sprints let you demonstrate command of new technical skills (which we give formative feedback on). The term project lets you show you can apply those skills in a new context of your own.
-
-The missive talks at length about grading; I won't try to duplicate all that information here. However, here are some key features of 0320's grading.
-
-**1-week sprints:** You'll have a deliverable every week. This gives us a better cadence for feedback. You'll alternate between asycnhronous video demos and synchronous demos each week, and the demos are the primary way your mentors will generate feedback.
-
-**Feedback Spreadsheet:** You'll receive access to a spreadsheet where your mentors will leave formative feedback _every week_, along with whether you've met expectations for the week. We'll expect you to work on addressing this feedback between sprints. 
-
-**No Hidden Rubrics:** All guidance that we give TAs for grading we'll give to you as well. We'll also be providing you with a "demo recipe" to help you prepare. There are no secret rubrics or hidden test suites in 0320; we want you to know what our expectations are. 
-
-**Collaboration Crests:** We would like to more strongly encourage collaboration between students. You'll need to earn a certain number of crests throughout the semester, and report how you've earned them on your feedback sheet. **The details have changed since Fall 2024, to give you more choice in how you earn crests.**
-
-**Testing Matters:** We'll talk more about testing on Tuesday, but it should go without saying that in 0320, we take testing seriously. The handouts contain *pretty good advice* on meeting our requirements. Read them. 
-
-**It is a bedrock principle of 0320 that if you cannot demo or test something, it's not actually done.**
-
-## Aside: Test Coverage 
+<!-- ## Aside: Test Coverage 
 
 There are a few metrics for how good a test suite is. One is "test coverage", which measures how much of the code the suite exercises. Although we encourage you to run from the terminal using `mvn`, IntelliJ is probably the best way to get test-coverage information easily, without more configuration work. To do this, run a test file in IntelliJ, then select "Run with Coverage" from the "Run" menu:
 
@@ -387,4 +506,4 @@ Don't view a high level of coverage as a guarantee! Coverage is imperfect; there
 
 On a similar note, there's diminishing returns on time to improve coverage. In a real, large code base, it's _far_ more difficult to move from 90% to 95% than it is to move from 50% to 65%. Don't spend all your time trying to improve coverage at the exclusion of all else, but don't neglect it either. Our sprints are small, compared to most real-world projects!
 ~~~
-
+ -->
