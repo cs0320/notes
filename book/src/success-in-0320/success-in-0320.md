@@ -34,6 +34,9 @@ You'll want to read the missive. You may not need to read _all_ of it super deep
 **Speaking of mentors, let's introduce the TAs!**
 
 
+## Disclaimer
+
+This offering of 0320 is experimental. Much of the assignment content is new, as are the structured AI content. We've tried to minimize issues, but issues will happen. We'll act to mitigate them. Likewise, the perspective on AI we use is based on common practice as of summer 2025. I've reserved sprint 9 to address anything new that comes up (and have an assignment in reserve in case nothing does). 
 
 ## Immediate Advice
 
@@ -102,9 +105,34 @@ The collaboration policy is part of that. We'll use Git, an industry standard ve
 
 One advantage of using Git is that all the code from lecture will be available on a [public repository](https://github.com/cs0320/class-livecode) in the `F25` folder (for Fall 2025) and also in the `vignettes` subfolder, which I use for small examples that may or may not appear in class. You can clone the repository to experiment with the code on your own machine. **You should clone this repository as soon as you're able**; we'll use it for in-class exercises, and it gives you the ability to experiment with changing the code on your own machine. **Starting next week, I will assume that you have the repository cloned on your laptop, if you bring one.**
 
-~~~admonish warning title="Class Prep and Spoilers"
-If a filename or package has `prep` in it, I'm including it in the repository to help me structure the live coding session, and keep track of things like intentional and unintentional bugs. These are spoilers for class, and may not be reliable resources.
-~~~
+
+## What About AI?
+
+We'll use it. Please see the missive. There's lots of new stuff, and I've written enough text about it already. :-)
+
+## How Does Grading Work?
+
+You may look at the first assignment and think "OMG I am not prepared!" But you are. This course is designed to prompt this feeling&mdash;in a safe environment, so you can build the skills necessary to navigate unpreparedness. The course works for those who embrace our (admittedly unusual) system. 
+
+If you're a _highly prepared_ student and you find that even most supplemental problems aren't challenging you: this is your chance to cut loose. Impress me. Final demos are public for everyone, but for Master's students and undergraduates who opt in, they will be _publicized_. 
+
+0320 is mandatory S/NC. We award "S with distinction" based on completing supplemental sprint challenges, exceptional professionalism, and strong performance on the term project. 
+  * The sprints let you demonstrate command of new technical skills, which we give formative feedback on. 
+  * The term project lets you show you can apply those skills in a new context of your own. Expectations are stronger here: I want everyone to finish 0320 with a good item for their portfolio (whether you're going into traditional SWE or not). 
+
+The missive talks at length about grading; I won't try to duplicate all that information here. However, here are some key features of 0320's grading.
+
+**1-week sprints:** You'll have a deliverable every week. This gives us a better cadence for feedback. You'll alternate between asynchronous video demos and synchronous demos each week, and the demos (*and your answers to questions they ask*) are the primary way your mentors will generate feedback.
+
+**Feedback Spreadsheet:** You'll receive access to a spreadsheet where your mentors will leave formative feedback _every week_, along with whether you've met expectations for the week. We'll expect you to work on addressing this feedback between sprints. 
+
+**No Hidden Rubrics:** There are no secret rubrics or hidden test suites in 0320; we want you to know what our expectations are. You can see our grading instructions, and a recipe for giving demos, linked in the first sprint. (We do provide mentors with some additional private material to help them give feedback efficiently, but everything in that material is also in the sprint handouts.)
+
+**Collaboration Matters** We would like to more strongly encourage collaboration between students. You'll need to earn a certain number of crests throughout the semester and per sprint. **You will handle reporting this to us on your feedback sheet.**
+
+**Testing Matters:** We'll talk more about testing on Tuesday, but it should go without saying that in 0320, we take testing seriously. The handouts contain *pretty good advice* on meeting our requirements. Read them. 
+
+
 
 
 ## TypeScript
@@ -221,35 +249,12 @@ undefined
 
 You'll get a lot more practice with TypeScript over the next 2 weeks.
 
-## What About AI?
+## TypeScript Types 
 
-FILL NEW FOR FALL 2025
+TypeScript works a little bit differently from Java. [See the Thinking Like an Engineer: Types](https://docs.google.com/document/d/115A3utnCRM71jOGlXV6hqGzvHgA7psPo218JpXtnSPI/edit?usp=sharing) document for more. I'll cover some of them live today and Tuesday. 
 
+We'll be using a library called Zod for validation, and to enrich what types can give us. Zod appears in the very first sprint! I'll be talking about it on Tuesday, but **do not wait until then** to start the sprint. There are other, Zod-free deliverables.
 
-<!-- !!!!!!!!!!
-
-What about it? You'll be allowed to use it, just like any other resource. However, you'll need to conform to the above standards, just as if it were a collaborator. I generally say more in response to your note-card responses. -->
-
-## How Does Grading Work?
-
-FILL FALL 2025
-
-<!-- 0320 is mandatory S/NC. We _do_ give S with distinction. The course is divided into 2 parts: the _sprints_ and the _term project_. The sprints let you demonstrate command of new technical skills (which we give formative feedback on). The term project lets you show you can apply those skills in a new context of your own.
-
-The missive talks at length about grading; I won't try to duplicate all that information here. However, here are some key features of 0320's grading.
-
-**1-week sprints:** You'll have a deliverable every week. This gives us a better cadence for feedback. You'll alternate between asynchronous video demos and synchronous demos each week, and the demos (*and your answers to questions they ask*) are the primary way your mentors will generate feedback.
-
-**Feedback Spreadsheet:** You'll receive access to a spreadsheet where your mentors will leave formative feedback _every week_, along with whether you've met expectations for the week. We'll expect you to work on addressing this feedback between sprints. 
-
-**No Hidden Rubrics:** All guidance that we give TAs for grading we'll give to you as well. We'll also be providing you with a "demo recipe" to help you prepare. There are no secret rubrics or hidden test suites in 0320; we want you to know what our expectations are. 
-
-**Collaboration Crests:** We would like to more strongly encourage collaboration between students. You'll need to earn a certain number of crests throughout the semester, and report how you've earned them on your feedback sheet. **The details have changed since Fall 2024, to give you more choice in how you earn crests.**
-
-**Testing Matters:** We'll talk more about testing on Tuesday, but it should go without saying that in 0320, we take testing seriously. The handouts contain *pretty good advice* on meeting our requirements. Read them. 
-
-**It is a bedrock principle of 0320 that if you cannot demo or test something, it's not actually done.**
- -->
 
 
 <!-- ### A Little Bit of Generics
