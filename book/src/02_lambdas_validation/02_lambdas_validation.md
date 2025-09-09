@@ -1,19 +1,5 @@
 # Agile, Lambdas, and Validation
 
-## Expectations
-
-This chapter is designed to support your work on sprints 1.1 and 1.2. In it, you'll find:
-* a quick intro to some technical terms from agile development; 
-* a conceptual discussion on unit testing; 
-* a worked example using the strategy pattern; and 
-* a concrete discussion and on unit testing.
-
-You'll be able to follow along and experiment with the end result by cloning the [class livecode repository](https://github.com/cs0320/class-livecode). 
-
-```admonish warning title="Do this now!"
-Now is a good time to clone the livecode repository if you haven't already. We will be using it for in-class exercises soon, and it's also meant to be a reference for the sprints. 
-```
-
 ## Logistics 
 
 **If you haven't yet installed Node or cloned the starter code, it would be a good idea to do that ASAP.**
