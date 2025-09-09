@@ -1,4 +1,4 @@
-# Strategies and Validation
+# Agile, Lambdas, and Validation
 
 ## Expectations
 
@@ -16,13 +16,11 @@ Now is a good time to clone the livecode repository if you haven't already. We w
 
 ## Logistics 
 
+**If you haven't yet installed Node or cloned the starter code, it would be a good idea to do that ASAP.**
+
+We don't have a no-laptops policy in 0320. But if you're going to play chess or write an essay while in class, please sit where you won't distract anyone sitting behind you. 
 
 
-## Note on CSV
-
-Many questions are being answered in Ed already. You might benefit from skimming the topics, or searching. We are trying to promote discussion and thought, not give "the answer". If you ask "Is this right?" we might not answer with a boolean. That's just life.
-
-Keep in mind, you should not need to use `instanceof` or typecasting outside of methods like overriding `.equals` or `.hashCode` in a new class. We'll also be understanding if you must typecast in your test suites, although you should not need to do this for the first 2 sprints.
 
 ## Agile Development
 
@@ -356,215 +354,60 @@ Many objects implement Java's `Comparable` interface, and `Collections.sort` wil
 
 ## Exercise
 
-EX: lambdas in TS, dealing with `any` vs. `unknown`
-WHERE? TODO
+I'm not going to start the _required_ exercises this early in shopping period. But I'd still like us to get some practice with TypeScript. 
 
+### Tools Challenge: `package.json` 
 
+Let's start with the toolchain we're using in the course. You've probably cloned the starter repository by now. Let's look at the `package.json` file together. JSON means "JavaScript Object Notation", and it's a very common text data format. You'll see fields like `dependencies` and `scripts` and so on. *What do you think they mean? How do they interact with the `npm` console command?* 
 
-<!-- 
-## Live Coding: Seating Order
-
-You can follow along with today's live coding in [this Github repo](https://github.com/cs0320/class-livecode), in the `F24/sep10-seatingsorting` directory. **Open the `pom.xml` "as a project" in IntelliJ.**
-
-~~~admonish warning title="Livecode in class"
-We will not usually be doing "livecode" from scratch. That would take up too much time. Instead, we'll use this opportunity to practice reading code that exists. Today, I'll be walking you through some design choices I made, some issues, and some useful techniques.
+~~~admonish note title="Why won't I just tell you?"
+Research has shown that instruction is more effective if students _commit to a hypothesis_ first, rather than being told the answer immediately. I also want you to finish 0320/1340 with a confidence in making guesses that might be wrong. 
 ~~~
 
-International diplomacy is complicated. Countries host a diplomatic corps of various ambassadors, envoys, etc. from other nations, and there is an elaborate protocol around order of precedence. Who gets the good seats? Who among a group is the one a new arrival will present papers to? 
+### Design Challenge: Unchecked Casting 
 
-There are historical reasons for all this. Before communication was instantaneous and reliable, ambassadors had significant power to make decisions for their country, and so being an ambassador was a big deal. This isn't a history class, though, so let's focus on the engineering. 
+Just like Java, TypeScript has a way to tell the type checker to be quiet because you know best. We call these "unchecked typecasts". In TypeScript, this happens whenever a value has type `any`. You might explicitly cast this (via `as any`) or TypeScript might infer the type because it has no further context. The `any` type exists because TypeScript needs to interoperate with untyped JavaScript, and it's dangerous to keep around if you don't need it. 
 
-### Diplomats: Records and Enums
+Union types mean that TypeScript may be "uncertain" about your code. Here's an example:
 
-I've written a `Diplomat.java` file, containing a _record_. I like records for reasons I've recorded in the file:
-
-```java
-/**
- * NOTE: records are a modern Java feature that make defining dataclasses convenient.
- * A record is immutable, and toString(), equals(), etc. are automatically defined.
- *
- * If you like Python, this is similar to @dataclass
- */
-public record Diplomat(Rank rank, String name) {
-
-    /**
-     *  (Simplified) ambassadorial ranks c. 1961
-     *  See: https://en.wikipedia.org/wiki/Diplomatic_rank#Ranks
-     */
-    public enum Rank {
-        NUNCIO, AMBASSADOR, HIGH_COMMISSIONER,
-        MINISTER, ENVOY, CHARGE_DAFFAIRES
-    }
-
+```typescript
+function whatToDo(input: string[] | number): string {
+    return input[0]
 }
 ```
 
-Enumerations (`enum`) are a nice way to limit possibilities. If we'd used numbers or strings as the type of a diplomat's rank, we'd have to worry about what our program would do if someone had a strange rank like `-172653` or `"242RT#$#GR@@@#"`. This is an example of **defensive programming**: we've limited room for unexpected errors.
+If the input is a string array, this is fine. But what if it's a number? TypeScript reports this problem with the following error: 
 
-Speaking of defensive programming, there's one more issue here. Do you see it? (Remember our conversation about `null` from last time...)
+```
+Element implicitly has an 'any' type because expression of type '0' can't be used to index type 'number | string[]'.
+  Property '0' does not exist on type 'number | string[]'.ts(7053)
+```
+
+**What should you do about this?**
 
 <details>
 <summary>Think, then click!</summary>
 
-The value `null` can be used as a `Rank`, and so we could create a `Diplomat` object without a rank. Similarly, we could pass `null` for their name. We can fix this by adding some _validation_ to the record. Records make this easy via "compact" constructors:
-    
-    
-```java
-    public Diplomat {
-        // Values are initialized by the record infrastructure. But we want extra validation:
-        if (rank == null || name == null)
-            throw new IllegalArgumentException("A diplomat must have non-null rank and name.");
-    }    
-```
-    
-Notice that there is no `()` after `Diplomat`, like you may be used to when defining a contructor of no arguments. The record still initializes its fields&mdash;the constructor is defined implicitly. But we get to provide additional computation with this new syntax. In this case, we'll forbid diplomats that lack either a rank or name. This is another kind of **defensive programming**, because our library isn't meant to work if diplomats have no rank.
-    
-</details>
-</br>
+Any time you see something like "Element implicitly has an 'any' type" you should be suspicious. It means that you haven't given TypeScript enough information. This information might need to go in your function headers, in your variable declarations, or the logical flow of your code. Notice what happens when I add an `if` statement:
 
-**Exercise:** Make sure you can get this code from the livecode repository. Then make this change (the code is commented out, later in the file). Try creating a nameless or rankless `Diplomat` in the `Main` class (i.e., one with `null` as its name or rank). Print it out. 
-
-### Determining Order of Precedence
-
-Let's write code that can sort a list of `Diplomat` objects in their order of diplomatic predecence. Since this isn't a history or international-relations class, we'll simplify things. Let's say that for _our_ fictional country, the order goes in three levels:
-* `NUNCIO`, `AMBASSADOR`, and `HIGH_COMMISSIONER`; then
-* `MINISTER` and `ENVOY`; then
-* `CHARGE_DAFFAIRES`.
-
-So we'd put an ambassador ahead of a minister, but it would be ok to put a high commissioner above or below an ambassador, since they're at the same tier of ranks.
-
-We're not done though. The order of precedence is complicated by some real-life norms that any *real* software would need to address. When we come back from the break, we'll look at a small challenge and a bigger challenge. 
-
-### Design Challenges
-
-#### Small Challenge: countries may give precedence to Nuncios, at their discretion
-
-[Nuncios](https://en.wikipedia.org/wiki/Nuncio) are ambassadors from the Holy See, that is from the Pope, separately from the country of Vatican City. Some traditionally Catholic countries will always list their nuncio first in any order of precedence. 
-
-This means that we need some way of adjusting the _comparison_ used for sorting. Maybe nuncios are before anything else, or maybe they're considered equal to ambassadors. It depends on the country. 
-
-#### Larger challenge: conventions change over time
-
-New titles get added (or removed), treaties get revised, and the world changes. Ideally, we'd like our program to allow countries some flexibility in how they order their diplomats, _beyond_ the nuncio question above. 
-
-This means that we probably don't want to write a sort that hard-codes in the above ordering, or even a sort that takes a boolean to resolve the nuncio question. We want a sort that uses the **strategy pattern**.
-
-### Comparators
-
-A `Comparator` is an object that implements a `compare` method that tells a caller whether its two arguments are `<`, `>`, or `equal`. It's one of the most common uses of the strategy pattern in Java, and it's perfect for our needs. I wrote a `PrecedenceComparator` below. I've left comments that touch on some of the features used, and raise some design questions we'll go over in lecture.
-
-```java
-package edu.brown.cs32.live.diplomacy;
-
-import java.util.Comparator;
-
-// Avoid the need to precede ranks with "Diplomat.Rank."
-import edu.brown.cs32.live.diplomacy.Diplomat.Rank;
-
-/**
- * Comparator that implements the order of precedence for members of a diplomatic corps.
- * This can determine (e.g.) seating order, or who among a group is spoken to first.
- *
- * The rules vary by country, and this isn't a faithful implementation; don't use this code
- * to seat real diplomats at a real banquet!
- */
-
-public class PrecedenceComparator implements Comparator<Diplomat> {
-
-    /**
-     * If present, a diplomatic rank to always give precedence over others.
-     *
-     * NOTE: We could have just used "null" to represent the case where this isn't present.
-     *   What are the plusses and minuses of this design choice?
-     *   Could it be that there are multiple "OK" answers?
-     */
-    private final Rank givePrecedence;
-
-    /**
-     *  Create an order of precedence where a certain diplomatic rank is given precedence over all others.
-     *  When this rank is not involved, the standard precedence is used.
-     *
-     *  Real world example:
-     *  According to the Vienna Convention, nuncios (ecclesiastical diplomats from the Holy See), have equal
-     *  rank to ambassadors. However, the host country is allowed to grant seniority to a nuncio over others.
-     * @param givePrecedence diplomatic title that should always be treated as senior
-     */
-    public PrecedenceComparator(Diplomat.RANK givePrecedence) {
-        if(givePrecedence == null)
-            throw new IllegalArgumentException("givePrecedence field of 1-argument constructor must be non-null; use" +
-                    " the 0-argument constructor to not automatically prefer any rank.");
-        this.givePrecedence = givePrecedence;
-    }
-
-    /**
-     * Create an order of precedence where the standard precedence is used.
-     *
-     * NOTE: we may come to regret using null for this.
-     */
-    public PrecedenceComparator() {
-        this.givePrecedence = null;
-    }
-
-    @Override
-    public int compare(Diplomat o1, Diplomat o2) {
-        // By documentation (see mouseover): Negative if o1 < o2; zero if o1 == o2; positive if o1 > o2
-        //   the sign of compare(x,y) must be the same as compare(y,x), and compare must be transitive.
-
-        if(o1.rank() == this.givePrecedence) return -1;
-        if(o2.rank() == this.givePrecedence) return 1;
-
-        // NOTE: I personally like Java 17's pattern-matching switch expressions for these situations.
-        // I find them easier to read than complicated if-statements, and I will get a warning if I don't give a case
-        // for every possibile enum value. That means I can *LEAVE OUT* the "default" case and trust the compiler to
-        // warn me if I ever add a new value to this enum. "Default" cases check at runtime, and can lie around for
-        // years and cause subtle bugs when new values get added.
-
-        return switch(o1.rank()) {
-            case NUNCIO, AMBASSADOR, HIGH_COMMISSIONER ->
-                    switch(o2.rank()) {
-                        case NUNCIO, AMBASSADOR, HIGH_COMMISSIONER -> 0;
-                        case ENVOY, MINISTER, CHARGE_DAFFAIRES -> -1;
-                    };
-            case MINISTER, ENVOY ->
-                    switch(o2.rank()) {
-                        case NUNCIO, AMBASSADOR, HIGH_COMMISSIONER -> 1;
-                        case ENVOY, MINISTER -> 0;
-                        case CHARGE_DAFFAIRES -> -1;
-                    };
-            case CHARGE_DAFFAIRES ->
-                    switch(o2.rank()) {
-                        case NUNCIO, AMBASSADOR, HIGH_COMMISSIONER, ENVOY, MINISTER -> 1;
-                        case CHARGE_DAFFAIRES -> 0;
-                    };
-        };
-    }
+```typescript
+function whatToDo(input: string[] | number): string {
+    if(typeof input === "number") return ""
+    return input[0]
 }
 ```
+The error goes away! TypeScript looks at your conditionals for hints, and uses those hints to resolve union types and other kinds of uncertainty. This is called _narrowing_, because TypeScript is able to reduce the size of the set of possible values.
+</details>
 
-I've also written a little sorting algorithm of my own. The method takes the list to sort _and_ a comparator. 
+We'll talk more about this trick soon. 
 
-**Exercise: what happens if we allow `Diplomat` object with `null` rank? Do we get a noisy failure, or a silent failure?**
+~~~admonish warning title="The `typeof` operator"
+The `typeof` operator is technically part of JavaScript, and it isn't very precise at all! JavaScript has only a few "types":
+* `string`;
+* `object`;  
+* `number`; and
+...only a few others. 
 
-### Making `Diplomat` Resilient
+JavaScript, on its own, makes no distinction between an array and an object, or between two different kinds of object. This is one thing TypeScript handles a lot better, but it still can use these basic JavaScript checks. 
+~~~
 
-It's **both**! There's a noisy failure for one constructor, and silent failure for the other---where the `null`-ranked `Diplomat` gets precedence!
-
-Let's inject a check into the constructor of `Diplomat`. That's a better place for it.
-
-```java
-/**
- * Define the constructor ourselves (don't use the one that "record" gives
- * us) so that we can validate input values. This is called a *compact*
- * constructor, and works only for records. Note that it's _not_ the same
- * as a 0-argument constructor Diplomat().
- */
-//    public Diplomat {
-//        // Values are initialized by the record infrastructure. But we want extra validation:
-//        if (rank == null || name == null)
-//            throw new IllegalArgumentException("A diplomat must have non-null rank and name.");
-//    }
-```
-
-There are other things we could (or should) do, too. For example, making our comparator not treat a _lack_ of precedence rank the same as giving predecence to `null`.
-
-That went by pretty quickly---clone or pull the livecode repository, and try this out! -->

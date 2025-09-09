@@ -38,3 +38,14 @@ function rawGreaterThan2(arg1: string, arg2: string): boolean | ConversionError 
 
 const studentRowSchema = z.tuple([z.string(), z.number(), z.email()])
                           .transform(arr => ({name: arr[0], credits: arr[1], email: arr[2]}))
+
+
+function whatToDo(input: string[] | number): string {
+    return input[0]
+}
+
+function whatToDo2(input: string[] | number): string {
+    if(typeof input === "number") return ""
+    return input[0]
+}
+
