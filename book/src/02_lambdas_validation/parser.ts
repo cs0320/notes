@@ -1,7 +1,8 @@
 import * as fs from "fs";
 import * as readline from "readline";
+import z from 'zod'
 
-async function parseCSV(path: string): Promise<string[][] | undefined>{
+async function parseCSV(path: string): Promise<string[][]>{
   // This initial block of code reads from a file in Node.js. The "rl"
   // value can be iterated over in a "for" loop.
   const fileStream = fs.createReadStream(path);
@@ -27,3 +28,14 @@ async function example() {
   const result = await parseCSV("something")
 
 }
+
+/*
+
+Name,Credits,Email
+Tim Nelson,10,Tim_Nelson@brown.edu
+Nim Telson,11,MYAWESOMEEMAIL
+*/
+
+const studentRowSchema = 
+  z.tuple([z.string(), z.coerce.number(), z.email()])
+   .transform( arr => ({name: arr[0], credits: arr[1], email: arr[2]}))

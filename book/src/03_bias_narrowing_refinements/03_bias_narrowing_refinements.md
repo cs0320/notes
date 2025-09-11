@@ -1,8 +1,41 @@
-# Bias in Testing, More Narrowing, Refinements
+# Narrowing and Refinements
 
-## A Word on "Talent"
+## My Homework
 
-I'd caution against viewing success in either 0320 or CSCI generally as related to _talent_, for a couple reasons.  We don't talk enough about how talent depends on external factors and experience. Stephen Sondheim (who I imagine knew more about talent than most) said that "everybody is talented, it's just that some people get it developed and some don't." We can often (wrongly) think of "talent" in CSCI as when some skill or concept comes easily. But the development of talent requires time, support, work, etc. And even prodigies need that&mdash;e.g., Terrence Tao (who aced the math SATs when he was 8 years old) got a lot of tutoring support growing up, and (crucially) his family was able to provide it.
+Last time, a student asked what would happen if we didn't return an object directly, and instead worked with it before returning it.
+
+```typescript
+function rawGreaterThan(arg1: string, arg2: string): 
+  boolean | ConversionError {
+    const num1 = parseInt(arg1)
+    const num2 = parseInt(arg2)
+    if(Number.isNaN(num1) || Number.isNaN(num2)) {
+        // This produces an error
+        const result = {error: 'parseInt', arg1: arg1, arg2: arg2}
+        return result
+        // Before, it was:
+        //return {error: 'parseInt', arg1: arg1, arg2: arg2}
+    }
+    return num1 > num2
+  }
+```
+
+The error isn't super helpful:
+
+```
+Type '{ error: string; arg1: string; arg2: string; }' is not assignable to type 'boolean | ConversionError'.
+  Type '{ error: string; arg1: string; arg2: string; }' is not assignable to type 'ConversionError'.
+    Types of property 'error' are incompatible.
+      Type 'string' is not assignable to type '"parseInt" | "parseFloat"'
+```
+
+But it's surprising, right? Look at that first type. TypeScript isn't using the literal string: it's inferring `string` for the `error` field. Initially, TypeScript can directly infer the return type and then check for consistency. TypeScript isn't smart enough to carry that inference over to the value of `result` without help. So we'll provide it:
+
+```typescript
+const result: ConversionError = {error: 'parseInt', arg1: arg1, arg2: arg2}
+```
+
+Now the error goes away. Sometimes we do need to give TypeScript a little help.
 
 ## Testing as a Human
 
@@ -114,7 +147,7 @@ Notice that the _type_ of `success` differs. It can only be `true` in a `ZodSafe
 There are built-in ways to parse JSON in TypeScript. Let's play:
 
 ```typescript
-const jsonString = '{"Course", "CSCI 0320": "instructor": "Tim Nelson"}';
+const jsonString = '{"course": "CSCI 0320", "instructor": "Tim Nelson"}';
 // cs32 has inferred value *any*. TypeScript sees a string being parsed, it has no way to know the result type.
 const cs32 = JSON.parse(jsonString);
 ```
@@ -150,7 +183,7 @@ interface ClassWithLocation {
 const cs32_withLocation_better: ClassWithLocation = {...cs32, location: "B&H"}
 // Whew! Now we're safe, right? Well...
 
-const jsonString2 = '{"Course", 17: "teacher": "Tim Nelson"}';
+const jsonString2 = '{"course": 17, "teacher": "Tim Nelson"}';
 const cs32_bad = JSON.parse(jsonString2)
 const cs32_withLocation_bad_better: ClassWithLocation = {...cs32, location: "B&H"}
 // Oh. Oh no. TypeScript _trusts the any type_ implicitly. 
@@ -176,22 +209,118 @@ What do you think these produce? Try it.
 <details>
 <summary>Try it, then click!</summary>
 
-* `result1`: a success result
-* `result2`: a success result
-* `result3`: an error result
+* `result1`: a success result containing `{"course":"CSCI 0320","instructor":"Tim Nelson"}`
+* `result2`: a success result containing `{"course":"CSCI 0320","instructor":"Tim Nelson"}`
+* `result3`: an error result reporting 2 `invalid_type` errors: one for `course` (`number`) and one for `instructor` (`undefined`). 
 
 </details>
 
-**TODO: what types**
+Notice that both `result1` and `result2` contain the same values, even though one of them had a `location` field originally. This is because Zod throws away fields it isn't told to keep, at least by default. If we want to avoid this, we use `.passthrough()`:
+
+```typescript
+const classRecordSchema = z.object({course: z.string(), instructor: z.string()}).loose()
+```
+
+Now the `location` field is kept, if there is one there. (But, of course, now TypeScript will need some convincing before it lets you access that field.)
 
 ## Refinements
 
-We saw before that Zod can create schemas that are _richer than what TypeScript types can represent._. TypeScript has no type for "email addresses", but Zod has a schema for them. 
+We saw before that Zod can create schemas that are _richer than what TypeScript types can represent._. TypeScript has no type for "email addresses", but Zod has a schema for them. But a type is just a set. So it's not that these richer schemas can't be thought of as types. Rather, it's that the type checker (which runs at "compile", or "static" time) isn't expressive enough to handle them. 
 
-**TODO: fill**
+Whenever we add a further restriction on a base type, we'll call it a _refinement_ of that type. So, "it's a string, but in email-address format" would refine "it's a string". Zod has a lot of these, including a [very expressive method](https://zod.dev/api#refinements): `.refine()`, which takes a refinement function:
+
+```typescript
+const evenNumberSchema = z.number().refine( num => num % 2 == 0)
+
+const departments = ['CSCI', 'MATH', 'MCM'] // etc.
+const refinedClassRecordSchema = z.object(
+    {course: z.string().refine( c => departments.includes(c.split(' ')[0])), 
+     instructor: z.string()})
+const course1 = refinedClassRecordSchema.safeParse(cs32)
+console.log(course1.data)
+```
+
+By the way, watch out for "in". You might want it to work like it does in Python, but:
+
+```typescript
+> 0 in [0, 1, 2]
+true
+> "a" in ["a","b","c"]
+false
+```
+Use `lst.includes()` instead.
 
 
+## Exercise: Building a suite for CSV
+
+Your first sprint asks you to build tests that probe how the parser we gave you might not be handling CSVs very well. We want you to think carefully about what's missing, but it's also a useful place to take time in class and talk about using Copilot to synthesize tests. 
+
+I've used Copilot a good amount now, and sometimes it's _great_ at building test suites, and other times not so much: I've often needed to prompt it to change something, or to realize there's an issue with a test it wrote. So let's get some practice critiquing. We'll do this over multiple classes. 
+
+How do you want to start?
+
+<!-- FOR NEXT TIME -->
 
 
+<!-- ### Structural, not Nominal
+
+The TypeScript types corresponding to Zod schemas will only be as specific as TypeScript can support.
+
+```typescript
+type RefinedClassRecord = z.infer<typeof refinedClassRecordSchema>
+```
+
+If you mouse over this type, you'll see:
+
+```typescript
+type RefinedClassRecord = {
+    course: string;
+    instructor: string;
+}
+```
+
+That's missing our refinement! Because TypeScript is _structurally_ typed, not _nominally_ typed (meaning that it looks at the structure of objects, not the actual name of their types) this can lead to problems. TypeScript won't stop me from claiming that an object with these fields (of the less specific types) is a `RefinedClassRecord`:
+
+```typescript
+// No type error
+const uhoh: RefinedClassRecord = {course: "NOT A VALID COURSE ID", instructor: ""}
+```
+
+### Type Assertions / Typecasting 
+
+TypeScript has a form of downcasting in the `as` keyword. We can always disable TypeScript on anything by asserting it has the expected type (or, even more dangerously, `any`). As a general rule, you won't want to use this operator. When in doubt, ask. 
+
+(Funnily enough, when I was experimenting with Copilot over the summer it kept trying to add `(as any)` to a bunch of stuff, even when it wasn't necessary. Not sure if that still happens.)
+
+### Type Branding
+
+Let's make it impossible to create a `RefinedClassRecord` without going through Zod first. We'll use something called "type branding": add a special flag (which won't exist at runtime) to the type that only Zod can add. At a basic level, this is easy: we'll just `.brand()` the schema. 
+
+```typescript
+const brandedRCRSchema = refinedClassRecordSchema.brand("RefinedClassRecord")
+type BrandedRCR = z.infer<typeof brandedRCRSchema>
+const uhoh2: BrandedRCR = {course: "NOT A VALID COURSE ID", instructor: ""}
+```
+
+If you mouse over `BrandedRCR` you'll see something strange:
+
+```typescript
+type BrandedRCR = {
+    course: string;
+    instructor: string;
+} & z.core.$brand<"RefinedClassRecord">
+```
+
+That `&` means _intersection_ (the same as we use `|` to build unions). If a value doesn't carry that brand, it can't be used as an instance of this type. Hence, `uhoh` now gives an error. This is a longhanded way to say that the brand is missing:
+
+```
+Type '{ course: string; instructor: string; }' is not assignable to type '{ course: string; instructor: string; } & $brand<"RefinedClassRecord">'.
+  Property '[$brand]' is missing in type '{ course: string; instructor: string; }' but required in type '$brand<"RefinedClassRecord">
+```
+
+#### Shortcomings
+
+This isn't perfect. One major threat is that _if these objects are mutable_, the guarantees might hold immediately but then stop holding (without TypeScript protection!) after some code changes the object.See the separate [types document](https://docs.google.com/document/d/115A3utnCRM71jOGlXV6hqGzvHgA7psPo218JpXtnSPI/edit?usp=sharing) we wrote for more on this.
 
 
+ -->

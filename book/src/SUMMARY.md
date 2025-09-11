@@ -5,6 +5,8 @@
 - [Success in 0320](./success-in-0320/success-in-0320.md)
   - [Debugging Recipe](./success-in-0320/recipe.md)
 - [Agile, Lambdas, and Validation](./02_lambdas_validation/02_lambdas_validation.md)
+- [Narrowing and Refinements](./03_bias_narrowing_refinements/03_bias_narrowing_refinements.md)
+
 <!-- - [More Strategies, More Testing](./comparators-and-testing/comparators-and-testing.md)
 - [UIs, Testing More Than Methods](./mocking-console/mocking-console.md)
   - [OPTIONAL: Equality is Hard, Caching](./equality-contracts/equality-contracts.md) 
