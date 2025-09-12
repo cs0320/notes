@@ -142,6 +142,24 @@ export type ZodSafeParseError<T> = {
 
 Notice that the _type_ of `success` differs. It can only be `true` in a `ZodSafeParseSuccess`. That's how TypeScript narrows the type in the second case. 
 
+**Added after class:** Using `result.success` to narrow the type of `result.data` worked above. But if we give an intermediate name to `result.data` _outside the narrowed scope_, that variable will have the union type, and the link is broken for TypeScript:
+
+```typescript
+const student: StudentRow | undefined = result.data
+if(result.success) {
+  console.log(student[0]) // type error: possibly undefined
+}
+```
+
+But this works, because the variable is declared within the narrowed scope:
+
+```typescript
+if(result.success) {
+  const student2 = result.data
+  console.log(student2[0])
+}
+```
+
 ## Escaping the `any` type
 
 There are built-in ways to parse JSON in TypeScript. Let's play:
