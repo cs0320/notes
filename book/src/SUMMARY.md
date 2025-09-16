@@ -6,6 +6,9 @@
   - [Debugging Recipe](./success-in-0320/recipe.md)
 - [Agile, Lambdas, and Validation](./02_lambdas_validation/02_lambdas_validation.md)
 - [Narrowing and Refinements](./03_bias_narrowing_refinements/03_bias_narrowing_refinements.md)
+- [Branding and Immutability](./04_refinements_mutability/04_refinements_mutability.md)
+
+
 
 <!-- - [More Strategies, More Testing](./comparators-and-testing/comparators-and-testing.md)
 - [UIs, Testing More Than Methods](./mocking-console/mocking-console.md)
