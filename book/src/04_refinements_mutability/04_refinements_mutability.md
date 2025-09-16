@@ -8,11 +8,15 @@ My "note of encouragement" post has only been read by 107 unique users. The week
 
 We will pause for a couple of minutes so _everyone can read my post_.
 
+Now: everyone turn to your neighbor and show them something from your sprint 1 solution. Let's normalize collaboration...
+
 ## Exercise: Disappointing Types 
 
 We'll start with today's in-class exercise. I'd like you all to look at [this Java project](https://github.com/cs0320/class-livecode/tree/main/F25/sep16_refinements/exercise) in the livecode repository.  There are some questions for you in [this web form](https://docs.google.com/forms/d/e/1FAIpQLSf_PGN5rsDbH3soKd1v2huSpjIV5IK4kc0thwqB65-BuN7uSg/viewform?usp=dialog).
 
 Now would be a great time to [clone the repository](https://github.com/cs0320/class-livecode). We won't be using Java much this semester, so we don't provide a formal setup process. I wanted to make this exercise more accessible, so used Java. When we do use Java, the projects use Maven for dependencies: open the `pom.xml` file as a project in IntelliJ, not the folder. But you don't need to run the code (right now) to do the exercise. 
+
+**What do you notice?**
 
 ## Types of Type System
 
@@ -129,3 +133,9 @@ type ClassRecord = {
 Branding and mutability are sometimes subtle, especially when trying to create cyclic data. See the separate [types document](https://docs.google.com/document/d/115A3utnCRM71jOGlXV6hqGzvHgA7psPo218JpXtnSPI/edit?usp=sharing) we wrote for more on this.
 
 
+## Reminder: Copilot chats do persist!
+
+Copilot chats persist, but they are stored in a _workspace_-specific way. 
+So if you're wondering how to recover a chat, just make sure you're in the same workspace as when you created it. To see the chats you've created in the current workspace, open the command palette (Cmd-Shift-P on Mac) and select "Chat: Show Chats". 
+
+In case you're interested: each workspace has a unique ID and a folder for all its storage. If you have Copilot installed, you can see where this is by opening the command palette (Cmd-Shift-P on Mac) and selecting "Developer: Open Chat Storage Folder". The chat logs are stored as JSON, and are rather verbose.  
