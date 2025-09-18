@@ -239,20 +239,32 @@ This will become extremely important when you start sending web requests from yo
 
 ## Code Review Exercise
 
-Let's look at some code and anticipate potential errors related to concurrency. (I've removed the types so that we can run this in the browser console.) What's the value that you expect to be printed by this code?
+Let's look at some code and anticipate potential errors related to concurrency. (I've removed the types so that we can run this in the browser console.) What's the value that you expect to be printed by each block of code below, after its respective call is uncommented?
 
 ```javascript
-function sayHello(){
+function example0() {
+  let toReturn = 0
+  setTimeout(() => {toReturn = 100}, 5000)
+  return toReturn
+}
+//console.log(example0())
+
+function example1(){
     let toReturn = 0
-    setTimeout(() => {
-        toReturn = 500
-    }, 0)
-    setTimeout(() => {
-        toReturn = 100
-    }, 5000)
+    setTimeout(() => {toReturn = 500}, 0)
+    setTimeout(() => {toReturn = 100}, 5000)
     return toReturn
 }
-console.log(sayHello())
+// console.log(example1())
+
+function example2(){
+    setTimeout(() => {console.log('A')}, 0)
+    setTimeout(() => {console.log('B')}, 5000)
+    console.log('C')
+    while(0 == 0) {}
+    console.log('D')
+}
+// example2()
 ```
 
 ### Connecting to Sprint 2
