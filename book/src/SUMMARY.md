@@ -9,6 +9,9 @@
 - [Narrowing and Refinements](./03_bias_narrowing_refinements/03_bias_narrowing_refinements.md)
 - [Branding and Immutability](./04_refinements_mutability/04_refinements_mutability.md)
 - [Threads and Promises](./05_threads_promises/05_threads_promises.md)
+- [HTML and React](./06_html_react/html-react-playwright.md)
+
+
 
 
 <!-- - [More Strategies, More Testing](./comparators-and-testing/comparators-and-testing.md)

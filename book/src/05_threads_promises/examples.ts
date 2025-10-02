@@ -3,7 +3,12 @@ function example0() {
   setTimeout(() => {toReturn = 100}, 5000)
   return toReturn
 }
-//console.log(example0())
+console.log(example0())
+
+
+
+
+
 
 function example1(){
     let toReturn = 0
@@ -12,6 +17,14 @@ function example1(){
     return toReturn
 }
 // console.log(example1())
+
+
+
+
+
+
+
+
 
 function example2(){
     setTimeout(() => {console.log('A')}, 0)
