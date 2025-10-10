@@ -38,4 +38,5 @@ additional-css = ["././mdbook-admonish.css", "./mdbook-admonish.css"]
 
 [output.html.fold]
 enable = true
+level = 1
 
