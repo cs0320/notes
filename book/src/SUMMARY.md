@@ -4,10 +4,10 @@
 
 - [Success in 0320](./success-in-0320/success-in-0320.md)
   - [Debugging Recipe](./success-in-0320/recipe.md)
-  
 - [Agile, Lambdas, and Validation](./02_lambdas_validation/02_lambdas_validation.md)
 - [Narrowing and Refinements](./03_bias_narrowing_refinements/03_bias_narrowing_refinements.md)
 - [Branding and Immutability](./04_refinements_mutability/04_refinements_mutability.md)
+  - [APIs and Integration](./04_refinements_mutability/04.5.apis-integration.md)
 - [Threads and Promises](./05_threads_promises/05_threads_promises.md)
 - [HTML and React](./06_html_react/html-react-playwright.md)
 
