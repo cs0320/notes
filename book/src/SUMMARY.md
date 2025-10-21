@@ -10,6 +10,7 @@
   - [APIs and Integration](./04_refinements_mutability/04.5.apis-integration.md)
 - [Threads and Promises](./05_threads_promises/05_threads_promises.md)
 - [HTML and React](./06_html_react/html-react-playwright.md)
+- [Thinking About Algorithms](./algorithms/algorithms.md)
 
 
 
@@ -40,8 +41,6 @@
 <!-- - [Requirements and Firebase (Slides)](./slides-links/requirements-and-firebase.md) 
 
 - [Taxis and Rainbows, Threat Modeling](./security/security_and_threat_modeling.md)
-
-- [Thinking About Algorithms](./algorithms/algorithms.md)
 
 - [Beyond Testing (Closing)](./beyond-testing/beyond_testing.md)
  -->
