@@ -11,6 +11,7 @@
 - [Threads and Promises](./05_threads_promises/05_threads_promises.md)
 - [HTML and React](./06_html_react/html-react-playwright.md)
 - [Thinking About Algorithms](./algorithms/algorithms.md)
+  - [Supplement Board: Dijkstra's Algorithm, Etc.](./algorithms/supplement.md)
 
 
 
