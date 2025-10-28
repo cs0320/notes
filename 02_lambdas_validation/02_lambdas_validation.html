@@ -1,0 +1,522 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Agile, Lambdas, and Validation - CSCI 0320 Notes</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../././mdbook-admonish.css">
+        <link rel="stylesheet" href=".././mdbook-admonish.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../home.html">How to read these notes</a></li><li class="chapter-item expanded "><a href="../success-in-0320/success-in-0320.html"><strong aria-hidden="true">1.</strong> Success in 0320</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../success-in-0320/recipe.html"><strong aria-hidden="true">1.1.</strong> Debugging Recipe</a></li></ol></li><li class="chapter-item expanded "><a href="../02_lambdas_validation/02_lambdas_validation.html" class="active"><strong aria-hidden="true">2.</strong> Agile, Lambdas, and Validation</a></li><li class="chapter-item expanded "><a href="../03_bias_narrowing_refinements/03_bias_narrowing_refinements.html"><strong aria-hidden="true">3.</strong> Narrowing and Refinements</a></li><li class="chapter-item expanded "><a href="../04_refinements_mutability/04_refinements_mutability.html"><strong aria-hidden="true">4.</strong> Branding and Immutability</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../04_refinements_mutability/04.5.apis-integration.html"><strong aria-hidden="true">4.1.</strong> APIs and Integration</a></li></ol></li><li class="chapter-item expanded "><a href="../05_threads_promises/05_threads_promises.html"><strong aria-hidden="true">5.</strong> Threads and Promises</a></li><li class="chapter-item expanded "><a href="../06_html_react/html-react-playwright.html"><strong aria-hidden="true">6.</strong> HTML and React</a></li><li class="chapter-item expanded "><a href="../algorithms/algorithms.html"><strong aria-hidden="true">7.</strong> Thinking About Algorithms</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../algorithms/supplement.html"><strong aria-hidden="true">7.1.</strong> Supplement Board: Dijkstra's Algorithm, Etc.</a></li></ol></li><li class="chapter-item expanded "><a href="../security/security_and_threat_modeling.html"><strong aria-hidden="true">8.</strong> Security 1</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CSCI 0320 Notes</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="agile-lambdas-and-validation"><a class="header" href="#agile-lambdas-and-validation">Agile, Lambdas, and Validation</a></h1>
+<h2 id="logistics"><a class="header" href="#logistics">Logistics</a></h2>
+<p><strong>If you haven't yet installed Node or cloned the starter code, it would be a good idea to do that ASAP.</strong></p>
+<p>We don't have a no-laptops policy in 0320. But if you're going to play chess or write an essay while in class, please sit where you won't distract anyone sitting behind you. </p>
+<h2 id="agile-development"><a class="header" href="#agile-development">Agile Development</a></h2>
+<p>We're going to be using a few terms of art in 0320. While we do put a bit of our own spin on these (largely because this is a class, and not a full-time job) it's important to understand what's going on. </p>
+<p>We say that a development methodology is <em>agile</em> if, broadly speaking, it prioritizes the ability to change plans in response to regularly-sought feedback. Once we try to define it more precisely, you'll find multiple competing definitions, and many competing methodologies that purport to be &quot;agile&quot;. But change and feedback are good enough for us today. </p>
+<p>Usually, you'll see the term used in contrast to &quot;waterfall&quot; development, where the software project proceeds along a linear path, like this:</p>
+<ul>
+<li>Requirements </li>
+<li>Specifications</li>
+<li>Design </li>
+<li>Implementation</li>
+<li>Testing</li>
+<li>Maintenance</li>
+</ul>
+<p>Of course, all of these &quot;phases&quot; still exist in an agile project! The difference is that (e.g.) customer feedback on an early demo might result in changes to the requirements, or some trouble with testing an early prototype might mean changing the design to make testing easier. To make this possible, agile projects usually start development early, expecting that some, or even most, of that prototype code will be replaced later. But <strong>something must be possible to demo at every stage</strong>, or feedback is hard to obtain.</p>
+<h3 id="sprints"><a class="header" href="#sprints">Sprints</a></h3>
+<p>Agile development is often divided into short periods of development effort: <em>sprints</em>. The duration of a sprint varies depending on the project and company. In 0320, we've organized development into one-week sprints with relatively small requirements for each. Each sprint builds on the last. </p>
+<p>Organizing sprints is an important skill for project managers. Timelines need estimates (and the ability to alter those estimates when needed), tickets need to be managed, and so on. We'll gloss over most of this in 0320, although your term project will need some attention to project-management tasks like these.</p>
+<h3 id="user-stories"><a class="header" href="#user-stories">User Stories</a></h3>
+<p>A <em>user story</em> is a short description of desired behavior. You'll often find these used in requirements documents for agile projects. There are a few templates, but we (mostly) follow the &quot;As a USER-ROLE I can NEEDED-BEHAVIOR so that TASK-OR-BENEFIT&quot; pattern. Look at the user stories in sprint 1.1, and you should see this pattern. </p>
+<p>It's important to remember that, although they follow a template, user stories are <em>informal</em>: they may not be enough by themselves to really describe what the customer needs. To help bridge this gap, they are often accompanied by <em>acceptance criteria</em>, which give additional lower-level requirements. But these are still fairly informal, and there's often a need for more precise specification to be agreed upon between developers! </p>
+<p>But what makes a good user story? A user story describes a narrow, <em>demoable</em> piece of functionality that can reasonably be accomplished in a single sprint. Often, you might start with a rough user story and realize that it's too big, and then split it into multiple stories. If users request an enhancement to an existing story, commonly these would be added as new stories (and more infrequently as additional acceptance criteria).</p>
+<div id="admonition-developers-are-users-too" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>Developers are users too!</p>
+<p><a class="admonition-anchor-link" href="#admonition-developers-are-users-too"></a></p>
+</div>
+<div>
+<p>If you're building a software package that is intended for other developers to use, <em>they are potential users</em>! In this class we will be giving you user stories from the developer-user perspective in addition to the end-user perspective. Your API design, documentation, etc. will matter to developer users.</p>
+</div>
+</div>
+<h2 id="reading-clever-manka"><a class="header" href="#reading-clever-manka">Reading: Clever Manka</a></h2>
+<p>There's a fairy tale I like: <em>Clever Manka</em>, from a 1920's compilation called The Shoemaker's Apron, available on Project Gutenburg <a href="https://www.gutenberg.org/files/33002/33002-h/33002-h.htm#Page_165">here</a>. I'll reproduce the text in full here, within these spoiler tags. </p>
+<details>
+<summary>Clever Manka</summary>
+<blockquote>
+<p>There was once a rich farmer who was as grasping and unscrupulous as he was rich. He was always driving a hard bargain and always getting the better of his poor neighbors. One of these neighbors was a humble shepherd who in return for service was to receive from the farmer a heifer. When the time of payment came the farmer refused to give the shepherd the heifer and the shepherd was forced to lay the matter before the burgomaster.</p>
+<p>The burgomaster, who was a young man and as yet not very experienced, listened to both sides and when he had deliberated he said:</p>
+<p>&quot;Instead of deciding this case, I will put a riddle to you both and the man who makes the best answer shall have the heifer. Are you agreed?&quot;</p>
+<p>The farmer and the shepherd accepted this proposal and the burgomaster said:</p>
+<p>&quot;Well then, here is my riddle: What is the swiftest thing in the world? What is the sweetest thing? What is the richest? Think out your answers and bring them to me at this same hour tomorrow.&quot;</p>
+<p>The farmer went home in a temper.</p>
+<p>&quot;What kind of a burgomaster is this young fellow!&quot; he growled. &quot;If he had let me keep the heifer I'd have sent him a bushel of pears. But now I'm in a fair way of losing the heifer for I can't think of any answer to his foolish riddle.&quot;</p>
+<p>&quot;What is the matter, husband?&quot; his wife asked.</p>
+<p>&quot;It's that new burgomaster. The old one would have given me the heifer without any argument, but this young man thinks to decide the case by asking us riddles.&quot;</p>
+<p>When he told his wife what the riddle was, she cheered him greatly by telling him that she knew the answers at once.</p>
+<p>&quot;Why, husband,&quot; said she, &quot;our gray mare must be the swiftest thing in the world. You know yourself nothing ever passes us on the road. As for the sweetest, did you ever taste honey any sweeter than ours? And I'm sure there's nothing richer than our chest of golden ducats that we've been laying by these forty years.&quot;</p>
+<p>The farmer was delighted.</p>
+<p>&quot;You're right, wife, you're right! That heifer remains ours!&quot;</p>
+<p>The shepherd when he got home was downcast and sad. He had a daughter, a clever girl named Manka, who met him at the door of his cottage and asked:</p>
+<p>&quot;What is it, father? What did the burgomaster say?&quot;</p>
+<p>The shepherd sighed.</p>
+<p>&quot;I'm afraid I've lost the heifer. The burgomaster set us a riddle and I know I shall never guess it.&quot;</p>
+<p>&quot;Perhaps I can help you,&quot; Manka said. &quot;What is it?&quot;</p>
+<p>So the shepherd gave her the riddle and the next day as he was setting out for the burgomaster's, Manka told him what answers to make.</p>
+<p>When he reached the burgomaster's house, the farmer was already there rubbing his hands and beaming with self-importance.</p>
+<p>The burgomaster again propounded the riddle and then asked the farmer his answers.</p>
+<p>The farmer cleared his throat and with a pompous air began:</p>
+<p>&quot;The swiftest thing in the world? Why, my dear sir, that's my gray mare, of course, for no other horse ever passes us on the road. The sweetest? Honey from my beehives, to be sure. The richest? What can be richer than my chest of golden ducats!&quot;</p>
+<p>And the farmer squared his shoulders and smiled triumphantly.</p>
+<p>&quot;H'm,&quot; said the young burgomaster, dryly. Then he asked:</p>
+<p>&quot;What answers does the shepherd make?&quot;</p>
+<p>The shepherd bowed politely and said:</p>
+<p>&quot;The swiftest thing in the world is thought for thought can run any distance in the twinkling of an eye. The sweetest thing of all is sleep for when a man is tired and sad what can be sweeter? The richest thing is the earth for out of the earth come all the riches of the world.&quot;</p>
+<p>&quot;Good!&quot; the burgomaster cried. &quot;Good! The heifer goes to the shepherd!&quot;</p>
+<p>Later the burgomaster said to the shepherd:</p>
+<p>&quot;Tell me, now, who gave you those answers? I'm sure they never came out of your own head.&quot;</p>
+<p>At first the shepherd tried not to tell, but when the burgomaster pressed him he confessed that they came from his daughter, Manka. The burgomaster, who thought he would like to make another test of Manka's cleverness, sent for ten eggs. He gave them to the shepherd and said:</p>
+<p>&quot;Take these eggs to Manka and tell her to have them hatched out by tomorrow and to bring me the chicks.&quot;</p>
+<p>When the shepherd reached home and gave Manka the burgomaster's message, Manka laughed and said: &quot;Take a handful of millet and go right back to the burgomaster. Say to him: 'My daughter sends you this millet. She says that if you plant it, grow it, and have it harvested by tomorrow, she'll bring you the ten chicks and you can feed them the ripe grain.'&quot;</p>
+<p>When the burgomaster heard this, he laughed heartily.</p>
+<p>&quot;That's a clever girl of yours,&quot; he told the shepherd. &quot;If she's as comely as she is clever, I think I'd like to marry her. Tell her to come to see me, but she must come neither by day nor by night, neither riding nor walking, neither dressed nor undressed.&quot;</p>
+<p>When Manka received this message she waited until the next dawn when night was gone and day not yet arrived. Then she wrapped herself in a fishnet and, throwing one leg over a goat's back and keeping one foot on the ground, she went to the burgomaster's house.</p>
+<p>Now I ask you: did she go dressed? No, she wasn't dressed. A fishnet isn't clothing. Did she go undressed? Of course not, for wasn't she covered with a fishnet? Did she walk to the burgomaster's? No, she didn't walk for she went with one leg thrown over a goat. Then did she ride? Of course she didn't ride for wasn't she walking on one foot?</p>
+<p>When she reached the burgomaster's house she called out:</p>
+<p>&quot;Here I am, Mr. Burgomaster, and I've come neither by day nor by night, neither riding nor walking, neither dressed nor undressed.&quot;</p>
+</blockquote>
+<p>The young burgomaster was so delighted with Manka's cleverness and so pleased with her comely looks that he proposed to her at once and in a short time married her.
+&gt;
+&gt;&quot;But understand, my dear Manka,&quot; he said, &quot;you are not to use that cleverness of yours at my expense. I won't have you interfering in any of my cases. In fact if ever you give advice to any one who comes to me for judgment, I'll turn you out of my house at once and send you home to your father.&quot;
+&gt;
+&gt;All went well for a time. Manka busied herself in her house-keeping and was careful not to interfere in any of the burgomaster's cases.
+&gt;
+&gt;Then one day two farmers came to the burgomaster to have a dispute settled. One of the farmers owned a mare which had foaled in the marketplace. The colt had run under the wagon of the other farmer and thereupon the owner of the wagon claimed the colt as his property.
+&gt;
+&gt;The burgomaster, who was thinking of something else while the case was being presented, said carelessly:
+&gt;
+&gt;&quot;The man who found the colt under his wagon is, of course, the owner of the colt.&quot;
+&gt;
+&gt;As the owner of the mare was leaving the burgomaster's house, he met Manka and stopped to tell her about the case. Manka was ashamed of her husband for making so foolish a decision and she said to the farmer:
+&gt;
+&gt;&quot;Come back this afternoon with a fishing net and stretch it across the dusty road. When the burgomaster sees you he will come out and ask you what you are doing. Say to him that you're catching fish. When he asks you how you can expect to catch fish in a dusty road, tell him it's just as easy for you to catch fish in a dusty road as it is for a wagon to foal. Then he'll see the injustice of his decision and have the colt returned to you. But remember one thing: you mustn't let him find out that it was I who told you to do this.&quot;
+&gt;
+&gt;That afternoon when the burgomaster chanced to look out the window he saw a man stretching a fishnet across the dusty road. He went out to him and asked:
+&gt;
+&gt;&quot;What are you doing?&quot;
+&gt;
+&gt;&quot;Fishing.&quot;
+&gt;
+&gt;&quot;Fishing in a dusty road? Are you daft?&quot;
+&gt;
+&gt;&quot;Well,&quot; the man said, &quot;it's just as easy for me to catch fish in a dusty road as it is for a wagon to foal.&quot;
+&gt;
+&gt;Then the burgomaster recognized the man as the owner of the mare and he had to confess that what he said was true.
+&gt;
+&gt;&quot;Of course the colt belongs to your mare and must be returned to you. But tell me,&quot; he said, &quot;who put you up to this? You didn't think of it yourself.&quot;
+&gt;
+&gt;The farmer tried not to tell but the burgomaster questioned him until he found out that Manka was at the bottom of it. This made him very angry. He went into the house and called his wife.
+&gt;
+&gt;&quot;Manka,&quot; he said, &quot;do you forget what I told you would happen if you went interfering in any of my cases? Home you go this very day. I don't care to hear any excuses. The matter is settled. You may take with you the one thing you like best in my house for I won't have people saying that I treated you shabbily.&quot;
+&gt;
+&gt;Manka made no outcry.
+&gt;
+&gt;&quot;Very well, my dear husband, I shall do as you say: I shall go home to my father's cottage and take with me the one thing I like best in your house. But don't make me go until after supper. We have been very happy together and I should like to eat one last meal with you. Let us have no more words but be kind to each other as we've always been and then part as friends.&quot;
+&gt;
+&gt;The burgomaster agreed to this and Manka prepared a fine supper of all the dishes of which her husband was particularly fond. The burgomaster opened his choicest wine and pledged Manka's health. Then he set to, and the supper was so good that he ate and ate and ate. And the more he ate, the more he drank until at last he grew drowsy and fell sound asleep in his chair. Then without awakening him Manka had him carried out to the wagon that was waiting to take her home to her father.
+&gt;
+&gt;The next morning when the burgomaster opened his eyes, he found himself lying in the shepherd's cottage.
+&gt;
+&gt;&quot;What does this mean?&quot; he roared out.
+&gt;
+&gt;&quot;Nothing, dear husband, nothing!&quot; Manka said. &quot;You know you told me I might take with me the one thing I liked best in your house, so of course I took you! That's all.&quot;
+&gt;
+&gt;For a moment the burgomaster rubbed his eyes in amazement. Then he laughed loud and heartily to think how Manka had outwitted him.
+&gt;
+&gt;&quot;Manka,&quot; he said, &quot;you're too clever for me. Come on, my dear, let's go home.&quot;
+&gt;
+&gt;So they climbed back into the wagon and drove home.
+&gt;
+&gt;The burgomaster never again scolded his wife but thereafter whenever a very difficult case came up he always said:
+&gt;
+&gt;&quot;I think we had better consult my wife. You know she's a very clever woman.&quot;</p>
+</details>
+<p>Stories like this appear in numerous places throughout the world. For example, India has the story of <a href="https://en.wikipedia.org/wiki/Hiranyakashipu">Hiranyakashipu</a>, a king with a boon protecting him from death &quot;by day or by night&quot;, &quot;indoors and out&quot;, etc. Narasimha, an avatar of Vishnu, finds a way around the riddle. </p>
+<p>These stories are so common that I might say humans find something universally valuable about them. 
+but what in the world does a fairy tale have to do with <em>testing</em>?</p>
+<div id="admonition-using-these-notes" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>Using these notes</p>
+<p><a class="admonition-anchor-link" href="#admonition-using-these-notes"></a></p>
+</div>
+<div>
+<p><B>If you're reading these notes without having been in lecture</B>: think about these questions first, before you read the answer! If you don't, you'll be robbing yourself of a chance to participate and learn. (The collapsible sections are meant to help you avoid spoilers while you think.)</p>
+</div>
+</div>
+<p>Don't worry about whether your answer is the same as mine. Especially in 0320, there are often many different good answers, even to technical questions.</p>
+<details>
+<summary><B>Think, then click!</B></summary>
+<p>Clever Manka is a <em>boundary condition tale</em>. There is something special about boundary conditions and how they challenge our preconceptions. <strong>As testers, we should give boundaries the respect they deserve.</strong></p>
+<p>(Are you aware of more mythological or literary settings for this sort of boundary-condition riddle? Share them with Tim!)</p>
+</details>
+<h2 id="boundary-conditions-testing-and-defensive-programming"><a class="header" href="#boundary-conditions-testing-and-defensive-programming">Boundary Conditions: Testing and Defensive Programming</a></h2>
+<p>Here's an example: &quot;I have tested a positive number, and I have tested a negative number.&quot; Surely all numbers are positive or negative. <strong>(Is this true?)</strong></p>
+<p>Here's another example: &quot;I have tested this function, which accepts a Java <code>Boolean</code>, on both values: true and false.&quot; <strong>(What's missing?)</strong></p>
+<p>Never assume that the obvious partition of the space actually covers the space; be on the lookout for special cases, outliers, and even new dimensions about which to think. This isn't only about testing, either---see, for example, the <a href="https://gist.github.com/timvisee/fcda9bbdff88d45cc9061606b4b923ca">Falsehoods Programmers Believe About Time</a>. Part of programming defensively is trying to avoid making unnecessary assumptions, while still allowing for extensibility. Keep this in mind as we start to code (and test) together.</p>
+<h2 id="runtime-validation"><a class="header" href="#runtime-validation">Runtime Validation</a></h2>
+<p>Ok, so we're on the lookout for faulty assumptions that <em>we</em> might make when programming. But what about <em>other people</em> who might be writing code we depend on—or even code that calls ours? We can't solve this problem, and (as careful as we might be) we can't entirely solve it for ourselves, either. So we'll need to make our code <em>robust</em> against bugs, whether they are our mistakes or others'. </p>
+<p><em>Runtime validation</em> involves checking for issues with data your code is given, unexpected changes in state, and so on. Here are two examples. </p>
+<h3 id="example-1-user-input"><a class="header" href="#example-1-user-input">Example 1: User Input</a></h3>
+<p>Suppose that a user just typed in a pair of numbers and we want to know if one is bigger than another. Because they just arrived, they will be strings, so we need to convert them. No problem: </p>
+<pre><code class="language-typescript">function rawGreaterThan(arg1: string, arg2: string): boolean {
+    return parseInt(arg1) &gt; parseInt(arg2)
+}
+</code></pre>
+<p>This seems reasonable enough, but it forgets something important about numbers in JavaScript: <code>NaN</code> (not a number) is a number. Since TypeScript is JavaScript with added protection, the same is true in TypeScript. Imagine that a user accidentally types &quot;!00&quot; instead of &quot;100&quot;. In Java, we'd get an exception since <code>&quot;!00&quot;</code> can't be converted to a number. But in TypeScript, <code>parseInt(&quot;!00&quot;)</code> produces a value: <code>NaN</code>. And <code>NaN</code> isn't greater or less than anything! (It can't even be <em>equal</em> to itself: <code>NaN == NaN</code> evaluates to <code>false</code>.) So:</p>
+<pre><code class="language-typescript">&gt; parseInt(&quot;!00&quot;) &gt; parseInt(&quot;100&quot;)
+false
+&gt; parseInt(&quot;!00&quot;) &lt;= parseInt(&quot;100&quot;)
+false
+</code></pre>
+<p>Oh, dear. It's one of those pesky boundary conditions! But the problem is <em>invisible</em> outside of our function. The caller only gets a boolean. Let's do some <em>validation</em> to protect them and us. We'll first check that both arguments can be converted:</p>
+<pre><code class="language-typescript">function rawGreaterThan(arg1: string, arg2: string): boolean | undefined {
+    const num1 = parseInt(arg1)
+    const num2 = parseInt(arg2)
+    // num1 === NaN won't work! Instead:
+    if(Number.isNaN(num1) || Number.isNaN(num2)) return undefined
+    return parseInt(arg1) &gt; parseInt(arg2)
+}
+</code></pre>
+<p>Now the caller will be given something special if there's an issue converting the input to numbers. We could improve this, actually: <code>undefined</code> is better than hiding the problem, but it doesn't communicate much. We could throw an error, but instead let's explore building a better error value. </p>
+<pre><code class="language-typescript">interface ConversionError {
+    error: &quot;parseInt&quot;
+    arg1: string 
+    arg2: string
+}
+</code></pre>
+<p>Yeah, that's a string literal as the <em>type</em> of the <code>error</code> field. In TypeScript, this means the type containing only that string. Thus, the <code>error</code> field can only ever be the string <code>&quot;parseInt&quot;</code> So why have that field at all? Because if our larger program can ever produce a different kind of conversion error, we can add other options via union types:</p>
+<pre><code class="language-typescript">interface ConversionError {
+    error: &quot;parseInt&quot; | &quot;parseFloat&quot;  // | ... | ... | etc.
+    arg1: string 
+    arg2: string
+}
+</code></pre>
+<p>If we said <code>error: string</code> instead, we'd be allowing <em>any</em> old string. Sometimes this is what you want, but if you're establishing a protocol for reporting errors, you probably want an enumeration of error codes, not arbitrary strings. Anyway, now we can write:</p>
+<pre><code class="language-typescript">function rawGreaterThan(arg1: string, arg2: string): boolean | ConversionError {
+    const num1 = parseInt(arg1)
+    const num2 = parseInt(arg2)
+    if(Number.isNaN(num1) || Number.isNaN(num2)) 
+        return {error: &quot;parseInt&quot;, arg1: arg1, arg2: arg2}
+    return parseInt(arg1) &gt; parseInt(arg2)
+}
+</code></pre>
+<p>The caller is now being told <em>exactly what the problem is</em>, not only that they had some kind of problem. This is only possible because we're now validating the input. </p>
+<h3 id="reading-data"><a class="header" href="#reading-data">Reading Data</a></h3>
+<p>The same problem occurs if you're reading in data from files or responses to your web requests. Suppose the registrar stored student information in a comma-separated-value (CSV) file:</p>
+<pre><code class="language-csv">Name,Credits,Email
+Tim Nelson,10,Tim_Nelson@brown.edu
+Nim Telson,11,MYAWESOMEEMAIL
+</code></pre>
+<p>If I expect the third column to contain an email address, I'm going to be <em>very</em> surprised with the data I get from the second row. Hopefully the registrar is validating every column of every row so they can avoid relying on the bad data. But now it's not as simple as it was before: do I need to manually write a validation function that matches all possible email addresses? Argh!</p>
+<h3 id="library-support-zod"><a class="header" href="#library-support-zod">Library Support: Zod</a></h3>
+<p>Fortunately, people write and share libraries that solve real problems. We'll be using a library called <a href="https://zod.dev">Zod</a>, which is built to help us with exactly these kinds of validation tasks. Zod is free, open source, and widely used. Zod works off of something called a <em>schema</em>, which is kind of analogous to a type (not entirely; more on this later). Here's a schema to validate each CSV row according to the registrar's expectations:</p>
+<pre><code class="language-typescript">const studentRowSchema = z.tuple([z.string(), z.coerce.number(), z.email()])
+</code></pre>
+<p>Zod schemas are compositional. <code>z.string()</code> is a schema that matches any string. <code>z.coerce.number()</code> is a schema that matches any number or any string that can be converted to a number. <code>z.email()</code> is a schema that matches strings containing <em>email addresses</em>. And <code>z.tuple</code> takes an array of schemas and matches arrays of exactly the same length, where each of the sub-schemas matches its corresponding array element. </p>
+<p>I hear that at this point, you might be enhancing a CSV parser. Probably it splits a big file into rows, and then splits each row by <code>,</code> (or something like that) to produce an array. So for the 2-row example above, you might get a <code>string[][]</code> that looks like:</p>
+<pre><code>[[&quot;Tim Nelson&quot;,&quot;10&quot;,&quot;Tim_Nelson@brown.edu&quot;],
+ [&quot;Nim Telson&quot;,&quot;11&quot;,&quot;MYAWESOMEEMAIL&quot;]]
+</code></pre>
+<p>The first row will match the schema, but the second won't: &quot;MYAWESOMEEWMAIL&quot; isn't an email address. Zod will give a structured error for this failure, although it contains even more detail than the <code>parseInt</code> error we built before. </p>
+<p>Zod makes validating external data much, much easier. <strong>Whenever validation becomes non-trivial, stop writing ad-hoc <code>if</code> statements and use Zod instead.</strong></p>
+<h3 id="anonymous-functions"><a class="header" href="#anonymous-functions">Anonymous Functions</a></h3>
+<p>Zod doesn't just do validation: it can also transform data into new shapes. But it needs us to tell it how that transformation works: a <em>strategy</em> function that says how to map the old shape into the new one. Often, we'll use an anonymous function for this. Anonymous functions are sometimes called &quot;lambdas&quot; (e.g., in Python). Even Java has them in the form of the <code>Function&lt;T, R&gt;</code> interface and special syntax to build them concisely. TypeScript's syntax for these is quite similar to Java's.</p>
+<p>For example, let's turn a (validated) CSV row into an object instead:</p>
+<pre><code class="language-typescript">const studentRowSchema = z.tuple([z.string(), z.number(), z.email()])
+                          .transform(arr =&gt; ({name: arr[0], credits: arr[1], email: arr[2]}))
+</code></pre>
+<p>Now the first row becomes an object: <code>{name: &quot;Tim Nelson&quot;, credits: 10, email: &quot;Tim_Nelson@Brown.edu&quot;}</code>. </p>
+<p>Passing functions arguments to to other functions is so powerful that it appears in multiple contexts. In Object-Oriented Programming, you see it everywhere under the name of &quot;strategy pattern&quot;. For example, <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html#sort-java.util.List-java.util.Comparator-">Java's <code>Collections.sort</code> method</a> takes an object called a <code>Comparator</code>. A <code>Comparator</code> implements a method that takes two elements of the collection and says whether one is greater than another. In this way, the <code>Collections</code> library allows a single type to be sorted many different ways. </p>
+<div id="admonition-but-why-not-just-implement-comparable" class="admonition admonish-note">
+<div class="admonition-title">
+<p>But why not just implement <code>Comparable</code>?</p>
+<p><a class="admonition-anchor-link" href="#admonition-but-why-not-just-implement-comparable"></a></p>
+</div>
+<div>
+<p>Many objects implement Java's <code>Comparable</code> interface, and <code>Collections.sort</code> will indeed use that if no comparator is provided. The advantage of taking arbitrary comparators is in its flexibility: the caller might want to sort in ascending or descending order for example. Records might be sorted by one key or another key, and so on. The strategy pattern is all about flexibility.</p>
+</div>
+</div>
+<h2 id="exercise"><a class="header" href="#exercise">Exercise</a></h2>
+<p>I'm not going to start the <em>required</em> exercises this early in shopping period. But I'd still like us to get some practice with TypeScript. </p>
+<h3 id="tools-challenge-packagejson"><a class="header" href="#tools-challenge-packagejson">Tools Challenge: <code>package.json</code></a></h3>
+<p>Let's start with the toolchain we're using in the course. You've probably cloned the starter repository by now. Let's look at the <code>package.json</code> file together. JSON means &quot;JavaScript Object Notation&quot;, and it's a very common text data format. You'll see fields like <code>dependencies</code> and <code>scripts</code> and so on. <em>What do you think they mean? How do they interact with the <code>npm</code> console command?</em> </p>
+<div id="admonition-why-wont-i-just-tell-you" class="admonition admonish-note">
+<div class="admonition-title">
+<p>Why won't I just tell you?</p>
+<p><a class="admonition-anchor-link" href="#admonition-why-wont-i-just-tell-you"></a></p>
+</div>
+<div>
+<p>Research has shown that instruction is more effective if students <em>commit to a hypothesis</em> first, rather than being told the answer immediately. I also want you to finish 0320/1340 with a confidence in making guesses that might be wrong.</p>
+</div>
+</div>
+<h3 id="design-challenge-unchecked-casting"><a class="header" href="#design-challenge-unchecked-casting">Design Challenge: Unchecked Casting</a></h3>
+<p>Just like Java, TypeScript has a way to tell the type checker to be quiet because you know best. We call these &quot;unchecked typecasts&quot;. In TypeScript, this happens whenever a value has type <code>any</code>. You might explicitly cast this (via <code>as any</code>) or TypeScript might infer the type because it has no further context. The <code>any</code> type exists because TypeScript needs to interoperate with untyped JavaScript, and it's dangerous to keep around if you don't need it. </p>
+<p>Union types mean that TypeScript may be &quot;uncertain&quot; about your code. Here's an example:</p>
+<pre><code class="language-typescript">function whatToDo(input: string[] | number): string {
+    return input[0]
+}
+</code></pre>
+<p>If the input is a string array, this is fine. But what if it's a number? TypeScript reports this problem with the following error: </p>
+<pre><code>Element implicitly has an 'any' type because expression of type '0' can't be used to index type 'number | string[]'.
+  Property '0' does not exist on type 'number | string[]'.ts(7053)
+</code></pre>
+<p><strong>What should you do about this?</strong></p>
+<details>
+<summary>Think, then click!</summary>
+<p>Any time you see something like &quot;Element implicitly has an 'any' type&quot; you should be suspicious. It means that you haven't given TypeScript enough information. This information might need to go in your function headers, in your variable declarations, or the logical flow of your code. Notice what happens when I add an <code>if</code> statement:</p>
+<pre><code class="language-typescript">function whatToDo(input: string[] | number): string {
+    if(typeof input === &quot;number&quot;) return &quot;&quot;
+    return input[0]
+}
+</code></pre>
+<p>The error goes away! TypeScript looks at your conditionals for hints, and uses those hints to resolve union types and other kinds of uncertainty. This is called <em>narrowing</em>, because TypeScript is able to reduce the size of the set of possible values.</p>
+</details>
+<p>We'll talk more about this trick soon. </p>
+<div id="admonition-the-typeof-operator" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>The <code>typeof</code> operator</p>
+<p><a class="admonition-anchor-link" href="#admonition-the-typeof-operator"></a></p>
+</div>
+<div>
+<p>The <code>typeof</code> operator is technically part of JavaScript, and it isn't very precise at all! JavaScript has only a few &quot;types&quot;:</p>
+<ul>
+<li><code>string</code>;</li>
+<li><code>object</code>;</li>
+<li><code>number</code>; and
+...only a few others. </li>
+</ul>
+<p>JavaScript, on its own, makes no distinction between an array and an object, or between two different kinds of object. This is one thing TypeScript handles a lot better, but it still can use these basic JavaScript checks.</p>
+</div>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../success-in-0320/recipe.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../03_bias_narrowing_refinements/03_bias_narrowing_refinements.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../success-in-0320/recipe.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../03_bias_narrowing_refinements/03_bias_narrowing_refinements.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

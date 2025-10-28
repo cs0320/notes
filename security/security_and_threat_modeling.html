@@ -1,0 +1,372 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Security 1 - CSCI 0320 Notes</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../././mdbook-admonish.css">
+        <link rel="stylesheet" href=".././mdbook-admonish.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../home.html">How to read these notes</a></li><li class="chapter-item expanded "><a href="../success-in-0320/success-in-0320.html"><strong aria-hidden="true">1.</strong> Success in 0320</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../success-in-0320/recipe.html"><strong aria-hidden="true">1.1.</strong> Debugging Recipe</a></li></ol></li><li class="chapter-item expanded "><a href="../02_lambdas_validation/02_lambdas_validation.html"><strong aria-hidden="true">2.</strong> Agile, Lambdas, and Validation</a></li><li class="chapter-item expanded "><a href="../03_bias_narrowing_refinements/03_bias_narrowing_refinements.html"><strong aria-hidden="true">3.</strong> Narrowing and Refinements</a></li><li class="chapter-item expanded "><a href="../04_refinements_mutability/04_refinements_mutability.html"><strong aria-hidden="true">4.</strong> Branding and Immutability</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../04_refinements_mutability/04.5.apis-integration.html"><strong aria-hidden="true">4.1.</strong> APIs and Integration</a></li></ol></li><li class="chapter-item expanded "><a href="../05_threads_promises/05_threads_promises.html"><strong aria-hidden="true">5.</strong> Threads and Promises</a></li><li class="chapter-item expanded "><a href="../06_html_react/html-react-playwright.html"><strong aria-hidden="true">6.</strong> HTML and React</a></li><li class="chapter-item expanded "><a href="../algorithms/algorithms.html"><strong aria-hidden="true">7.</strong> Thinking About Algorithms</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../algorithms/supplement.html"><strong aria-hidden="true">7.1.</strong> Supplement Board: Dijkstra's Algorithm, Etc.</a></li></ol></li><li class="chapter-item expanded "><a href="../security/security_and_threat_modeling.html" class="active"><strong aria-hidden="true">8.</strong> Security 1</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CSCI 0320 Notes</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="security-and-threat-modeling-all-too-briefly"><a class="header" href="#security-and-threat-modeling-all-too-briefly">Security And Threat Modeling (All Too Briefly)</a></h1>
+<p>Today's notes are more of an outline. They are accompanied by the <a href="https://docs.google.com/presentation/d/1g-iesYd5D0PhmjHw39zx6XqWXhDGNzMPd8w1RfG5Ado/edit?usp=sharing">slides</a>.</p>
+<h3 id="example-1-the-parler-data-leak"><a class="header" href="#example-1-the-parler-data-leak">Example 1: The Parler Data Leak</a></h3>
+<p>Some time ago, hackers were able to <a href="https://www.wired.com/story/parler-hack-data-public-posts-images-video/">obtain nearly all data from the Parler website</a>. It turns out that this was technically pretty easy to do, because of a variety of engineering decisions. These included:</p>
+<ul>
+<li>insecure direct object references: post IDs were consecutive, and so a <code>for</code> loop could reliably and efficiently extract <em>every</em> post on the site.</li>
+<li>no rate limiting: the above-mentioned <code>for</code> loop could run quickly.</li>
+<li>failure to scrub geo-location data from uploaded images: the physical location of users was compromised.</li>
+</ul>
+<p>Combining multiple security mistakes tends to add up to more than the sum of the individual impacts. </p>
+<h3 id="example-2-phishing-email"><a class="header" href="#example-2-phishing-email">Example 2: Phishing Email</a></h3>
+<p>Here's a screenshot of a real email someone received a couple of years ago.</p>
+<p><img src="https://i.imgur.com/mxbNDq4.png" alt="" /></p>
+<p>There was a lot more to follow, carefully crafted to trigger fear and loss aversion in the recipient. The sender claimed that they would toss the (salacious and embarrassing) information they had in exchange for a bit of money... in Bitcoin, of course.</p>
+<p>This is an example of a <em>social engineering</em> attack: no technical aspect of a system is compromised, but still its human or institutional facets can be hacked. Social engineering is pretty broad, but other examples include a hacker calling Google to reset your password, or a trojan-horse USB drive being left in a bank parking lot.</p>
+<h2 id="example-3-taxis"><a class="header" href="#example-3-taxis">Example 3: Taxis</a></h2>
+<p>Today's discussion: <a href="https://medium.com/vijay-pandurangan/of-taxis-and-rainbows-f6bc289679a1">Of Taxis and Rainbows</a>. There's also a corresponding <a href="https://news.ycombinator.com/item?id=7926358">Hacker News thread</a>.</p>
+<h3 id="lets-talk-about-the-core-anonymization-issue-that-the-article-reported-on"><a class="header" href="#lets-talk-about-the-core-anonymization-issue-that-the-article-reported-on">Let's talk about the core anonymization issue that the article reported on.</a></h3>
+<ul>
+<li>What's in the data, and what was anonymized?</li>
+<li>What did they do to anonymize the data before release?</li>
+<li>What went wrong? (how was the anonymization circumvented?)</li>
+<li>Is this attack a generally useful technique? For what? 
+<ul>
+<li>See my <a href="./src/md5hash.ts">proof-of-concept code</a>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="takeaways"><a class="header" href="#takeaways">Takeaways:</a></h3>
+<ul>
+<li>True anonymization is hard, and it's difficult if not impossible to undo mistakes. </li>
+<li>Often the <strong>legitimate</strong> interests of historians, social scientists, journalists and others may be competing with privacy interests. There is not always a single right answer, and there certainly isn't an absolute answer that is right for all such cases.</li>
+<li>When presented with such a situation in tech, think carefully. Seek advice if it's available on both the technical and non-technical angles. Here, the FOIA request was answered in <em>2 days</em>. </li>
+</ul>
+<h3 id="leaving-the-anonymization-problems-aside-what-else-could-an-adversary-do-with-this-data"><a class="header" href="#leaving-the-anonymization-problems-aside-what-else-could-an-adversary-do-with-this-data">Leaving the anonymization problems aside, what else could an adversary do with this data?</a></h3>
+<ul>
+<li>What about the <em>passengers</em>? There's no identifying information, right?</li>
+<li>Is there any risk of correlation with other data?</li>
+</ul>
+<h3 id="lets-analyze-this-hacker-news-exchange"><a class="header" href="#lets-analyze-this-hacker-news-exchange">Let's analyze this Hacker News exchange.</a></h3>
+<p>There were 2 arguments I thought were interesting near the top:</p>
+<ul>
+<li>&quot;NYC is too dense for reasonable correlation&quot;</li>
+<li>&quot;nobody who lives in a non-dense part of NYC can afford to take a taxi anyway&quot;</li>
+</ul>
+<p>New York City is a lot more than skyscrapers. It includes, say, Staten Island:</p>
+<p><img src="https://i.imgur.com/TYsQNas.png" alt="" /></p>
+<p>Here's a random Google street view:</p>
+<p><img src="https://i.imgur.com/bDID3iU.jpg" alt="" /></p>
+<p>Take Malte's 2390, Julia's 1952B, and other such courses if you think this sort of thing is interesting. Most importantly, if you think of &quot;social implications&quot; as a separate thing from engineering, stop. It's not always inseparable, but it frequently is. As with much else, there's nuance.</p>
+<h3 id="are-there-possible-defenses-against-this"><a class="header" href="#are-there-possible-defenses-against-this">Are there possible defenses against this?</a></h3>
+<p>Assume that you want to give weight to the historian's goals—you can't just say &quot;no&quot;. We'll also ignore the specific obligations of the Freedom of Information Act to explore the design space.</p>
+<details>
+<summary>Think, then click.</summary>
+<p>The historian needs data at the granularity of individual trips. </p>
+<p>Here are some potential mitigations. Of course, if you find yourself in this situation for real, consult with experts rather than these notes. Crucially, <strong>none of these ideas is &quot;perfect&quot;</strong>. Different situations warrant different approaches.</p>
+<ul>
+<li>Reduce the spatial detail: snap locations to a grid or add random noise. This might affect the ability to tell (e.g.) which corners people tend to pick up taxis, however. Perhaps we could adjust the level of noise by the density of the area.</li>
+<li>Reduce the temporal detail: report rides only at (e.g.) the per-hour granularity. This causes other problems for the historian, but also helps to preserve privacy. </li>
+<li>Provide opt-out options and provide both individual trips (for those who don't opt-out) and aggregate data (for those who do). This is admittedly difficult to implement for this specific case.</li>
+<li>Don't provide fields where certain very rare values (vs. the overall corpus) could aid deanonymization. Classic examples often involve self-reported ethnicity, gender identity, etc. Suppose I asked in an anonymous feedback form for your <em>country of origin</em> along with the usual survey. Then unless country-of-origin is pretty uniform, I might be able to deanonymize the data. </li>
+</ul>
+</details>
+<h2 id="dont-forget-the-people-involved"><a class="header" href="#dont-forget-the-people-involved">Don't Forget the People Involved</a></h2>
+<p>Here's a classical experiment in psychology.</p>
+<h3 id="variation-1"><a class="header" href="#variation-1">Variation 1</a></h3>
+<p>Suppose you're shown four cards. The deck these cards have been taken from have colors on one side (either yellow or red), and numbers (between 1 and 100) on the other. At first, you only see one side of each. Perhaps you see:</p>
+<pre><code>1
+2
+yellow
+red
+</code></pre>
+<p>You're asked to determine if these four cards obey a simple rule: <em>if the card's number is even, then the card's color is red</em>. The question is, <em>which cards do you need to turn over to check the rule</em>?</p>
+<h3 id="variation-2"><a class="header" href="#variation-2">Variation 2</a></h3>
+<p>Suppose you're shown four cards. The deck these cards have been taken from have drink orders on one side (either juice or beer), and ages (between 1 and 100) on the other. At first, you only see one side of each. Perhaps you see:</p>
+<pre><code>beer
+water
+17
+23
+</code></pre>
+<p>You're asked to determine if these four cards obey a simple rule: <em>if the drink order is alcoholic, then the age is no less than 21</em>. The question is, <em>which cards do you need to turn over to check the rule</em>?</p>
+<h3 id="psychological-context"><a class="header" href="#psychological-context">Psychological Context</a></h3>
+<p>These are called [Wason Selection Task]s(https://en.wikipedia.org/wiki/Wason_selection_task) and have been studied extensively in psychology. </p>
+<p>Surprisingly, humans tend to do poorly on the first task, but far better on the second. Why? Because context matters. If you can <strong>catch someone outside of their security mindset</strong> with an apparently rote task, you have a higher chance of exploiting them.</p>
+<p>Good security involves far more than just the software. But whether or not we're talking about software or the human brain, bias can be attacked, and the attacker can abuse leaky abstractions.</p>
+<!-- ## Aside: The GDPR
+
+You may have heard of the [GDPR](https://gdpr.eu). On your term projects, it's a good idea to consider how you would comply with the law; we may ask (e.g.) how you would support deletion of a user's data (although we don't expect you to necessarily have time to _implement_ all your ideas, you need to be able to speak intelligently about the challenges).
+
+Why should you care about laws like the GDPR? Setting aside ethical and empathetic concerns, if you ever intend to build software that's used in Europe, you ought to be aware of compliance requirements. -->
+<h2 id="a-cognitive-tool-threat-modeling"><a class="header" href="#a-cognitive-tool-threat-modeling">A Cognitive Tool: Threat Modeling</a></h2>
+<p>We tend to think of security as being about confidentiality. But that's too limiting. Are there <em>other</em> kinds of security goals you might want?</p>
+<p>Here are 6 very broad classes of goal, which together comprise the S.T.R.I.D.E. framework. More on these soon.</p>
+<h3 id="authentication-vs-spoofing"><a class="header" href="#authentication-vs-spoofing">Authentication (vs. Spoofing)</a></h3>
+<h3 id="integrity-vs-tampering"><a class="header" href="#integrity-vs-tampering">Integrity (vs. Tampering)</a></h3>
+<h3 id="non-repuditation-vs-repudiation"><a class="header" href="#non-repuditation-vs-repudiation">Non-repuditation (vs. Repudiation)</a></h3>
+<h3 id="confidentiality-vs-information-disclosure"><a class="header" href="#confidentiality-vs-information-disclosure">Confidentiality (vs. Information Disclosure)</a></h3>
+<h3 id="availability-vs-denial-of-service"><a class="header" href="#availability-vs-denial-of-service">Availability (vs. Denial of Service)</a></h3>
+<h3 id="authorization-vs-elevation-of-privilege"><a class="header" href="#authorization-vs-elevation-of-privilege">Authorization (vs. Elevation of Privilege)</a></h3>
+<h2 id="elevation-of-privilege"><a class="header" href="#elevation-of-privilege">Elevation of Privilege</a></h2>
+<!-- We're going to get practice with STRIDE using the cards by [Adam Shostack](https://adam.shostack.org) (a noted security expert) for a game called [Elevation of Privilege](https://github.com/adamshostack/eop). Adam is the author of my favorite book on threat modeling, which is [available in the Brown library](https://bruknow.library.brown.edu/permalink/01BU_INST/9mvq88/alma991043215908506966). I strongly recommend using this book as a guide to _mitigating_ the kinds of threats we'll identify today. 
+
+Happily, this semester I have actual hard-copies of this game to use in class today. We won't have time to play the game, but I want to use them as props to think about potential threats your term projects will face. **Everyone should leave with at least one threat in mind.**  -->
+<!-- ### Step 1: Diagramming
+
+What would a diagram of the Sprint 3--4 application look like? Here's a general process to follow:
+* Draw some vertexes that correspond to entitites where data is produced, consumed, held, processed, etc. The detail can be either coarse or fine, depending on our needs and our knowledge of the system. You might have vertexes for:
+    * the database itself;
+    * the database proxy;
+    * the API handler; and
+    * different aspects of the front-end app (e.g., the screenreader vs. the table view). 
+* Draw edges between these vertexes that show how data flows, and label them with a short description of the data. For example:
+    * table names flow from the front-end to the API handler.
+    
+Now, what kinds of _trust_ does each component need to perform its function? Does the database proxy trust the API handler implicitly? Then draw a circle around them, linking them into the same "zone of trust". (The trust doesn't have to absolute! The point is to identify lack of boundaries that an attacker could exploit.)
+
+The slides contain 2 examples of this from Shostack's book. 
+
+#### Important Aside
+
+The goal of this lecture isn't to "teach you to do proper threat modeling". That would take more than the half-hour or so we have for this section. Rather, I want to give you a taste of the discipline in the hope it's useful on your term projects. 
+
+If you're planning on specializing (or even sometimes engaging with) security concerns, you'd do well to explore the threat-modeling book and take other security-focused classes. 
+
+**Which category does threat-modeling fall into?** Design is most likely. Depending on what you do with it, you might also be able to make an argument for testing or professionalism.
+
+### Step 2: Looking For Threats
+
+If we were building the system, would we have any spoofing concerns? What about availability? Etc. Remember, you're not looking for _bugs_; you're looking for _potential threats_. Some are easy to avoid or mitigate, others are challenging, and still others may be impossible (or at least prohibitively expensive to avoid). Also, remember that the attacker may be after something other than _your_ data: are there things about your system that might make it useful as a vector of attack?
+
+To avoid issues caused by diagramming differences, and keep things simple, we'll use the company dataflow diagram from Shostack (slide 9). Where detail is missing, allow yourself to think in hypotheticals. E.g., what _if_ the attacker could get a directory listing, and learn about filenames on the human-resources server?
+
+Now we get to play the game! Form groups, and play. The classroom isn't well-suited to this, but let's make it work---focus on thinking through different kinds of threats.
+
+**While the game is going on, and until the end of "class", Tim is available in the front of class to answer questions you have about Sprint 4 or the term project.**
+
+
+### Some Possible Threats:
+
+Here are some examples (not at all exhaustive), mostly taken from the book:
+
+<details>
+<summary>Think, then click!</summary>
+* The web client could connect to a spoofed front-end.
+* Someone could tamper with a request en route to the DB server.
+* Someone might send many consecutive expensive SQL requests.
+* The logs could fill up.
+* If the database can run arbitrary commands, then the client gains access to them as well.
+</details> -->
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../algorithms/supplement.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../algorithms/supplement.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

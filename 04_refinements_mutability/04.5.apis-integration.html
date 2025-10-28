@@ -1,0 +1,448 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>APIs and Integration - CSCI 0320 Notes</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../././mdbook-admonish.css">
+        <link rel="stylesheet" href=".././mdbook-admonish.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../home.html">How to read these notes</a></li><li class="chapter-item expanded "><a href="../success-in-0320/success-in-0320.html"><strong aria-hidden="true">1.</strong> Success in 0320</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../success-in-0320/recipe.html"><strong aria-hidden="true">1.1.</strong> Debugging Recipe</a></li></ol></li><li class="chapter-item expanded "><a href="../02_lambdas_validation/02_lambdas_validation.html"><strong aria-hidden="true">2.</strong> Agile, Lambdas, and Validation</a></li><li class="chapter-item expanded "><a href="../03_bias_narrowing_refinements/03_bias_narrowing_refinements.html"><strong aria-hidden="true">3.</strong> Narrowing and Refinements</a></li><li class="chapter-item expanded "><a href="../04_refinements_mutability/04_refinements_mutability.html"><strong aria-hidden="true">4.</strong> Branding and Immutability</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../04_refinements_mutability/04.5.apis-integration.html" class="active"><strong aria-hidden="true">4.1.</strong> APIs and Integration</a></li></ol></li><li class="chapter-item expanded "><a href="../05_threads_promises/05_threads_promises.html"><strong aria-hidden="true">5.</strong> Threads and Promises</a></li><li class="chapter-item expanded "><a href="../06_html_react/html-react-playwright.html"><strong aria-hidden="true">6.</strong> HTML and React</a></li><li class="chapter-item expanded "><a href="../algorithms/algorithms.html"><strong aria-hidden="true">7.</strong> Thinking About Algorithms</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../algorithms/supplement.html"><strong aria-hidden="true">7.1.</strong> Supplement Board: Dijkstra's Algorithm, Etc.</a></li></ol></li><li class="chapter-item expanded "><a href="../security/security_and_threat_modeling.html"><strong aria-hidden="true">8.</strong> Security 1</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CSCI 0320 Notes</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="web-apis-and-integration-testing-with-mocks"><a class="header" href="#web-apis-and-integration-testing-with-mocks">Web APIs and Integration Testing with Mocks</a></h1>
+<p>This chapter combines some notes from Fall 2025 and Spring 2025. As such, it will have examples in both TypeScript and in Java. </p>
+<h2 id="web-apis"><a class="header" href="#web-apis">Web APIs</a></h2>
+<p>There's a lot of useful information out there on the web.  One way we might work with that info is to <em>scrape</em> websites: write a script that interacts with the HTML on a webpage to extract the info.</p>
+<h3 id="why-not-web-scraping"><a class="header" href="#why-not-web-scraping">Why Not Web Scraping?</a></h3>
+<p>What are some weaknesses of web scraping, from the perspective of both the person doing the scraping, and the person who is running the website?</p>
+<details><summary><B>Think, then click!</B></summary>
+<p>A few issues might be:</p>
+<ul>
+<li>The owner of the data might want to charge for access in a fine-grained way, or limit access differently from the way it works on a webpage. </li>
+<li>Web scraping is unstable. If a site's format changes, web-scraper scripts can break. APIs can have breaking changes too, but when they do, the changes usually come with a warning to users!</li>
+<li>Web scraping is mostly a one-sided effort. While a site designer might work to ease the job of web scrapers, details can still require some guesswork on the part of the script author.</li>
+</ul>
+</details>
+<p>It turns out that ideas from web-scraping will remain useful though, when we get to testing front-end applications in a few weeks.</p>
+<h3 id="web-apis-1"><a class="header" href="#web-apis-1">Web APIs</a></h3>
+<p>APIs work like this: the user sends a structured request to the API, which replies in a documented, structured way. API is short for <em>Application Programming Interface</em>, and often you'll hear the set of functions it provides to users called the &quot;interface&quot;. </p>
+<p>This is an example of an &quot;interface&quot; in the broad, classical sense. It isn't a <em>Java</em> <code>interface</code>. It's one of many ways for two programs to communicate across the web, but it's <em>specific</em> and <em>well-defined</em>.</p>
+<p>APIs are everywhere. Whenever you log in via Google (even on a non-Google site) you're using <a href="https://developers.google.com/identity">Google's Authentication API</a>. </p>
+<p>APIs are very like method calls! The pictures are very similar:</p>
+<p><img src="./method_call.png" width="45%"/> <img src="./api_call.png" width="45%"/></p>
+<p>The differences are in the ways we go about making a call (and processing the result). E.g., we have to build a request string that embodies the call, and we have to turn the response object into usable data.</p>
+<h3 id="example-national-weather-service"><a class="header" href="#example-national-weather-service">Example: National Weather Service</a></h3>
+<p>Let's start right away with a serious, high-volume API: the U.S. National Weather Service. These APIs tend to be <a href="https://www.weather.gov/documentation/services-web-api">well-documented</a>. We'll use the NWS because, while many professional APIs require registration and the use of an API key to use them, the NWS API is free and requires no registration. </p>
+<p>The NWS API is not the exact API you will be using on the sprint, but I like it for demonstrating the same kind of interaction you'll need to implement.</p>
+<p>Let's get weather information for Providence. Our geocordinates here are: <code>41.826820</code>, <code>-71.402931</code>. According to the docs, we can start by sending a <code>points</code> query with these coordinates: <a href="https://api.weather.gov/points/41.8268,-71.4029">https://api.weather.gov/points/41.8268,-71.4029</a>:</p>
+<h4 id="queries"><a class="header" href="#queries">Queries</a></h4>
+<p>There are a few things to notice right away. First, the URL we sent had a <em>host</em> portion (<code>https://api.weather.gov</code>) and an <em>endpoint</em> (called, confusingly, <code>points</code>) that represents the kind of query we're asking. Then there are <em>parameters</em> to the query (<code>41.8268,-71.4029</code>). </p>
+<div id="admonition-why-4-significant-digits-rather-than-6-which-is-what-we-might-see-in-the-browser" class="admonition admonish-note">
+<div class="admonition-title">
+<p>Why 4 significant digits, rather than 6, which is what we might see in the browser?</p>
+<p><a class="admonition-anchor-link" href="#admonition-why-4-significant-digits-rather-than-6-which-is-what-we-might-see-in-the-browser"></a></p>
+</div>
+<div>
+<p>Because last year, the API would give an error if we tried to provide 6 significant digits. So we truncate.</p>
+</div>
+</div>
+<h4 id="responses"><a class="header" href="#responses">Responses</a></h4>
+<p>We get this back:</p>
+<pre><code>{
+    &quot;@context&quot;: [
+        &quot;https://geojson.org/geojson-ld/geojson-context.jsonld&quot;,
+        {
+            &quot;@version&quot;: &quot;1.1&quot;,
+            &quot;wx&quot;: &quot;https://api.weather.gov/ontology#&quot;,
+            &quot;s&quot;: &quot;https://schema.org/&quot;,
+            &quot;geo&quot;: &quot;http://www.opengis.net/ont/geosparql#&quot;,
+            &quot;unit&quot;: &quot;http://codes.wmo.int/common/unit/&quot;,
+            &quot;@vocab&quot;: &quot;https://api.weather.gov/ontology#&quot;,
+            &quot;geometry&quot;: {
+                &quot;@id&quot;: &quot;s:GeoCoordinates&quot;,
+                &quot;@type&quot;: &quot;geo:wktLiteral&quot;
+            },
+            &quot;city&quot;: &quot;s:addressLocality&quot;,
+            &quot;state&quot;: &quot;s:addressRegion&quot;,
+            &quot;distance&quot;: {
+                &quot;@id&quot;: &quot;s:Distance&quot;,
+                &quot;@type&quot;: &quot;s:QuantitativeValue&quot;
+            },
+            &quot;bearing&quot;: {
+                &quot;@type&quot;: &quot;s:QuantitativeValue&quot;
+            },
+            &quot;value&quot;: {
+                &quot;@id&quot;: &quot;s:value&quot;
+            },
+            &quot;unitCode&quot;: {
+                &quot;@id&quot;: &quot;s:unitCode&quot;,
+                &quot;@type&quot;: &quot;@id&quot;
+            },
+            &quot;forecastOffice&quot;: {
+                &quot;@type&quot;: &quot;@id&quot;
+            },
+            &quot;forecastGridData&quot;: {
+                &quot;@type&quot;: &quot;@id&quot;
+            },
+            &quot;publicZone&quot;: {
+                &quot;@type&quot;: &quot;@id&quot;
+            },
+            &quot;county&quot;: {
+                &quot;@type&quot;: &quot;@id&quot;
+            }
+        }
+    ],
+    &quot;id&quot;: &quot;https://api.weather.gov/points/41.8268,-71.4029&quot;,
+    &quot;type&quot;: &quot;Feature&quot;,
+    &quot;geometry&quot;: {
+        &quot;type&quot;: &quot;Point&quot;,
+        &quot;coordinates&quot;: [
+            -71.402900000000002,
+            41.826799999999999
+        ]
+    },
+    &quot;properties&quot;: {
+        &quot;@id&quot;: &quot;https://api.weather.gov/points/41.8268,-71.4029&quot;,
+        &quot;@type&quot;: &quot;wx:Point&quot;,
+        &quot;cwa&quot;: &quot;BOX&quot;,
+        &quot;forecastOffice&quot;: &quot;https://api.weather.gov/offices/BOX&quot;,
+        &quot;gridId&quot;: &quot;BOX&quot;,
+        &quot;gridX&quot;: 64,
+        &quot;gridY&quot;: 64,
+        &quot;forecast&quot;: &quot;https://api.weather.gov/gridpoints/BOX/64,64/forecast&quot;,
+        &quot;forecastHourly&quot;: &quot;https://api.weather.gov/gridpoints/BOX/64,64/forecast/hourly&quot;,
+        &quot;forecastGridData&quot;: &quot;https://api.weather.gov/gridpoints/BOX/64,64&quot;,
+        &quot;observationStations&quot;: &quot;https://api.weather.gov/gridpoints/BOX/64,64/stations&quot;,
+        &quot;relativeLocation&quot;: {
+            &quot;type&quot;: &quot;Feature&quot;,
+            &quot;geometry&quot;: {
+                &quot;type&quot;: &quot;Point&quot;,
+                &quot;coordinates&quot;: [
+                    -71.418784000000002,
+                    41.823056000000001
+                ]
+            },
+            &quot;properties&quot;: {
+                &quot;city&quot;: &quot;Providence&quot;,
+                &quot;state&quot;: &quot;RI&quot;,
+                &quot;distance&quot;: {
+                    &quot;unitCode&quot;: &quot;wmoUnit:m&quot;,
+                    &quot;value&quot;: 1380.4369590568999
+                },
+                &quot;bearing&quot;: {
+                    &quot;unitCode&quot;: &quot;wmoUnit:degree_(angle)&quot;,
+                    &quot;value&quot;: 72
+                }
+            }
+        },
+        &quot;forecastZone&quot;: &quot;https://api.weather.gov/zones/forecast/RIZ002&quot;,
+        &quot;county&quot;: &quot;https://api.weather.gov/zones/county/RIC007&quot;,
+        &quot;fireWeatherZone&quot;: &quot;https://api.weather.gov/zones/fire/RIZ002&quot;,
+        &quot;timeZone&quot;: &quot;America/New_York&quot;,
+        &quot;radarStation&quot;: &quot;KBOX&quot;
+    }
+}
+</code></pre>
+<p>This <em>wasn't nicely formatted</em> for human reading. Why? Because it's meant for programs to consume. This string should bear a remarkable resemblance to TypeScript objects. It's called Json: <em>JavaScript Object Notation</em>. When we write programs that work with web APIs, we'll never manually parse these, we'll use a library that does it for us. In general:</p>
+<ul>
+<li>when we're converting data or an object in our program to a format meant for transmission (like Json) we'll call it <em>serialization</em>; and</li>
+<li>when we're converting a transmission format (like Json) into data or an object in our program, we'll call it <em>deserialization</em>.</li>
+</ul>
+<p>What else do you notice about this data? </p>
+<details>
+<summary>Think, then click!</summary>
+<p>One thing is: <strong>you can ignore a lot of it</strong>. This first query gives us useful information for <em>further</em> uses of the API. Another is that there's no actual weather information here...</p>
+</details>
+</br>
+<p>See the documentation to understand the meaning of specific fields in the response. At a high level, this query tells us <em>which NWS grid location</em> Providence is in, along with telling us URLs for common queries about that grid location. The NWS API needs you to work with it in stages. </p>
+<h2 id="building-api-servers"><a class="header" href="#building-api-servers">Building API Servers</a></h2>
+<p>We've provided a number of examples of setting up an API server. Whether we're doing this in Java or TypeScript, the flow of our <em>proxy server</em> for weather will look roughly like this:</p>
+<ul>
+<li>When our server starts up, it listens for requests on a set of endpoints. We need to register an endpoint (for callers to make weather requests) and a <em>handler</em> callback for the server to call when it gets a request. </li>
+<li>When someone sends our API server a request for the weather, it passes the request to the handler we gave it.</li>
+<li>The handler sends a request of its own to the NWS, asking what their grid coordinates are for the geo-location given.</li>
+<li>The handler sends a second request to the NWS for the forecast at that location. </li>
+<li>Once the forecast is received, the handler assembles a JSON response and sends it back to the original caller—reporting the weather forecast.</li>
+</ul>
+<p>You can see a much-simplified version of this loop in my example <a href="">Providence Weather app</a>. The source code is (<a href="https://github.com/tnelson/pvd-weather">here</a>). </p>
+<div id="admonition-this-was-a-summer-copilot-project" class="admonition admonish-note">
+<div class="admonition-title">
+<p>This was a summer Copilot project</p>
+<p><a class="admonition-anchor-link" href="#admonition-this-was-a-summer-copilot-project"></a></p>
+</div>
+<div>
+<p>This was one of the first things I built with Copilot over the summer, as I was working on the course. The <a href="https://github.com/tnelson/pvd-weather/blob/main/README.md">README file</a> in the repo has some notes about how it went. Copilot was great for building the initial prototype, but had some trouble with the structure of the JSON it needed to process and adding TypeScript types.</p>
+</div>
+</div>
+<!-- ### Setting up a server
+
+We'll use a library called Sparkjava to run our API servers. Sparkjava is relatively simple to set up: we just tell it which port to use (here, `3232`), which endpoints to listen at, and for each, a handler object (there's the strategy pattern again!) that processes requests.
+
+~~~admonish warning title="Sparkjava came first, but..."
+If you Google for 'spark', you're likely to get answers related to [Apache Spark](https://spark.apache.org), a more popular library that happens to be for data science, not web servers. Watch out!
+~~~
+
+In the livecode for today, you'll see the entry point in the `Server.java` file. The code looks something like this:
+
+```java
+private final WeatherDatasource state = new NWSAPIWeatherSource();
+Spark.port(port);
+Spark.get("/weather", new WeatherHandler(state));
+Spark.awaitInitialization();
+```
+
+In this case, the `WeatherHandler` object's constructor takes a _data source object_. Why do you think that is? 
+
+<details>
+<summary>Think, then click!</summary>
+    
+Extensibility and testing! If we added more handlers, we'd probably need to share some state between them. This sort of _dependency injection_ allows us to do just that. We might even wrap the datasource in a class that holds other kinds of state or other data sources.
+    
+</details>
+
+Each of these handler classes handles queries sent to a specific endpoint. Here, queries to `weather` are handled by a `WeatherHandler` object.
+
+You might notice that the data source being created is a `NWSAPIWeatherSource`, but it's being used only by an interface, `WeatherDatasource`. This enables some very useful techniques, including better testing.  -->
+<h3 id="testing-api-servers-example-of-integration-testing"><a class="header" href="#testing-api-servers-example-of-integration-testing">Testing API Servers: Example of Integration Testing</a></h3>
+<p>Our philosophy is generally that you'll be able to test most everything you do. So: <strong>how can I test my API server?</strong></p>
+<p>One way is to write unit tests. E.g., if we have a CSV data source (hint: you do!), we should have unit tests for that. If we have a source that goes to the National Weather Service to fetch forecasts, we should test that. </p>
+<p>But neither of those will test the <em>handlers</em>, or anything between the handler and the data source. We need to test the combination of a number of units: the code that accesses the data source, code (if any) that processes the raw data, the API handlers of our server, etc. When you're testing the <em>integration</em> of multiple components in your application (such as our server tests) this is called <em>integration testing</em>. </p>
+<p>The gearups contain examples of how to set this up. In brief, you start up the server and send &quot;fake&quot; API queries as part of each of your test cases. Then each test looks at the responses and decides whether they are good or bad.</p>
+<!-- One way, which is what we did in prior semesters, is to write a test class that starts up our server locally, sends it web requests, and evaluates the response&mdash;all done on the local computer, no Internet connection needed. In Spring 2025, we're instead using a tool called Postman, which can help us script API requests and examine responses. For the moment, we'll just use it as a library of example queries that we can manually inspect results for.  -->
+<h3 id="mocking-a-remarkably-powerful-technique"><a class="header" href="#mocking-a-remarkably-powerful-technique">Mocking (a remarkably powerful technique)</a></h3>
+<p>Consider what happens when I run integration tests. These generate web requests to our server, and then (assuming normal operation), our server will send a series of web requests to the NWS API. This is reasonable, but has a number of problems. What issues have I introduced into my testing because <em>running the tests requires the NWS API</em>?</p>
+<details>
+<summary>Think, then click!</summary>
+<p>At the very least, the more I test (and I should test often!), the more I'll be spamming the NWS with requests. If I do it too much, they might think I am running a denial-of-service attack on them, and rate limit my requests. I also just can't run my test suite without an Internet connection, or if the NWS is down for maintenance. </p>
+<p>(There are other reasons, too.)</p>
+</details>
+<p>You'll use mocking in every sprint from now until the class is over; we've only barely discovered how important it is as a technique. And the patterns we have learned so far are perfect for implementing mocking well. To start with, a data source can be a strategy provided by the caller (real or mock). </p>
+<p>The <a href="https://github.com/cs0320/class-livecode/tree/main/F25/sep25_mocking_brain_jar">Mocking example</a> from the live code shows one way to do this. You can also use Jest or Playwright themselves to mock certain functionality like input and output. </p>
+<div id="admonition-why-does-the-example-not-just-use-a-testing-framework" class="admonition admonish-note">
+<div class="admonition-title">
+<p>Why does the example not just use a testing framework?</p>
+<p><a class="admonition-anchor-link" href="#admonition-why-does-the-example-not-just-use-a-testing-framework"></a></p>
+</div>
+<div>
+<p>A more conceptual example can demonstrate generally useful ideas like dependency injection without tying them to how those ideas are used by a specific library. In particular, notice how dependency injection here is just passing an argument to a factory function.</p>
+</div>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../04_refinements_mutability/04_refinements_mutability.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../05_threads_promises/05_threads_promises.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../04_refinements_mutability/04_refinements_mutability.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../05_threads_promises/05_threads_promises.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

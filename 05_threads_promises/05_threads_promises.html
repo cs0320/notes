@@ -1,0 +1,527 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Threads and Promises - CSCI 0320 Notes</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../././mdbook-admonish.css">
+        <link rel="stylesheet" href=".././mdbook-admonish.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../home.html">How to read these notes</a></li><li class="chapter-item expanded "><a href="../success-in-0320/success-in-0320.html"><strong aria-hidden="true">1.</strong> Success in 0320</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../success-in-0320/recipe.html"><strong aria-hidden="true">1.1.</strong> Debugging Recipe</a></li></ol></li><li class="chapter-item expanded "><a href="../02_lambdas_validation/02_lambdas_validation.html"><strong aria-hidden="true">2.</strong> Agile, Lambdas, and Validation</a></li><li class="chapter-item expanded "><a href="../03_bias_narrowing_refinements/03_bias_narrowing_refinements.html"><strong aria-hidden="true">3.</strong> Narrowing and Refinements</a></li><li class="chapter-item expanded "><a href="../04_refinements_mutability/04_refinements_mutability.html"><strong aria-hidden="true">4.</strong> Branding and Immutability</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../04_refinements_mutability/04.5.apis-integration.html"><strong aria-hidden="true">4.1.</strong> APIs and Integration</a></li></ol></li><li class="chapter-item expanded "><a href="../05_threads_promises/05_threads_promises.html" class="active"><strong aria-hidden="true">5.</strong> Threads and Promises</a></li><li class="chapter-item expanded "><a href="../06_html_react/html-react-playwright.html"><strong aria-hidden="true">6.</strong> HTML and React</a></li><li class="chapter-item expanded "><a href="../algorithms/algorithms.html"><strong aria-hidden="true">7.</strong> Thinking About Algorithms</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../algorithms/supplement.html"><strong aria-hidden="true">7.1.</strong> Supplement Board: Dijkstra's Algorithm, Etc.</a></li></ol></li><li class="chapter-item expanded "><a href="../security/security_and_threat_modeling.html"><strong aria-hidden="true">8.</strong> Security 1</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CSCI 0320 Notes</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="threads-and-promises"><a class="header" href="#threads-and-promises">Threads and Promises</a></h1>
+<p>The material in these notes goes deeper than we can cover in class. If you're having issues with concurrency, parallelism, or asynchronous execution: <strong>read these notes</strong>! If you're having trouble with the difference between promises and threads, <strong>read these notes!</strong></p>
+<h2 id="motivating-concurrency"><a class="header" href="#motivating-concurrency">Motivating Concurrency</a></h2>
+<p>Let's go back to the hours queue dispatcher. You can find a more complete version of the example in the project linked at the beginning of these notes.</p>
+<p>If we run the <code>main</code> method in the <code>Main</code> class of this new example, we'll get something like this (using TA names from a prior semester):</p>
+<pre><code>08:45:09:837 Dispatcher: Welcome to edu.brown.cs32.livecode.threads.TA hours!
+08:45:09:839 Dispatcher: Hi Nim; you'll be seen by Erica
+08:45:09:844 Erica says: Hello Nim!
+Erica says: Goodbye Nim, I hope that helped!!
+08:45:10:859 Dispatcher: Hi Alice; you'll be seen by Erica
+08:45:10:859 Erica says: Hello Alice!
+Erica says: Goodbye Alice, I hope that helped!!
+08:45:11:865 Dispatcher: Hi Bob; you'll be seen by Erica
+08:45:11:865 Erica says: Hello Bob!
+Erica says: Goodbye Bob, I hope that helped!!
+08:45:12:870 Dispatcher: Hi Charli; you'll be seen by Erica
+08:45:12:871 Erica says: Hello Charli!
+Erica says: Goodbye Charli, I hope that helped!!
+08:45:13:876 Dispatcher: Hi Boatswain; you'll be seen by Erica
+08:45:13:877 Erica says: Hello Boatswain!
+Erica says: Goodbye Boatswain, I hope that helped!!
+08:45:14:882 Dispatcher: Hi Bucky; you'll be seen by Erica
+08:45:14:882 Erica says: Hello Bucky!
+Erica says: Goodbye Bucky, I hope that helped!!
+08:45:15:887 Dispatcher (6 helped so far): Nobody waiting in queue, will check again in three seconds.
+</code></pre>
+<p>Until we look at the timestamps, this seems fine.</p>
+<p>This doesn't look so great. We have some problems to solve. If you look at the code, you might see other problems too. Here are three:</p>
+<ul>
+<li>Challenge 1: the dispatcher is waiting for <em>an individual TA</em> to finish helping a student before allocating the next TA. Lots of TAs will be idle, and students will wait a lot longer.</li>
+<li>Challenge 2: maybe we'd like to add TAs while the dispatcher is running.</li>
+<li>Challenge 3: how can new students join the queue?</li>
+</ul>
+<p>All of these problems are related to today's topic: <em>concurrency</em>:</p>
+<ul>
+<li>We'd like TAs to be able to help students without holding up the dispatcher from allocating other students to other TAs. <em>We need the dispatcher to run concurrently with the TAs.</em></li>
+<li>We need a way for the <code>Main</code> class to call <code>dispatcher.addTA()</code> after the dispatcher starts running. But right now, there's no way for the <code>Main</code> class to run independently of the dispatcher. <em>We need the dispatcher to run concurrently with the <code>main()</code> method.</em></li>
+<li>We need a way for new students to be added to the queue. This is the same problem as above!</li>
+</ul>
+<p>Concerns like these pop up all the time in engineering. (The problem isn't just that the way I've written the dispatcher library is not very realistic.)</p>
+<p>Here's a picture demonstrating the current state of affairs. These are called <em>sequence diagrams</em>, and they are very common in networking and distributed systems. Each vertical line corresponds to an entity (in this case, 3 different classes). Horizontal lines are messages or method calls. We can see the control flow, in a single thread, passing between the classes. Because <code>Erica</code> is always the first free TA in the list whenever the dispatcher gets to go, <code>Erica</code> is the only TA who gets to see students.</p>
+<p><img src="./Seq1.jpg" alt="Single-threaded sequence diagram" /></p>
+<h2 id="how-does-concurrency-help-us"><a class="header" href="#how-does-concurrency-help-us">How does concurrency help us?</a></h2>
+<p>A program is <em>concurrent</em> if it involves multiple simultaneous threads of execution. Note that this doesn't necessarily mean that these multiple threads really are running at the same time, just that they are &quot;executing&quot;. We will make a distinction in this class between concurrency and <em>parallelism</em>, where threads really are executing at the same time, usually on multi-core hardware or in the cloud. <strong>A parallel program is always concurrent, but the threads of a concurrent program may or may not actually be run in parallel.</strong></p>
+<p>To illustrate this idea, consider what your computer is doing right now. You're probably running more programs than you can count, even before you think about what your operating system is doing. How many CPU cores do you have? Probably not more than a dozen (and likely fewer). So not all of the concurrency that's happening can be parallelized: you'd need hundreds of cores for that! Instead, your operating system runs a <em>scheduler</em> program which allocates slices of time to different threads of execution. </p>
+<p>Concurrency is more common than you might imagine. Because we're working with Java, <em>every</em> program you write is concurrent, even a &quot;Hello World!&quot; program. Why?</p>
+<details>
+<summary><B>Think, then click!</B></summary>
+<p>The garbage collector!</p>
+</details>
+<h3 id="using-concurrency-to-get-what-we-want"><a class="header" href="#using-concurrency-to-get-what-we-want">Using concurrency to get what we want</a></h3>
+<p>Imagine logically splitting our big program into separate, independent &quot;threads&quot; of execution: one that runs the dispatcher, another that runs when a TA helps a student, and so on. We just need to separate them from each other, and help them communicate.</p>
+<p>So far we've only had one thread: the one that starts up in our <code>main</code> method. How do we get another, and which should it correspond to?</p>
+<details>
+<summary><B>Think, then click! (Image within...) </B></summary>
+<p>There are a few options. But let's start simply, and not try to solve <em>all</em> the challenges at once. We'll have every TA correspond to their own thread, and have those threads woken up by the dispatcher. it would look something like this:</p>
+<p><img src="./Seq2.jpg" alt="Multi-threaded sequence diagram" /></p>
+<p><em>The triangle is a drawing error I need to remove, but I ran out of time before class. :-)</em></p>
+</details>
+<h3 id="runnables-and-threads"><a class="header" href="#runnables-and-threads">Runnables and Threads</a></h3>
+<p>Java has an interface called <code>Runnable</code>, which requires the implementation of a <code>run()</code> method. It's also got a class called <code>Thread</code>, which has a constructor that accepts a <code>Runnable</code> and a method called <code>start()</code>. So, as a first cut, let's make <code>TA</code> implement <code>Runnable</code>, and whenever we dispatch a student to that TA, we run the thread.</p>
+<pre><code class="language-java">public class TA implements Runnable {
+    // ...
+    public void seeStudent(Student student) throws TABusyException {
+        // ...
+        new Thread(this).start(); // NOT the same as .run()
+    }
+    // ...
+    @Override
+    public void run() {
+        // When the above .start() method is called, the *NEW THREAD* will execute this method.
+    }
+}
+</code></pre>
+<p>Now, when we run, we'll see:</p>
+<pre><code>09:24:18:642 Dispatcher: Hi Charli; you'll be seen by Erica
+09:24:18:647 Dispatcher: Hi Boatswain; you'll be seen by Orion
+09:24:18:647 Erica says: Hello Charli!
+09:24:18:647 Orion says: Hello Boatswain!
+Orion says: Goodbye Boatswain, I hope that helped!!
+09:24:19:652 Dispatcher: Hi Bucky; you'll be seen by Orion
+09:24:19:652 Orion says: Hello Bucky!
+Erica says: Goodbye Charli, I hope that helped!!
+09:24:19:653 Dispatcher: Hi Nim; you'll be seen by Erica
+09:24:19:653 Erica says: Hello Nim!
+Orion says: Goodbye Bucky, I hope that helped!!
+09:24:20:658 Dispatcher: Hi Alice; you'll be seen by Orion
+Erica says: Goodbye Nim, I hope that helped!!
+09:24:20:658 Dispatcher: Hi Bob; you'll be seen by Erica
+09:24:20:658 Orion says: Hello Alice!
+09:24:20:658 Erica says: Hello Bob!
+09:24:20:658 Dispatcher (4 helped so far): Nobody waiting in queue, will check again in three seconds.
+Orion says: Goodbye Alice, I hope that helped!!
+Erica says: Goodbye Bob, I hope that helped!!
+09:24:23:662 Dispatcher (6 helped so far): Nobody waiting in queue, will check again in three seconds.
+
+</code></pre>
+<p>Much better! </p>
+<h3 id="concurrency-vs-parallelism-again"><a class="header" href="#concurrency-vs-parallelism-again">Concurrency vs. Parallelism (Again)</a></h3>
+<p>The <code>TA</code> thread and the main thread really are running separately. It's not clear whether they are truly running <em>in parallel</em>, though: the operating system and Java runtime decide that, in part based on how many cores the hardware has available. </p>
+<h2 id="what-could-go-wrong"><a class="header" href="#what-could-go-wrong">What Could Go Wrong?</a></h2>
+<p>Concurrency seems really powerful. But are there any risks associated with it? Let's investigate. </p>
+<p>Suppose we want to record how many students have been seen before the dispatcher terminates. One natural way to do this is by adding a <code>static</code> counter to the dispatcher class:</p>
+<pre><code class="language-java">static int studentsSeen = 0;
+</code></pre>
+<p>Now, every <code>TA</code> can increment this counter in its <code>run</code> method, when the student has been helped:</p>
+<pre><code class="language-java">HoursDispatcher.studentsSeen += 1;
+</code></pre>
+<p>If we tell the dispatcher to print this counter out, we'll see output like this at the end of the queue:</p>
+<pre><code>11:56:10 Dispatcher: Nobody waiting in queue, will check again in three seconds. So far we helped 6 students.
+</code></pre>
+<p>And indeed that's what we see. But let's see how this works <em>at scale</em>. Instead of using these names, we'll create a hundred TAs, and a few thousand students who need to be helped! </p>
+<p>So that we can simulate helping so many students without waiting, let's reduce the delay time to help a student: students will be helped instantaneously! We'll also remove the printing in the <code>TA</code> class, since that slows things down. </p>
+<p>We might see something like this:</p>
+<p><code>12:10:52 Dispatcher: Nobody waiting in queue, will check again in three seconds. So far we helped 299993 students.</code></p>
+<p>Uh oh.</p>
+<p>What's going on? (By the way, this issue might be less likely to happen if we left the printing in.)</p>
+<details>
+<summary>Think, then click!</summary>
+<p>I've made the classic <em>thread safety</em> mistake. Incrementing that counter isn't <em>atomic</em>: two threads might be trying to edit it at once. Suppose they both fetch the current value at once, add 1 to that value, and then write. If that sequence of operations happens, the counter will only be increased by one.</p>
+</details>
+</br>
+<p>This sort of issue is <em>pervasive</em> in multi-threaded programming. Do the reading---you'll save yourselves a lot of pain.</p>
+<h2 id="how-can-we-fix-this"><a class="header" href="#how-can-we-fix-this">How Can We Fix This?</a></h2>
+<p>The first approach is old-school synchronization:</p>
+<pre><code class="language-java">synchronized (HoursDispatcher.class) {
+    HoursDispatcher.studentsSeen += 1;
+}
+</code></pre>
+<p>This will tell Java that only one <code>TA</code> can be running that increment operation at a time. (The argument to <code>synchronized</code> helps disambiguate between multiple dimensions of synchronization we might have happening).</p>
+<p>Another approach is to use <em>thread safe objects</em> from Java's standard library. In particular, I could have used an <code>AtomicInteger</code> for the counter:</p>
+<pre><code class="language-java">static AtomicInteger studentsSeen = new AtomicInteger(0);
+// ... 
+HoursDispatcher.studentsSeen.incrementAndGet();
+</code></pre>
+<p>Both of these approaches fix the problem. The key takeaways are:</p>
+<ul>
+<li>Having multiple threads of execution lets a program better separate responsibilities into different execution paths that run at the &quot;same time&quot;, logically speaking.</li>
+<li>These threads might <em>actually</em> be run at the same time, but, depending on the operating system, they might be run by time-slicing (i.e., taking turns on one core). </li>
+<li>Concurrency can cause unusual bugs that don't always happen, or that happen differently across executions. Situations where the ordering of operations results in inconsistent behavior are called <em>race conditions</em>.</li>
+</ul>
+<h2 id="asynchronous-execution"><a class="header" href="#asynchronous-execution">Asynchronous Execution</a></h2>
+<p>Let's get back to TypeScript. TypeScript has <em>really</em> convenient support for concurrency. Try these in the browser console:</p>
+<pre><code>console.log('1')
+setTimeout(() =&gt; console.log('2'), 5000)
+console.log('3')
+</code></pre>
+<p>But just under that surface, complexity lurks:</p>
+<pre><code>console.log('1')
+setTimeout(() =&gt; console.log('2'), 5000)
+console.log('3')
+while(true) {}
+</code></pre>
+<p>What's happening here? JavaScript—a language built for the web—is a language whose design is <em>deeply and unavoidably</em> tangled with concurrency. </p>
+<p>And yet, JavaScript itself (barring <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers">some modern extensions</a>, which are best used for expensive tasks that would block important things like UI interactivity) is <strong>only single-threaded</strong>.  We don't create a new thread to wait for a web request to finish. Instead, we create a callback, like we would for a button being clicked. </p>
+<p>In principle, callbacks are <em>called</em> as soon as possible. But the definition of &quot;as soon as possible&quot; is complicated. The browser is in charge (or Node is, if you're running a backend server).</p>
+<h3 id="the-callback-queue"><a class="header" href="#the-callback-queue">The Callback Queue</a></h3>
+<p>Because TypeScript is single threaded, it can't actually invoke a callback while it's running some other piece of code. It has to wait until that code finishes, and then it looks at its <em>callback queue</em> to see if it has callbacks waiting to be processed.</p>
+<p>Every time a callback is registered (in the <code>setTimeout</code> example above, the 0-argument function that invokes <code>console.log</code> is a callback) it is added to the queue. Crucially, these calls will only ever take place if they're popped off the queue. And they're only ever removed when the code currently being executed is finished. </p>
+<p>This will become extremely important when you start sending web requests from your frontend to your API server. <strong>Callbacks are not threads</strong>. Asynchronous execution is very closely related to concurrency, however. </p>
+<div id="admonition-repeating-for-emphasis" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>Repeating for emphasis</p>
+<p><a class="admonition-anchor-link" href="#admonition-repeating-for-emphasis"></a></p>
+</div>
+<div>
+<p><strong>Callbacks are not threads.</strong> Neither are promises, <code>async</code> functions, or anything else in the remainder of these notes.</p>
+</div>
+</div>
+<h2 id="code-review-exercise"><a class="header" href="#code-review-exercise">Code Review Exercise</a></h2>
+<p>Let's look at some code and anticipate potential errors related to concurrency. (I've removed the types so that we can run this in the browser console.) What's the value that you expect to be printed by each block of code below, after its respective call is uncommented?</p>
+<pre><code class="language-javascript">function example0() {
+  let toReturn = 0
+  setTimeout(() =&gt; {toReturn = 100}, 5000)
+  return toReturn
+}
+//console.log(example0())
+
+function example1(){
+    let toReturn = 0
+    setTimeout(() =&gt; {toReturn = 500}, 0)
+    setTimeout(() =&gt; {toReturn = 100}, 5000)
+    return toReturn
+}
+// console.log(example1())
+
+function example2(){
+    setTimeout(() =&gt; {console.log('A')}, 0)
+    setTimeout(() =&gt; {console.log('B')}, 5000)
+    console.log('C')
+    while(0 == 0) {}
+    console.log('D')
+}
+// example2()
+</code></pre>
+<h3 id="connecting-to-sprint-2"><a class="header" href="#connecting-to-sprint-2">Connecting to Sprint 2</a></h3>
+<p>Right now, you're working with file I/O. Because reading from or writing to a file can take time, <em>file I/O is asynchronous in TypeScript</em>. The <code>async</code> and <code>await</code> operators help us deal with asynchronous execution.</p>
+<p><strong>In class, we'll look at this informally in my own CSV parser code.</strong></p>
+<p>Next time, we'll introduce asynchronous execution in the context of making web requests. </p>
+<!-- ### Fetching Data 
+
+In TypeScript, you can use the `fetch` function to send a web request:
+
+```typescript
+export function printGridInfo() {    
+    const lat: number = 39.7456
+    const lon: number = -97.0892
+    const url: string = `https://api.weather.gov/points/${lat},${lon}`
+    console.log(`Requesting: ${url}`)
+
+    /* 
+      Try #1
+    */
+    const json = fetch(`https://api.weather.gov/points/${lat},${lon}`)
+    console.log(json)
+```
+
+Thinking about what we just learned about concurrency, and what we know about TypeScript, do you expect `fetch` to be synchronous or asynchronous? That is, will it "block" execution until it finishes?
+
+If it's synchronous, then the page-load process might be delayed noticably. And slowing down page loading to the point a user notices is a cardinal sin on the web: it's "in the folklore" that [a small delay can lead to a drop in revenue](https://news.ycombinator.com/item?id=273900).
+
+But if it's asynchronous (i.e., doesn't block) then what will be printed? Hopefully not `undefined` or `null`&mdash;the data will almost certainly get here _eventually_. So `fetch` returns a datatype whose entire purpose is to represent data that doesn't yet exist: a _promise_.
+
+![](https://i.imgur.com/bvFibPk.png)
+
+A promise can either be _resolved_, in which case the value exists within (but the value is still a promise object, not the data!) or _rejected_, in which case the promise contains an error. Until either of those events occurs, the promise exists in a state of potential only.
+
+**Aside:** Many modern languages have promise libraries, and promises are a common way to manage asynchronous computation (like web requests). This is not just about TypeScript or JavaScript.
+
+But because of how JavaScript/TypeScript works, the promise _cannot be resolved_ until the current code finishes running. That is, the `console.log` statement can't print the right answer until _after the `console.log` executes_, because the right answer won't exist until then. 
+
+But how does `console.log` work, then?"
+
+<details>
+<summary>Think, then click!</summary>
+
+Because the _environment_ has multiple threads. This might be the browser, or it might be Node.js. It's only the execution of a JavaScript/TypeScript program that is single threaded. So we can see the update in the console before the currently-running code finishes.
+
+</details>
+
+Clearly, we need something to help make this work. 
+
+### Extracting Promised Data with Callbacks
+
+Promises can be given callback functions to run when they're resolved:
+
+```javascript
+// Make a web request...
+fetch(url) 
+    // ...and when the response arrives, print it to the console
+    .then(response => console.log(response)) 
+```
+
+The function passed to the `then` call will execute once a real value exists for the response. The `.json()` method returns a promise itself, so we need to provide a callback for that, too, now: 
+
+```javascript
+fetch(url)
+    .then(response => response.json()) 
+    .then(responseObject => {         
+           console.log(responseObject)         
+    }) 
+```
+
+This is called a _chain_ of promises. Once the response is received, we convert it to an object. Once that conversion process is done, we print the result. 
+
+You can find more examples like this in the livecode repository. We'll also talk more about them in the gearup for this upcoming sprint.
+
+### What about types?
+
+`Promise<T>` is a generic type in TypeScript. By default, `fetch` returns a `Promise<any>`---beware, here. The `any` type exists, at least in part, for interoperability with JavaScript, and it disables many checks involving computation "downstream" of the `any` value. 
+
+**See the livecode for more content.** In particular, there's:
+* a demo that reinforces how promises _are not threads_;
+* a demo of some pitfalls when using async/await, if you choose to do so; 
+* a more complete series of attempts to extract Json from a fetched response, including how to make narrowing easy.
+
+We'll cover what we can in today's class session, but please read over the livecode too. I leave comments to try and make the livecode a good supplemental resource.
+
+## What about `async` and `await`? 
+
+TypeScript provides two constructs that can often make working with promises easier: `async` (which tells the system that the function actually returns a _promise_, even if as written it returns a value), and `await` (which tells the system to invisibly inject callbacks as needed to act as though it is waiting for a certain operation to finish). You'll have already seen these used heavily in Playwright testing, because `await` is very convenient to, well _await_ the loading of a webpage. 
+
+The key is remembering that `await` can only be used within an `async` function, and an `async` function always returns a promise. So if I write something like:
+
+```
+const f = async (url) => {
+    const response = await fetch(url)
+    return response;
+}
+```
+
+then the return type of `f` is actually `Promise<Response>`, not `Response`. You can confirm this via mouseover in VSCode, or by `console.log`.
+
+![A screenshot of VSCode showing the above code, with a mouseover indicating the return type is a promise.](await.png)
+
+As a consequence, if you use `async` and `await`, you end up either:
+* putting all the pertinent functionality you care about in `async` functions after `await`s, and thus can totally ignore the return value; or 
+* if you need to do something with the final return value outside an `async` context, use `.then()` on the return value&mdash;which, again, will be a promise outside an `async` context.  -->
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../04_refinements_mutability/04.5.apis-integration.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../06_html_react/html-react-playwright.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../04_refinements_mutability/04.5.apis-integration.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../06_html_react/html-react-playwright.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

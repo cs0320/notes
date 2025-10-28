@@ -1,0 +1,420 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Narrowing and Refinements - CSCI 0320 Notes</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../././mdbook-admonish.css">
+        <link rel="stylesheet" href=".././mdbook-admonish.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../home.html">How to read these notes</a></li><li class="chapter-item expanded "><a href="../success-in-0320/success-in-0320.html"><strong aria-hidden="true">1.</strong> Success in 0320</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../success-in-0320/recipe.html"><strong aria-hidden="true">1.1.</strong> Debugging Recipe</a></li></ol></li><li class="chapter-item expanded "><a href="../02_lambdas_validation/02_lambdas_validation.html"><strong aria-hidden="true">2.</strong> Agile, Lambdas, and Validation</a></li><li class="chapter-item expanded "><a href="../03_bias_narrowing_refinements/03_bias_narrowing_refinements.html" class="active"><strong aria-hidden="true">3.</strong> Narrowing and Refinements</a></li><li class="chapter-item expanded "><a href="../04_refinements_mutability/04_refinements_mutability.html"><strong aria-hidden="true">4.</strong> Branding and Immutability</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../04_refinements_mutability/04.5.apis-integration.html"><strong aria-hidden="true">4.1.</strong> APIs and Integration</a></li></ol></li><li class="chapter-item expanded "><a href="../05_threads_promises/05_threads_promises.html"><strong aria-hidden="true">5.</strong> Threads and Promises</a></li><li class="chapter-item expanded "><a href="../06_html_react/html-react-playwright.html"><strong aria-hidden="true">6.</strong> HTML and React</a></li><li class="chapter-item expanded "><a href="../algorithms/algorithms.html"><strong aria-hidden="true">7.</strong> Thinking About Algorithms</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../algorithms/supplement.html"><strong aria-hidden="true">7.1.</strong> Supplement Board: Dijkstra's Algorithm, Etc.</a></li></ol></li><li class="chapter-item expanded "><a href="../security/security_and_threat_modeling.html"><strong aria-hidden="true">8.</strong> Security 1</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CSCI 0320 Notes</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="narrowing-and-refinements"><a class="header" href="#narrowing-and-refinements">Narrowing and Refinements</a></h1>
+<h2 id="my-homework"><a class="header" href="#my-homework">My Homework</a></h2>
+<p>Last time, a student asked what would happen if we didn't return an object directly, and instead worked with it before returning it.</p>
+<pre><code class="language-typescript">function rawGreaterThan(arg1: string, arg2: string): 
+  boolean | ConversionError {
+    const num1 = parseInt(arg1)
+    const num2 = parseInt(arg2)
+    if(Number.isNaN(num1) || Number.isNaN(num2)) {
+        // This produces an error
+        const result = {error: 'parseInt', arg1: arg1, arg2: arg2}
+        return result
+        // Before, it was:
+        //return {error: 'parseInt', arg1: arg1, arg2: arg2}
+    }
+    return num1 &gt; num2
+  }
+</code></pre>
+<p>The error isn't super helpful:</p>
+<pre><code>Type '{ error: string; arg1: string; arg2: string; }' is not assignable to type 'boolean | ConversionError'.
+  Type '{ error: string; arg1: string; arg2: string; }' is not assignable to type 'ConversionError'.
+    Types of property 'error' are incompatible.
+      Type 'string' is not assignable to type '&quot;parseInt&quot; | &quot;parseFloat&quot;'
+</code></pre>
+<p>But it's surprising, right? Look at that first type. TypeScript isn't using the literal string: it's inferring <code>string</code> for the <code>error</code> field. Initially, TypeScript can directly infer the return type and then check for consistency. TypeScript isn't smart enough to carry that inference over to the value of <code>result</code> without help. So we'll provide it:</p>
+<pre><code class="language-typescript">const result: ConversionError = {error: 'parseInt', arg1: arg1, arg2: arg2}
+</code></pre>
+<p>Now the error goes away. Sometimes we do need to give TypeScript a little help.</p>
+<h2 id="testing-as-a-human"><a class="header" href="#testing-as-a-human">Testing as a Human</a></h2>
+<p>Suppose your job is to build a statistical app that summarizes United Nations data on population, GDP, and so on. You need to test your app, so think of a country. What country are you thinking of?</p>
+<details>
+<summary><B>Think, then click!</B></summary>
+<p>Chances are, the country you thought of was:</p>
+<ul>
+<li>close to home; </li>
+<li>large; or</li>
+<li>in the news often.</li>
+</ul>
+<p>And it's even more likely that the country you thought of was <strong>currently in existence</strong>. You probably didn't say &quot;the USSR&quot; or &quot;Austria-Hungary&quot;. And note that my choices there were all limited by my own historical knowledge. I went and <a href="https://en.wikipedia.org/wiki/List_of_former_sovereign_states">looked up more</a> after writing that sentence. Even if we only count nations that existed after the U.N. was created, there are many: the Republic of Egypt (1953-1958), the Fourth Brazilian Republic (1946-1964), etc.</p>
+<p>This is an example of something called <em>availability bias</em> (or the <em>availability heuristic</em>). All humans exhibit it, and <em>usually</em> it's an advantage: just like caching in a program, our brains tend to recall information in cache. For us, it's an energy-saving measure.</p>
+</details>
+<p>I'm not a cognitive scientist! If you want to learn more about this in depth, take a CLPS class. But even so, let's ask: <strong>How does this cognitive phenomenon impact software testing?</strong></p>
+<details>
+<summary><B>Think, then click!</B></summary>
+<p>You probably test what you have loaded into your mental cache. If you aren't thinking of it at the moment, or haven't been thinking of it recently, you likely won't test it unless you work to find examples outside your current context.</p>
+<p>Even worse, if you aren't aware of the thing to begin with, you won't think to test it. Beware of the kind of thing that Iain Banks called an &quot;outside context problem&quot;, translated from fiction into the real world of testing. This is why getting outside feedback from others can be so valuable for testing.</p>
+</details>
+<h2 id="typescript-narrowing"><a class="header" href="#typescript-narrowing">TypeScript: Narrowing</a></h2>
+<p>We saw last time that TypeScript uses the control flow of your program to infer type information. You can read more about this in the <a href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html">TypeScript documentation</a>. For now, let's do a few narrowing exercises. </p>
+<p>Recall: last time we used the <code>typeof</code> operator to check whether a value was a <code>number</code>. This operator is from JavaScript, and there aren't many &quot;types&quot; in that setting: <code>string</code>, <code>number</code> and a few others. To really use TypeScript well, we'll need more than <code>typeof</code>.</p>
+<p>Calling a schema's <code>safeParse</code> method in Zod will return either a &quot;success&quot; or &quot;failure&quot; type. If we call <code>parse</code> instead then we might get an exception. I think <code>safeParse</code> is better, because it lets us keep some useful context for the caller in a normal value. Here's an example. First, we'll define the (more simple) schema from last time:</p>
+<pre><code class="language-typescript">// Mouse over type: z.ZodTuple&lt;[z.ZodString, z.ZodCoercedNumber&lt;unknown&gt;, z.ZodEmail], null&gt;
+const studentRowSchema = z.tuple([z.string(), z.coerce.number(), z.email()])
+</code></pre>
+<p>We can make the types cleaner by creating a new identifier and using <code>z.infer</code>. But we have to use it right, or we get a strange error:</p>
+<pre><code class="language-typescript">// Property 'infer' does not exist on type 
+z.infer&lt;typeof studentRowSchema&gt;
+</code></pre>
+<p>The error isn't great, but it means we're misusing <code>infer</code>. It's not a function in TypeScript; it operates on types. So we can't just call it like it is a normal function; we need to put it into a type context:</p>
+<pre><code class="language-typescript">type StudentRow = z.infer&lt;typeof studentRowSchema&gt;
+</code></pre>
+<p>Now let's call <code>safeParse</code>:</p>
+<pre><code class="language-typescript">// We don't need the explicit type annotation here. You can mouse over without it and you'll see:
+// type ZodSafeParseResult&lt;T&gt; = z.ZodSafeParseSuccess&lt;T&gt; | z.ZodSafeParseError&lt;T&gt;
+// Either way, this is a union type!
+const result: z.ZodSafeParseResult&lt;StudentRow&gt; = studentRowSchema.safeParse([&quot;Tim Nelson&quot;, 10, &quot;Tim_Nelson@brown.edu&quot;])
+</code></pre>
+<p>The <code>result</code> value is either a success or an error. We can try to get the data either way, but it will be <code>undefined</code> in the error case. So this won't work as written:</p>
+<pre><code class="language-typescript">// Error: 'result.data' is possibly 'undefined'
+result.data[0]
+</code></pre>
+<p>A great time to use narrowing!</p>
+<pre><code class="language-typescript">// This works: we're directly checking that the value is not undefined
+if(result.data) {
+    result.data[0]
+}
+
+// This also works
+if(result.success) {
+    result.data[0]
+}
+</code></pre>
+<p>Wait: how is TypeScript able to infer the type of <code>result.data</code> based on <code>result.success</code>? Let's look at the definition of these types. </p>
+<pre><code class="language-typescript">// From Zod's library code
+export type ZodSafeParseResult&lt;T&gt; = ZodSafeParseSuccess&lt;T&gt; | ZodSafeParseError&lt;T&gt;;
+export type ZodSafeParseSuccess&lt;T&gt; = {
+    success: true;
+    data: T;
+    error?: never;
+};
+export type ZodSafeParseError&lt;T&gt; = {
+    success: false;
+    data?: never;
+    error: ZodError&lt;T&gt;;
+};
+</code></pre>
+<p>Notice that the <em>type</em> of <code>success</code> differs. It can only be <code>true</code> in a <code>ZodSafeParseSuccess</code>. That's how TypeScript narrows the type in the second case. </p>
+<p><strong>Added after class:</strong> Using <code>result.success</code> to narrow the type of <code>result.data</code> worked above. But if we give an intermediate name to <code>result.data</code> <em>outside the narrowed scope</em>, that variable will have the union type, and the link is broken for TypeScript:</p>
+<pre><code class="language-typescript">const student: StudentRow | undefined = result.data
+if(result.success) {
+  console.log(student[0]) // type error: possibly undefined
+}
+</code></pre>
+<p>But this works, because the variable is declared within the narrowed scope:</p>
+<pre><code class="language-typescript">if(result.success) {
+  const student2 = result.data
+  console.log(student2[0])
+}
+</code></pre>
+<h2 id="escaping-the-any-type"><a class="header" href="#escaping-the-any-type">Escaping the <code>any</code> type</a></h2>
+<p>There are built-in ways to parse JSON in TypeScript. Let's play:</p>
+<pre><code class="language-typescript">const jsonString = '{&quot;course&quot;: &quot;CSCI 0320&quot;, &quot;instructor&quot;: &quot;Tim Nelson&quot;}';
+// cs32 has inferred value *any*. TypeScript sees a string being parsed, it has no way to know the result type.
+const cs32 = JSON.parse(jsonString);
+</code></pre>
+<p>This seems OK, right? But then:</p>
+<pre><code class="language-typescript">// We can check whether a key exists on an object
+if(&quot;course&quot; in cs32) {
+    // Notice the mouseover type is still: any
+    console.log(cs32[&quot;course&quot;])    
+    // So I can do this with no problem:
+    console.log(cs32[&quot;DOESNT_EXIST&quot;])
+    // The &quot;if&quot; statement is doing nothing! We get no protection!
+}
+</code></pre>
+<p>TypeScript trusts the <code>any</code> type. It always applies, and so narrowing doesn't matter. This is worse than it appears. What happens if we add a new field?</p>
+<pre><code class="language-typescript">const cs32_withLocation = {...cs32, location: &quot;B&amp;H&quot;}
+// The inferred type is _still any_. ARGH!
+</code></pre>
+<p>We might try to protect ourselves</p>
+<pre><code class="language-typescript">interface ClassWithLocation {
+    course: string,
+    instructor: string,
+    location: string
+}
+const cs32_withLocation_better: ClassWithLocation = {...cs32, location: &quot;B&amp;H&quot;}
+// Whew! Now we're safe, right? Well...
+
+const jsonString2 = '{&quot;course&quot;: 17, &quot;teacher&quot;: &quot;Tim Nelson&quot;}';
+const cs32_bad = JSON.parse(jsonString2)
+const cs32_withLocation_bad_better: ClassWithLocation = {...cs32, location: &quot;B&amp;H&quot;}
+// Oh. Oh no. TypeScript _trusts the any type_ implicitly. 
+// So I can't get where the actual data is:
+console.log(&quot;Prof. &quot; + cs32_withLocation_bad_better.teacher)
+// But I can reference a field that doesn't exist.
+console.log(&quot;Prof. &quot; + cs32_withLocation_bad_better.instructor)
+</code></pre>
+<p>How do we deal with <code>any</code>? TypeScript has a feature called <a href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates">type predicates</a> that can work. But those can be verbose. We'd like a simpler solution in this situation. Fortunately, Zod is great for exactly this.</p>
+<pre><code class="language-typescript">const classRecordSchema = z.object({course: z.string(), instructor: z.string()})
+
+// What do you think each of these will produce?
+const result1 = classRecordSchema.safeParse(cs32_withLocation_better)
+const result2 = classRecordSchema.safeParse(cs32)
+const result3 = classRecordSchema.safeParse(cs32_withLocation_bad_better)
+</code></pre>
+<p>What do you think these produce? Try it. </p>
+<details>
+<summary>Try it, then click!</summary>
+<ul>
+<li><code>result1</code>: a success result containing <code>{&quot;course&quot;:&quot;CSCI 0320&quot;,&quot;instructor&quot;:&quot;Tim Nelson&quot;}</code></li>
+<li><code>result2</code>: a success result containing <code>{&quot;course&quot;:&quot;CSCI 0320&quot;,&quot;instructor&quot;:&quot;Tim Nelson&quot;}</code></li>
+<li><code>result3</code>: an error result reporting 2 <code>invalid_type</code> errors: one for <code>course</code> (<code>number</code>) and one for <code>instructor</code> (<code>undefined</code>). </li>
+</ul>
+</details>
+<p>Notice that both <code>result1</code> and <code>result2</code> contain the same values, even though one of them had a <code>location</code> field originally. This is because Zod throws away fields it isn't told to keep, at least by default. If we want to avoid this, we use <code>.passthrough()</code>:</p>
+<pre><code class="language-typescript">const classRecordSchema = z.object({course: z.string(), instructor: z.string()}).loose()
+</code></pre>
+<p>Now the <code>location</code> field is kept, if there is one there. (But, of course, now TypeScript will need some convincing before it lets you access that field.)</p>
+<h2 id="refinements"><a class="header" href="#refinements">Refinements</a></h2>
+<p>We saw before that Zod can create schemas that are <em>richer than what TypeScript types can represent.</em>. TypeScript has no type for &quot;email addresses&quot;, but Zod has a schema for them. But a type is just a set. So it's not that these richer schemas can't be thought of as types. Rather, it's that the type checker (which runs at &quot;compile&quot;, or &quot;static&quot; time) isn't expressive enough to handle them. </p>
+<p>Whenever we add a further restriction on a base type, we'll call it a <em>refinement</em> of that type. So, &quot;it's a string, but in email-address format&quot; would refine &quot;it's a string&quot;. Zod has a lot of these, including a <a href="https://zod.dev/api#refinements">very expressive method</a>: <code>.refine()</code>, which takes a refinement function:</p>
+<pre><code class="language-typescript">const evenNumberSchema = z.number().refine( num =&gt; num % 2 == 0)
+
+const departments = ['CSCI', 'MATH', 'MCM'] // etc.
+const refinedClassRecordSchema = z.object(
+    {course: z.string().refine( c =&gt; departments.includes(c.split(' ')[0])), 
+     instructor: z.string()})
+const course1 = refinedClassRecordSchema.safeParse(cs32)
+console.log(course1.data)
+</code></pre>
+<p>By the way, watch out for &quot;in&quot;. You might want it to work like it does in Python, but:</p>
+<pre><code class="language-typescript">&gt; 0 in [0, 1, 2]
+true
+&gt; &quot;a&quot; in [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;]
+false
+</code></pre>
+<p>Use <code>lst.includes()</code> instead.</p>
+<h2 id="exercise-building-a-suite-for-csv"><a class="header" href="#exercise-building-a-suite-for-csv">Exercise: Building a suite for CSV</a></h2>
+<p>Your first sprint asks you to build tests that probe how the parser we gave you might not be handling CSVs very well. We want you to think carefully about what's missing, but it's also a useful place to take time in class and talk about using Copilot to synthesize tests. </p>
+<p>I've used Copilot a good amount now, and sometimes it's <em>great</em> at building test suites, and other times not so much: I've often needed to prompt it to change something, or to realize there's an issue with a test it wrote. So let's get some practice critiquing. We'll do this over multiple classes. </p>
+<p>How do you want to start?</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../02_lambdas_validation/02_lambdas_validation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../04_refinements_mutability/04_refinements_mutability.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../02_lambdas_validation/02_lambdas_validation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../04_refinements_mutability/04_refinements_mutability.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

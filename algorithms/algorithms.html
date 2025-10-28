@@ -1,0 +1,487 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Thinking About Algorithms - CSCI 0320 Notes</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../././mdbook-admonish.css">
+        <link rel="stylesheet" href=".././mdbook-admonish.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../home.html">How to read these notes</a></li><li class="chapter-item expanded "><a href="../success-in-0320/success-in-0320.html"><strong aria-hidden="true">1.</strong> Success in 0320</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../success-in-0320/recipe.html"><strong aria-hidden="true">1.1.</strong> Debugging Recipe</a></li></ol></li><li class="chapter-item expanded "><a href="../02_lambdas_validation/02_lambdas_validation.html"><strong aria-hidden="true">2.</strong> Agile, Lambdas, and Validation</a></li><li class="chapter-item expanded "><a href="../03_bias_narrowing_refinements/03_bias_narrowing_refinements.html"><strong aria-hidden="true">3.</strong> Narrowing and Refinements</a></li><li class="chapter-item expanded "><a href="../04_refinements_mutability/04_refinements_mutability.html"><strong aria-hidden="true">4.</strong> Branding and Immutability</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../04_refinements_mutability/04.5.apis-integration.html"><strong aria-hidden="true">4.1.</strong> APIs and Integration</a></li></ol></li><li class="chapter-item expanded "><a href="../05_threads_promises/05_threads_promises.html"><strong aria-hidden="true">5.</strong> Threads and Promises</a></li><li class="chapter-item expanded "><a href="../06_html_react/html-react-playwright.html"><strong aria-hidden="true">6.</strong> HTML and React</a></li><li class="chapter-item expanded "><a href="../algorithms/algorithms.html" class="active"><strong aria-hidden="true">7.</strong> Thinking About Algorithms</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../algorithms/supplement.html"><strong aria-hidden="true">7.1.</strong> Supplement Board: Dijkstra's Algorithm, Etc.</a></li></ol></li><li class="chapter-item expanded "><a href="../security/security_and_threat_modeling.html"><strong aria-hidden="true">8.</strong> Security 1</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CSCI 0320 Notes</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="thinking-about-algorithms"><a class="header" href="#thinking-about-algorithms">Thinking About Algorithms</a></h1>
+<p>These notes combine multiple sources from prior semesters. Broadly, they discuss:</p>
+<ul>
+<li>data representations vs. interfaces; </li>
+<li>kd-trees; </li>
+<li>comparators (from the perspective of the kd-tree class as a consumer); </li>
+<li>bloom filters; and </li>
+<li>A* search.</li>
+</ul>
+<p>We probably won't be able to talk about everything here in class! For Fall 2025, you'll want to pay special attention to the section on A* search.</p>
+<h2 id="thinking-about-data-representations"><a class="header" href="#thinking-about-data-representations">Thinking About Data Representations</a></h2>
+<p>There's an adage you may have heard before: &quot;the query influences the structure&quot;. This means that your choice of data structure shouldn't just be about the shape of the data you get, it should also be affected what you plan to <em>do</em> with the data. </p>
+<p>This may seem obvious, but it's harder than it sounds. It's helpful to make a very careful distinction between the <em>representation</em> of data and the <em>interface</em> it provides. Blurring this distinction leads to pain later in the development cycle. Here's an example. </p>
+<p><strong>QUESTION:</strong> What's a list?</p>
+<details>
+<summary><B>Think, then click!</B></summary>
+<p>It depends. </p>
+<p>Do you mean the set of <em>operations</em> one usually expects a list to be able to perform? Adding, removing, index-based accesses, etc.? If so, a list is an object providing that interface to a caller. </p>
+<p>Or do you mean a particular data structure? A <em>linked</em> list? Maybe a <em>doubly linked</em> list? A (dynamic) <em>array</em> list? All of these can conform to the <code>List</code> interface, although some of them have to do more work than others for certain operations.</p>
+<p>Don't conflate these two meanings. One is about the functionality you must provide; the other is about how you concretely choose to represent your data. </p>
+</details>
+<br/>
+<div id="admonition-think-like-an-engineer" class="admonition admonish-tip">
+<div class="admonition-title">
+<p>Think Like an Engineer</p>
+<p><a class="admonition-anchor-link" href="#admonition-think-like-an-engineer"></a></p>
+</div>
+<div>
+<p>Keep this in mind when you're splitting up work: decide together on the operations (interface) each component needs from the others early, and keep other criteria broad (&quot;I need you to give me the <code>find</code> operation&quot;, and then eventually &quot;I need worst-case <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mclose">))</span></span></span></span> runtime for the find operation&quot;; don't skip right to  &quot;I need you to use a Java <code>TreeList</code>&quot;).</p>
+</div>
+</div>
+<p>Just like we can provide the <code>List</code> interface via many different data structures, we can provide algorithmic content like &quot;find the nearest neighbor of an element&quot; in many different ways. Let's look at one you may not have seen before.</p>
+<h2 id="thinking-about-algorithms-the-mailbox-problem-kd-trees"><a class="header" href="#thinking-about-algorithms-the-mailbox-problem-kd-trees">Thinking About Algorithms: The Mailbox Problem (KD-trees)</a></h2>
+<p>In the <em>one-dimensional mailbox problem</em>, you've got a world consisting of buildings positioned on a very long street. Every building has a numeric location on the street; we'll assume it's always an integer. </p>
+<p>If I told you that I wanted to give you the addresses of all houses on the street, and you needed to let me check to see whether there was a house at any address, you'd be quite justified in reaching first for the <code>Set</code> interface. You might even go for <code>Map</code>, anticipating I might later want to add more to the data for each house. These tend to be backed by efficient hash-table data structures. </p>
+<p>But now there's a twist. I don't just want to check membership (or get data about a specific house). Instead, I've got to route the mail.</p>
+<p>Why is this hard? Because I'm doing the routing at a very high level: I'm working for a gigantic or district post office! We can't hand-deliver every piece of mail ourselves. So I need to send letters to the right small, local post office for hand-delivery. </p>
+<p><img src="https://hackmd.io/_uploads/SyUQYG9mY.png" alt="" /></p>
+<p>In short, I need to find the <em>nearest neighbor</em> to the target house, from among a set of post office addresses. </p>
+<p>You could solve this using a list (or set, or any collection) to store the data points, and a <code>for</code> loop to iterate through them, seeking the nearest neighbor. The trouble is that a linear-time search won't scale as the dataset grows. Our first go-to data structure, the hash table, won't work for nearest-neighbor---hashing will lose information about locality and closeness that are so vital to solving this problem! </p>
+<div id="admonition-think-like-an-engineer-1" class="admonition admonish-tip">
+<div class="admonition-title">
+<p>Think Like an Engineer</p>
+<p><a class="admonition-anchor-link" href="#admonition-think-like-an-engineer-1"></a></p>
+</div>
+<div>
+<p>Agree on what you need from the interface, and then figure out what the right implementation is afterward. It's OK to start with something inefficient, and it might even let you explore the problem enough that your second implementation is better than it would have been otherwise.</p>
+</div>
+</div>
+<p>What would you use instead, if you wanted better performance? </p>
+<details>
+<summary><B>Think, then click!</B></summary>
+<p>This is one of several reasons why we still teach you binary search trees (BSTs). BSTs are absolutely perfect for this problem. Not only are they aware of relative positions (and have to be) but it turns out that the ordinary recursive descent you might perform to search for membership also suffices to find a nearest neighbor: you're guaranteed to always find the nearest neighbor somewhere on the descent!</p>
+</details>
+<br/>
+<p>Suppose we store a set of post offices in the following (balanced!) BST:</p>
+<p><img src="https://hackmd.io/_uploads/HJztFzcmY.png" alt="" /></p>
+<p>If we're seeking a nearest-neighbor to <code>17</code>, I claim that it always works to do a search in the tree for <code>17</code>. If <code>17</code> is found, it is its own nearest neighbor. If <code>17</code> isn't found, then its nearest neighbor must be on the path taken during the search. </p>
+<p><img src="https://hackmd.io/_uploads/HJam9zq7K.png" alt="" /></p>
+<p>And <code>20</code> is the nearest neighbor to <code>17</code>. It won't always be the last node visited, but it must be on the path. </p>
+<p>Why does this work?</p>
+<details>
+<summary><B>Think, then click!</B></summary>
+<p>Because every time we move down the tree, we move in the direction of the goal. It would be impossible to visit a node <code>X</code>, where <code>X &lt; goal</code>, and move right when we should have moved left. We get this from one of the BST invariants: <em>every node is less than (or equal to) all its right descendants</em>. </p>
+</details>
+<br/>
+<h3 id="moving-beyond-1-dimension"><a class="header" href="#moving-beyond-1-dimension">Moving beyond 1 dimension</a></h3>
+<p>This seems pretty useful, and 1 dimension can be enough for data organized by (say) price or time, where &quot;nearest&quot; still makes sense. But often you really do need more than one dimension. How might we extend a BST for multiple dimensions?</p>
+<p>It turns out that there are a few answers. There are solutions, like quad-trees and oct-trees, where nodes have a large number of children. These are often used in (e.g.) video game engines. </p>
+<p>Today we're going to explore an alternative solution that retains the binary-tree foundation, but still handles membership and nearest-neighbor queries on multiple dimensions: <em>k-d trees</em>.</p>
+<p>(I'm going to completely sidestep the question of balance; it's vital for performance but today we'll be talking about functionality.)</p>
+<p>K-d trees have nodes corresponding to k-dimensional points. So, in a tree with two dimensions, we might have points like <code>(0,5)</code> or <code>(6,2)</code>. Here's an example of what I mean:</p>
+<p><img src="https://hackmd.io/_uploads/rJZ6nGc7F.png" alt="" /></p>
+<p>OK, sure: this is a binary tree with 2-dimensional node labels. But what makes it <em>usable</em> in ways other binary trees aren't? A better way to phrase that question is to ask: <em>what are the invariants of a k-d tree</em>?</p>
+<p>The key is that every rank in a k-d tree is focused on a single dimension: starting at index <code>0</code>, then moving on to index <code>1</code> and so on, and rotating back to <code>0</code>. Given that added structure, we can say that for every node <code>P</code> at rank <code>X</code>:</p>
+<ul>
+<li>all left-descendants of <code>P</code> have an <code>X</code> coordinate less than <code>P.X</code>; and</li>
+<li>all right-descendants of <code>P</code> have an <code>X</code> coordinate greater than or equal to <code>P.X</code>.</li>
+</ul>
+<p>(I'm making an arbitrary design choice and saying that same-value entries go to the right. Notice that this design choice is more important here than in a BST: there, you can avoid the question by excluding duplicates; here, you'd have to exclude any point from sharing a single dimension from another.)</p>
+<p>Here's the tree, annotated more helpfully. (Check that it satisfies the invariants!)</p>
+<p><img src="https://hackmd.io/_uploads/SkCYRG9mY.png" alt="" /></p>
+<p>Now how do we actually <em>use</em> these invariants? Since every rank has a single dimension of interest, we might start by doing a normal recursive descent, like we would on a BST, but ignoring dimensions that the current node has no interest in. </p>
+<p>Let's try it! We'll search for the nearest neighbor of <code>(5,5)</code> in this kd-tree. </p>
+<p><img src="https://hackmd.io/_uploads/ByVP1mqXt.png" alt="" /></p>
+<p>This looks promising; the nearest neighbor is <code>(6,5)</code> and we did visit that node in our descent. </p>
+<p>But will it always work? See if you can think of a target <code>(X,Y)</code> coordinate whose nearest neighbor is <em>not</em> along the normal recursive descent.</p>
+<details>
+<summary><B>Think, then click!</B></summary>
+<p><code>(5,4)</code> is one example of this; there are others. </p>
+<p>Sadly, this means that we can't always get away with a single descent. Which, yes, means that even a balanced kd-tree has a worst-case search time that's worse than logarithmic in the number of nodes. In fact, the worst-case complexity is linear.</p>
+<p>In the average case, it's still much better than a list, though.</p>
+</details>
+<br/>
+<h4 id="fixing-the-problem"><a class="header" href="#fixing-the-problem">Fixing the problem</a></h4>
+<p>So we can't always get away with a single descent. Surely we aren't doomed to always exploring the <em>entire</em> tree? Maybe we can still exploit the invariants in a useful way. To explore this idea, we'll draw those same 7 points on a 2-dimensional graph, and frame the same search for <code>(5,4)</code>: </p>
+<p><img src="https://hackmd.io/_uploads/r1ArWQcQK.png" alt="" /></p>
+<p>Here is where I notice that my drawing app has gridlines, but the exported images don't. Sigh. (TODO: fix for next semester.)</p>
+<p>The purpose of the invariants is, like in a normal BST, splitting the search space between points &quot;bigger&quot; and &quot;smaller&quot; than the current point. We no longer have a single number line, but we <em>can</em> still split the space. The root note, <code>(6,5)</code> is a dimension <code>0</code> (X) node, so let's draw a line partitioning the space accordingly:</p>
+<p><img src="https://hackmd.io/_uploads/rkDdf7q7Y.png" alt="" /></p>
+<p>The invariants guarantee that any target node with an X coordinate smaller than 6 <em>must be located in the left subtree</em> of <code>(6,5)</code>. </p>
+<p>Sure, but that's the same reasoning that got us into trouble in the first place. We know that the nearest neighbor might be, and indeed is, in the <em>right</em> subtree of <code>(6,5)</code>. </p>
+<p>The trick is in the diagram. How far away from the goal <code>(5,4)</code> is the node we're currently visiting? <code>sqrt(2)</code>, assuming that we're using the usual Cartesian distance metric. So we know that any regions of the space further away from the goal than <code>sqrt(2)</code> aren't productive to visit. In fact, let's mentally draw a circle of radius <code>sqrt(2)</code> around the goal:</p>
+<p><img src="https://hackmd.io/_uploads/BJbyE7cQt.png" alt="" /></p>
+<p>At least, we'll pretend that's a circle. </p>
+<p>As we follow the normal recursive descent, we'll draw 2 more dotted lines: one for <code>(0,5)</code> and another for <code>(4,1)</code>. But, sadly, our best estimate remains no closer than <code>sqrt(2)</code>. We'll pop back up from <code>(4,1)</code> to <code>(0,5)</code> and ask: <em>do we need to explore the right subtree?</em> </p>
+<p>Put another way, is there potentially useful space (space inside the circle) on on the far side of the dotted line we drew for <code>(0,5)</code>?</p>
+<p>By the way, you'll sometimes hear these dotted lines referred to as <em>cutting planes</em>. </p>
+<p>Here's a possibly helpful picture:</p>
+<p><img src="https://hackmd.io/_uploads/ByJSvmcXF.png" alt="" /></p>
+<p>Yes! there's productive space on the far side, and so we do need to recur on the right subtree. In general, we can check for productive space by calculating:</p>
+<p><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.02778em;">GO</span><span class="mord mathnormal">A</span><span class="mord mathnormal">L</span><span class="mopen">[</span><span class="mord mathnormal">d</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.00773em;">RR</span><span class="mopen">[</span><span class="mord mathnormal">d</span><span class="mclose">])</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.02778em;">GO</span><span class="mord mathnormal">A</span><span class="mord mathnormal">L</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">BEST</span><span class="mclose">)</span></span></span></span></p>
+<p>where <code>GOAL</code> is the goal point, <code>CURR</code> is the current node (where we arere trying to decide whether or not to recur again), <code>BEST</code> is our best candidate so far, and <code>dist</code> is the distance formula of your choice.</p>
+<h2 id="comparators-and-the-strategy-pattern"><a class="header" href="#comparators-and-the-strategy-pattern">Comparators and the Strategy Pattern</a></h2>
+<p>Data structures like this rely heavily on <em>comparisons</em>, and there isn't one single comparison operation that works for every imaginable dataset. Another engineer who is using your data structure might want to provide their own, domain-appropriate comparisons. But if we code a particular comparison into the class, the engineer can't provide their own comparison metric.</p>
+<div id="admonition-think-like-an-engineer-2" class="admonition admonish-tip">
+<div class="admonition-title">
+<p>Think Like an Engineer</p>
+<p><a class="admonition-anchor-link" href="#admonition-think-like-an-engineer-2"></a></p>
+</div>
+<div>
+<p>This is an opportunity to exercise a little &quot;technical empathy&quot;. We want to allow the other engineer to use our data structure with their own, domain-specific, definitions. This might involve multiple concepts: comparison, distance, and so on. </p>
+<p>But don't be an &quot;Architecture Astronaut&quot;! Don't over-engineer things.</p>
+</div>
+</div>
+<h3 id="oo-and-fp-agree-on-the-interface"><a class="header" href="#oo-and-fp-agree-on-the-interface">OO and FP Agree on the Interface</a></h3>
+<p>If this reminds you of the <em>dependency injection</em> idea from last week, good! Whether or not we ask the caller to provide the metric to the constructor or at the time we call another method, the idea is the same. Object-Oriented design calls this the <em>strategy pattern</em>; Functional Programming calls this a use of <em>first-class functions</em>---that is, functions or methods that are values in the language itself and thus can be passed as arguments.</p>
+<p>You may have heard that in Java, &quot;everything is an object&quot;. This isn't strictly true (because primitives like <code>int</code> exist) but even if it were, like in (say) Scala, I see no reason why a function can't also be an object. After all, objects carry methods.</p>
+<h3 id="comparators"><a class="header" href="#comparators">Comparators</a></h3>
+<p>At the core of the strategy pattern is <em>humility</em>: we don't pretend to know every possible scenario that our caller might think of, so we give them a way to customize the larger functionality we provide.</p>
+<p>Java provides another standard interface that's useful here: <code>Comparator</code>. But rather than being implemented by the class being compared, it's implemented by a standalone class whose implementation provides a new comparison method. E.g.:</p>
+<pre><code class="language-java">class CartesianComparator implements Comparator&lt;Cartesian&gt; {
+
+    @Override
+    public int compare(Cartesian o1, Cartesian o2) {
+        // e.g., an implementation of Euclidian distance
+        //   (throw an error if #dimensions is different)
+    }
+}
+</code></pre>
+<p>Every instance of the CartesianComparator class contains a <em>strategy function</em> that a kd-tree can use for comparisons. 
+A caller could create an object of this type, and pass it to the tree as needed. And they could write more of these: <code>WeightedCartesianComparator</code>, <code>ManhattanCartesianComparator</code>, and on and on, limited only by <em>their</em> needs and <em>your</em> interface. </p>
+<p>(You'll provide them a suitable interface, won't you?)</p>
+<p>Finally, remember you're free to ask something of <em>them</em>. For instance, if I write a comparator method that always returns <code>-1</code>, I'm setting myself up for frustration and debugging in the future <strong>through no fault of yours!</strong> Why isn't it your fault? Can it be there's some obligation I have, when I use <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html">the <code>Comparator</code> interface</a>?</p>
+<h2 id="thinking-about-tradeoffs-bloom-filters"><a class="header" href="#thinking-about-tradeoffs-bloom-filters">Thinking About Tradeoffs: Bloom Filters</a></h2>
+<p>In computer science, we're used to tradeoffs. Specifically, you've all learned about the classic <em>space-time tradeoff</em> that caching gives. You might implement this by memoization, or dynamic programming, or (if you're Google, Netflix, or some other popular website) a Content Delivery Network.</p>
+<p>But what <em>else</em> might we compromise on? Here's a thought: can we ever compriomise on <em>correctness</em> in exchange for a time or space savings? Does that even make sense? Is it possible we've already done that somehow?</p>
+<details>
+<summary>Think, then click!</summary>
+<p>The basic idea underlying hash tables is a compromise on correctness. They're just built to resolve that compromise internally. </p>
+<p>Here's what I mean. If we assume that every record key hashes to a different table key, hash tables are a miracle (constant-time lookup). But this usually isn't true: collisions almost certainly happen. So the table has a (worst-case) linear-time backup plan built in to recover from that compromise.</p>
+</details>
+<br/>
+<p>This idea of compromise on correctness is also valuable in algorithms. E.g., there exist fast algorithms for primality testing that just happen to be wrong sometimes.</p>
+<p>Is that enough to build something useful out of? Would you maybe want more?</p>
+<details>
+<p>Yeah, you'd maybe like something along the lines of:</p>
+<ul>
+<li>only wrong in one direction; and </li>
+<li>only wrong X% of the time. </li>
+</ul>
+<p><strong>Technical aside:</strong> I am oversimplifying the algorithm a bit, because there are a few other details. You might learn about these if you take a number theory class, or an algorithms class!</p>
+</details>
+<div id="admonition-think-like-an-engineer-3" class="admonition admonish-tip">
+<div class="admonition-title">
+<p>Think Like an Engineer</p>
+<p><a class="admonition-anchor-link" href="#admonition-think-like-an-engineer-3"></a></p>
+</div>
+<div>
+<p>Note again that we're back to what <em>guarantees</em> a data structure or algorithm provides. When you're building or selecting a data structure or algorithm, consider the needs of your caller and/or end-user. In the case of these prime-testing algorithms, they can very quickly rule out many non-prime numbers, and do so fast enough that it's worth using them as a pre-test before applying a slow, but sound, algorithm.</p>
+</div>
+</div>
+<h2 id="bloom-filters"><a class="header" href="#bloom-filters">Bloom Filters</a></h2>
+<p>Bloom filters are a data structure for implementing set-membership queries. They work a lot like a hash table. Indeed, the basic structure they build on <strong>is</strong> a hash table. They just happen to not return booleans, or at least not in the same sense as (say) a <code>Set</code> in Java. Instead, a Bloom filter returns one of:</p>
+<ul>
+<li>the item is <em>possibly</em> in the set; or</li>
+<li>the item is <em>definitely</em> not in the set.</li>
+</ul>
+<h3 id="a-common-use-case"><a class="header" href="#a-common-use-case">A Common Use Case</a></h3>
+<p>They're frequently used as an efficient first-pass check to more expensive membership checks on very, very large datasets. (Think: &quot;No, I don't have that YouTube video stored in this server.&quot; or &quot;Yes, I might have that YouTube video---let's look for it.&quot;)</p>
+<h3 id="building-the-idea"><a class="header" href="#building-the-idea">Building The Idea</a></h3>
+<p>Like with kd-trees, Bloom filters build on a simpler idea; in this case, it's hash tables.</p>
+<p>Start with an array of bits. We can use that to implement an approximate membership check: just hash the key you're looking for, and see if the bit in that cell of the array is <code>true</code>, rather than <code>false</code>.</p>
+<p>Here's an example. Suppose we're in charge of Amazon's Prime TV service, and we want to very quickly tell whether a certain content-delivery network (CDN) node has a show that a local customer requests. We could add a bit array to every node, and when a new piece of media arrived (say, the first chunk of a new series), we'd hash the name of the media and set the corresponding bit to <code>1</code>. Like this:</p>
+<p><img src="https://i.imgur.com/mfzLIUa.png" alt="" /></p>
+<p>Note one crucial difference. Instead of saving a reference to the media in the table, we're just saving <em>one bit</em>. Very space efficient, especially if we've got a large array. </p>
+<p>Now what happens if there's a collision? </p>
+<details>
+<summary>Think, then click!</summary>
+<p>The key that the 2nd arrival hashes to is <em>already set to 1</em>. The array now can't tell the difference between these two media: if a customer requests the second arrival but the first arrival isn't there, the array will report a false positive.</p>
+<p>But, either way, a lookup is very, very fast. We can always do a <em>real</em> search through the local media catalogue if the array says we <em>might</em> have what the customer wants. And if the array says it's not here, it definitely isn't.</p>
+</details>
+<p>In short: this data structure allows <em>false positives</em> but not false negatives. Even so, the false positives might make it seem useless, until you think of it as just one part of an overall solution. The table of bits is <em>fast</em>, likely much faster than a real, no-false-positives membership query. If we expect most query responses to be negative, why not try something like:</p>
+<ul>
+<li>When a query arrives, hash it and check the table of bits. 
+<ul>
+<li>If the answer is &quot;no&quot;, then we can return false right away.</li>
+<li>If the answer is &quot;yes&quot;, then we perform the slower, real check and return its result.</li>
+</ul>
+</li>
+</ul>
+<h3 id="scaling-the-idea"><a class="header" href="#scaling-the-idea">Scaling The Idea</a></h3>
+<p><em>Bloom Filters</em> are a generalization of this table-of-bits idea. Wwhy not have <em>several</em> hash functions, and use all the bits those hash functions produce for adding and looking up membership? That is, if we have 3 hash functions and they produce <code>{13, 2, 118}</code>, we'd set bits <code>13</code>, <code>2</code> and <code>118</code> to true on arrival, and check those same 3 bits on a membership check. </p>
+<p>We still have the potential for false positives: two keys might hash to the same values across all hash functions, and even if they don't, multiple keys might have separately flipped all of those bits before our query. But, if we tune things right, it's a lot less likely than it was before. The trick is in picking the hash functions and deciding how big the table needs to be. Other operations, like deletion, also need care to implement properly. </p>
+<h2 id="thinking-about-algorithms-a-search"><a class="header" href="#thinking-about-algorithms-a-search">Thinking about Algorithms: A* Search</a></h2>
+<p>Let's talk about a problem that you might see in an AI class: helping a robot navigate around a grid-world. The robot wants to find the reward (hidden somewhere in the world) while spending a minimal number of resources in the process. The robot can move up, down, left, or right.</p>
+<p>Here's an example: the little smiley face is the robot, and the dollar signs are the reward:</p>
+<img src="https://i.imgur.com/kuUY9MJ.png" width="45%" alt="A 4-by-4 gridworld"/>
+<p>The filled-in squares represent obstacles: walls, mountains, pits, etc. For now, let's say that every move costs <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> unit of time, or fuel, or whatever measure we're using. </p>
+<p>Assuming we know the contents of the gridworld above, how can we plan a path from the robot to the reward?</p>
+<h3 id="breadth-first-search-and-dijkstras-algorithm"><a class="header" href="#breadth-first-search-and-dijkstras-algorithm">Breadth-First Search and Dijkstra's Algorithm</a></h3>
+<p>One option is to use Dijkstra's algorithm. Actually, since we're saying that every move has cost <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>, we're safe using a simpler variant: breadth-first search (BFS). BFS just builds a &quot;wavefront&quot; of exploration from the source until it finds the goal: distance-1 cells, then distance-2 cells, and so on. </p>
+<p>Note that we're not talking about exploring with the robot in real time; we're executing the algorithm all at once, before the robot starts moving at all. So if I talk about &quot;backtracking&quot; I mean it in an algorithmic sense only. </p>
+<p>Here's what BFS might look like on this grid world. We reach the goal after <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">5</span></span></span></span> hops:</p>
+<img src="https://i.imgur.com/M00wXPY.png" width="45%" alt="BFS on the above grid world"/>
+<p>This looks great! It's a simple algorithm, it's pretty efficient, and everything's great. Right? </p>
+<p>It turns out that I've drawn the picture in a way that hides something from you. More formally, the <em>abstraction choices</em> I made in drawing this picture <em>excluded</em> some important aspects of the problem. </p>
+<p>Here's the picture, slightly changed...</p>
+<img src="https://i.imgur.com/yMuEM4d.png" width="45%" alt="A bigger grid world"/>
+<p>What's the problem? If the world is bigger, BFS will explore a lot of unproductive space before it finds the goal. (To see why, fill in the distance markings in the new cells I just added.)</p>
+<p>Neither BFS nor Dijkstra's algorithm takes advantage of any /real distance information/: they just look at the edge weights. Not all graphs make such information available, and not every geometric setting makes &quot;distance&quot; defined in a useful way. But here, we should be able to take advantage of it.</p>
+<h3 id="greedy-best-first-search"><a class="header" href="#greedy-best-first-search">Greedy Best-First Search</a></h3>
+<p>Here's an alternative. Let's build a search process that is entirely guided by <em>distance</em>, not by edge weights.  Every cell (implicitly; we're not actually going to have to compute them all) has such a distance.  We have a few choices of what distance metric to use here, but let's just use ordinary Euclidian distance:</p>
+<img src="https://i.imgur.com/LPhLAXO.png" width="45%" alt="Greedy Best-First Search on the same grid world"/>
+<p>I haven't filled them all in, but the idea is to apply <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.305em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.935em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mopen">(</span><span class="mord">Δ</span><span class="mord mathnormal">x</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mopen">(</span><span class="mord">Δ</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span><span style="top:-2.895em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.28em' viewBox='0 0 400000 1296' preserveAspectRatio='xMinYMin slice'><path d='M263,681c0.7,0,18,39.7,52,119 c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120 c340,-704.7,510.7,-1060.3,512,-1067 l0 -0 c4.7,-7.3,11,-11,19,-11 H40000v40H1012.3 s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232 c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1 s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26 c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z M1001 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.305em;"><span></span></span></span></span></span></span></span></span> as needed to every cell. By this metric, the robot starts out at a distance <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span> from the goal. Moving up would get the robot closer: to distance <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span>. Moving down would bring the robot further away: distance <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span>. So the search process will move up first. In fact, for this example it will only explore the cells I've labeled. There's one branch caused by the obstacle, but it's quickly bypassed to discover the goal.</p>
+<h4 id="the-good"><a class="header" href="#the-good">The Good</a></h4>
+<p>Greedy best-first search can be <em>much</em> more efficient than Dijkstra's algorithm when working with graphs that represent positions in space. </p>
+<h4 id="the-bad"><a class="header" href="#the-bad">The Bad</a></h4>
+<p>What happens when edge weights aren't all <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>?</p>
+<img src="https://i.imgur.com/XcEZyYT.png" width="45%" alt="Changing one edge weight"/>
+<p>GBFS still finds a path, but it isn't the <em>cheapest</em> path. By changing an edge weight, we've made GBFS non-optimal. </p>
+<h3 id="combining-these-ideas"><a class="header" href="#combining-these-ideas">Combining These Ideas</a></h3>
+<p>We have just invented two different algorithms to solve the same problem. They have different advantages and disadvantages. Perhaps we can somehow <em>combine</em> them to suit our needs? To figure out how to do this, we need to prioritize the <em>properties</em> we want.</p>
+<ul>
+<li>We don't want any fake paths! Neither of the above algorithms produce invalid paths, so hopefully we can preserve this.</li>
+<li>We want <em>cheapest</em> paths. GBFS doesn't guarantee this, but Dijkstra's does.</li>
+<li>We want efficiency. GBFS is often more efficient. </li>
+</ul>
+<p>We can combine these two algorithmic ideas to produce another path-finding algorithm called A* (pronounced &quot;A Star&quot;). The core idea of A* is to begin with Dijkstra's algorithm, but include an <em>estimated actual distance</em> in the best-estimate calculations. Rather than looking at only the immediate neighborhood of the current node, A* recognizes that a candidate path must be extended by at least some minimal, &quot;direct&quot; distance in order to reach the goal. </p>
+<p>In physical space, this distance metric might be something like the Euclidian distance between the two points. But there are also other distance metrics you might use.</p>
+<p>Put another way, given two equal-length paths, the path ending closer to the goal should be considered first. The search can therefore be guided more intelligently. Dijkstra’s algorithm will often spend time exploring the “neighborhood” of the start node, but A* can be goal-directed. For example: between two candidate &quot;next&quot; edges with the same weight, if one would take you further from the goal, it is less likely to be the right edge to take.The beauty of the idea is that, to add in this awareness of overall distance, we just need to make two small change sto Dijkstra's algorithm.</p>
+<p>In Dijkstra's algorithm, we set the cost <code>d[m]</code> of reaching (unexplored) node <code>m</code> via (explored) node <code>n</code> to <code>d[m] = d[n] + w(n,m)</code>, where <code>w</code> is the edge-weight function. </p>
+<p>In A*, we need to include the heuristic. But we don't want to count it more than once, so we need two different notions of &quot;distance&quot;:
+(1) the actual path-cost from the start to a given node <code>n</code> (similarly to Dijkstra's); and
+(2) the <em>estimated</em> cost of reaching the goal via the cheapest path to that node. </p>
+<p>The 2nd cost will be used as the priority-queue key, ensuring that the <em>most promising</em> nodes are processed first: <code>d[n] + w(n,m) + h(m,g)</code>, where <code>h</code> is the heuristic distance function. The 1st cost will be used to actually report the real cost of the route. In effect, Dijkstra's <code>h</code> function always returns <code>0</code>. </p>
+<p>We'll cover this in more detail next time. </p>
+<div id="admonition-not-all-heuristics-are-good" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>Not all heuristics are good!</p>
+<p><a class="admonition-anchor-link" href="#admonition-not-all-heuristics-are-good"></a></p>
+</div>
+<div>
+<p>A* won't report &quot;wrong&quot; paths. However, if <code>h</code> doesn't meet some criteria, it might report paths that are more expensive than they need to be. Put another way, a bad heuristic could cause A* to lose its guarantee of optimality. We rely implicitly on the <em>first</em> visit to the goal node corresponding to a cheapest path. But if <code>h</code> <em>over</em>-estimates the distance that will actually be taken, A* might explore a non-optimal path first—just like greedy best-first search did. </p>
+<p>For more information about this, take an algorithms course.</p>
+</div>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../06_html_react/html-react-playwright.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../algorithms/supplement.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../06_html_react/html-react-playwright.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../algorithms/supplement.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

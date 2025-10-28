@@ -1,0 +1,597 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>HTML and React - CSCI 0320 Notes</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../././mdbook-admonish.css">
+        <link rel="stylesheet" href=".././mdbook-admonish.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../home.html">How to read these notes</a></li><li class="chapter-item expanded "><a href="../success-in-0320/success-in-0320.html"><strong aria-hidden="true">1.</strong> Success in 0320</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../success-in-0320/recipe.html"><strong aria-hidden="true">1.1.</strong> Debugging Recipe</a></li></ol></li><li class="chapter-item expanded "><a href="../02_lambdas_validation/02_lambdas_validation.html"><strong aria-hidden="true">2.</strong> Agile, Lambdas, and Validation</a></li><li class="chapter-item expanded "><a href="../03_bias_narrowing_refinements/03_bias_narrowing_refinements.html"><strong aria-hidden="true">3.</strong> Narrowing and Refinements</a></li><li class="chapter-item expanded "><a href="../04_refinements_mutability/04_refinements_mutability.html"><strong aria-hidden="true">4.</strong> Branding and Immutability</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../04_refinements_mutability/04.5.apis-integration.html"><strong aria-hidden="true">4.1.</strong> APIs and Integration</a></li></ol></li><li class="chapter-item expanded "><a href="../05_threads_promises/05_threads_promises.html"><strong aria-hidden="true">5.</strong> Threads and Promises</a></li><li class="chapter-item expanded "><a href="../06_html_react/html-react-playwright.html" class="active"><strong aria-hidden="true">6.</strong> HTML and React</a></li><li class="chapter-item expanded "><a href="../algorithms/algorithms.html"><strong aria-hidden="true">7.</strong> Thinking About Algorithms</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../algorithms/supplement.html"><strong aria-hidden="true">7.1.</strong> Supplement Board: Dijkstra's Algorithm, Etc.</a></li></ol></li><li class="chapter-item expanded "><a href="../security/security_and_threat_modeling.html"><strong aria-hidden="true">8.</strong> Security 1</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CSCI 0320 Notes</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="webapps-html-css-and-typescript"><a class="header" href="#webapps-html-css-and-typescript">Webapps: HTML, CSS, and TypeScript</a></h1>
+<p>We're going to start learning how to write web applications. In time, you'll have a working front-end web application, which you'll use to query the backend server you're finishing up now. </p>
+<p>Please be aware that these notes:</p>
+<ul>
+<li>cover <strong>multiple class meetings</strong> (and thus may change, as I prepare for class each day); </li>
+<li>contain supplemental material which may not be covered in class; and </li>
+<li>meant to be accompanied by two examples: the <a href="">Providence Weather</a> app and the <a href="https://github.com/cs0320/class-livecode/tree/main/F25/nyt">NYT puzzle example</a>, which contain many comments for your reference. </li>
+</ul>
+<p>We're going to <em>start</em> building that final example in these notes, but won't have time to completely finish it. </p>
+<h2 id="static-html-and-css-basics"><a class="header" href="#static-html-and-css-basics">Static HTML and CSS Basics</a></h2>
+<p>Let's start by looking at a student's website. The site is hosted <a href="https://cs.brown.edu/~tbn/nim/">here</a>. Naturally, I got permission before using one of your fellow student's webpages. The style is rather outdated, but it suffices as a first intro to these concepts.</p>
+<p>This website uses three files:</p>
+<ul>
+<li>an HTML file, which defines the <em>content</em> of the page (<a href="https://cs.brown.edu/~tbn/nim/index.html">index.html</a>);</li>
+<li>a CSS File, which defines the <em>styling</em> of the page (<a href="https://cs.brown.edu/~tbn/nim/styles.css">styles.css</a>); and </li>
+<li>an image file with a picture of the student (<a href="https://cs.brown.edu/~tbn/nim/nim.png">nim.png</a>).</li>
+</ul>
+<p>There's no &quot;app&quot; here; the site is static. Put another way, it's just unchanging content for the browser to format and present for us to see.</p>
+<h3 id="html-the-content"><a class="header" href="#html-the-content">HTML: The Content</a></h3>
+<p>Notice that the structure of HTML is <em>treelike</em>. Tags open and close elements in the document. There's some metadata, but largely the document describes visible content and the structure of that content.</p>
+<p>If you're used to editing documents via Google Docs or MS Word, you might be wondering where the <em>formatting</em> information comes from. Websites usually separate out content from styling, meaning that the HTML won't say that a certain word should be shown in a particular font, or aligned in a particular way. Instead, any context needed for styling to be done is specified by...</p>
+<h3 id="css-the-styling"><a class="header" href="#css-the-styling">CSS: The Styling</a></h3>
+<p>CSS files say how to <em>style</em> elements of a webpage. Because the author of this page gave the <code>uniName</code> class to &quot;Brown University&quot;, this style declaration will apply:</p>
+<pre><code class="language-css">.uniName {
+    color: brown; 
+    font-family: Trebuchet, sans-serif;
+    font-size: 18px;
+    font-weight: normal; 
+}
+</code></pre>
+<p>The dot before <code>uniName</code> means that the style is meant to apply to any element on the page with <code>uniName</code> as its <em>class</em>. This is called a <em>CSS selector</em>; there are <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors">lots more</a> that select elements by their <code>id</code> or other properties. </p>
+<p>The result of this separation is that the HTML document can focus on content and context, and leave styling aside. Yes, it's possible to embed your CSS inside the same file, and there are also frameworks that combine the two in a useful way. But the convention we'll follow to start with is to split the two into different files. </p>
+<div id="admonition-beware-styling-isnt-easy" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>Beware: styling isn't easy.</p>
+<p><a class="admonition-anchor-link" href="#admonition-beware-styling-isnt-easy"></a></p>
+</div>
+<div>
+<p>You might initially be inclined to dismiss styling as a minor part of a webapp. Don't. You will spend a surprising amount of time on styling before the semester is over. Just because CSS isn't obviously a &quot;programming language&quot; doesn't mean it lacks for complexity. More on this in the near future.</p>
+</div>
+</div>
+<h3 id="viewing-html-source"><a class="header" href="#viewing-html-source">Viewing HTML Source</a></h3>
+<p>By default, your browser will render the HTML file, rather than showing its raw form. To see the HTML itself, you'll need to <em>view source</em>. Often there's a right-click menu option for this, but if not there's usually a key combination to press:</p>
+<ul>
+<li>In Safari: <code>Command + Option + U</code>;</li>
+<li>In (Windows) Firefox: <code>Control + U</code>;</li>
+<li>In (MacOS) Firefox: <code>Command + U</code>.</li>
+</ul>
+<h3 id="inspecting-elements"><a class="header" href="#inspecting-elements">Inspecting Elements</a></h3>
+<p>CSS files also have significant influence over how elements are positioned on the page. It can be useful to see where boundaries between <code>div</code>s and other elements actually are. This is best done in a browser's page-inspection tool. You'll often find this under &quot;Web Developer Tools&quot; or &quot;Dev Tools&quot; or a similarly named menu. Here are some key combinations:</p>
+<ul>
+<li>In Safari: <code>Command + Option + I</code> (and click on the <code>Elements</code> tab);</li>
+<li>In (Windows) Firefox: <code>Control + Shift + I</code> (and click the <code>Inspector</code> tab);</li>
+<li>In (MacOS) Firefox: <code>Command + Option + I</code> (and click on the <code>Inspector</code> tab).</li>
+</ul>
+<p>Notice that when I mouse over the first column in the table, my browser is highlighting the on-page position of that column:</p>
+<p><img src="https://i.imgur.com/TD3UYKg.png" alt="" /></p>
+<p>There are better ways of formatting this sort of data than tables. I took this from a webpage written more than a decade ago. However, HTML tables would be a great way to start displaying rows of tabular data on a webpage!</p>
+<div id="admonition-sources-isnt-updated" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>'Sources' isn't updated.</p>
+<p><a class="admonition-anchor-link" href="#admonition-sources-isnt-updated"></a></p>
+</div>
+<div>
+<p>Make sure you're looking at <code>Elements</code> or <code>Inspector</code>, not <code>Sources</code>. Once we start working with pages that change dynamically, <code>Sources</code> only shows the starting HTML (the source loaded in the file) without updates that are actually displayed.</p>
+</div>
+</div>
+<h2 id="adding-dynamic-behavior"><a class="header" href="#adding-dynamic-behavior">Adding Dynamic Behavior</a></h2>
+<p>Neither HTML nor CSS alone suffice to build a good web application. We need a way to add <em>dynamic behavior</em> to the page, and to do that, we probably want a programming language. JavaScript is the most popular, and what most browsers optimize for. Fortunately, we've been using TypeScript already! We'll keep using it for web programming.</p>
+<p>We could proceed to build a dynamic website with just TypeScript. But there are some annoying patterns that come up there; instead, we'll be using the <strong>React</strong> framework this semester. React is a web framework for JavaScript and TypeScript. We'll use it to make web development a bit easier. You will find the <a href="https://beta.reactjs.org/">React docs</a> useful. This is especially true for <em>hooks</em> which are how you manage state in React.</p>
+<h2 id="a-website-i-liked"><a class="header" href="#a-website-i-liked">A Website I Liked</a></h2>
+<p>The New York Times website had a <a href="https://www.nytimes.com/interactive/2015/07/03/upshot/a-quick-puzzle-to-test-your-problem-solving.html">puzzle</a> a few years back that I love to use in class. It went something like this:</p>
+<p><img src="https://i.imgur.com/EOIDbbx.png" alt="" /></p>
+<h3 id="the-problem"><a class="header" href="#the-problem">The Problem</a></h3>
+<p>The page is paywalled. Although Brown provides access through your logins, it's kind of a pain to set up under time constraints. So, while you should definitely try the NYT's version if you can, <em>let's build our own</em>. In fact, <a href="https://tnelson.github.io/reactNYT/">I've already built one!</a> </p>
+<p>This is an example of a webapp with both a <em>front end</em> and a <em>back end</em>. The front-end piece is what you see on the webpage, and all the dynamic functionality is there. The backend (in this app, anyway) is just a database where I keep track of everyone's sequences, and the results the app gave you. </p>
+<p>Let's try it out. I didn't implement the &quot;I'm ready to guess&quot; part yet, but once you have a guess, <strong>write it down</strong> and stop.</p>
+<details>
+<summary>Think, then click!</summary>
+The rule is "any non-decreasing sequence of three numbers." Is that your guess?
+<p>Perhaps not! The NYT reports that the majority of people who've tried the puzzle made their first guess before ever receiving a <em>false</em> response. </p>
+<p>What does that have to do with software engineering? This is an example of <em>confirmation bias</em>; we humans tend to favor examples that <em>meet</em> our expectations. But without first seeing some <code>false</code> results, how would you really build confidence in your guess? (Maybe <em>any</em> sequence worked!) </p>
+<p>By the way, this shows an example of how cognitive bias can impact our testing. It's quite easy to see a lot of <code>true</code> responses and get complacent...</p>
+</details>
+<h2 id="building-an-app-the-hard-way"><a class="header" href="#building-an-app-the-hard-way">Building an App the Hard Way</a></h2>
+<p>Before showing you React, I want to give you an example of how things work without a web framework to help out. And I want to showcase Copilot here and my process when I'm using it for this kind of prototyping. We're likely to run into some snags, and you'll see me resolve them. </p>
+<p>Because this will be done live, I can't predict what will happen ahead of time. Still, remind yourselves of these three bits of advice from the AI gearup:</p>
+<ul>
+<li>Specify the end goal.</li>
+<li>Specify he language/infrastructure.</li>
+<li>Specify the output/input format.</li>
+</ul>
+<p>In this case, I want to build an example web application in TypeScript, without any frameworks. The application should have state in it: a counter on the page that the user clicks a button to increment. There's no real input/output format in this situation. We'll also want to prompt Copilot to ask us questions along the way.</p>
+<p><strong>See the lecture capture for specifics on this exercise.</strong></p>
+<h2 id="using-react"><a class="header" href="#using-react">Using React</a></h2>
+<p>Let's try to do the same thing, but with React. I'll create a new folder and new conversation. Because there are a few different ways to <em>run</em> a React program, I'll specify Vite because that's what we use this semester. </p>
+<p>Again, I'll stop and point out issues as Copilot helps us prototype, but I can't predict what will happen ahead of time. </p>
+<p><strong>See the lecture capture for specifics on this exercise.</strong></p>
+<h2 id="building-something-bigger"><a class="header" href="#building-something-bigger">Building Something Bigger</a></h2>
+<p>I've put a draft of the puzzle in the live code repository <a href="https://github.com/cs0320/class-livecode/tree/main/F25/reactNYT">here</a>. </p>
+<p>You can find the HTML <a href="https://github.com/cs0320/class-livecode/blob/main/F25/reactNYT/public/index.html">here</a>. There are a couple of new tags in the HTML, but they're just more semantic grouping tags, like <code>section</code> etc. We'll focus on the code today.</p>
+<p>One thing is worth noting: the CSS has only two declarations. These correspond to the formatting cues assigned to correct and incorrect sequences in the history:</p>
+<pre><code class="language-css">.correct-try {
+    background-color: green;
+}
+.incorrect-try {
+    background-color: red;
+}
+</code></pre>
+<p>We could make the page a lot better-looking by doing more with CSS styling. But this is meant to be an example focused on the dynamic behavior only, so we'll move on from there.</p>
+<h2 id="react-and-reactivity"><a class="header" href="#react-and-reactivity">React and Reactivity</a></h2>
+<h3 id="most-languages"><a class="header" href="#most-languages">Most Languages</a></h3>
+<p>Consider what happens when I assign a value in JavaScript (or Java, or C, or most programming languages):</p>
+<pre><code class="language-javascript">x = 10;
+y = x + 1;
+</code></pre>
+<p>At this point, <code>x</code> contains the value <code>10</code> and <code>y</code> contains the value <code>11</code>. But suppose I then update the value of <code>x</code> to <code>50</code>:</p>
+<pre><code class="language-javascript">x = 50;
+</code></pre>
+<p><em>What happens to the value of <code>y</code></em>? </p>
+<p>In most languages, it remains set to <code>11</code>. That <code>x + 1</code> is only computed once, at the time the line executes. And, at that time, the value of <code>x</code> was 10. So what if it's now <code>50</code>? It was <code>10</code> when the assignment to <code>y</code> happened.</p>
+<h3 id="another-philosophy"><a class="header" href="#another-philosophy">Another philosophy</a></h3>
+<p>Let's set up something similar in Google Sheets:</p>
+<p><img src="https://i.imgur.com/Uc6DO5N.png" alt="" /></p>
+<p>The cell <code>A1</code> is set to 10, and the cell <code>B1</code> has been assigned <code>A1+1</code>. Like before <code>B1</code> has the value <code>11</code>.</p>
+<p>But in this setting, if I go and change <code>A1</code> to <code>50</code>, the value of <code>B1</code> automatically updates to <code>51</code>:</p>
+<p><img src="https://i.imgur.com/aaMMjcf.png" alt="" /></p>
+<p>Languages where assignment works like it does in Google Sheets are called <em>reactive</em>, because values change <em>in reaction to</em> changes in their dependencies. </p>
+<p>At this point, you may have two questions:</p>
+<p><em>Q: Is reactivity fundamental to the language, or can you build reactivity atop normal assignment?</em> 
+A: You can, with effort, implement reactivity in languages where it's not the default behavior. </p>
+<p><em>Q: Where is reactivity natural, outside of a spreadsheet program?</em> 
+A: Reactivity makes sense in more domains than you might think.</p>
+<h3 id="using-reactivity"><a class="header" href="#using-reactivity">Using Reactivity</a></h3>
+<p>Here are a few examples.</p>
+<ul>
+<li>Signal propagation in electrical engineering</li>
+<li>Updating a database view in real time</li>
+<li>Monitoring a system (either in production or for debugging)</li>
+<li><em>Physical</em> interfaces like a steering wheel or thermostat</li>
+</ul>
+<h4 id="one-more-example"><a class="header" href="#one-more-example">One More Example</a></h4>
+<p>In a networked chess application, the state of the board on screen should automatically reflect the programmatic board state as it changes based on moves made. This is very straightforward to implement in React, because the program only needs to update the board's data structure and then React handles re-drawing the screen.</p>
+<h3 id="how-do-we-get-reactivity"><a class="header" href="#how-do-we-get-reactivity">How do we get reactivity?</a></h3>
+<p>All of the above are something we could, in principle, build ourselves in vanilla JavaScript (or some other language). Unfortunately, as the application grows in complexity, this becomes tougher to do, and there are efficiency challenges.</p>
+<p>For example, if we wanted to use reactivity in our web frontend applications, it would be good to avoid updating the <em>entire webpage</em> every time a small value changed. We'd like to update only the places in the DOM that <em>really need</em> updating. Making updates accurate and efficient is hard work. React gives us (an approximation of) reactivity for free. I say &quot;approximation&quot; because TypeScript's single-threaded model means that state updates have to be <em>queued</em>, they are not seen immediately.</p>
+<h2 id="what-does-react-do"><a class="header" href="#what-does-react-do">What does React Do?</a></h2>
+<p>React provides two useful features (among others):</p>
+<ul>
+<li>React manages your front-end app's state centrally, and when it detects a state change it propagates that change to a <em>virtual copy</em> of the page. The actual page then only gets updated when it actually needs to be changed. This can improve efficiency of complex apps. To make this work, <strong>you usually want to manage all state through React</strong>.</li>
+<li>React gives us a nice way to align the <em>visual layout</em> of the app with the program. Concretely, <strong>a React component is a TypeScript function</strong> that returns a special kind of object that resembles HTML: a <strong>JSX</strong> expression. In effect, JSX is HTML <strong>with holes in it</strong> where we can plug in the result of running TypeScript code. </li>
+</ul>
+<p>Together, these features mean that we can let React manage updating the DOM; we just need to update the state that React can see.</p>
+<div id="admonition-jsx" class="admonition admonish-tip">
+<div class="admonition-title">
+<p>JSX</p>
+<p><a class="admonition-anchor-link" href="#admonition-jsx"></a></p>
+</div>
+<div>
+<p>Always keep in mind that <strong>a React function component must return a JSX expression</strong>. This might be plain HTML, but almost always it's got some JavaScript being evaluated inside squiggle-braces.</p>
+</div>
+</div>
+<p>We're also using Vite, a development server for React applications. This makes it easier to get started. Notice that we're using a lot of helper libraries! This is normal in much of web development, and we want to get more practice managing this.</p>
+<div id="admonition-components" class="admonition admonish-tip">
+<div class="admonition-title">
+<p>Components</p>
+<p><a class="admonition-anchor-link" href="#admonition-components"></a></p>
+</div>
+<div>
+<p>React components will either be classes or functions.  We don't use &quot;class components&quot;. They are outdated, from the early days of React. You'll still see them referenced online, though. The React team strongly suggests that new development use functional components instead, though. We follow their advice, and so should you. <strong>Use function components.</strong></p>
+</div>
+</div>
+<h3 id="what-are-our-components-for-this-application"><a class="header" href="#what-are-our-components-for-this-application">What are our components for this application?</a></h3>
+<p>After you ignore all of the extraneous content, the NYT puzzle is pretty simple: </p>
+<ul>
+<li>3 input boxes invite you to enter a trio of numbers. </li>
+<li>Once you've entered numbers, you click a button to check whether those numbers are in the hidden set of sequences. </li>
+<li>The 3 input boxes become read-only and get colored red or green depending on success or failure.</li>
+<li>A new trio of inputs appears.</li>
+</ul>
+<p>So, for our graphical components, we probably need:</p>
+<ul>
+<li>input boxes and a submission button; and</li>
+<li>a notion of &quot;attempt&quot;: one current attempt, and 0 or more past attempts.</li>
+</ul>
+<p>That's enough to get a very rough approximation of the puzzle, which is good enough for me!</p>
+<p>I like to draw out a prototype UI, and circle different regions that represent important grouping in the application. E.g.:</p>
+<p><img src="https://i.imgur.com/3cIg553.png" alt="" /></p>
+<h4 id="jsx"><a class="header" href="#jsx">JSX</a></h4>
+<p>React component functions return <strong>JSX</strong>, rather than standard TypeScript, which is why the file extension is now <code>.tsx</code> rather than <code>.ts</code>. React automatically renders whatever these functions return into HTML.</p>
+<p>All these components except <code>App</code> take <em>properties</em>. This is either a single argument, <code>props</code>, that represents information passed down from parent components, or a collection of variables that do the same.</p>
+<h3 id="running"><a class="header" href="#running">Running</a></h3>
+<p>From the console, I'll run <code>npm run start</code>. Because I'm using React with Vite, it will give me output like this:</p>
+<pre><code>  VITE v4.4.9  ready in 1240 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h to show help
+</code></pre>
+<p>If I then go to <code>http://localhost:5173/reactNYT</code>, I can view the app. (By default, it would be served at <code>localhost:3000</code>, but I've configured it to add <code>reactNYT</code> so that I could deploy it where I did, rather than the root of my Github pages page. We won't be doing deployment today.)</p>
+<h3 id="revisiting-configuration"><a class="header" href="#revisiting-configuration">Revisiting Configuration</a></h3>
+<p>Because different projects may have different configurations (and Copilot may sometimes produce configurations that are slightly wrong...) I want to revisit this. </p>
+<p>We've got a file called <code>package.json</code> and another called <code>tsconfig.json</code>. We've seen these before, but as a reminder they control (respectively):</p>
+<ul>
+<li>the project's metadata and dependencies; and </li>
+<li>how TypeScript should compile (e.g., which version of JavaScript it should emit, whether it should interoperate with raw JavaScript, etc.).</li>
+</ul>
+<p>There's also a very large file, <code>package-lock.json</code>. This gives the low-level details of how dependencies were resolved, even implicit ones, and helps ensure a consistent build. <em>All three of these should be pushed to Github</em>.</p>
+<p>On the other hand, <code>node_modules</code> is where the dependencies have been downloaded. These are often large, and <em>should not be pushed to Github</em>.</p>
+<p>You may notice some other configuration:</p>
+<ul>
+<li><code>vite.config.js</code> configures Vite.</li>
+<li><code>jest.config.js</code> configures Jest.</li>
+</ul>
+<p>That's a lot of moving parts! Front-end development tends to have more pieces, but just keep in mind: </p>
+<ul>
+<li>Browsers understand JavaScript;</li>
+<li>TypeScript adds types, and gets compiled to JavaScript;</li>
+<li>React is a framework that makes building applications easier; and</li>
+<li>Vite is a development server meant to make building React apps easier.</li>
+</ul>
+<h3 id="application-state"><a class="header" href="#application-state">Application state</a></h3>
+<p>The <code>App</code> component is the entry point into a <code>create-react-app</code> program. Let's start by adding a <code>NewRound</code> component:</p>
+<pre><code class="language-javascript">function App() {
+  return (
+    &lt;div&gt;
+      &lt;NewRound/&gt;      
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<p>This changes nothing, but it raises the question: how do we get the <code>NewRound</code> component to do what we want? Our application has some state. What does the state look like? </p>
+<p>We'll need at least:</p>
+<ul>
+<li>the state of each text input;</li>
+<li>some record of past guesses; and (if we want to get fancy)</li>
+<li>maybe some text state for showing error messages and so on.</li>
+</ul>
+<p>Let's focus on the record of past guesses. What's the right component for that record to be kept in? If we keep the record in one big array, it's the <code>App</code> component. We don't just want to add a global variable for this, though; we want to enable React to register our updates so it can efficiently flow those updates into the UI. For this, we'll use a hook (see this week's lab for more information), and we'll pass both the value and the setter function to the <code>NewRound</code> component. We'll also tell the <code>NewRound</code> component about how to update the notification text</p>
+<pre><code class="language-javascript">function App() {
+  const [guesses, setGuesses] = useState([]);
+  const [notification, setNotification] = useState('');
+  return (
+    &lt;div&gt;
+      &lt;NewRound setGuesses={setGuesses}
+                setNotification={setNotification} /&gt;      
+      {notification}
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<p>The squiggly braces contain JavaScript; the result of evaluating that JavaScript gets substituted into the JSX. As a result, the <code>NewRound</code> component will have access to the setter for <code>guesses</code>, and thus have the ability to <em>update</em> the record.</p>
+<p>Having referred to a <em>NewRound</em> component, we probably ought to do something in the corresponding function (which is, at the moment, empty except for a <code>&lt;div&gt;</code>). We've got to do a few things:</p>
+<ul>
+<li>We need a place for the state of those 3 text inputs to go. We'll use another <code>useState</code> hook for this.</li>
+<li>We need a place for the inputs to go, and the guess button.</li>
+<li>We need to <em>take in</em> some props---at minimum, a way to change the notification message.</li>
+</ul>
+<p>See the completed livecode for details. Much of class will be a code-dive exercise with an opportunity to ask questions. Pay special attention to...</p>
+<ul>
+<li>...how state is declared, updated, and accessed. Never modify a state variable directly; always use the setter provided by React, and don't expect the setter to execute right away.</li>
+<li>...how the components refer to each other, forming a nested structure. The structure of the program echoes the graphical structure. If you're ever feeling &quot;lost&quot; in React, draw the picture of how the components should relate to each other. </li>
+</ul>
+<div id="admonition-react-state-updates-are-asynchronous" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>React state updates are asynchronous!</p>
+<p><a class="admonition-anchor-link" href="#admonition-react-state-updates-are-asynchronous"></a></p>
+</div>
+<div>
+<p>Try adding a <code>console</code> write immediately after a state update (here's a snippet modified from the full code below):</p>
+<pre><code class="language-javascript=function ControlledInput(props) {">  return (
+    &lt;input value={props.value} onChange={(ev) =&gt; {
+      props.setValue(ev.target.value);
+      console.log(props.value);
+   }
+  }&gt;&lt;/input&gt;);
+}
+</code></pre>
+<p>The <code>console.log</code> will print the old value, because React hasn't yet had a chance to run the update. In general, don't expect React state updates to take effect until after the currently running code has ended. (We'll talk more about this in preparation for your <em>next</em> sprint.)</p>
+</div>
+</div>
+<h2 id="testing-in-react"><a class="header" href="#testing-in-react">Testing in React</a></h2>
+<p>We'll be using and requiring <em>Playwright</em> for Mock and future sprints. You're strongly encouraged to use it on your term projects as well, since that's what we can best support. Playwright is a great library for scripting front-end tests. There's a <a href="https://testing-library.com/docs/guiding-principles/">guiding principle</a> (quoted from a different testing library) that we'll follow for front-end testing:</p>
+<blockquote>
+<p>The more your tests resemble the way your software is used, the more confidence they can give you.</p>
+</blockquote>
+<p>Broadly, we're going to focus on a more heavy-weight kind of testing on the front end that resembles the integration tests you wrote for Server. We'll call this <em>end-to-end</em> testing, because it can potentially test the entire application. You might think of it as a kind of user-focused system testing.</p>
+<h3 id="contrasting-vs-unit-testing"><a class="header" href="#contrasting-vs-unit-testing">Contrasting vs. Unit Testing</a></h3>
+<p>Unit testing still has a (major) place in our testing lives. It's still useful to test narrow units of code. But <em>why</em> do we unit test? It isn't because of some crude rule like &quot;we should test every line!&quot; but rather because it's important to have confidence about <em>interface boundaries</em> in your application. These boundaries exist at many different levels:</p>
+<ul>
+<li>individual public helper functions used throughout an application that developers (often you) invoke elsewhere, relying on their specific behavior when doing so;</li>
+<li>the behavior of frontend-backend communication (like your API server in Sprint 2) and other connections between large components that developers (often <em>not</em> you) rely on; </li>
+<li>the behavior of actual <em>user</em> interface(s) that end users rely on; </li>
+<li>...</li>
+</ul>
+<p>It's <em>always</em> about the behavior! </p>
+<p>My view is that testing should always be rooted in the requirements that specific kinds of users have---whether they're developers or end-users. Hence the way we've framed the user stories in your sprints to reflect the needs of both.</p>
+<p>Kent Dodds writes more about this philosophy in the context of a <em>different testing library</em> <a href="https://kentcdodds.com/blog/testing-implementation-details">here</a>. If you read the post, you'll see that he also frames testing in terms of both developers and end-users. Dodds also writes that if a test suite is brittle to low-level changes, it is a timesink to maintain. </p>
+<p>If that doesn't seem counter-intuitive, give it more thought. Tests <em>specify behavior</em> at whatever level they operate. And isn't it a good thing whenever we know what our software should do? If so, it must also be a good thing for our software to be <em>completely specified</em>; you'd know exactly what the software does (or, even better, exactly what you should be implementing). <strong>No room for ambiguity, no chance of missing any rubric points or making any users unhappy.</strong></p>
+<p>That's good, right? ...Right? </p>
+<p>Maybe. But there's a price to pay in managing that specification and the effects of change. The more completely the tests specify your application, the less you'll be able to change without breaking tests.</p>
+<!-- (Since tests really do specify what correct behavior is, we'll use "specification" and "testing" interchangeably in this specific chapter of notes.) -->
+<h2 id="technical-asides"><a class="header" href="#technical-asides">Technical Asides</a></h2>
+<h3 id="reminder-promises"><a class="header" href="#reminder-promises">Reminder: Promises</a></h3>
+<p>In TypeScript, a <code>Promise</code> is a generic type that represents an <em>eventual</em> value (or error). The <code>await</code> and <code>async</code> keywords are syntactic sugar over promises (meaning that they both compile into promise operations). </p>
+<ul>
+<li>The <code>await</code> operator appears to &quot;pause&quot; until an operation is complete. In reality, <code>await</code> adds a callback function containing the rest of the code, and tells TypeScript to call that function when the promise resolves. </li>
+<li>The <code>async</code> operator warns TypeScript that the function returns a <code>Promise&lt;T&gt;</code>, but that the function's syntax is phrased as if it returns a real <code>T</code> value. </li>
+</ul>
+<p>For example, this line:</p>
+<pre><code class="language-javascript">const res: Response = await fetch(`https://api.weather.gov/points/${lat},${lon}`)
+if(!res.ok) {
+  setError('Error getting data from NWS.')
+  return
+}
+</code></pre>
+<p>really means:</p>
+<pre><code class="language-javascript">fetch(`https://api.weather.gov/points/${lat},${lon}`)
+  .then( res =&gt; if(!res.ok) {setError('Error getting data from NWS.'); return} )
+</code></pre>
+<p>You can usually use <code>await</code> and <code>async</code> without thinking too much about promises, but bugs can happen because of misusing them. This is especially bad when paired with the <code>any</code> type, because then TypeScript won't complain if you forget whether something is a promise or not. </p>
+<p>For more information, see these <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">docs on <code>Promise</code>s</a> and these <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function">docs on <code>async</code> and <code>await</code></a>. </p>
+<h3 id="why-arent-you-adding-types-in-your-test-files"><a class="header" href="#why-arent-you-adding-types-in-your-test-files">Why aren't you adding types in your test files?</a></h3>
+<p>While you must fill in types in your application files, we're <strong>not</strong> requiring you to fill in explicit type values within your test files. These files <em>are</em> TypeScript; we're just letting TypeScript infer types on its own. </p>
+<h3 id="blank-space-and-semicolons-in-javascripttypescript"><a class="header" href="#blank-space-and-semicolons-in-javascripttypescript">Blank Space and Semicolons in JavaScript/TypeScript</a></h3>
+<p>I'm including this because it is a strange thing about TypeScript/JavaScript and it's caused confusion before. Let's ask: how does JavaScript handle blank space? How about the ultimate blank space: new lines?</p>
+<pre><code class="language-javascript">five = function() { return 
+5; }
+</code></pre>
+<p>JavaScript automatically inserts semicolons where it believes they are needed. It turns out this often makes sense, but can be confusing. I found <a href="https://stackoverflow.com/questions/2846283/what-are-the-rules-for-javascripts-automatic-semicolon-insertion-asi">this great StackOverflow thread</a> that explains the policy in detail.</p>
+<p>The language is powerful, and many of its quirks actually make perfect sense when writing web UIs. But still, beware, and treat your JavaScript programs like a science project: if you've got weird behavior, <em>experiment</em>. </p>
+<div id="admonition-strict-mode" class="admonition admonish-note">
+<div class="admonition-title">
+<p>Strict Mode</p>
+<p><a class="admonition-anchor-link" href="#admonition-strict-mode"></a></p>
+</div>
+<div>
+<p>If you absolutely must work in plain JavaScript (do not do this in 0320, you must use TypeScript), I suggest enabling <em>strict mode</em>. You'll get fewer silent failures (and more runtime errors). It won't give you protections before runtime like TypeScript does, and it won't protect you from as many problems. But it's better than nothing.</p>
+</div>
+</div>
+<h2 id="using-playwright-to-test-components-for-sprint-6-not-sprint-5"><a class="header" href="#using-playwright-to-test-components-for-sprint-6-not-sprint-5">Using Playwright to Test Components (for Sprint 6, not Sprint 5)</a></h2>
+<p>You can find some example uses of Playwright in the <code>reactNYT</code> livecode repository. In particular, look at the <a href="https://github.com/cs0320/class-livecode/blob/main/F23/reactNYT/tests/app.spec.ts"><code>app.spec.tsx</code> file</a>. Here's an example:</p>
+<pre><code class="language-typescript">test('renders guess input fields', async ({ page }) =&gt; {
+  await page.goto(url);    
+  // Leverage accessibility tags we ought to be providing anyway  
+  const guess0 = await page.getByRole(&quot;textbox&quot;, {name: TEXT_number_1_accessible_name})
+  const guess1 = await page.getByRole(&quot;textbox&quot;, {name: TEXT_number_2_accessible_name})
+  const guess2 = await page.getByRole(&quot;textbox&quot;, {name: TEXT_number_3_accessible_name})
+  await expect(guess0).toBeVisible()
+  await expect(guess1).toBeVisible()
+  await expect(guess2).toBeVisible()
+});
+</code></pre>
+<p>First, the test calls <code>page.goto</code> to load the page. This works because of <a href="https://github.com/cs0320/class-livecode/blob/main/F23/reactNYT/playwright.config.ts">how Playwright is configured</a> in the project: when run, Playwright will automatically start up the development server for the project. </p>
+<p>Then, the test creates <em>locators</em> for textbox elements with specific labels (in this case, accessibility metadata). Rather than hard-coding the specific string, the module imports an identifier from the app itself in the <code>constants.ts</code> file:</p>
+<pre><code class="language-typescript">export const TEXT_number_1_accessible_name = 'first number in sequence'
+</code></pre>
+<p>The advantage of this approach is that, assuming that the application also uses <code>TEXT_number_1_accessible_name</code> for the accessible label of the input boxes, simple changes to their text <em>won't break our tests</em>. </p>
+<p>Notice how we're identifying the three &quot;guess&quot; input boxes based on their <em>accessible role</em> and <em>accessible name</em>. This is less brittle than just getting all elements with that role; we don't need to filter out old-round information, or worry about ordering. Instead, <code>NewRound.tsx</code> sets up the <code>NewRound</code> component so that these text boxes all have distinct accessible names. </p>
+<p>You'll see this a lot in modern front-end testing. Rather than requesting elements from <code>document</code> or some other HTML node, we'll use library support for accessibility metadata. Using Playwright it's easy to enter values into the input boxes:</p>
+<pre><code class="language-typescript">await guess0.fill('100');    
+await guess1.fill('200');    
+await guess2.fill('300');
+</code></pre>
+<p>and even script clicking the button, after we find it by its accessibility data:</p>
+<pre><code class="language-typescript">await submitButton.click();
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../05_threads_promises/05_threads_promises.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../algorithms/algorithms.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../05_threads_promises/05_threads_promises.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../algorithms/algorithms.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
