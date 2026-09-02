@@ -1,21 +1,27 @@
-# CSCI 0320 notes mdbook
+# CSCI 0320 notes
 
 Adapted with thanks from the CSCI 1710 mdbook, set up by David Fryd.
 
 ## Instructions to Build
 
-This is the source for the 0320 notes, which were formerly located on HackMD. It is built using mdbook.
+Built with MkDocs (Material theme) + `mike` for year-based versioning.
 
-See the user guide https://rust-lang.github.io/mdBook/guide/installation.html for more information.
+1. `python3 -m venv .venv && source .venv/bin/activate`
+2. `pip install -r requirements.txt`
+3. `mkdocs serve -o` to preview the current branch without versioning.
+4. `mike serve` to preview with the version dropdown across all deployed years.
 
-1. Install Rust & Cargo from [this link](https://rust-lang.github.io/mdBook/guide/installation.html#:~:text=Rust%20installation%20page). You'll probably need to have at least Rust 1.75.0.
-2. Run `cargo install mdbook`
-3. Run `cargo install mdbook-admonish` 
-4. Run `cargo install mdbook-katex`
-5. `cd book` and `mdbook serve --open` to open the docs in a browser; mdbook will automatically rebuild the output _and_ automatically refresh your web browser when changes are made.
+## Versioning
 
-Check out the rest of the docs here: https://rust-lang.github.io/mdBook/guide/creating.html
+- `main`: current semester's content.
+- `f25`, `s25`, ...: frozen per-semester branches.
+- Deploy one semester: `git checkout <branch> && mike deploy --push --update-aliases <version> latest`
+- Set the default landing version: `mike set-default --push latest`
+- `.github/workflows/deploy.yml` runs `mike deploy` automatically on push to `main`.
 
 ## Directory Structure
 
-The `book` subfolder contains the `mdbook` config and source. After building, the `book` sub-subfolder will contain the built notes HTML. The `.github` folder contains a workflow to automatically deploy the built HTML when new source is pushed to the `main` branch.
+- `docs/`: MkDocs source for the branch you're on.
+- `mkdocs.yml`: site config, nav, and `mike` version-provider settings.
+- `archive/book/`: old mdBook source (pre-migration), kept for reference only.
+- `.github/workflows/deploy.yml`: CI deploy via `mike`.
