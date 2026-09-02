@@ -1,0 +1,113 @@
+site_name: "CSCI 0320 Notes"
+site_description: "Lecture notes for CSCI 0320/1340: Software Engineering"
+site_url: https://cs0320.github.io/notes/
+repo_url: https://github.com/cs0320/notes
+repo_name: cs0320/notes
+
+# Use file-based URLs (foo.html) instead of directory URLs (foo/)
+# This preserves relative path behavior from mdbook
+use_directory_urls: false
+
+theme:
+  name: material
+  palette:
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep blue
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep blue
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.sections      # Show section headers in sidebar
+    - navigation.expand        # Expand all sections by default
+    - navigation.indexes       # Section index pages
+    - navigation.top           # Back to top button
+    - search.suggest           # Search suggestions
+    - search.highlight         # Highlight search terms
+    - content.code.copy        # Copy button on code blocks
+    - toc.follow               # TOC follows scroll position
+  icon:
+    repo: fontawesome/brands/github
+
+# Extensions for admonitions, math, code highlighting, etc.
+markdown_extensions:
+  # Admonitions (note, warning, tip, etc.)
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+
+  # Math support (KaTeX-compatible via MathJax)
+  - pymdownx.arithmatex:
+      generic: true
+
+  # Code blocks with highlighting
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+
+  # Tables
+  - tables
+
+  # Table of contents
+  - toc:
+      permalink: true
+
+  # Task lists, strikethrough, etc.
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.mark
+  - pymdownx.tilde
+
+  # Attribute lists (for image sizing)
+  - attr_list
+  - md_in_html
+
+# JavaScript for math rendering
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+# Extra CSS if needed
+extra_css:
+  - stylesheets/extra.css
+
+# Plugins
+plugins:
+  - search:
+      lang: en
+      # Minimal separator to preserve operators like + - * in search
+      separator: '[\s]+'
+
+# Version selector (mike) - year-based versioning
+extra:
+  version:
+    provider: mike
+    default: latest
+
+# Navigation structure (from SUMMARY.md)
+nav:
+  - Home: index.md
+  - Success in 0320:
+    - Success in 0320: success-in-0320/success-in-0320.md
+    - Debugging Recipe: success-in-0320/recipe.md
+  - "Agile, Lambdas, and Validation": 02_lambdas_validation/02_lambdas_validation.md
+  - "Narrowing and Refinements": 03_bias_narrowing_refinements/03_bias_narrowing_refinements.md
+  - "Branding and Immutability":
+    - "Branding and Immutability": 04_refinements_mutability/04_refinements_mutability.md
+    - "APIs and Integration": 04_refinements_mutability/04.5.apis-integration.md
+  - "Threads and Promises": 05_threads_promises/05_threads_promises.md
+  - "HTML and React": 06_html_react/html-react-playwright.md
+  - "Thinking About Algorithms":
+    - "Thinking About Algorithms": algorithms/algorithms.md
+    - "Supplement Board: Dijkstra's Algorithm, Etc.": algorithms/supplement.md
+  - "Security 1": security/security_and_threat_modeling.md

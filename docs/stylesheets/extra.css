@@ -1,0 +1,6 @@
+/* Custom styles for CSCI 0320 Notes */
+
+/* Ensure code blocks don't overflow */
+.md-typeset pre > code {
+  overflow-x: auto;
+}
