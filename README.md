@@ -6,7 +6,7 @@ Adapted with thanks from the CSCI 1710 mdbook, set up by David Fryd.
 
 Built with MkDocs (Material theme) + `mike` for year-based versioning.
 
-1. `python3 -m venv .venv && source .venv/bin/activate`
+1. `python3 -m venv .venv && source .venv/bin/activate` (needed only within sandboxes/Linux)
 2. `pip install -r requirements.txt`
 3. `mkdocs serve -o` to preview the current branch without versioning.
 4. `mike serve` to preview with the version dropdown across all deployed years.

@@ -97,3 +97,6 @@ extra:
 # Navigation structure - reset for the new semester
 nav:
   - Home: index.md
+  - Success in 0320:
+    - Success in 0320: success-in-0320/success-in-0320.md
+    - Debugging Recipe: success-in-0320/recipe.md
