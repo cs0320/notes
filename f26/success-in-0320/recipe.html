@@ -10,29 +10,29 @@
       
       
       
-        <link rel="canonical" href="https://cs0320.github.io/notes/f26/index.html">
+        <link rel="canonical" href="https://cs0320.github.io/notes/f26/success-in-0320/recipe.html">
       
       
+        <link rel="prev" href="success-in-0320.html">
       
-        <link rel="next" href="success-in-0320/success-in-0320.html">
       
       
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>CSCI 0320 Notes</title>
+        <title>Debugging Recipe - CSCI 0320 Notes</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,9 +51,9 @@
       
     
     
-      <link rel="stylesheet" href="stylesheets/extra.css">
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#csci-03201340-notes" class="md-skip">
+        <a href="#the-debugging-recipe" class="md-skip">
           Skip to content
         </a>
       
@@ -98,7 +98,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="CSCI 0320 Notes" class="md-header__button md-logo" aria-label="CSCI 0320 Notes" data-md-component="logo">
+    <a href="../index.html" title="CSCI 0320 Notes" class="md-header__button md-logo" aria-label="CSCI 0320 Notes" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Debugging Recipe
             
           </span>
         </div>
@@ -236,7 +236,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="CSCI 0320 Notes" class="md-nav__button md-logo" aria-label="CSCI 0320 Notes" data-md-component="logo">
+    <a href="../index.html" title="CSCI 0320 Notes" class="md-nav__button md-logo" aria-label="CSCI 0320 Notes" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -263,6 +263,121 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Success in 0320
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Success in 0320
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="success-in-0320.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Success in 0320
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -282,7 +397,7 @@
   <span class="md-ellipsis">
     
   
-    Home
+    Debugging Recipe
   
 
     
@@ -293,14 +408,14 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <a href="index.html" class="md-nav__link md-nav__link--active">
+      <a href="recipe.html" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
     
   
-    Home
+    Debugging Recipe
   
 
     
@@ -326,10 +441,54 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#how-to-exercises" class="md-nav__link">
+  <a href="#rule-one" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How to: Exercises
+        Rule One
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#identify-whats-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Identify What's Wrong
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tell-the-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tell the Story
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#localization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Localization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#explanation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Explanation
       
     </span>
   </a>
@@ -340,121 +499,6 @@
   
 </nav>
       
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-      
-        
-      
-        
-      
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Success in 0320
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Success in 0320
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="success-in-0320/success-in-0320.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Success in 0320
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="success-in-0320/recipe.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Debugging Recipe
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -494,10 +538,54 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#how-to-exercises" class="md-nav__link">
+  <a href="#rule-one" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How to: Exercises
+        Rule One
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#identify-whats-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Identify What's Wrong
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tell-the-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tell the Story
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#localization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Localization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#explanation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Explanation
       
     </span>
   </a>
@@ -524,25 +612,24 @@
   
 
 
-<h1 id="csci-03201340-notes">CSCI 0320/1340 Notes<a class="headerlink" href="#csci-03201340-notes" title="Permanent link">&para;</a></h1>
-<p>Welcome to CSCI 0320/1340! </p>
-<p>This page contains the lecture notes for this course. Some lectures are mainly done via slides, in which case we will link the slides as well.</p>
-<p>These notes are meant to be accompanied by the <a href="https://github.com/cs0320/class-livecode">course live code repository</a>, which contains a collection of code examples done in and out of class. The course assumes that students will review the live code. (The end goal is to combine the two into one book, but for now they are separate resources.)</p>
-<div class="admonition warning">
-<p class="admonition-title">These notes are not final!</p>
-<p>This outline is subject to change, and notes are often modified in response to TA feedback or student Q&amp;A before class. Some notes will be greyed out and inaccessible in the table of contents.</p>
-</div>
-<h2 id="how-to-exercises">How to: Exercises<a class="headerlink" href="#how-to-exercises" title="Permanent link">&para;</a></h2>
-<p>Exercises are enclosed in expandable spoiler tags:</p>
-<div class="admonition note">
-<p class="admonition-title">Exercise Answers</p>
-<p>If you see an expandable piece of text, like this:</p>
-<details class="note">
-<summary>Think, then click.</summary>
-<p>Text for you to read <em>after</em> thinking or doing an exercise...</p>
-</details>
-<p>stop and think, or do the related exercise, before expanding.</p>
-</div>
+<h1 id="the-debugging-recipe">The Debugging Recipe<a class="headerlink" href="#the-debugging-recipe" title="Permanent link">&para;</a></h1>
+<h2 id="rule-one">Rule One<a class="headerlink" href="#rule-one" title="Permanent link">&para;</a></h2>
+<p>Never debug when tired or angry. If you must debug when tired, commit to a stopping time. Set a timer or ask a friend to help you keep that commitment.</p>
+<h2 id="identify-whats-wrong">Identify What's Wrong<a class="headerlink" href="#identify-whats-wrong" title="Permanent link">&para;</a></h2>
+<p>Assemble your knowledge. Write no more than two sentences for each question:
+* What is the purpose of the code you're working on?
+* What steps can you perform to reproduce the bug?
+* What is the expected behavior/result, and what is the unexpected actual behavior/result?
+* Why do you expect the result that you expect?</p>
+<h2 id="tell-the-story">Tell the Story<a class="headerlink" href="#tell-the-story" title="Permanent link">&para;</a></h2>
+<p>Now describe how you think the system operates as it approaches the unexpected actual result. Write your description as a series of steps. Use no more than one or two sentences for each step, but each step should be testable as a hypothesis about how the system works.</p>
+<h2 id="localization">Localization<a class="headerlink" href="#localization" title="Permanent link">&para;</a></h2>
+<p>Confirm each step in your description is accurate. Use any reasonable means (e.g., print statements or a debugger). The <strong>first step</strong> where the program behaves unexpectedly is a <em>possible</em> location for the original bug. More commonly, it contains the call site for the actual buggy code.</p>
+<p>Record this location, along with the expected and actual behavior.</p>
+<h2 id="explanation">Explanation<a class="headerlink" href="#explanation" title="Permanent link">&para;</a></h2>
+<p>If you have a hypothesis about the cause of the bug, make an experiment to see if you are correct.
+* If yes, proceed to fix the problem. Whenever possible, add a regression test so that this bug will be quickly identified if it happens again. Re-run all tests to confirm that your "fix" hasn't broken something else. 
+* If you have no hypothesis, or your hypothesis was incorrect, increase your level of detail about <strong>that single step</strong>. Look for unstated assumptions and dependencies; often, you'll find you left something important out of the original story. Then repeat the localization step.</p>
 
 
 
@@ -598,12 +685,12 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
-        <script src="javascripts/mathjax.js"></script>
+        <script src="../javascripts/mathjax.js"></script>
       
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
