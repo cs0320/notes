@@ -200,11 +200,7 @@ We'll be using a library called Zod for validation, and to enrich what types can
 
 We'll be using an agent this semester. It might look a bit different from what you're used to. 
 
-**TODO: this image will be filled in either Wednesday or Friday, depending on how far we get in class!**
-
-
-
-
+**See the class recording for the "good restaurants" example.**
 
 <!-- ## Welcome!
 Before we get started, turn to the people sitting next you to now and introduce yourself. 
