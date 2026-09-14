@@ -100,3 +100,5 @@ nav:
   - Success in 0320:
     - Success in 0320: success-in-0320/success-in-0320.md
     - Debugging Recipe: success-in-0320/recipe.md
+  - Properties Generalize Behavior:
+    - Properties: 02-properties/02-properties.md
