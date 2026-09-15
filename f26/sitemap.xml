@@ -2,18 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://cs0320.github.io/notes/f26/index.html</loc>
-         <lastmod>2026-09-14</lastmod>
+         <lastmod>2026-09-15</lastmod>
     </url>
     <url>
          <loc>https://cs0320.github.io/notes/f26/02-properties/02-properties.html</loc>
-         <lastmod>2026-09-14</lastmod>
+         <lastmod>2026-09-15</lastmod>
+    </url>
+    <url>
+         <loc>https://cs0320.github.io/notes/f26/03-bias-validation/03-bias-validation.html</loc>
+         <lastmod>2026-09-15</lastmod>
     </url>
     <url>
          <loc>https://cs0320.github.io/notes/f26/success-in-0320/recipe.html</loc>
-         <lastmod>2026-09-14</lastmod>
+         <lastmod>2026-09-15</lastmod>
     </url>
     <url>
          <loc>https://cs0320.github.io/notes/f26/success-in-0320/success-in-0320.html</loc>
-         <lastmod>2026-09-14</lastmod>
+         <lastmod>2026-09-15</lastmod>
     </url>
 </urlset>
