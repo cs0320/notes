@@ -964,9 +964,11 @@
 <h2 id="how-does-grading-work">How Does Grading Work?<a class="headerlink" href="#how-does-grading-work" title="Permanent link">&para;</a></h2>
 <p>You may look at the first assignment and think "OMG I am not prepared!" But you <em>are</em> prepared. This course is designed to prompt this feeling&mdash;in a safe environment&mdash;so you can build the skills necessary to navigate unpreparedness. The course works for those who embrace our (admittedly unusual) system. </p>
 <p>If you're a <em>highly prepared</em> student and you find that even most supplemental problems aren't challenging you: this is your chance to cut loose. Impress me! Don't just do the minimum to pass, or you're wasting your time and money.</p>
-<p>0320 is mandatory S/NC. We award "S with distinction" based on completing supplemental sprint challenges, exceptional professionalism, and strong performance on the term project. 
-  * The sprints let you demonstrate command of new technical skills, which we give formative feedback on. 
-  * The term project lets you show you can apply those skills in a new context of your own. Expectations are stronger here: I want everyone to finish 0320 with a good item for their portfolio (whether you're going into traditional SWE or not). </p>
+<p>0320 is mandatory S/NC. We award "S with distinction" based on completing supplemental sprint challenges, exceptional professionalism, and strong performance on the term project.</p>
+<ul>
+<li>The sprints let you demonstrate command of new technical skills, which we give formative feedback on. </li>
+<li>The term project lets you show you can apply those skills in a new context of your own. Expectations are stronger here: I want everyone to finish 0320 with a good item for their portfolio (whether you're going into traditional SWE or not). </li>
+</ul>
 <p>The missive talks at length about grading; I won't try to duplicate all that information here. However, here are some key features of 0320's grading.</p>
 <p><strong>1-week sprints:</strong> You'll have a deliverable every week. This gives us a better cadence for feedback. You'll alternate between asynchronous video demos and synchronous demos each week, and the demos (<em>and your answers to questions they ask</em>) are the primary way your mentors will generate feedback. Each sprint has a very small deliverable mid-week that you need to get checked off.</p>
 <p><strong>Formative Feedback:</strong> Your mentors will leave formative feedback <em>every week</em> on Gradescope. If your feedback comes with a ticket, you must demonstrate that you've resolved the ticket by the next demo.</p>
@@ -975,9 +977,11 @@
 <p>We're going to be using TypeScript for nearly all of this course. The first two weeks give you an introduction.</p>
 <p>TypeScript is essentially "JavaScript with types". It transpiles to JavaScript, meaning that Node and your browser only need to "understand" JavaScript. We need types here <em>even more</em> than we did in Java! Why? Well...</p>
 <h3 id="equality">Equality<a class="headerlink" href="#equality" title="Permanent link">&para;</a></h3>
-<p>When I'm learning a new language, I like to identify language features that I rely on, and experiment with them. Coming up with these facets isn't always easy, which is why we're doing it together. For instance, let's check out <em>equality</em>, a deceptively simple yet subtle idea that many languages differ on. We've got a couple options for our experiments:
-* If we were interested in <em>web</em> behavior, I'd use the console of whatever browser I wanted. (Safari's JS console is Command-Option-C, if you've enabled developer tools.
-* If we were interested in general <em>program</em> behavior, I'd just run Node. Node is a runtime library for JavaScript that's often used for backend servers&mdash;the same sort of setting you might see a Java program used for. </p>
+<p>When I'm learning a new language, I like to identify language features that I rely on, and experiment with them. Coming up with these facets isn't always easy, which is why we're doing it together. For instance, let's check out <em>equality</em>, a deceptively simple yet subtle idea that many languages differ on. We've got a couple options for our experiments:</p>
+<ul>
+<li>If we were interested in <em>web</em> behavior, I'd use the console of whatever browser I wanted. (Safari's JS console is Command-Option-C, if you've enabled developer tools.</li>
+<li>If we were interested in general <em>program</em> behavior, I'd just run Node. Node is a runtime library for JavaScript that's often used for backend servers&mdash;the same sort of setting you might see a Java program used for. </li>
+</ul>
 <p>Behavior isn't always the same between these. We'll get to that later. For now, let's use Node.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">&gt;</span><span class="w"> </span><span class="mf">15</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"15"</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kc">true</span>

@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#property-based-testing" class="md-skip">
+        <a href="#properties-and-property-based-testing" class="md-skip">
           Skip to content
         </a>
       
@@ -501,10 +501,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#a-first-try" class="md-nav__link">
+  <a href="#testing-policies" class="md-nav__link">
     <span class="md-ellipsis">
       
-        A First Try
+        Testing Policies
       
     </span>
   </a>
@@ -512,10 +512,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#properties-unify-examples" class="md-nav__link">
+  <a href="#properties-generalize-behaviors" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Properties Unify Examples
+        Properties Generalize Behaviors
       
     </span>
   </a>
@@ -523,10 +523,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#trading-goals" class="md-nav__link">
+  <a href="#competing-properties" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Trading Goals
+        Competing Properties
       
     </span>
   </a>
@@ -561,10 +561,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#mining-for-bugs" class="md-nav__link">
+  <a href="#random-testing-mining-for-bugs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Mining for Bugs
+        Random Testing: Mining for Bugs
       
     </span>
   </a>
@@ -576,17 +576,6 @@
     <span class="md-ellipsis">
       
         How to do this in TypeScript
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sprint-1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Sprint 1
       
     </span>
   </a>
@@ -678,10 +667,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#a-first-try" class="md-nav__link">
+  <a href="#testing-policies" class="md-nav__link">
     <span class="md-ellipsis">
       
-        A First Try
+        Testing Policies
       
     </span>
   </a>
@@ -689,10 +678,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#properties-unify-examples" class="md-nav__link">
+  <a href="#properties-generalize-behaviors" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Properties Unify Examples
+        Properties Generalize Behaviors
       
     </span>
   </a>
@@ -700,10 +689,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#trading-goals" class="md-nav__link">
+  <a href="#competing-properties" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Trading Goals
+        Competing Properties
       
     </span>
   </a>
@@ -738,10 +727,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#mining-for-bugs" class="md-nav__link">
+  <a href="#random-testing-mining-for-bugs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Mining for Bugs
+        Random Testing: Mining for Bugs
       
     </span>
   </a>
@@ -753,17 +742,6 @@
     <span class="md-ellipsis">
       
         How to do this in TypeScript
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sprint-1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Sprint 1
       
     </span>
   </a>
@@ -790,129 +768,224 @@
   
 
 
-<h1 id="property-based-testing">Property-Based Testing<a class="headerlink" href="#property-based-testing" title="Permanent link">&para;</a></h1>
-<p><strong>This will be filled in.</strong></p>
+<h1 id="properties-and-property-based-testing">Properties and Property-Based Testing<a class="headerlink" href="#properties-and-property-based-testing" title="Permanent link">&para;</a></h1>
 <h2 id="logistics">Logistics<a class="headerlink" href="#logistics" title="Permanent link">&para;</a></h2>
 <ul>
-<li>
-<p>If you don't have a key yet (and you're registered and have filled the form), don't worry. Manual and slow. We will understand, but please do all setup you can. Lots of the setup guide doesn't need a key. </p>
-</li>
-<li>
-<p>Gearups today and tomorrow! This one is a primer on Git, agent, etc. </p>
-</li>
-<li>
-<p>If you're in 1340, you should go to one. We understand CAB didn't list times. If you're in 1340 and can't make any, it's OK to review async. Talk with me. </p>
-</li>
-<li>
-<p>If you decide to drop, please fill out the "why I dropped" form! (In my greeting email.)</p>
-</li>
-<li>
-<p>See my EdStem post on note-card replies.</p>
-</li>
-<li>
-<p>Sprint 1 goes out later today.</p>
-</li>
+<li>If you don't have a key yet (and you're registered and have filled the form), don't worry. Manual and slow. We will understand, but please do all setup you can. Lots of the setup guide doesn't need a key. </li>
+<li>Gearups today and tomorrow! This one is a primer on Git, agent, etc. </li>
+<li>If you're in 1340, you should go to one. We understand CAB didn't list times. If you're in 1340 and can't make any, it's OK to review async. Talk with me. </li>
+<li>If you decide to drop, please fill out the "why I dropped" form! (In my greeting email.)</li>
+<li>See my EdStem post on note-card replies.</li>
+<li>Sprint 1 goes out later today.</li>
 </ul>
 <h2 id="testing-a-policy">Testing a Policy<a class="headerlink" href="#testing-a-policy" title="Permanent link">&para;</a></h2>
-<p>Gridworld from last time</p>
-<p>Properties and concrete examples.
-Help us understand the problem we're trying to solve. 
-Let's write tests for a given policy. What is "good behavior" for robot?</p>
-<h3 id="a-first-try">A First Try<a class="headerlink" href="#a-first-try" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>_$_
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>___
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>_R_
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>___
+<p>Last time, we walked through a <em>grid world</em> implementation in TypeScript. A grid world is just a 2-dimensional grid where cells might have specific terrain or contain objects. In our case, the world is static. A robot tries to navigate it, collecting rewards and avoiding hazards.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">export</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="nx">TerrainType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"open"</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s2">"blocked"</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s2">"hazard"</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s2">"reward"</span><span class="p">;</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">export</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="nx">Position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">x</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">y</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">};</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">export</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="nx">Grid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">width</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">height</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">cells</span><span class="o">:</span><span class="w"> </span><span class="kt">readonly</span><span class="w"> </span><span class="nx">TerrainType</span><span class="p">[];</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="p">};</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="k">export</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="nx">World</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">grid</span><span class="o">:</span><span class="w"> </span><span class="kt">Grid</span><span class="p">;</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">robot</span><span class="o">:</span><span class="w"> </span><span class="kt">Position</span><span class="p">;</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="p">};</span>
 </code></pre></div>
-<p>Forward! Ok, that's concrete. WHY?
-  - In right direction
-  - BEST direction
-  - Natural language: "Policy guides robot toward the reward"</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$_$
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>___
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>_R_
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>___
-</code></pre></div>
-<p>Forward! Right! Left! All equally good. All 3 from robot. 
-  - No longer deterministic. We can't write a single output with ==
-  - Could use <code>or</code>, but in general case this will blow up. And it's annoying.
-  - And we can't move in "right direction"; not in unconstrained 3-space. </p>
-<h3 id="properties-unify-examples">Properties Unify Examples<a class="headerlink" href="#properties-unify-examples" title="Permanent link">&para;</a></h3>
-<p>"Robot moves in a way strictly decreasing distance"?
-This works! Covers all 3 good moves above.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$_$
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>_H_
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>_R_
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>___
-</code></pre></div>
-<p>Left! Right! Still non-determinstic. But not up. Why? 
-  - Competing properties. ALSO want to not touch a hazard. 
-  - "Robot moves in a way strictly decreasing distance" is violated.
-    - Allow robot to not get FURTHER away...</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>_$_
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>HH_
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>RH_
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>___
-</code></pre></div>
+<p>The robot was controlled by a <em>policy</em>: a function that accepts a world state (i.e., grid and robot position) and returns a direction for the robot to move. We wrote two trivial policies: one that walks randomly, and another that never moves at all. But we could imagine lots of other policies, like:</p>
 <ul>
-<li>Oh no, but now the robot NEEDS to get further away!<ul>
-<li>How can we recover? Need the property to be more permissive. </li>
-<li>But now it's more expensive to check: "decreasing path distance in graph". </li>
-<li>Properties unify examples... at a cost.</li>
+<li>Run a DFS or BFS and then move the robot along one of the paths found to a reward.</li>
+<li>Ask the user for keyboard input that controls the robot.</li>
+<li>Create a web interface where the user directs the robot. </li>
+<li>Reply a previously-recorded game. </li>
+<li>...many many more, both algorithmic and interactive.</li>
 </ul>
-</li>
-</ul>
-<h3 id="trading-goals">Trading Goals<a class="headerlink" href="#trading-goals" title="Permanent link">&para;</a></h3>
-<p>What if "hazards" were just negative rewards? Things become much more convenient in some ways, 
-and much more complicated in others. </p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>[-50_] [100_] [____] 
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>[____] [-INF] [-10_]
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>[_R__] [____] [____]
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>[____] [____] [____]
+<h3 id="testing-policies">Testing Policies<a class="headerlink" href="#testing-policies" title="Permanent link">&para;</a></h3>
+<p>These policies might get pretty complex, especially when they run search algorithms. Maybe we should write some tests? Here's one (I'll use <code>R</code> to represent the robot and <code>_</code> to denote empty space for readability):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>const input = "_$_
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>               ___
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>               _R_
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>               ___"
 </code></pre></div>
-<p>Is the goal to maximize summed reward? 
-Does it cost the robot to move?</p>
+<p>What output do we expect? It feels like we want the robot to move up, right? So we'd write:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nx">describe</span><span class="p">(</span><span class="s2">"moveToward policy: examples"</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nx">it</span><span class="p">(</span><span class="s2">"moves up if reward is up 2 squares and no other factors"</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="c1">// Note: the world string isn't indented to avoid splitting on newline/trimming</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="sb">.$.</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="sb">...</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="sb">.R.`</span><span class="p">;</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">world</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">parse</span><span class="p">(</span><span class="nx">input</span><span class="p">);</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">moveToward</span><span class="p">(</span><span class="nx">world</span><span class="p">)).</span><span class="nx">toBe</span><span class="p">(</span><span class="s2">"up"</span><span class="p">);</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="p">});</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="p">});</span>
+</code></pre></div>
+<p>Great! Of course, neither of our existing policies will pass this test, but it's a good start. It really does feel like it's the single best move for the robot to make.</p>
+<h3 id="properties-generalize-behaviors">Properties Generalize Behaviors<a class="headerlink" href="#properties-generalize-behaviors" title="Permanent link">&para;</a></h3>
+<p>We might name the above test something like "the policy guides the robot directly toward the reward". This is called a <em>property</em>. We've phrased it in a very fuzzy, informal way: reasonable people could disagree about what it means! That's not great; we should do better at expressing what we want. </p>
+<p>Rather than sit and try to improve the property based on a single test, it's better to write more examples and refine our goal(s) based on them. Along the way, we might even understand our goals better ourselves! Here's another:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>const input = "$_$
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>               ___
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>               _R_
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>               ___"
+</code></pre></div>
+<p>What is the output? </p>
+<details class="note">
+<summary>Think, then click.</summary>
+<p>Forward? 
+Right?
+Left?
+These are all equally good: the reward ends up distance=3 from the robot. With no single "right answer", we can't check against a single expected output. We call this kind of problem <em>relational</em>, because there are multiple answers. We could try to work around this by using <code>or</code> in each test. But in the general case, this will not scale. And it's annoying: what if we forget an answer?  </p>
+</details>
+<p>What's our new property? Perhaps something like "The robot moves in a way that strictly decreases the distance to reward". If we can't write a standard test, we really need a way to <em>test the property</em>. We'll use a library for this (later in this chapter), but we could also do everything manually. A property check is just a function that takes an input and output and returns a boolean. With access to the livecode, it might look like this:</p>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kd">function</span><span class="w"> </span><span class="nx">movesTowardReward</span><span class="p">(</span><span class="nx">world</span><span class="o">:</span><span class="w"> </span><span class="kt">World</span><span class="p">,</span><span class="w"> </span><span class="nx">output</span><span class="o">:</span><span class="w"> </span><span class="kt">Direction</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">move</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">STEP</span><span class="p">[</span><span class="nx">move</span><span class="p">];</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">x</span><span class="o">:</span><span class="w"> </span><span class="kt">world.robot.x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">move</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="o">:</span><span class="w"> </span><span class="kt">world.robot.y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">move</span><span class="p">.</span><span class="nx">y</span><span class="w"> </span><span class="p">};</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">distanceToReward</span><span class="p">(</span><span class="nx">world</span><span class="p">.</span><span class="nx">grid</span><span class="p">,</span><span class="w"> </span><span class="nx">next</span><span class="p">)</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">       </span><span class="o">&lt;</span><span class="w"> </span><span class="nx">distanceToReward</span><span class="p">(</span><span class="nx">world</span><span class="p">.</span><span class="nx">grid</span><span class="p">,</span><span class="w"> </span><span class="nx">world</span><span class="p">.</span><span class="nx">robot</span><span class="p">);</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p">}</span>
+</code></pre></div>
+Then, we would just write a normal test that expects the property to hold:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nx">describe</span><span class="p">(</span><span class="s2">"moveToward policy: examples"</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nx">it</span><span class="p">(</span><span class="s2">"always move closer (for this particular input!)"</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="c1">// Note: the world string isn't indented to avoid splitting on newline/trimming</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="sb">.$.</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="sb">...</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="sb">.R.`</span><span class="p">;</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">move</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">moveToward</span><span class="p">(</span><span class="nx">world</span><span class="p">);</span><span class="w">  </span><span class="c1">// run the implementation</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">movesTowardReward</span><span class="p">(</span><span class="nx">world</span><span class="p">,</span><span class="w"> </span><span class="nx">move</span><span class="p">)).</span><span class="nx">toBe</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">  </span><span class="c1">// check the property</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">  </span><span class="p">});</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="p">});</span>
+</code></pre></div>
+<h3 id="competing-properties">Competing Properties<a class="headerlink" href="#competing-properties" title="Permanent link">&para;</a></h3>
+<p>Here's another example.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>const input = "$_$
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>               _H_
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>               _R_
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>               ___"
+</code></pre></div>
+<p>Is "The robot moves in a way that strictly decreases the distance to reward" still sufficient? Well, no: there's a hazard to the north, but moving there would strictly decrease distance. So now we need a second property:</p>
+<ul>
+<li>The robot moves in a way that strictly decreases the distance to reward.</li>
+<li>The robot never moves into a hazard.</li>
+</ul>
+<p>Great. But here's another example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>const input = "_$_
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>               HH_
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>               RH_
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>               ___"
+</code></pre></div>
+<p>Yet another challenge. What's wrong?</p>
+<details class="note">
+<summary>Think, then click.</summary>
+<p>The robot can't step onto a hazard, but then it can only move in a way that increases its distance from the goal. The properties are <em>conflicting</em>. It seems like we need to refine the first property once more. </p>
+<p>We might first try something like "...unless the robot has no such option" to the property. But if we add that, the robot must move north after moving south, trapping it in a loop. We must be smarter. </p>
+<p>How about "decreasing path distance in the graph" (where the graph has a node for every grid cell, and edges for each compass direction)? That seems correct, but it's expensive: we'd need to run something like breadth-first search to check the property. </p>
+<p>Can we find a compromise? How about "If it can, the robot moves in a way that strictly decreases the distance to reward. Otherwise, it never moves into a cell it has been in before."? No, because then the robot can get trapped: consider what would happen if it started one cell down from the above example. </p>
+</details>
+<p>Notice how we're forcing ourselves to think more carefully about <em>why</em> we like certain moves and dislike others. We're starting to articulate what correctness means in a more precise way. </p>
+<div class="admonition note">
+<p class="admonition-title">Trading Risk vs. Reward</p>
+<p>It's not in scope for this chapter, but I can't resist pointing out that things can get even more complex. What if "hazards" were just negative rewards? Then we might see a world like the following one. Note that this won't parse in our existing code; I'm using brackets and extra underscores to make it easier to read.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>const input = "[-50_] [100_] [____] 
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>               [____] [-INF] [-10_]
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>               [_R__] [____] [____]
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>               [____] [____] [____]
+</code></pre></div>
+<p>Is the goal to maximize the summed reward and cost, or something else? Does it cost the robot to move? Can it run out of power? I'll stop here, but if you want to learn more about this setting, you'll see this kind of grid world in settings like reinforcement learning. Even there, it's important to agree on <em>what we want</em> from the robot, and how we define victory and defeat.</p>
+</div>
 <h3 id="dynamic-environments">Dynamic Environments<a class="headerlink" href="#dynamic-environments" title="Permanent link">&para;</a></h3>
-<p>What if some hazards could move? Suppose H has same move speed and we take turns:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>_$_
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>_H_
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>_R_
+<p>What if some hazards could move? Suppose H has same move speed and we take turns, with the robot going first:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>const input = "_$_
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>               _H_
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>               _R_"
 </code></pre></div>
-<p>Robot needs to always END a turn 1 or more moves away from the hazard.</p>
-<p>Notice how our properties are getting more complex, as is reasoning about them. This suggests that the implementation of the policy will also grow in complexity.</p>
+<p>How do our properties need to change?</p>
+<details class="note">
+<summary>Think, then click.</summary>
+<p>The robot always end its turn 1 or more moves away from the hazard.</p>
+</details>
+<p>Notice how our properties are getting more complex. There are situations where we can write the property very precisely, but checking it naively is too expensive. </p>
+<div class="admonition note">
+<p class="admonition-title">Expensive Checking</p>
+<p>For example, consider the correctness properties for a breadth-first search (BFS). We want the path to start and end in the proper places and to <em>be</em> a path in the input graph. But this is BFS, so we also expect the path to take the minimum number of hops. The first properties are easy (just a loop over the path) but the last one is hard. We could try to get around it by using another implementation as an oracle, but there are often many correct paths&mdash;using an oracle would overfit the check to that oracle. </p>
+</div>
 <h3 id="takeaway">Takeaway<a class="headerlink" href="#takeaway" title="Permanent link">&para;</a></h3>
-<p>Properties generalize behaviors, at some cost. 
-Usually, when we write a standard in-out test, we have some property or properties in mind.</p>
-<p>Just like how we're better off writing a handful tests that test different things rather than a single test that tries to get them all, we're better off writing a number of small, orthogonal properties. </p>
-<h2 id="mining-for-bugs">Mining for Bugs<a class="headerlink" href="#mining-for-bugs" title="Permanent link">&para;</a></h2>
-<p>So far we've used properties to generalize behavior, but we're still using concrete inputs: the grids are fixed. If we want to be very general, shouldn't we try the policy on lots of different grids? </p>
-<p>We should absolutely think carefully about grid shapes that matter: where the hazards go, where the rewards go, which cells are blocked, ..., keeping in mind what behavior we are testing for. </p>
-<p>But ideally, we'd be able to check our property for ANY gridworld. There's just one problem:
-  - if we don't bound size, there are infinitely many of them; and 
-  - even if we bound size, with 4 possible cell types it's 4 to the number of cells. 
-    - 4^9 = 262,000
-    - 4^16 = 4 billion
-    - ... </p>
-<p>There are a few directions we could go in.
-  - roll a for loop (sometimes this works fine, like in the 3x3 case)
-  - if bounded, throw a constraint solver at the problem (avoid enumeration)
-  - if unbounded, might try to reason carefully and write a proof 
-  - if we're willing to give up completeness in favor of coverage, random grids! </p>
-<p>"Property Based Testing" generally unifies two things:
-  - expressing goals in terms of properties (as we've been learning to do); and 
-  - generating random inputs and trying the implementation on them automatically. </p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>  for idx in 1...MAX:
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    in = randomInput()
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    out = impl(in)
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    if(!prop(in, out)) return fail
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  return pass
+<p>Properties generalize behaviors. They can sometimes be more expensive than a unit test, but they 
+can express correctness much more broadly.</p>
+<ul>
+<li><strong>Advantage 1:</strong> properties can work even when a problem has multiple correct solutions. When <em>checking</em> a single property is expensive, you can still check the others.</li>
+<li><strong>Advantage 2:</strong> properties force us to think more carefully about what we want. This turns out to be very useful when writing specifications, whether they will be implement by a human or an AI agent. </li>
+</ul>
+<p>So whether or not you check a property, it can still be useful to <em>write it down</em>.</p>
+<p>Try to break down correctness into multiple sub-properties. Just like how we're better off writing a handful of tests that exercise different things, rather than a single test that does it all, we're better off writing a number of small, orthogonal properties. </p>
+<h2 id="random-testing-mining-for-bugs">Random Testing: Mining for Bugs<a class="headerlink" href="#random-testing-mining-for-bugs" title="Permanent link">&para;</a></h2>
+<p>So far we've used properties to generalize behavior, but we're still using concrete inputs: the grids are fixed. If we want to be very general, shouldn't we try the policy on lots of different grids? Yes! </p>
+<p>Ideally, we'd be able to check our properties for <em>any</em> gridworld. But there are two problems, broadly.</p>
+<ul>
+<li><strong>Exhaustivity:</strong> Unless the world dimensions are very small, there will be too many grids to enumerate. Even a 5-by-5 grid has <span class="arithmatex">\(4^{25}\)</span> (<span class="arithmatex">\(1{,}125{,}899{,}906{,}842{,}624\)</span>) possible configurations. </li>
+<li><strong>Bias and Creativity:</strong> If we can't check every world, we probably want to seek <em>interesting configurations</em>. Sometimes we're very good at this, but not all of the time. The human brain has limitations.</li>
+</ul>
+<p>There are a few directions we could go:</p>
+<ul>
+<li>If the number of configurations is reasonably small, just loop. This often isn't as inefficient as you might think. </li>
+<li>If you really care about correctness, you might write a proof. If you take an algorithms class, you'll get practice with this technique. You might also use a proof assistant that can help you verify your proofs (e.g., <a href="https://browncs1951x.github.io">CSCI 1715 at Brown</a>).</li>
+<li>You might throw a constraint solver at the problem. Solvers are much smarter than a naive enumeration, and can be shockingly effective. If you take <a href="https://csci1710.github.io/2026/">CSCI 1710 at Brown</a>, you'll use solvers to reason about data structures, distributed systems, etc.</li>
+<li>If we're willing to sacrifice completeness in the interest of time, we could <em>generate random inputs</em>. </li>
+</ul>
+<p>The <em>Property-Based Testing</em> (PBT) technique adds random generation to what we did in the previous sections:</p>
+<ul>
+<li><strong>Step 1:</strong> express goals in terms of properties that can be checked with a library or even just a boolean-valued function.</li>
+<li><strong>Step 2:</strong> generate random inputs. </li>
+<li><strong>Step 3:</strong> Run the implementation on the input, and check the property on the output.</li>
+</ul>
+<p>Then put these steps into a loop. Naively, we might write:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>  // impl: implementation under test
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>  // prop: our property-checker function
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>  for idx in 1...MAX:
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    in = randomInput()
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    out = impl(in)
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    if(!prop(in, out)) return fail
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>  return pass
 </code></pre></div>
-<p>This is a super powerful technique. By writing properties, we've made our testing more flexible and resilient. By generating random inputs, we've made it possible for us to search for bugs while we nap.</p>
-<p>Used all over the place. Even without properties ("fuzzing").</p>
+<p>This is a super powerful technique, and it's used heavily in industry. The random-testing idea is used heavily in industry.</p>
+<p><strong>Advantage 3:</strong> After generating random inputs, properties have made it possible for us to search for bugs while we nap.</p>
+<div class="admonition note">
+<p class="admonition-title">I don't love the name.</p>
+<p>When people talk about PBT, they usually combine <em>properties</em> with <em>random inputs</em>. But even without the random inputs, we already have multiple advantages! Really, we should have called this <em>random property-based testing</em> or something similar.</p>
+</div>
 <h2 id="how-to-do-this-in-typescript">How to do this in TypeScript<a class="headerlink" href="#how-to-do-this-in-typescript" title="Permanent link">&para;</a></h2>
-<p>We'll use <code>fast-check</code>. </p>
-<h2 id="sprint-1">Sprint 1<a class="headerlink" href="#sprint-1" title="Permanent link">&para;</a></h2>
-<p>...</p>
+<p>We'll use <code>fast-check</code>. See the live code for more specifics, but here's an example of the kind of test we can write. Notice that fast-check properties take two arguments:</p>
+<ul>
+<li>an "arbitrary" (their term for a generator of random inputs); and </li>
+<li>a function that takes a random input and returns true (good output) or false (bad output). </li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nx">describe</span><span class="p">(</span><span class="s2">"moveToward policy: single step"</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nx">it</span><span class="p">(</span><span class="s2">"distance to reward must be monotonically non-increasing"</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">    </span><span class="c1">// fast-check assertion</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="nx">fc</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">      </span><span class="c1">// this property should hold, on values produced by this generator:</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">      </span><span class="nx">fc</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="nx">worldArb</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">world</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">        </span><span class="c1">// Invoke the implementation under test</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">move</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">moveToward</span><span class="p">(</span><span class="nx">world</span><span class="p">);</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">move</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="kc">undefined</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="c1">// nothing happened, nothing to check</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">        </span><span class="c1">// Now validate the output</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">goals</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">rewardPositions</span><span class="p">(</span><span class="nx">world</span><span class="p">.</span><span class="nx">grid</span><span class="p">);</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">before</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">distanceToNearest</span><span class="p">(</span><span class="nx">world</span><span class="p">.</span><span class="nx">robot</span><span class="p">,</span><span class="w"> </span><span class="nx">goals</span><span class="p">);</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">after</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">distanceToNearest</span><span class="p">(</span><span class="nx">step</span><span class="p">(</span><span class="nx">world</span><span class="p">,</span><span class="w"> </span><span class="nx">move</span><span class="p">).</span><span class="nx">robot</span><span class="p">,</span><span class="w"> </span><span class="nx">goals</span><span class="p">);</span>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="w">        </span><span class="nx">expect</span><span class="p">(</span><span class="nx">after</span><span class="p">).</span><span class="nx">toBeLessThanOrEqual</span><span class="p">(</span><span class="nx">before</span><span class="p">);</span>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="w">      </span><span class="p">}),</span>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="w">    </span><span class="p">);</span>
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="w">  </span><span class="p">});</span>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="p">});</span>
+</code></pre></div>
 <!-- ## Cost to Compute vs. Cost to Validate 
 
 It would be wonderful if the cost to validate a solution were always cheaper than the cost to compute it. But this isn't always true.  -->
@@ -921,29 +994,23 @@ It would be wonderful if the cost to validate a solution were always cheaper tha
     * But we aren't doing arbitraries for sprint 1; we GAVE it to them. 
     * So start with properties only.  -->
 
-<ul>
-<li>gridworld TEST. What did we test for with this test? (empty grid, expect policy move DIRECT toward reward)</li>
-<li>DFS vs. BFS for these properties</li>
-<li>but... we really want to cap the number of moves, right? now we have another test (find WITHIN) that 
-    works over game traces.</li>
-</ul>
 <!-- ## Asynchronous Execution
 
 
 
 TypeScript has _really_ convenient support for concurrency. Try these in the browser console:
 
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>console.log('1')
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>setTimeout(() =&gt; console.log('2'), 5000)
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>console.log('3')
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>console.log('1')
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>setTimeout(() =&gt; console.log('2'), 5000)
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>console.log('3')
 </code></pre></div>
 
 But just under that surface, complexity lurks:
 
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>console.log('1')
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>setTimeout(() =&gt; console.log('2'), 5000)
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>console.log('3')
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>while(true) {}
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>console.log('1')
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>setTimeout(() =&gt; console.log('2'), 5000)
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>console.log('3')
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>while(true) {}
 </code></pre></div>
 
 What's happening here? JavaScript&mdash;a language built for the web&mdash;is a language whose design is _deeply and unavoidably_ tangled with concurrency. 
@@ -960,9 +1027,8 @@ Every time a callback is registered (in the `setTimeout` example above, the 0-ar
 
 This will become extremely important when you start sending web requests from your frontend to your API server. **Callbacks are not threads**. Asynchronous execution is very closely related to concurrency, however. 
 
-~~~admonish warning title="Repeating for emphasis"
-**Callbacks are not threads.** Neither are promises, `async` functions, or anything else in the remainder of these notes. 
-~~~
+!!! warning "Repeating for emphasis"
+    **Callbacks are not threads.** Neither are promises, `async` functions, or anything else in the remainder of these notes. 
 
 ## Code Review Exercise
 
