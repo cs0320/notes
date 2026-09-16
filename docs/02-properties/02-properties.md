@@ -1,5 +1,9 @@
 # Properties and Property-Based Testing
 
+## Extra Reading
+
+If you want more material on properties and PBT, you might read [CSCI 1710's notes](https://forge-fm.github.io/book/2026/chapters/properties/pbt.html) on the topic, as well. ScottW also has [a great in-depth series of blog posts](https://fsharpforfunandprofit.com/posts/property-based-testing-2/).
+
 ## Logistics 
 
 * If you don't have a key yet (and you're registered and have filled the form), don't worry. Manual and slow. We will understand, but please do all setup you can. Lots of the setup guide doesn't need a key. 
