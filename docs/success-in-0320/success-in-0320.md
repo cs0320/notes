@@ -63,9 +63,10 @@ You may look at the first assignment and think "OMG I am not prepared!" But you 
 
 If you're a _highly prepared_ student and you find that even most supplemental problems aren't challenging you: this is your chance to cut loose. Impress me! Don't just do the minimum to pass, or you're wasting your time and money.
 
-0320 is mandatory S/NC. We award "S with distinction" based on completing supplemental sprint challenges, exceptional professionalism, and strong performance on the term project. 
-  * The sprints let you demonstrate command of new technical skills, which we give formative feedback on. 
-  * The term project lets you show you can apply those skills in a new context of your own. Expectations are stronger here: I want everyone to finish 0320 with a good item for their portfolio (whether you're going into traditional SWE or not). 
+0320 is mandatory S/NC. We award "S with distinction" based on completing supplemental sprint challenges, exceptional professionalism, and strong performance on the term project.
+
+* The sprints let you demonstrate command of new technical skills, which we give formative feedback on. 
+* The term project lets you show you can apply those skills in a new context of your own. Expectations are stronger here: I want everyone to finish 0320 with a good item for their portfolio (whether you're going into traditional SWE or not). 
 
 The missive talks at length about grading; I won't try to duplicate all that information here. However, here are some key features of 0320's grading.
 
@@ -84,6 +85,7 @@ TypeScript is essentially "JavaScript with types". It transpiles to JavaScript, 
 ### Equality
 
 When I'm learning a new language, I like to identify language features that I rely on, and experiment with them. Coming up with these facets isn't always easy, which is why we're doing it together. For instance, let's check out _equality_, a deceptively simple yet subtle idea that many languages differ on. We've got a couple options for our experiments:
+
 * If we were interested in _web_ behavior, I'd use the console of whatever browser I wanted. (Safari's JS console is Command-Option-C, if you've enabled developer tools.
 * If we were interested in general _program_ behavior, I'd just run Node. Node is a runtime library for JavaScript that's often used for backend servers&mdash;the same sort of setting you might see a Java program used for. 
 

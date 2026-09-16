@@ -33,6 +33,7 @@ export type World = {
 ```
 
 The robot was controlled by a _policy_: a function that accepts a world state (i.e., grid and robot position) and returns a direction for the robot to move. We wrote two trivial policies: one that walks randomly, and another that never moves at all. But we could imagine lots of other policies, like:
+
 * Run a DFS or BFS and then move the robot along one of the paths found to a reward.
 * Ask the user for keyboard input that controls the robot.
 * Create a web interface where the user directs the robot. 
@@ -127,6 +128,7 @@ const input = "$_$
 ```
 
 Is "The robot moves in a way that strictly decreases the distance to reward" still sufficient? Well, no: there's a hazard to the north, but moving there would strictly decrease distance. So now we need a second property:
+
 * The robot moves in a way that strictly decreases the distance to reward.
 * The robot never moves into a hazard.
 
@@ -202,19 +204,22 @@ Try to break down correctness into multiple sub-properties. Just like how we're 
 So far we've used properties to generalize behavior, but we're still using concrete inputs: the grids are fixed. If we want to be very general, shouldn't we try the policy on lots of different grids? Yes! 
 
 Ideally, we'd be able to check our properties for _any_ gridworld. But there are two problems, broadly.
-    - **Exhaustivity:** Unless the world dimensions are very small, there will be too many grids to enumerate. Even a 5-by-5 grid has $4^{25}$ ($1{,}125{,}899{,}906{,}842{,}624$) possible configurations. 
-    - **Bias and Creativity:** If we can't check every world, we probably want to seek _interesting configurations_. Sometimes we're very good at this, but not all of the time. The human brain has limitations.
+
+- **Exhaustivity:** Unless the world dimensions are very small, there will be too many grids to enumerate. Even a 5-by-5 grid has $4^{25}$ ($1{,}125{,}899{,}906{,}842{,}624$) possible configurations. 
+- **Bias and Creativity:** If we can't check every world, we probably want to seek _interesting configurations_. Sometimes we're very good at this, but not all of the time. The human brain has limitations.
 
 There are a few directions we could go:
-  * If the number of configurations is reasonably small, just loop. This often isn't as inefficient as you might think. 
-  * If you really care about correctness, you might write a proof. If you take an algorithms class, you'll get practice with this technique. You might also use a proof assistant that can help you verify your proofs (e.g., [CSCI 1715 at Brown](https://browncs1951x.github.io)).
-  * You might throw a constraint solver at the problem. Solvers are much smarter than a naive enumeration, and can be shockingly effective. If you take [CSCI 1710 at Brown](https://csci1710.github.io/2026/), you'll use solvers to reason about data structures, distributed systems, etc.
-  * If we're willing to sacrifice completeness in the interest of time, we could _generate random inputs_. 
+
+* If the number of configurations is reasonably small, just loop. This often isn't as inefficient as you might think. 
+* If you really care about correctness, you might write a proof. If you take an algorithms class, you'll get practice with this technique. You might also use a proof assistant that can help you verify your proofs (e.g., [CSCI 1715 at Brown](https://browncs1951x.github.io)).
+* You might throw a constraint solver at the problem. Solvers are much smarter than a naive enumeration, and can be shockingly effective. If you take [CSCI 1710 at Brown](https://csci1710.github.io/2026/), you'll use solvers to reason about data structures, distributed systems, etc.
+* If we're willing to sacrifice completeness in the interest of time, we could _generate random inputs_. 
 
 The _Property-Based Testing_ (PBT) technique adds random generation to what we did in the previous sections:
-  - **Step 1:** express goals in terms of properties that can be checked with a library or even just a boolean-valued function.
-  - **Step 2:** generate random inputs. 
-  - **Step 3:** Run the implementation on the input, and check the property on the output.
+
+- **Step 1:** express goals in terms of properties that can be checked with a library or even just a boolean-valued function.
+- **Step 2:** generate random inputs. 
+- **Step 3:** Run the implementation on the input, and check the property on the output.
 
 Then put these steps into a loop. Naively, we might write:
 
@@ -238,6 +243,7 @@ This is a super powerful technique, and it's used heavily in industry. The rando
 ## How to do this in TypeScript 
 
 We'll use `fast-check`. See the live code for more specifics, but here's an example of the kind of test we can write. Notice that fast-check properties take two arguments:
+
 * an "arbitrary" (their term for a generator of random inputs); and 
 * a function that takes a random input and returns true (good output) or false (bad output). 
 

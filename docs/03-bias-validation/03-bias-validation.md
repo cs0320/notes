@@ -19,6 +19,7 @@ We're going to be using a few terms of art in 0320. While we do put a bit of our
 We say that a development methodology is _agile_ if, broadly speaking, it prioritizes the ability to change plans in response to regularly-sought feedback. Once we try to define it more precisely, you'll find multiple competing definitions, and many competing methodologies that purport to be "agile". But change and feedback are good enough for us today. 
 
 Usually, you'll see the term used in contrast to "waterfall" development, where the software project proceeds along a linear path, like this:
+
 * Requirements 
 * Specifications
 * Design 
