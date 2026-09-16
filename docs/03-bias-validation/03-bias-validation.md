@@ -54,30 +54,23 @@ But what makes a good user story? A user story describes a narrow, _demoable_ pi
 
 Suppose your job is to build a statistical app that summarizes United Nations data on population, GDP, and so on. You need to test your app, so think of a country. What country are you thinking of?
 
-<details>
-<summary><B>Think, then click!</B></summary>
+??? note "Think, then click!"
+    Chances are, the country you thought of was:
 
-Chances are, the country you thought of was:
-- close to home; 
-- large; or
-- in the news often.
+    - close to home; 
+    - large; or
+    - in the news often.
 
-And it's even more likely that the country you thought of was **currently in existence**. You probably didn't say "the USSR" or "Austria-Hungary". And note that my choices there were all limited by my own historical knowledge. I went and [looked up more](https://en.wikipedia.org/wiki/List_of_former_sovereign_states) after writing that sentence. Even if we only count nations that existed after the U.N. was created, there are many: the Republic of Egypt (1953-1958), the Fourth Brazilian Republic (1946-1964), etc.
+    And it's even more likely that the country you thought of was **currently in existence**. You probably didn't say "the USSR" or "Austria-Hungary". And note that my choices there were all limited by my own historical knowledge. I went and [looked up more](https://en.wikipedia.org/wiki/List_of_former_sovereign_states) after writing that sentence. Even if we only count nations that existed after the U.N. was created, there are many: the Republic of Egypt (1953-1958), the Fourth Brazilian Republic (1946-1964), etc.
 
-This is an example of something called _availability bias_ (or the _availability heuristic_). All humans exhibit it, and *usually* it's an advantage: just like caching in a program, our brains tend to recall information in cache. For us, it's an energy-saving measure.
-
-</details>
+    This is an example of something called _availability bias_ (or the _availability heuristic_). All humans exhibit it, and *usually* it's an advantage: just like caching in a program, our brains tend to recall information in cache. For us, it's an energy-saving measure.
 
 I'm not a cognitive scientist! If you want to learn more about this in depth, take a CLPS class. But even so, let's ask: **How does this cognitive phenomenon impact software testing?**
 
-<details>
-<summary><B>Think, then click!</B></summary>
+??? note "Think, then click!"
+    You probably test what you have loaded into your mental cache. If you aren't thinking of it at the moment, or haven't been thinking of it recently, you likely won't test it unless you work to find examples outside your current context.
 
-You probably test what you have loaded into your mental cache. If you aren't thinking of it at the moment, or haven't been thinking of it recently, you likely won't test it unless you work to find examples outside your current context.
-    
-Even worse, if you aren't aware of the thing to begin with, you won't think to test it. Beware of the kind of thing that Iain Banks called an "outside context problem", translated from fiction into the real world of testing. This is why getting outside feedback from others can be so valuable for testing.
-
-</details>
+    Even worse, if you aren't aware of the thing to begin with, you won't think to test it. Beware of the kind of thing that Iain Banks called an "outside context problem", translated from fiction into the real world of testing. This is why getting outside feedback from others can be so valuable for testing.
 
 Keep this threat in mind as you practice testing in this course.
 
@@ -220,9 +213,9 @@ Now the first row becomes an object: `{name: "Tim Nelson", credits: 10, email: "
 
 Passing functions arguments to to other functions is so powerful that it appears in multiple contexts. In Object-Oriented Programming, you see it everywhere under the name of "strategy pattern". For example, [Java's `Collections.sort` method](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html#sort-java.util.List-java.util.Comparator-) takes an object called a `Comparator`. A `Comparator` implements a method that takes two elements of the collection and says whether one is greater than another. In this way, the `Collections` library allows a single type to be sorted many different ways. 
 
-~~~admonish note title="But why not just implement `Comparable`?"
-Many objects implement Java's `Comparable` interface, and `Collections.sort` will indeed use that if no comparator is provided. The advantage of taking arbitrary comparators is in its flexibility: the caller might want to sort in ascending or descending order for example. Records might be sorted by one key or another key, and so on. The strategy pattern is all about flexibility.
-~~~ -->
+!!! note "But why not just implement `Comparable`?"
+    Many objects implement Java's `Comparable` interface, and `Collections.sort` will indeed use that if no comparator is provided. The advantage of taking arbitrary comparators is in its flexibility: the caller might want to sort in ascending or descending order for example. Records might be sorted by one key or another key, and so on. The strategy pattern is all about flexibility.
+-->
 
 
 <!-- ## Exercise -->
@@ -231,7 +224,7 @@ Many objects implement Java's `Comparable` interface, and `Collections.sort` wil
 
 Let's start with the toolchain we're using in the course. You've probably cloned the starter repository by now. Let's look at the `package.json` file together. JSON means "JavaScript Object Notation", and it's a very common text data format. You'll see fields like `dependencies` and `scripts` and so on. *What do you think they mean? How do they interact with the `npm` console command?* 
 
-!!! note title="Why won't I just tell you?"
+!!! note "Why won't I just tell you?"
     Research has shown that instruction is more effective if students _commit to a hypothesis_ first, rather than being told the answer immediately. I also want you to finish 0320/1340 with a confidence in making guesses that might be wrong.  -->
 
 ## Intermission: A Design Challenge! 
@@ -255,28 +248,27 @@ Element implicitly has an 'any' type because expression of type '0' can't be use
 
 **What should you do about this?**
 
-<details>
-<summary>Think, then click!</summary>
+??? note "Think, then click!"
+    Any time you see something like "Element implicitly has an 'any' type" you should be suspicious. It means that you haven't given TypeScript enough information. This information might need to go in your function headers, in your variable declarations, or the logical flow of your code. Notice what happens when I add an `if` statement:
 
-Any time you see something like "Element implicitly has an 'any' type" you should be suspicious. It means that you haven't given TypeScript enough information. This information might need to go in your function headers, in your variable declarations, or the logical flow of your code. Notice what happens when I add an `if` statement:
+    ```typescript
+    function whatToDo(input: string[] | number): string {
+        if(typeof input === "number") return ""
+        return input[0]
+    }
+    ```
 
-```typescript
-function whatToDo(input: string[] | number): string {
-    if(typeof input === "number") return ""
-    return input[0]
-}
-```
-The error goes away! TypeScript looks at your conditionals for hints, and uses those hints to resolve union types and other kinds of uncertainty. This is called _narrowing_, because TypeScript is able to reduce the size of the set of possible values.
-</details>
+    The error goes away! TypeScript looks at your conditionals for hints, and uses those hints to resolve union types and other kinds of uncertainty. This is called _narrowing_, because TypeScript is able to reduce the size of the set of possible values.
 
 TypeScript uses the control flow of your program to infer type information. You can read more about this in the [TypeScript documentation](https://www.typescriptlang.org/docs/handbook/2/narrowing.html). 
 
 !!! warning "The `typeof` operator"
     The `typeof` operator is technically part of JavaScript, and it isn't very precise at all! JavaScript has only a few "types":
+
     * `string`;
     * `object`;  
     * `number`; and
-    ...only a few others. 
+    * ...only a few others. 
 
     JavaScript, on its own, makes no distinction between an array and an object, or between two different kinds of object. This is one thing TypeScript handles a lot better, but it still can use these basic JavaScript checks. 
 
@@ -429,14 +421,10 @@ const result3 = classRecordSchema.safeParse(cs32_withLocation_bad_better)
 
 What do you think these produce? Try it. 
 
-<details>
-<summary>Try it, then click!</summary>
-
-* `result1`: a success result containing `{"course":"CSCI 0320","instructor":"Tim Nelson"}`
-* `result2`: a success result containing `{"course":"CSCI 0320","instructor":"Tim Nelson"}`
-* `result3`: an error result reporting 2 `invalid_type` errors: one for `course` (`number`) and one for `instructor` (`undefined`). 
-
-</details>
+??? note "Try it, then click!"
+    * `result1`: a success result containing `{"course":"CSCI 0320","instructor":"Tim Nelson"}`
+    * `result2`: a success result containing `{"course":"CSCI 0320","instructor":"Tim Nelson"}`
+    * `result3`: an error result reporting 2 `invalid_type` errors: one for `course` (`number`) and one for `instructor` (`undefined`). 
 
 Notice that both `result1` and `result2` contain the same values, even though one of them had a `location` field originally. This is because Zod throws away fields it isn't told to keep, at least by default. If we want to avoid this, we use `.passthrough()`:
 

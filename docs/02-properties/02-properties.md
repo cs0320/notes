@@ -52,8 +52,18 @@ const input = "_$_
 
 What output do we expect? It feels like we want the robot to move up, right? So we'd write:
 
-```
-TODO FILL VITEST CASE
+```typescript
+describe("moveToward policy: examples", () => {
+  it("moves up if reward is up 2 squares and no other factors", () => {
+    // Note: the world string isn't indented to avoid splitting on newline/trimming
+    const input = `
+.$.
+...
+.R.`;
+    const world = parse(input);
+    expect(moveToward(world)).toBe("up");
+  });
+});
 ```
 
 Great! Of course, neither of our existing policies will pass this test, but it's a good start. It really does feel like it's the single best move for the robot to make.
@@ -74,15 +84,35 @@ const input = "$_$
 What is the output? 
 
 ??? note "Think, then click."
-  Forward? 
-  Right?
-  Left?
-  These are all equally good: the reward ends up distance=3 from the robot. With no single "right answer", we can't check against a single expected output. We call this kind of problem _relational_, because there are multiple answers. We could try to work around this by using `or` in each test. But in the general case, this will not scale. And it's annoying: what if we forget an answer?  
+    Forward? 
+    Right?
+    Left?
+    These are all equally good: the reward ends up distance=3 from the robot. With no single "right answer", we can't check against a single expected output. We call this kind of problem _relational_, because there are multiple answers. We could try to work around this by using `or` in each test. But in the general case, this will not scale. And it's annoying: what if we forget an answer?  
 
-What's our new property? Perhaps something like "The robot moves in a way that strictly decreases the distance to reward". If we can't write a standard test, we really need a way to _test the property_. 
+What's our new property? Perhaps something like "The robot moves in a way that strictly decreases the distance to reward". If we can't write a standard test, we really need a way to _test the property_. We'll use a library for this (later in this chapter), but we could also do everything manually. A property check is just a function that takes an input and output and returns a boolean. With access to the livecode, it might look like this:
 
+```typescript
+function movesTowardReward(world: World, output: Direction): boolean {
+  const move = STEP[move];
+  const next = { x: world.robot.x + move.x, y: world.robot.y + move.y };
+  return distanceToReward(world.grid, next)
+       < distanceToReward(world.grid, world.robot);
+}
 ```
-TODO FILL fast-check property with one input 
+Then, we would just write a normal test that expects the property to hold:
+
+```typescript
+describe("moveToward policy: examples", () => {
+  it("always move closer (for this particular input!)", () => {
+    // Note: the world string isn't indented to avoid splitting on newline/trimming
+    const input = `
+.$.
+...
+.R.`;
+    const move = moveToward(world);  // run the implementation
+    expect(movesTowardReward(world, move)).toBe(true);  // check the property
+  });
+});
 ```
 
 ### Competing Properties
@@ -112,26 +142,27 @@ const input = "_$_
 Yet another challenge. What's wrong?
 
 ??? note "Think, then click."
-  The robot can't step onto a hazard, but then it can only move in a way that increases its distance from the goal. The properties are _conflicting_. It seems like we need to refine the first property once more. 
+    The robot can't step onto a hazard, but then it can only move in a way that increases its distance from the goal. The properties are _conflicting_. It seems like we need to refine the first property once more. 
 
-  We might first try something like "...unless the robot has no such option" to the property. But if we add that, the robot must move north after moving south, trapping it in a loop. We must be smarter. 
+    We might first try something like "...unless the robot has no such option" to the property. But if we add that, the robot must move north after moving south, trapping it in a loop. We must be smarter. 
 
-  How about "decreasing path distance in the graph" (where the graph has a node for every grid cell, and edges for each compass direction)? That seems correct, but it's expensive: we'd need to run something like breadth-first search to check the property. 
+    How about "decreasing path distance in the graph" (where the graph has a node for every grid cell, and edges for each compass direction)? That seems correct, but it's expensive: we'd need to run something like breadth-first search to check the property. 
 
-  Can we find a compromise? How about "If it can, the robot moves in a way that strictly decreases the distance to reward. Otherwise, it never moves into a cell it has been in before."? No, because then the robot can get trapped: consider what would happen if it started one cell down from the above example. 
+    Can we find a compromise? How about "If it can, the robot moves in a way that strictly decreases the distance to reward. Otherwise, it never moves into a cell it has been in before."? No, because then the robot can get trapped: consider what would happen if it started one cell down from the above example. 
 
 Notice how we're forcing ourselves to think more carefully about _why_ we like certain moves and dislike others. We're starting to articulate what correctness means in a more precise way. 
 
 !!! note "Trading Risk vs. Reward"
-  It's not in scope for this chapter, but I can't resist pointing out that things can get even more complex. What if "hazards" were just negative rewards? Then we might see a world like the following one. Note that this won't parse in our existing code; I'm using brackets and extra underscores to make it easier to read.
+    It's not in scope for this chapter, but I can't resist pointing out that things can get even more complex. What if "hazards" were just negative rewards? Then we might see a world like the following one. Note that this won't parse in our existing code; I'm using brackets and extra underscores to make it easier to read.
 
-  ```
-  const input = "[-50_] [100_] [____] 
-                 [____] [-INF] [-10_]
-                 [_R__] [____] [____]
-                 [____] [____] [____]
-  ```
-  Is the goal to maximize the summed reward and cost, or something else? Does it cost the robot to move? Can it run out of power? I'll stop here, but if you want to learn more about this setting, you'll see this kind of grid world in settings like reinforcement learning. Even there, it's important to agree on _what we want_ from the robot, and how we define victory and defeat.
+    ```
+    const input = "[-50_] [100_] [____] 
+                   [____] [-INF] [-10_]
+                   [_R__] [____] [____]
+                   [____] [____] [____]
+    ```
+
+    Is the goal to maximize the summed reward and cost, or something else? Does it cost the robot to move? Can it run out of power? I'll stop here, but if you want to learn more about this setting, you'll see this kind of grid world in settings like reinforcement learning. Even there, it's important to agree on _what we want_ from the robot, and how we define victory and defeat.
   
 ### Dynamic Environments 
 
@@ -145,21 +176,23 @@ const input = "_$_
 
 How do our properties need to change?
 
-??? "Think, then click."
-  The robot always end its turn 1 or more moves away from the hazard.
+??? note "Think, then click."
+    The robot always end its turn 1 or more moves away from the hazard.
 
 Notice how our properties are getting more complex. There are situations where we can write the property very precisely, but checking it naively is too expensive. 
 
 !!! note "Expensive Checking" 
-  For example, consider the correctness properties for a breadth-first search (BFS). We want the path to start and end in the proper places and to _be_ a path in the input graph. But this is BFS, so we also expect the path to take the minimum number of hops. The first properties are easy (just a loop over the path) but the last one is hard. We could try to get around it by using another implementation as an oracle, but there are often many correct paths&mdash;using an oracle would overfit the check to that oracle. 
+    For example, consider the correctness properties for a breadth-first search (BFS). We want the path to start and end in the proper places and to _be_ a path in the input graph. But this is BFS, so we also expect the path to take the minimum number of hops. The first properties are easy (just a loop over the path) but the last one is hard. We could try to get around it by using another implementation as an oracle, but there are often many correct paths&mdash;using an oracle would overfit the check to that oracle. 
 
 
 ### Takeaway
 
 Properties generalize behaviors. They can sometimes be more expensive than a unit test, but they 
-can express correctness much more broadly. 
+can express correctness much more broadly.
+
 * **Advantage 1:** properties can work even when a problem has multiple correct solutions. When _checking_ a single property is expensive, you can still check the others.
 * **Advantage 2:** properties force us to think more carefully about what we want. This turns out to be very useful when writing specifications, whether they will be implement by a human or an AI agent. 
+
 So whether or not you check a property, it can still be useful to _write it down_.
 
 Try to break down correctness into multiple sub-properties. Just like how we're better off writing a handful of tests that exercise different things, rather than a single test that does it all, we're better off writing a number of small, orthogonal properties. 
@@ -169,8 +202,8 @@ Try to break down correctness into multiple sub-properties. Just like how we're 
 So far we've used properties to generalize behavior, but we're still using concrete inputs: the grids are fixed. If we want to be very general, shouldn't we try the policy on lots of different grids? Yes! 
 
 Ideally, we'd be able to check our properties for _any_ gridworld. But there are two problems, broadly.
-  - **Exhaustivity:** Unless the world dimensions are very small, there will be too many grids to enumerate. Even a 5-by-5 grid has $4^25$ ($1,125,899,906,842,624$) possible configurations. 
-  - **Bias and Creativity:** If we can't check every world, we probably want to seek _interesting configurations_. Sometimes we're very good at this, but not all of the time. The human brain has limitations.
+    - **Exhaustivity:** Unless the world dimensions are very small, there will be too many grids to enumerate. Even a 5-by-5 grid has $4^{25}$ ($1{,}125{,}899{,}906{,}842{,}624$) possible configurations. 
+    - **Bias and Creativity:** If we can't check every world, we probably want to seek _interesting configurations_. Sometimes we're very good at this, but not all of the time. The human brain has limitations.
 
 There are a few directions we could go:
   * If the number of configurations is reasonably small, just loop. This often isn't as inefficient as you might think. 
@@ -178,7 +211,7 @@ There are a few directions we could go:
   * You might throw a constraint solver at the problem. Solvers are much smarter than a naive enumeration, and can be shockingly effective. If you take [CSCI 1710 at Brown](https://csci1710.github.io/2026/), you'll use solvers to reason about data structures, distributed systems, etc.
   * If we're willing to sacrifice completeness in the interest of time, we could _generate random inputs_. 
 
-The _Property-Basted Testing_ (PBT) technique adds random generation to what we did in the previous sections:
+The _Property-Based Testing_ (PBT) technique adds random generation to what we did in the previous sections:
   - **Step 1:** express goals in terms of properties that can be checked with a library or even just a boolean-valued function.
   - **Step 2:** generate random inputs. 
   - **Step 3:** Run the implementation on the input, and check the property on the output.
@@ -200,7 +233,7 @@ This is a super powerful technique, and it's used heavily in industry. The rando
 **Advantage 3:** After generating random inputs, properties have made it possible for us to search for bugs while we nap.
 
 !!! note "I don't love the name."
-  When people talk about PBT, they usually combine _properties_ with _random inputs_. But even without the random inputs, we already have multiple advantages! Really, we should have called this _random property-based testing_ or something similar.
+    When people talk about PBT, they usually combine _properties_ with _random inputs_. But even without the random inputs, we already have multiple advantages! Really, we should have called this _random property-based testing_ or something similar.
 
 ## How to do this in TypeScript 
 
@@ -278,9 +311,8 @@ Every time a callback is registered (in the `setTimeout` example above, the 0-ar
 
 This will become extremely important when you start sending web requests from your frontend to your API server. **Callbacks are not threads**. Asynchronous execution is very closely related to concurrency, however. 
 
-~~~admonish warning title="Repeating for emphasis"
-**Callbacks are not threads.** Neither are promises, `async` functions, or anything else in the remainder of these notes. 
-~~~
+!!! warning "Repeating for emphasis"
+    **Callbacks are not threads.** Neither are promises, `async` functions, or anything else in the remainder of these notes. 
 
 ## Code Review Exercise
 
