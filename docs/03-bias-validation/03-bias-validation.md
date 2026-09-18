@@ -5,6 +5,9 @@
 
 This chapter contains content that we won't cover in class: at minimum, the **Agile Development**, **Sprints**, and **User Story** sections. 
 
+!!! note "Extra Material!" 
+    There's an extra example in the course livecode, involving reading in grid-world configurations from the Internet. Please review this! 
+
 <!-- 
   Omitted, but still here:
 - refinements (Escaping the `any` type)

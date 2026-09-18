@@ -3,7 +3,7 @@ function example0() {
   setTimeout(() => {toReturn = 100}, 5000)
   return toReturn
 }
-console.log(example0())
+console.log(example0())   
 
 
 
