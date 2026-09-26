@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest'
 import fc from 'fast-check'
 import { pointsResponseSchema } from './points-schema'
 import { pointsResponseArb } from './points-arbitrary'
-import livePoints from './fixtures/points-providence.json' with { type: 'json' }
+import livePoints from './points-providence.json' with { type: 'json' }
 
 /**
  * Smoke test to confirm that these are valid schemas/arbitraries.
