@@ -41,6 +41,13 @@ theme:
 
 # Extensions for admonitions, math, code highlighting, etc.
 markdown_extensions:
+  # Code into doc with `--8<-- "path"`
+  - pymdownx.snippets:
+      base_path:
+        - .
+        - docs
+      check_paths: true
+
   # Admonitions (note, warning, tip, etc.)
   - admonition
   - pymdownx.details
@@ -80,6 +87,14 @@ extra_javascript:
 # Extra CSS if needed
 extra_css:
   - stylesheets/extra.css
+
+# Any chapter might have examples. Those examples don't need their dependencies in the 
+# deployed docs site. 
+exclude_docs: |
+  */examples/node_modules/
+  */examples/package.json
+  */examples/package-lock.json
+  */examples/tsconfig.json
 
 # Plugins
 plugins:

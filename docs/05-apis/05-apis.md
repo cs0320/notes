@@ -199,18 +199,31 @@ Consider what happens when I run integration tests. These generate web requests 
 
 You'll use mocking in every sprint from now until the class is over; we've only barely discovered how important it is as a technique. And the patterns we have learned so far are perfect for implementing mocking well. To start with, a data source can be a strategy provided by the caller (real or mock). 
 
-The [Mocking example](https://github.com/cs0320/class-livecode/tree/main/F25/sep25_mocking_brain_jar) from the live code shows one way to do this. You can also use Jest or Playwright themselves to mock certain functionality like input and output. 
-
-**TODO: update to F26**
-
-!!! note "Why does the example not just use a testing framework?"
-    A more conceptual example can demonstrate generally useful ideas like dependency injection without tying them to how those ideas are used by a specific library. In particular, notice how dependency injection here is just passing an argument to a factory function.
-
+The [Mocking example](https://github.com/cs0320/class-livecode/tree/main/F26/sep25) from the live code shows one way to do this. You can also use Jest or Playwright themselves to mock certain functionality, but I suggest keeping it simple. The key is in _dependency injection_: the real datasource and the fake datasource have the same type, and the code under test can't tell the difference. 
 
 ### Creating arbitraries and schemas for APIs
 
-Sprint 3 will ask you to create both `fast-check` _arbitraries_ and Zod _schemas_ for some web APIs, based on responses you've seen and API documentation.
+Sprint 3 will ask you to create both `fast-check` _arbitraries_ and Zod _schemas_ for some web APIs, based on responses you've seen and API documentation. You'll use the arbitraries for one of your mock types. Here are some examples. 
 
-**TODO: add Zod and fast-check examples**
+#### Weather Schema 
 
+To keep things simple, I've kept the example to just one of the weather queries we care about. I've also narrowed the set of fields. 
 
+```typescript
+--8<-- "05-apis/examples/src/points-schema.ts"
+```
+
+#### Weather Arbitrary 
+
+There are two ways to think about building an arbitrary:
+    
+  * with constraints (e.g., "generate an integer, and then keep it only if it is even"); vs.
+  * constructively (e.g., "generate an integer, then double it to get an event integer").
+
+The constructive approach is almost always more efficient! But it requires us to build a small pipeline: build the grid ID and coordinates first, and only then turn them into a query URL. We use the `.chain` method to pass a generated object and create a new arbitrary:
+
+```typescript
+--8<-- "05-apis/examples/src/points-arbitrary.ts"
+```
+
+There's a frustrating gap here, though. I can't find documentation on what grid-IDs and coordinates are valid! The schema just uses raw types: strings for the grid ID, and numbers for the coordinates. But that's surely too broad: most of the generated requests would be invalid, and not really test the space usefully. So I've made some decisions to narrow the ranges produced. **This isn't great!** But it's good enough for now.
