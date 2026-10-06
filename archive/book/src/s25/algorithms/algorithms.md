@@ -266,7 +266,7 @@ Start with an array of bits. We can use that to implement an approximate members
 
 Here's an example. Suppose we're in charge of Amazon's Prime TV service, and we want to very quickly tell whether a certain content-delivery network (CDN) node has a show that a local customer requests. We could add a bit array to every node, and when a new piece of media arrived (say, the first chunk of a new series), we'd hash the name of the media and set the corresponding bit to `1`. Like this:
 
-![](https://i.imgur.com/mfzLIUa.png)
+![](mfzLIUa.png)
 
 Note one crucial difference. Instead of saving a reference to the media in the table, we're just saving _one bit_. Very space efficient, especially if we've got a large array. 
 
@@ -305,7 +305,7 @@ Let's talk about a problem that you might see in an AI class: helping a robot na
 
 Here's an example: the little smiley face is the robot, and the dollar signs are the reward:
 
-![A 4-by-4 gridworld](https://i.imgur.com/kuUY9MJ.png)
+![A 4-by-4 gridworld](kuUY9MJ.jpg)
 
 The filled-in squares represent obstacles: walls, mountains, pits, etc. For now, let's say that every move costs $1$ unit of time, or fuel, or whatever measure we're using. 
 
@@ -319,7 +319,7 @@ Note that we're not talking about exploring with the robot in real time; we're e
 
 Here's what BFS might look like on this grid world. We reach the goal after $5$ hops:
 
-![BFS on the above grid world](https://i.imgur.com/M00wXPY.png)
+![BFS on the above grid world](M00wXPY.jpg)
 
 This looks great! It's a simple algorithm, it's pretty efficient, and everything's great. Right? 
 
@@ -327,7 +327,7 @@ It turns out that I've drawn the picture in a way that hides something from you.
 
 Here's the picture, slightly changed...
 
-![A bigger grid world](https://i.imgur.com/yMuEM4d.png)
+![A bigger grid world](yMuEM4d.jpg)
 
 What's the problem? If the world is bigger, BFS will explore a lot of unproductive space before it finds the goal. (To see why, fill in the distance markings in the new cells I just added.)
 
@@ -337,7 +337,7 @@ Neither BFS nor Dijkstra's algorithm takes advantage of any /real distance infor
 
 Here's an alternative. Let's build a search process that is entirely guided by _distance_, not by edge weights.  Every cell (implicitly; we're not actually going to have to compute them all) has such a distance.  We have a few choices of what distance metric to use here, but let's just use ordinary Euclidian distance:
 
-![Greedy Best-First Search on the same grid world](https://i.imgur.com/LPhLAXO.png)
+![Greedy Best-First Search on the same grid world](LPhLAXO.jpg)
 
 I haven't filled them all in, but the idea is to apply $\sqrt{(\Delta x)^2 + (\Delta y)^2}$ as needed to every cell. By this metric, the robot starts out at a distance $3$ from the goal. Moving up would get the robot closer: to distance $2$. Moving down would bring the robot further away: distance $4$. So the search process will move up first. In fact, for this example it will only explore the cells I've labeled. There's one branch caused by the obstacle, but it's quickly bypassed to discover the goal.
 
@@ -349,7 +349,7 @@ Greedy best-first search can be _much_ more efficient than Dijkstra's algorithm 
 
 What happens when edge weights aren't all $1$?
 
-![Changing one edge weight](https://i.imgur.com/XcEZyYT.png)
+![Changing one edge weight](XcEZyYT.jpg)
 
 GBFS still finds a path, but it isn't the _cheapest_ path. By changing an edge weight, we've made GBFS non-optimal. 
 

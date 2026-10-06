@@ -299,7 +299,7 @@ If it's synchronous, then the page-load process might be delayed noticably. And 
 
 But if it's asynchronous (i.e., doesn't block) then what will be printed? Hopefully not `undefined` or `null`&mdash;the data will almost certainly get here _eventually_. So `fetch` returns a datatype whose entire purpose is to represent data that doesn't yet exist: a _promise_.
 
-![](https://i.imgur.com/bvFibPk.png)
+![](bvFibPk.jpg)
 
 A promise can either be _resolved_, in which case the value exists within (but the value is still a promise object, not the data!) or _rejected_, in which case the promise contains an error. Until either of those events occurs, the promise exists in a state of potential only.
 

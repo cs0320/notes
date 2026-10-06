@@ -3,9 +3,10 @@
 We're going to start learning how to write web applications. In time, you'll have a working front-end web application, which you'll use to query the backend server you're finishing up now. 
 
 Please be aware that these notes:
+
 * cover __multiple class meetings__ (and thus may change, as I prepare for class each day); 
 * contain supplemental material which may not be covered in class; and 
-* meant to be accompanied by two examples: the [Providence Weather]() app and the [NYT puzzle example](https://github.com/cs0320/class-livecode/tree/main/F25/nyt), which contain many comments for your reference. 
+* meant to be accompanied by two examples: the [Providence Weather](https://github.com/tnelson/pvd-weather) app and the [NYT puzzle example](https://github.com/cs0320/class-livecode/tree/main/S26/nyt), which contain many comments for your reference. 
 
 We're going to _start_ building that final example in these notes, but won't have time to completely finish it. 
 
@@ -14,6 +15,7 @@ We're going to _start_ building that final example in these notes, but won't hav
 Let's start by looking at a student's website. The site is hosted [here](https://cs.brown.edu/~tbn/nim/). Naturally, I got permission before using one of your fellow student's webpages. The style is rather outdated, but it suffices as a first intro to these concepts.
 
 This website uses three files:
+
 * an HTML file, which defines the _content_ of the page ([index.html](https://cs.brown.edu/~tbn/nim/index.html));
 * a CSS File, which defines the _styling_ of the page ([styles.css](https://cs.brown.edu/~tbn/nim/styles.css)); and 
 * an image file with a picture of the student ([nim.png](https://cs.brown.edu/~tbn/nim/nim.png)).
@@ -43,13 +45,13 @@ The dot before `uniName` means that the style is meant to apply to any element o
 
 The result of this separation is that the HTML document can focus on content and context, and leave styling aside. Yes, it's possible to embed your CSS inside the same file, and there are also frameworks that combine the two in a useful way. But the convention we'll follow to start with is to split the two into different files. 
 
-~~~admonish warning title="Beware: styling isn't easy."
-You might initially be inclined to dismiss styling as a minor part of a webapp. Don't. You will spend a surprising amount of time on styling before the semester is over. Just because CSS isn't obviously a "programming language" doesn't mean it lacks for complexity. More on this in the near future.
-~~~
+!!! warning "Beware: styling isn't easy."
+    You might initially be inclined to dismiss styling as a minor part of a webapp. Don't. You will spend a surprising amount of time on styling before the semester is over. Just because CSS isn't obviously a "programming language" doesn't mean it lacks for complexity. More on this in the near future.
 
 ### Viewing HTML Source
 
 By default, your browser will render the HTML file, rather than showing its raw form. To see the HTML itself, you'll need to _view source_. Often there's a right-click menu option for this, but if not there's usually a key combination to press:
+
 * In Safari: `Command + Option + U`;
 * In (Windows) Firefox: `Control + U`;
 * In (MacOS) Firefox: `Command + U`.
@@ -57,6 +59,7 @@ By default, your browser will render the HTML file, rather than showing its raw 
 ### Inspecting Elements
 
 CSS files also have significant influence over how elements are positioned on the page. It can be useful to see where boundaries between `div`s and other elements actually are. This is best done in a browser's page-inspection tool. You'll often find this under "Web Developer Tools" or "Dev Tools" or a similarly named menu. Here are some key combinations:
+
 * In Safari: `Command + Option + I` (and click on the `Elements` tab);
 * In (Windows) Firefox: `Control + Shift + I` (and click the `Inspector` tab);
 * In (MacOS) Firefox: `Command + Option + I` (and click on the `Inspector` tab).
@@ -67,9 +70,8 @@ Notice that when I mouse over the first column in the table, my browser is highl
 
 There are better ways of formatting this sort of data than tables. I took this from a webpage written more than a decade ago. However, HTML tables would be a great way to start displaying rows of tabular data on a webpage!
 
-~~~admonish warning title="'Sources' isn't updated."
-Make sure you're looking at `Elements` or `Inspector`, not `Sources`. Once we start working with pages that change dynamically, `Sources` only shows the starting HTML (the source loaded in the file) without updates that are actually displayed. 
-~~~
+!!! warning "'Sources' isn't updated."
+    Make sure you're looking at `Elements` or `Inspector`, not `Sources`. Once we start working with pages that change dynamically, `Sources` only shows the starting HTML (the source loaded in the file) without updates that are actually displayed. 
 
 ## Adding Dynamic Behavior
 
@@ -91,22 +93,21 @@ This is an example of a webapp with both a _front end_ and a _back end_. The fro
 
 Let's try it out. I didn't implement the "I'm ready to guess" part yet, but once you have a guess, **write it down** and stop.
 
-<details>
-<summary>Think, then click!</summary>
-The rule is "any non-decreasing sequence of three numbers." Is that your guess?
-    
-Perhaps not! The NYT reports that the majority of people who've tried the puzzle made their first guess before ever receiving a _false_ response. 
-    
-What does that have to do with software engineering? This is an example of _confirmation bias_; we humans tend to favor examples that _meet_ our expectations. But without first seeing some `false` results, how would you really build confidence in your guess? (Maybe _any_ sequence worked!) 
+??? note "Think, then click!"
+    The rule is "any non-decreasing sequence of three numbers." Is that your guess?
 
-By the way, this shows an example of how cognitive bias can impact our testing. It's quite easy to see a lot of `true` responses and get complacent...
-</details>
+    Perhaps not! The NYT reports that the majority of people who've tried the puzzle made their first guess before ever receiving a _false_ response. 
+
+    What does that have to do with software engineering? This is an example of _confirmation bias_; we humans tend to favor examples that _meet_ our expectations. But without first seeing some `false` results, how would you really build confidence in your guess? (Maybe _any_ sequence worked!) 
+
+    By the way, this shows an example of how cognitive bias can impact our testing. It's quite easy to see a lot of `true` responses and get complacent...
 
 ## Building an App the Hard Way
 
 Before showing you React, I want to give you an example of how things work without a web framework to help out. And I want to showcase Copilot here and my process when I'm using it for this kind of prototyping. We're likely to run into some snags, and you'll see me resolve them. 
 
 Because this will be done live, I can't predict what will happen ahead of time. Still, remind yourselves of these three bits of advice from the AI gearup:
+
 * Specify the end goal.
 * Specify he language/infrastructure.
 * Specify the output/input format.
@@ -125,9 +126,9 @@ Again, I'll stop and point out issues as Copilot helps us prototype, but I can't
 
 ## Building Something Bigger
 
-I've put a draft of the puzzle in the live code repository [here](https://github.com/cs0320/class-livecode/tree/main/F25/reactNYT). 
+I've put a draft of the puzzle in the live code repository [here](https://github.com/cs0320/class-livecode/tree/main/F26/reactNYT). 
 
-You can find the HTML [here](https://github.com/cs0320/class-livecode/blob/main/F25/reactNYT/public/index.html). There are a couple of new tags in the HTML, but they're just more semantic grouping tags, like `section` etc. We'll focus on the code today.
+You can find the HTML [here](https://github.com/cs0320/class-livecode/blob/main/F26/reactNYT/public/index.html). There are a couple of new tags in the HTML, but they're just more semantic grouping tags, like `section` etc. We'll focus on the code today.
 
 One thing is worth noting: the CSS has only two declarations. These correspond to the formatting cues assigned to correct and incorrect sequences in the history:
 
@@ -188,6 +189,7 @@ A: Reactivity makes sense in more domains than you might think.
 ### Using Reactivity
 
 Here are a few examples.
+
 * Signal propagation in electrical engineering
 * Updating a database view in real time
 * Monitoring a system (either in production or for debugging)
@@ -206,30 +208,31 @@ For example, if we wanted to use reactivity in our web frontend applications, it
 ## What does React Do?
 
 React provides two useful features (among others):
+
 * React manages your front-end app's state centrally, and when it detects a state change it propagates that change to a _virtual copy_ of the page. The actual page then only gets updated when it actually needs to be changed. This can improve efficiency of complex apps. To make this work, **you usually want to manage all state through React**.
 * React gives us a nice way to align the *visual layout* of the app with the program. Concretely, **a React component is a TypeScript function** that returns a special kind of object that resembles HTML: a **JSX** expression. In effect, JSX is HTML **with holes in it** where we can plug in the result of running TypeScript code. 
 
 Together, these features mean that we can let React manage updating the DOM; we just need to update the state that React can see.
 
-~~~admonish tip title="JSX" 
-Always keep in mind that **a React function component must return a JSX expression**. This might be plain HTML, but almost always it's got some JavaScript being evaluated inside squiggle-braces. 
-~~~
+!!! tip "JSX"
+    Always keep in mind that **a React function component must return a JSX expression**. This might be plain HTML, but almost always it's got some JavaScript being evaluated inside squiggle-braces. 
 
 We're also using Vite, a development server for React applications. This makes it easier to get started. Notice that we're using a lot of helper libraries! This is normal in much of web development, and we want to get more practice managing this.
 
-~~~admonish tip title="Components"    
-React components will either be classes or functions.  We don't use "class components". They are outdated, from the early days of React. You'll still see them referenced online, though. The React team strongly suggests that new development use functional components instead, though. We follow their advice, and so should you. **Use function components.**
-~~~
+!!! tip "Components"
+    React components will either be classes or functions.  We don't use "class components". They are outdated, from the early days of React. You'll still see them referenced online, though. The React team strongly suggests that new development use functional components instead, though. We follow their advice, and so should you. **Use function components.**
 
 ### What are our components for this application?
 
 After you ignore all of the extraneous content, the NYT puzzle is pretty simple: 
+
 * 3 input boxes invite you to enter a trio of numbers. 
 * Once you've entered numbers, you click a button to check whether those numbers are in the hidden set of sequences. 
 * The 3 input boxes become read-only and get colored red or green depending on success or failure.
 * A new trio of inputs appears.
 
 So, for our graphical components, we probably need:
+
 * input boxes and a submission button; and
 * a notion of "attempt": one current attempt, and 0 or more past attempts.
 
@@ -264,6 +267,7 @@ If I then go to `http://localhost:5173/reactNYT`, I can view the app. (By defaul
 Because different projects may have different configurations (and Copilot may sometimes produce configurations that are slightly wrong...) I want to revisit this. 
 
 We've got a file called `package.json` and another called `tsconfig.json`. We've seen these before, but as a reminder they control (respectively):
+
 * the project's metadata and dependencies; and 
 * how TypeScript should compile (e.g., which version of JavaScript it should emit, whether it should interoperate with raw JavaScript, etc.).
 
@@ -272,10 +276,12 @@ There's also a very large file, `package-lock.json`. This gives the low-level de
 On the other hand, `node_modules` is where the dependencies have been downloaded. These are often large, and *should not be pushed to Github*.
 
 You may notice some other configuration:
+
 * `vite.config.js` configures Vite.
 * `jest.config.js` configures Jest.
 
 That's a lot of moving parts! Front-end development tends to have more pieces, but just keep in mind: 
+
 * Browsers understand JavaScript;
 * TypeScript adds types, and gets compiled to JavaScript;
 * React is a framework that makes building applications easier; and
@@ -298,6 +304,7 @@ function App() {
 This changes nothing, but it raises the question: how do we get the `NewRound` component to do what we want? Our application has some state. What does the state look like? 
 
 We'll need at least:
+
 * the state of each text input;
 * some record of past guesses; and (if we want to get fancy)
 * maybe some text state for showing error messages and so on.
@@ -321,30 +328,32 @@ function App() {
 The squiggly braces contain JavaScript; the result of evaluating that JavaScript gets substituted into the JSX. As a result, the `NewRound` component will have access to the setter for `guesses`, and thus have the ability to _update_ the record.
 
 Having referred to a _NewRound_ component, we probably ought to do something in the corresponding function (which is, at the moment, empty except for a `<div>`). We've got to do a few things:
+
 * We need a place for the state of those 3 text inputs to go. We'll use another `useState` hook for this.
 * We need a place for the inputs to go, and the guess button.
 * We need to _take in_ some props---at minimum, a way to change the notification message.
 
 See the completed livecode for details. Much of class will be a code-dive exercise with an opportunity to ask questions. Pay special attention to...
+
 * ...how state is declared, updated, and accessed. Never modify a state variable directly; always use the setter provided by React, and don't expect the setter to execute right away.
 * ...how the components refer to each other, forming a nested structure. The structure of the program echoes the graphical structure. If you're ever feeling "lost" in React, draw the picture of how the components should relate to each other. 
 
 
-~~~admonish warning title="React state updates are asynchronous!"
-Try adding a `console` write immediately after a state update (here's a snippet modified from the full code below):
+!!! warning "React state updates are asynchronous!"
+    Try adding a `console` write immediately after a state update (here's a snippet modified from the full code below):
 
-```javascript=function ControlledInput(props) {
-  return (
-    <input value={props.value} onChange={(ev) => {
-      props.setValue(ev.target.value);
-      console.log(props.value);
-   }
-  }></input>);
-}
-```
+    ```javascript
+    function ControlledInput(props) {
+      return (
+        <input value={props.value} onChange={(ev) => {
+          props.setValue(ev.target.value);
+          console.log(props.value);
+       }
+      }></input>);
+    }
+    ```
 
-The `console.log` will print the old value, because React hasn't yet had a chance to run the update. In general, don't expect React state updates to take effect until after the currently running code has ended. (We'll talk more about this in preparation for your _next_ sprint.)
-~~~
+    The `console.log` will print the old value, because React hasn't yet had a chance to run the update. In general, don't expect React state updates to take effect until after the currently running code has ended. (We'll talk more about this in preparation for your _next_ sprint.)
 
  
 ## Testing in React
@@ -358,6 +367,7 @@ Broadly, we're going to focus on a more heavy-weight kind of testing on the fron
 ### Contrasting vs. Unit Testing 
  
 Unit testing still has a (major) place in our testing lives. It's still useful to test narrow units of code. But _why_ do we unit test? It isn't because of some crude rule like "we should test every line!" but rather because it's important to have confidence about _interface boundaries_ in your application. These boundaries exist at many different levels:
+
 * individual public helper functions used throughout an application that developers (often you) invoke elsewhere, relying on their specific behavior when doing so;
 * the behavior of frontend-backend communication (like your API server in Sprint 2) and other connections between large components that developers (often _not_ you) rely on; 
 * the behavior of actual _user_ interface(s) that end users rely on; 
@@ -382,6 +392,7 @@ Maybe. But there's a price to pay in managing that specification and the effects
 ### Reminder: Promises
 
 In TypeScript, a `Promise` is a generic type that represents an *eventual* value (or error). The `await` and `async` keywords are syntactic sugar over promises (meaning that they both compile into promise operations). 
+
 * The `await` operator appears to "pause" until an operation is complete. In reality, `await` adds a callback function containing the rest of the code, and tells TypeScript to call that function when the promise resolves. 
 * The `async` operator warns TypeScript that the function returns a `Promise<T>`, but that the function's syntax is phrased as if it returns a real `T` value. 
 
@@ -425,13 +436,12 @@ JavaScript automatically inserts semicolons where it believes they are needed. I
 
 The language is powerful, and many of its quirks actually make perfect sense when writing web UIs. But still, beware, and treat your JavaScript programs like a science project: if you've got weird behavior, _experiment_. 
 
-~~~admonish note title="Strict Mode"
-If you absolutely must work in plain JavaScript (do not do this in 0320, you must use TypeScript), I suggest enabling _strict mode_. You'll get fewer silent failures (and more runtime errors). It won't give you protections before runtime like TypeScript does, and it won't protect you from as many problems. But it's better than nothing.
-~~~
+!!! note "Strict Mode"
+    If you absolutely must work in plain JavaScript (do not do this in 0320, you must use TypeScript), I suggest enabling _strict mode_. You'll get fewer silent failures (and more runtime errors). It won't give you protections before runtime like TypeScript does, and it won't protect you from as many problems. But it's better than nothing.
 
 ## Using Playwright to Test Components (for Sprint 6, not Sprint 5)
 
-You can find some example uses of Playwright in the `reactNYT` livecode repository. In particular, look at the [`app.spec.tsx` file](https://github.com/cs0320/class-livecode/blob/main/F23/reactNYT/tests/app.spec.ts). Here's an example:
+You can find some example uses of Playwright in the `reactNYT` livecode repository. In particular, look at the [`app.spec.tsx` file](https://github.com/cs0320/class-livecode/blob/main/F25/reactNYT/tests/app.spec.ts). Here's an example:
 
 ```typescript
 test('renders guess input fields', async ({ page }) => {
@@ -446,9 +456,10 @@ test('renders guess input fields', async ({ page }) => {
 });
 ```
 
-First, the test calls `page.goto` to load the page. This works because of [how Playwright is configured](https://github.com/cs0320/class-livecode/blob/main/F23/reactNYT/playwright.config.ts) in the project: when run, Playwright will automatically start up the development server for the project. 
+First, the test calls `page.goto` to load the page. This works because of [how Playwright is configured](https://github.com/cs0320/class-livecode/blob/main/F25/reactNYT/playwright.config.ts) in the project: when run, Playwright will automatically start up the development server for the project. 
 
 Then, the test creates *locators* for textbox elements with specific labels (in this case, accessibility metadata). Rather than hard-coding the specific string, the module imports an identifier from the app itself in the `constants.ts` file:
+
 ```typescript
 export const TEXT_number_1_accessible_name = 'first number in sequence'
 ```
@@ -464,7 +475,9 @@ await guess0.fill('100');
 await guess1.fill('200');    
 await guess2.fill('300');
 ```
+
 and even script clicking the button, after we find it by its accessibility data:
+
 ```typescript
 await submitButton.click();
 ```

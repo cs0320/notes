@@ -386,7 +386,7 @@ Now if any of you view the repo, you'll see my change. It's that easy! Here's a 
 * the history and current version of those files in your _local_ repository; and
 * the history and current version of those files in your _remote_ repository.
 
-![](https://i.imgur.com/rRZsWx9.png)
+![](rRZsWx9.jpg)
 
 As the semester progresses, we'll have expectations about your use of Git. For now, focus on your commits and pushes:
 * Name your commits something informative, and give credit to anyone who pair-programmed or worked with you. (More on this in the gearup.)

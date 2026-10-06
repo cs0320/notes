@@ -86,7 +86,7 @@ CSS files also have significant influence over how elements are positioned on th
 
 Notice that when I mouse over the first column in the table, my browser is highlighting the on-page position of that column:
 
-![](https://i.imgur.com/TD3UYKg.png)
+![](TD3UYKg.jpg)
 
 There are better ways of formatting this sort of data than tables. I took this from a webpage written more than a decade ago. However, HTML tables would be a great way to start displaying rows of tabular data on a webpage!
 
@@ -98,7 +98,7 @@ Make sure you're looking at `Elements` or `Inspector`, not `Sources`. Once we st
 
 The New York Times website had a [puzzle](https://www.nytimes.com/interactive/2015/07/03/upshot/a-quick-puzzle-to-test-your-problem-solving.html) a few years back that I love to use in class. It went something like this:
 
-![](https://i.imgur.com/EOIDbbx.png)
+![](EOIDbbx.png)
 
 ### The Problem
 
@@ -446,13 +446,13 @@ In most languages, it remains set to `11`. That `x + 1` is only computed once, a
 
 Let's set up something similar in Google Sheets:
 
-![](https://i.imgur.com/Uc6DO5N.png)
+![](Uc6DO5N.jpg)
 
 The cell `A1` is set to 10, and the cell `B1` has been assigned `A1+1`. Like before `B1` has the value `11`.
 
 But in this setting, if I go and change `A1` to `50`, the value of `B1` automatically updates to `51`:
 
-![](https://i.imgur.com/aaMMjcf.png)
+![](aaMMjcf.jpg)
 
 Languages where assignment works like it does in Google Sheets are called _reactive_, because values change _in reaction to_ changes in their dependencies. 
 
@@ -533,7 +533,7 @@ That's enough to get a very rough approximation of the puzzle, which is good eno
 
 I like to draw out a prototype UI, and circle different regions that represent important grouping in the application. E.g.:
 
-![](https://i.imgur.com/3cIg553.png)
+![](3cIg553.png)
 
 
 ### A starting template

@@ -30,11 +30,11 @@ Today's discussion: [Of Taxis and Rainbows](https://medium.com/vijay-pandurangan
    
 New York City is a lot more than skyscrapers. It includes, say, Staten Island:
 
-![](https://i.imgur.com/TYsQNas.png)
+![](TYsQNas.jpg)
     
 Here's a random Google street view:
 
-![](https://i.imgur.com/bDID3iU.jpg)
+![](bDID3iU.jpg)
 
     
 Take Malte's 2390, Julia's 1952B, and other such courses if you think this sort of thing is interesting. Most importantly, if you think of "social implications" as a separate thing from engineering, stop. It's not always inseparable, but it frequently is. As with much else, there's nuance.
@@ -60,7 +60,7 @@ Combining multiple security mistakes tends to add up to more than the sum of the
 
 Here's a screenshot of a real email someone received a couple of years ago.
 
-![](https://i.imgur.com/mxbNDq4.png)
+![](mxbNDq4.jpg)
 
 There was a lot more to follow, carefully crafted to trigger fear and loss aversion in the recipient. The sender claimed that they would toss the (salacious and embarrassing) information they had in exchange for a bit of money... in Bitcoin, of course.
 

@@ -472,20 +472,20 @@ public class TestSorts {
 
 If we run this, all tests pass. 
 
-![](https://i.imgur.com/nZS5USG.png)
-![](https://i.imgur.com/MI6C2c2.png)
+![](nZS5USG.jpg)
+![](MI6C2c2.jpg)
 
 But do you notice something missing about the test suite? Is there important stuff I'm not exercising (keeping in mind we're interested only in the _sort_ so far, not in the diplomat comparator.) We can get a hint by running _with coverage_. (You might need to run once without coverage before this option is enabled.)
 
-![](https://i.imgur.com/9Wo9c35.png)
+![](9Wo9c35.jpg)
 
 Here's the result:
 
-![](https://i.imgur.com/ZmpnmuN.png)
+![](ZmpnmuN.jpg)
 
 Notice the **20%** under "line" coverage. My suite has only exercises a fifth of the lines in the `edu.brown.cs32.live.sorting` package. Since this contains only my sorting method, I'm worried---the method's hardly being tested at all! If we click into the method, we'll see green and red bars shown to the left of the code:
 
-![](https://i.imgur.com/vaoVmpv.png)
+![](vaoVmpv.jpg)
 
 We've only tested the empty list input, and so none of those later lines ran at all. We should fix this.
 
