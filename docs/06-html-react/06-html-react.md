@@ -12,13 +12,13 @@ We're going to _start_ building that final example in these notes, but won't hav
 
 ## Static HTML and CSS Basics
 
-Let's start by looking at a student's website. The site is hosted [here](https://cs.brown.edu/~tbn/nim/). Naturally, I got permission before using one of your fellow student's webpages. The style is rather outdated, but it suffices as a first intro to these concepts.
+Let's start by looking at a student's website. The site is hosted [here](http://tnelson.github.io/other/nim). Naturally, I got permission before using one of your fellow student's webpages. The style is rather outdated, but it suffices as a first intro to these concepts.
 
 This website uses three files:
 
-* an HTML file, which defines the _content_ of the page ([index.html](https://cs.brown.edu/~tbn/nim/index.html));
-* a CSS File, which defines the _styling_ of the page ([styles.css](https://cs.brown.edu/~tbn/nim/styles.css)); and 
-* an image file with a picture of the student ([nim.png](https://cs.brown.edu/~tbn/nim/nim.png)).
+* an HTML file, which defines the _content_ of the page ([index.html](http://tnelson.github.io/other/nim/index.html));
+* a CSS File, which defines the _styling_ of the page ([styles.css](http://tnelson.github.io/other/nim/styles.css)); and 
+* an image file with a picture of the student ([nim.png](http://tnelson.github.io/other/nim/nim/nim.png)).
 
 There's no "app" here; the site is static. Put another way, it's just unchanging content for the browser to format and present for us to see.
 
