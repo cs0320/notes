@@ -6,7 +6,7 @@ Please be aware that these notes:
 
 * cover __multiple class meetings__ (and thus may change, as I prepare for class each day); 
 * contain supplemental material which may not be covered in class; and 
-* meant to be accompanied by two examples: the [Providence Weather](https://github.com/tnelson/pvd-weather) app and the [NYT puzzle example](https://github.com/cs0320/class-livecode/tree/main/S26/nyt), which contain many comments for your reference. 
+* meant to be accompanied by two examples: the [Providence Weather](https://github.com/tnelson/pvd-weather) app and the [NYT puzzle example](https://github.com/cs0320/class-livecode/tree/main/F26/oct07), which contain many comments for your reference. 
 
 We're going to _start_ building that final example in these notes, but won't have time to completely finish it. 
 
@@ -104,7 +104,7 @@ Let's try it out. I didn't implement the "I'm ready to guess" part yet, but once
 
 ## Building an App the Hard Way
 
-Before showing you React, I want to give you an example of how things work without a web framework to help out. And I want to showcase Copilot here and my process when I'm using it for this kind of prototyping. We're likely to run into some snags, and you'll see me resolve them. 
+Before showing you React, I want to give you an example of how things work without a web framework to help out. And I want to showcase our agent here, and my process when I'm using it for this kind of prototyping. We're likely to run into some snags, and you'll see me resolve them. 
 
 Because this will be done live, I can't predict what will happen ahead of time. Still, remind yourselves of these three bits of advice from the AI gearup:
 
@@ -112,7 +112,7 @@ Because this will be done live, I can't predict what will happen ahead of time. 
 * Specify he language/infrastructure.
 * Specify the output/input format.
 
-In this case, I want to build an example web application in TypeScript, without any frameworks. The application should have state in it: a counter on the page that the user clicks a button to increment. There's no real input/output format in this situation. We'll also want to prompt Copilot to ask us questions along the way.
+In this case, I want to build an example web application in TypeScript, without any frameworks. The application should have state in it: a counter on the page that the user clicks a button to increment. There's no real input/output format in this situation. We'll also want to prompt the agent to ask us questions along the way.
 
 **See the lecture capture for specifics on this exercise.**
 
@@ -120,15 +120,13 @@ In this case, I want to build an example web application in TypeScript, without 
 
 Let's try to do the same thing, but with React. I'll create a new folder and new conversation. Because there are a few different ways to _run_ a React program, I'll specify Vite because that's what we use this semester. 
 
-Again, I'll stop and point out issues as Copilot helps us prototype, but I can't predict what will happen ahead of time. 
-
 **See the lecture capture for specifics on this exercise.**
 
 ## Building Something Bigger
 
-I've put a draft of the puzzle in the live code repository [here](https://github.com/cs0320/class-livecode/tree/main/F26/reactNYT). 
+I've put a draft of the puzzle in the live code repository [here](https://github.com/cs0320/class-livecode/tree/main/F26/oct07). 
 
-You can find the HTML [here](https://github.com/cs0320/class-livecode/blob/main/F26/reactNYT/public/index.html). There are a couple of new tags in the HTML, but they're just more semantic grouping tags, like `section` etc. We'll focus on the code today.
+You can find the HTML [here](https://github.com/cs0320/class-livecode/blob/main/F26/oct07/public/index.html). There are a couple of new tags in the HTML, but they're just more semantic grouping tags, like `section` etc. We'll focus on the code today.
 
 One thing is worth noting: the CSS has only two declarations. These correspond to the formatting cues assigned to correct and incorrect sequences in the history:
 
@@ -260,11 +258,11 @@ From the console, I'll run `npm run start`. Because I'm using React with Vite, i
   ➜  press h to show help
 ```
 
-If I then go to `http://localhost:5173/reactNYT`, I can view the app. (By default, it would be served at `localhost:3000`, but I've configured it to add `reactNYT` so that I could deploy it where I did, rather than the root of my Github pages page. We won't be doing deployment today.)
+If I then go to `http://localhost:5173/oct07`, I can view the app. (By default, it would be served at `localhost:3000`, but I've configured it to add `oct07` so that I could deploy it where I did, rather than the root of my Github pages page. We won't be doing deployment today.)
 
 ### Revisiting Configuration
 
-Because different projects may have different configurations (and Copilot may sometimes produce configurations that are slightly wrong...) I want to revisit this. 
+Because different projects may have different configurations, I want to revisit this. 
 
 We've got a file called `package.json` and another called `tsconfig.json`. We've seen these before, but as a reminder they control (respectively):
 
@@ -441,7 +439,7 @@ The language is powerful, and many of its quirks actually make perfect sense whe
 
 ## Using Playwright to Test Components (for Sprint 6, not Sprint 5)
 
-You can find some example uses of Playwright in the `reactNYT` livecode repository. In particular, look at the [`app.spec.tsx` file](https://github.com/cs0320/class-livecode/blob/main/F25/reactNYT/tests/app.spec.ts). Here's an example:
+You can find some example uses of Playwright in the livecode repository. In particular, look at the [`app.spec.tsx` file](https://github.com/cs0320/class-livecode/blob/main/F26/oct07/tests/app.spec.ts). Here's an example:
 
 ```typescript
 test('renders guess input fields', async ({ page }) => {
@@ -456,7 +454,7 @@ test('renders guess input fields', async ({ page }) => {
 });
 ```
 
-First, the test calls `page.goto` to load the page. This works because of [how Playwright is configured](https://github.com/cs0320/class-livecode/blob/main/F25/reactNYT/playwright.config.ts) in the project: when run, Playwright will automatically start up the development server for the project. 
+First, the test calls `page.goto` to load the page. This works because of [how Playwright is configured](https://github.com/cs0320/class-livecode/blob/main/F26/oct07/playwright.config.ts) in the project: when run, Playwright will automatically start up the development server for the project. 
 
 Then, the test creates *locators* for textbox elements with specific labels (in this case, accessibility metadata). Rather than hard-coding the specific string, the module imports an identifier from the app itself in the `constants.ts` file:
 
