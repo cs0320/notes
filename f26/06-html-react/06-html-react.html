@@ -1399,7 +1399,7 @@
 <ul>
 <li>cover <strong>multiple class meetings</strong> (and thus may change, as I prepare for class each day); </li>
 <li>contain supplemental material which may not be covered in class; and </li>
-<li>meant to be accompanied by two examples: the <a href="https://github.com/tnelson/pvd-weather">Providence Weather</a> app and the <a href="https://github.com/cs0320/class-livecode/tree/main/S26/nyt">NYT puzzle example</a>, which contain many comments for your reference. </li>
+<li>meant to be accompanied by two examples: the <a href="https://github.com/tnelson/pvd-weather">Providence Weather</a> app and the <a href="https://github.com/cs0320/class-livecode/tree/main/F26/oct07">NYT puzzle example</a>, which contain many comments for your reference. </li>
 </ul>
 <p>We're going to <em>start</em> building that final example in these notes, but won't have time to completely finish it. </p>
 <h2 id="static-html-and-css-basics">Static HTML and CSS Basics<a class="headerlink" href="#static-html-and-css-basics" title="Permanent link">&para;</a></h2>
@@ -1468,22 +1468,21 @@
 <p>By the way, this shows an example of how cognitive bias can impact our testing. It's quite easy to see a lot of <code>true</code> responses and get complacent...</p>
 </details>
 <h2 id="building-an-app-the-hard-way">Building an App the Hard Way<a class="headerlink" href="#building-an-app-the-hard-way" title="Permanent link">&para;</a></h2>
-<p>Before showing you React, I want to give you an example of how things work without a web framework to help out. And I want to showcase Copilot here and my process when I'm using it for this kind of prototyping. We're likely to run into some snags, and you'll see me resolve them. </p>
+<p>Before showing you React, I want to give you an example of how things work without a web framework to help out. And I want to showcase our agent here, and my process when I'm using it for this kind of prototyping. We're likely to run into some snags, and you'll see me resolve them. </p>
 <p>Because this will be done live, I can't predict what will happen ahead of time. Still, remind yourselves of these three bits of advice from the AI gearup:</p>
 <ul>
 <li>Specify the end goal.</li>
 <li>Specify he language/infrastructure.</li>
 <li>Specify the output/input format.</li>
 </ul>
-<p>In this case, I want to build an example web application in TypeScript, without any frameworks. The application should have state in it: a counter on the page that the user clicks a button to increment. There's no real input/output format in this situation. We'll also want to prompt Copilot to ask us questions along the way.</p>
+<p>In this case, I want to build an example web application in TypeScript, without any frameworks. The application should have state in it: a counter on the page that the user clicks a button to increment. There's no real input/output format in this situation. We'll also want to prompt the agent to ask us questions along the way.</p>
 <p><strong>See the lecture capture for specifics on this exercise.</strong></p>
 <h2 id="using-react">Using React<a class="headerlink" href="#using-react" title="Permanent link">&para;</a></h2>
 <p>Let's try to do the same thing, but with React. I'll create a new folder and new conversation. Because there are a few different ways to <em>run</em> a React program, I'll specify Vite because that's what we use this semester. </p>
-<p>Again, I'll stop and point out issues as Copilot helps us prototype, but I can't predict what will happen ahead of time. </p>
 <p><strong>See the lecture capture for specifics on this exercise.</strong></p>
 <h2 id="building-something-bigger">Building Something Bigger<a class="headerlink" href="#building-something-bigger" title="Permanent link">&para;</a></h2>
-<p>I've put a draft of the puzzle in the live code repository <a href="https://github.com/cs0320/class-livecode/tree/main/F26/reactNYT">here</a>. </p>
-<p>You can find the HTML <a href="https://github.com/cs0320/class-livecode/blob/main/F26/reactNYT/public/index.html">here</a>. There are a couple of new tags in the HTML, but they're just more semantic grouping tags, like <code>section</code> etc. We'll focus on the code today.</p>
+<p>I've put a draft of the puzzle in the live code repository <a href="https://github.com/cs0320/class-livecode/tree/main/F26/oct07">here</a>. </p>
+<p>You can find the HTML <a href="https://github.com/cs0320/class-livecode/blob/main/F26/oct07/public/index.html">here</a>. There are a couple of new tags in the HTML, but they're just more semantic grouping tags, like <code>section</code> etc. We'll focus on the code today.</p>
 <p>One thing is worth noting: the CSS has only two declarations. These correspond to the formatting cues assigned to correct and incorrect sequences in the history:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">.</span><span class="nc">correct-try</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="kc">green</span><span class="p">;</span>
@@ -1572,9 +1571,9 @@ A: Reactivity makes sense in more domains than you might think.</p>
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  ➜  Network: use --host to expose
 <a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  ➜  press h to show help
 </code></pre></div>
-<p>If I then go to <code>http://localhost:5173/reactNYT</code>, I can view the app. (By default, it would be served at <code>localhost:3000</code>, but I've configured it to add <code>reactNYT</code> so that I could deploy it where I did, rather than the root of my Github pages page. We won't be doing deployment today.)</p>
+<p>If I then go to <code>http://localhost:5173/oct07</code>, I can view the app. (By default, it would be served at <code>localhost:3000</code>, but I've configured it to add <code>oct07</code> so that I could deploy it where I did, rather than the root of my Github pages page. We won't be doing deployment today.)</p>
 <h3 id="revisiting-configuration">Revisiting Configuration<a class="headerlink" href="#revisiting-configuration" title="Permanent link">&para;</a></h3>
-<p>Because different projects may have different configurations (and Copilot may sometimes produce configurations that are slightly wrong...) I want to revisit this. </p>
+<p>Because different projects may have different configurations, I want to revisit this. </p>
 <p>We've got a file called <code>package.json</code> and another called <code>tsconfig.json</code>. We've seen these before, but as a reminder they control (respectively):</p>
 <ul>
 <li>the project's metadata and dependencies; and </li>
@@ -1706,7 +1705,7 @@ A: Reactivity makes sense in more domains than you might think.</p>
 <p>If you absolutely must work in plain JavaScript (do not do this in 0320, you must use TypeScript), I suggest enabling <em>strict mode</em>. You'll get fewer silent failures (and more runtime errors). It won't give you protections before runtime like TypeScript does, and it won't protect you from as many problems. But it's better than nothing.</p>
 </div>
 <h2 id="using-playwright-to-test-components-for-sprint-6-not-sprint-5">Using Playwright to Test Components (for Sprint 6, not Sprint 5)<a class="headerlink" href="#using-playwright-to-test-components-for-sprint-6-not-sprint-5" title="Permanent link">&para;</a></h2>
-<p>You can find some example uses of Playwright in the <code>reactNYT</code> livecode repository. In particular, look at the <a href="https://github.com/cs0320/class-livecode/blob/main/F25/reactNYT/tests/app.spec.ts"><code>app.spec.tsx</code> file</a>. Here's an example:</p>
+<p>You can find some example uses of Playwright in the livecode repository. In particular, look at the <a href="https://github.com/cs0320/class-livecode/blob/main/F26/oct07/tests/app.spec.ts"><code>app.spec.tsx</code> file</a>. Here's an example:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nx">test</span><span class="p">(</span><span class="s1">'renders guess input fields'</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">({</span><span class="w"> </span><span class="nx">page</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">page</span><span class="p">.</span><span class="kr">goto</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span><span class="w">    </span>
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span><span class="c1">// Leverage accessibility tags we ought to be providing anyway  </span>
@@ -1718,7 +1717,7 @@ A: Reactivity makes sense in more domains than you might think.</p>
 <a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">expect</span><span class="p">(</span><span class="nx">guess2</span><span class="p">).</span><span class="nx">toBeVisible</span><span class="p">()</span>
 <a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="p">});</span>
 </code></pre></div>
-<p>First, the test calls <code>page.goto</code> to load the page. This works because of <a href="https://github.com/cs0320/class-livecode/blob/main/F25/reactNYT/playwright.config.ts">how Playwright is configured</a> in the project: when run, Playwright will automatically start up the development server for the project. </p>
+<p>First, the test calls <code>page.goto</code> to load the page. This works because of <a href="https://github.com/cs0320/class-livecode/blob/main/F26/oct07/playwright.config.ts">how Playwright is configured</a> in the project: when run, Playwright will automatically start up the development server for the project. </p>
 <p>Then, the test creates <em>locators</em> for textbox elements with specific labels (in this case, accessibility metadata). Rather than hard-coding the specific string, the module imports an identifier from the app itself in the <code>constants.ts</code> file:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">TEXT_number_1_accessible_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'first number in sequence'</span>
 </code></pre></div>
