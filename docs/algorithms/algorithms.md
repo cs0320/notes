@@ -1,6 +1,7 @@
 # Thinking About Algorithms
 
 These notes combine multiple sources from prior semesters. Broadly, they discuss:
+
 * data representations vs. interfaces; 
 * kd-trees; 
 * comparators (from the perspective of the kd-tree class as a consumer); 
@@ -17,22 +18,17 @@ This may seem obvious, but it's harder than it sounds. It's helpful to make a ve
 
 **QUESTION:** What's a list?
 
-<details>
-<summary><B>Think, then click!</B></summary>
+??? note "Think, then click!"
+    It depends.
 
-It depends. 
+    Do you mean the set of _operations_ one usually expects a list to be able to perform? Adding, removing, index-based accesses, etc.? If so, a list is an object providing that interface to a caller.
 
-Do you mean the set of _operations_ one usually expects a list to be able to perform? Adding, removing, index-based accesses, etc.? If so, a list is an object providing that interface to a caller. 
+    Or do you mean a particular data structure? A _linked_ list? Maybe a _doubly linked_ list? A (dynamic) _array_ list? All of these can conform to the `List` interface, although some of them have to do more work than others for certain operations.
 
-Or do you mean a particular data structure? A _linked_ list? Maybe a _doubly linked_ list? A (dynamic) _array_ list? All of these can conform to the `List` interface, although some of them have to do more work than others for certain operations.
+    Don't conflate these two meanings. One is about the functionality you must provide; the other is about how you concretely choose to represent your data.
 
-Don't conflate these two meanings. One is about the functionality you must provide; the other is about how you concretely choose to represent your data. 
-</details>
-<br/>
-
-~~~admonish tip title="Think Like an Engineer"
-Keep this in mind when you're splitting up work: decide together on the operations (interface) each component needs from the others early, and keep other criteria broad ("I need you to give me the `find` operation", and then eventually "I need worst-case $O(log(N))$ runtime for the find operation"; don't skip right to  "I need you to use a Java `TreeList`"). 
-~~~
+!!! tip "Think Like an Engineer"
+    Keep this in mind when you're splitting up work: decide together on the operations (interface) each component needs from the others early, and keep other criteria broad ("I need you to give me the `find` operation", and then eventually "I need worst-case $O(log(N))$ runtime for the find operation"; don't skip right to  "I need you to use a Java `TreeList`").
 
 Just like we can provide the `List` interface via many different data structures, we can provide algorithmic content like "find the nearest neighbor of an element" in many different ways. Let's look at one you may not have seen before.
 
@@ -46,45 +42,34 @@ But now there's a twist. I don't just want to check membership (or get data abou
 
 Why is this hard? Because I'm doing the routing at a very high level: I'm working for a gigantic or district post office! We can't hand-deliver every piece of mail ourselves. So I need to send letters to the right small, local post office for hand-delivery. 
 
-![](https://hackmd.io/_uploads/SyUQYG9mY.png)
+![](SyUQYG9mY.png)
 
 In short, I need to find the _nearest neighbor_ to the target house, from among a set of post office addresses. 
 
 You could solve this using a list (or set, or any collection) to store the data points, and a `for` loop to iterate through them, seeking the nearest neighbor. The trouble is that a linear-time search won't scale as the dataset grows. Our first go-to data structure, the hash table, won't work for nearest-neighbor---hashing will lose information about locality and closeness that are so vital to solving this problem! 
 
-~~~admonish tip title="Think Like an Engineer"
-Agree on what you need from the interface, and then figure out what the right implementation is afterward. It's OK to start with something inefficient, and it might even let you explore the problem enough that your second implementation is better than it would have been otherwise.
-~~~
+!!! tip "Think Like an Engineer"
+    Agree on what you need from the interface, and then figure out what the right implementation is afterward. It's OK to start with something inefficient, and it might even let you explore the problem enough that your second implementation is better than it would have been otherwise.
 
 What would you use instead, if you wanted better performance? 
 
-<details>
-<summary><B>Think, then click!</B></summary>
-
-This is one of several reasons why we still teach you binary search trees (BSTs). BSTs are absolutely perfect for this problem. Not only are they aware of relative positions (and have to be) but it turns out that the ordinary recursive descent you might perform to search for membership also suffices to find a nearest neighbor: you're guaranteed to always find the nearest neighbor somewhere on the descent!
-
-</details>
-<br/>
+??? note "Think, then click!"
+    This is one of several reasons why we still teach you binary search trees (BSTs). BSTs are absolutely perfect for this problem. Not only are they aware of relative positions (and have to be) but it turns out that the ordinary recursive descent you might perform to search for membership also suffices to find a nearest neighbor: you're guaranteed to always find the nearest neighbor somewhere on the descent!
 
 Suppose we store a set of post offices in the following (balanced!) BST:
 
-![](https://hackmd.io/_uploads/HJztFzcmY.png)
+![](HJztFzcmY.png)
 
 If we're seeking a nearest-neighbor to `17`, I claim that it always works to do a search in the tree for `17`. If `17` is found, it is its own nearest neighbor. If `17` isn't found, then its nearest neighbor must be on the path taken during the search. 
 
-![](https://hackmd.io/_uploads/HJam9zq7K.png)
+![](HJam9zq7K.png)
 
 And `20` is the nearest neighbor to `17`. It won't always be the last node visited, but it must be on the path. 
 
 Why does this work?
 
-<details>
-<summary><B>Think, then click!</B></summary>
-
-Because every time we move down the tree, we move in the direction of the goal. It would be impossible to visit a node `X`, where `X < goal`, and move right when we should have moved left. We get this from one of the BST invariants: _every node is less than (or equal to) all its right descendants_. 
-
-</details>
-<br/>
+??? note "Think, then click!"
+    Because every time we move down the tree, we move in the direction of the goal. It would be impossible to visit a node `X`, where `X < goal`, and move right when we should have moved left. We get this from one of the BST invariants: _every node is less than (or equal to) all its right descendants_.
 
 ### Moving beyond 1 dimension
 
@@ -98,7 +83,7 @@ Today we're going to explore an alternative solution that retains the binary-tre
 
 K-d trees have nodes corresponding to k-dimensional points. So, in a tree with two dimensions, we might have points like `(0,5)` or `(6,2)`. Here's an example of what I mean:
 
-![](https://hackmd.io/_uploads/rJZ6nGc7F.png)
+![](rJZ6nGc7F.png)
 
 OK, sure: this is a binary tree with 2-dimensional node labels. But what makes it _usable_ in ways other binary trees aren't? A better way to phrase that question is to ask: _what are the invariants of a k-d tree_?
 
@@ -111,42 +96,37 @@ The key is that every rank in a k-d tree is focused on a single dimension: start
 
 Here's the tree, annotated more helpfully. (Check that it satisfies the invariants!)
 
-![](https://hackmd.io/_uploads/SkCYRG9mY.png)
+![](SkCYRG9mY.png)
 
 Now how do we actually _use_ these invariants? Since every rank has a single dimension of interest, we might start by doing a normal recursive descent, like we would on a BST, but ignoring dimensions that the current node has no interest in. 
 
 Let's try it! We'll search for the nearest neighbor of `(5,5)` in this kd-tree. 
 
-![](https://hackmd.io/_uploads/ByVP1mqXt.png)
+![](ByVP1mqXt.png)
 
 This looks promising; the nearest neighbor is `(6,5)` and we did visit that node in our descent. 
 
 But will it always work? See if you can think of a target `(X,Y)` coordinate whose nearest neighbor is _not_ along the normal recursive descent.
 
-<details>
-<summary><B>Think, then click!</B></summary>
+??? note "Think, then click!"
+    `(5,4)` is one example of this; there are others.
 
-`(5,4)` is one example of this; there are others. 
+    Sadly, this means that we can't always get away with a single descent. Which, yes, means that even a balanced kd-tree has a worst-case search time that's worse than logarithmic in the number of nodes. In fact, the worst-case complexity is linear.
 
-Sadly, this means that we can't always get away with a single descent. Which, yes, means that even a balanced kd-tree has a worst-case search time that's worse than logarithmic in the number of nodes. In fact, the worst-case complexity is linear.
-
-In the average case, it's still much better than a list, though.
-
-</details>
-<br/>
+    In the average case, it's still much better than a list, though.
 
 #### Fixing the problem 
 
 
 So we can't always get away with a single descent. Surely we aren't doomed to always exploring the _entire_ tree? Maybe we can still exploit the invariants in a useful way. To explore this idea, we'll draw those same 7 points on a 2-dimensional graph, and frame the same search for `(5,4)`: 
 
-![](https://hackmd.io/_uploads/r1ArWQcQK.png)
+![](r1ArWQcQK.png)
 
 Here is where I notice that my drawing app has gridlines, but the exported images don't. Sigh. (TODO: fix for next semester.)
 
 The purpose of the invariants is, like in a normal BST, splitting the search space between points "bigger" and "smaller" than the current point. We no longer have a single number line, but we _can_ still split the space. The root note, `(6,5)` is a dimension `0` (X) node, so let's draw a line partitioning the space accordingly:
 
-![](https://hackmd.io/_uploads/rkDdf7q7Y.png)
+![](rkDdf7q7Y.png)
 
 The invariants guarantee that any target node with an X coordinate smaller than 6 _must be located in the left subtree_ of `(6,5)`. 
 
@@ -154,7 +134,7 @@ Sure, but that's the same reasoning that got us into trouble in the first place.
 
 The trick is in the diagram. How far away from the goal `(5,4)` is the node we're currently visiting? `sqrt(2)`, assuming that we're using the usual Cartesian distance metric. So we know that any regions of the space further away from the goal than `sqrt(2)` aren't productive to visit. In fact, let's mentally draw a circle of radius `sqrt(2)` around the goal:
 
-![](https://hackmd.io/_uploads/BJbyE7cQt.png)
+![](BJbyE7cQt.png)
 
 At least, we'll pretend that's a circle. 
 
@@ -166,7 +146,7 @@ By the way, you'll sometimes hear these dotted lines referred to as _cutting pla
 
 Here's a possibly helpful picture:
 
-![](https://hackmd.io/_uploads/ByJSvmcXF.png)
+![](ByJSvmcXF.png)
 
 Yes! there's productive space on the far side, and so we do need to recur on the right subtree. In general, we can check for productive space by calculating:
 
@@ -178,11 +158,10 @@ where `GOAL` is the goal point, `CURR` is the current node (where we arere tryin
 
 Data structures like this rely heavily on _comparisons_, and there isn't one single comparison operation that works for every imaginable dataset. Another engineer who is using your data structure might want to provide their own, domain-appropriate comparisons. But if we code a particular comparison into the class, the engineer can't provide their own comparison metric.
 
-~~~admonish tip title="Think Like an Engineer"
-This is an opportunity to exercise a little "technical empathy". We want to allow the other engineer to use our data structure with their own, domain-specific, definitions. This might involve multiple concepts: comparison, distance, and so on. 
+!!! tip "Think Like an Engineer"
+    This is an opportunity to exercise a little "technical empathy". We want to allow the other engineer to use our data structure with their own, domain-specific, definitions. This might involve multiple concepts: comparison, distance, and so on.
 
-But don't be an "Architecture Astronaut"! Don't over-engineer things. 
-~~~
+    But don't be an "Architecture Astronaut"! Don't over-engineer things.
 
 ### OO and FP Agree on the Interface
     
@@ -221,36 +200,30 @@ In computer science, we're used to tradeoffs. Specifically, you've all learned a
 
 But what _else_ might we compromise on? Here's a thought: can we ever compriomise on _correctness_ in exchange for a time or space savings? Does that even make sense? Is it possible we've already done that somehow?
 
-<details>
-<summary>Think, then click!</summary>
+??? note "Think, then click!"
+    The basic idea underlying hash tables is a compromise on correctness. They're just built to resolve that compromise internally.
 
-The basic idea underlying hash tables is a compromise on correctness. They're just built to resolve that compromise internally. 
-    
-Here's what I mean. If we assume that every record key hashes to a different table key, hash tables are a miracle (constant-time lookup). But this usually isn't true: collisions almost certainly happen. So the table has a (worst-case) linear-time backup plan built in to recover from that compromise.
-</details>
-<br/>
+    Here's what I mean. If we assume that every record key hashes to a different table key, hash tables are a miracle (constant-time lookup). But this usually isn't true: collisions almost certainly happen. So the table has a (worst-case) linear-time backup plan built in to recover from that compromise.
 
 This idea of compromise on correctness is also valuable in algorithms. E.g., there exist fast algorithms for primality testing that just happen to be wrong sometimes.
 
 Is that enough to build something useful out of? Would you maybe want more?
 
-<details>
+??? note "Think, then click!"
+    Yeah, you'd maybe like something along the lines of:
 
-Yeah, you'd maybe like something along the lines of:
-* only wrong in one direction; and 
-* only wrong X% of the time. 
+    * only wrong in one direction; and
+    * only wrong X% of the time.
 
-**Technical aside:** I am oversimplifying the algorithm a bit, because there are a few other details. You might learn about these if you take a number theory class, or an algorithms class!
+    **Technical aside:** I am oversimplifying the algorithm a bit, because there are a few other details. You might learn about these if you take a number theory class, or an algorithms class!
 
-</details>
-
-~~~admonish tip title="Think Like an Engineer"
-Note again that we're back to what _guarantees_ a data structure or algorithm provides. When you're building or selecting a data structure or algorithm, consider the needs of your caller and/or end-user. In the case of these prime-testing algorithms, they can very quickly rule out many non-prime numbers, and do so fast enough that it's worth using them as a pre-test before applying a slow, but sound, algorithm.
-~~~
+!!! tip "Think Like an Engineer"
+    Note again that we're back to what _guarantees_ a data structure or algorithm provides. When you're building or selecting a data structure or algorithm, consider the needs of your caller and/or end-user. In the case of these prime-testing algorithms, they can very quickly rule out many non-prime numbers, and do so fast enough that it's worth using them as a pre-test before applying a slow, but sound, algorithm.
 
 ## Bloom Filters
 
 Bloom filters are a data structure for implementing set-membership queries. They work a lot like a hash table. Indeed, the basic structure they build on **is** a hash table. They just happen to not return booleans, or at least not in the same sense as (say) a `Set` in Java. Instead, a Bloom filter returns one of:
+
 * the item is _possibly_ in the set; or
 * the item is _definitely_ not in the set.
 
@@ -272,16 +245,13 @@ Note one crucial difference. Instead of saving a reference to the media in the t
 
 Now what happens if there's a collision? 
 
-<details>
-<summary>Think, then click!</summary>
+??? note "Think, then click!"
+    The key that the 2nd arrival hashes to is _already set to 1_. The array now can't tell the difference between these two media: if a customer requests the second arrival but the first arrival isn't there, the array will report a false positive.
 
-The key that the 2nd arrival hashes to is _already set to 1_. The array now can't tell the difference between these two media: if a customer requests the second arrival but the first arrival isn't there, the array will report a false positive.
-    
-But, either way, a lookup is very, very fast. We can always do a _real_ search through the local media catalogue if the array says we _might_ have what the customer wants. And if the array says it's not here, it definitely isn't.
-
-</details>
+    But, either way, a lookup is very, very fast. We can always do a _real_ search through the local media catalogue if the array says we _might_ have what the customer wants. And if the array says it's not here, it definitely isn't.
 
 In short: this data structure allows _false positives_ but not false negatives. Even so, the false positives might make it seem useless, until you think of it as just one part of an overall solution. The table of bits is _fast_, likely much faster than a real, no-false-positives membership query. If we expect most query responses to be negative, why not try something like:
+
 * When a query arrives, hash it and check the table of bits. 
   * If the answer is "no", then we can return false right away.
   * If the answer is "yes", then we perform the slower, real check and return its result.
@@ -305,7 +275,7 @@ Let's talk about a problem that you might see in an AI class: helping a robot na
 
 Here's an example: the little smiley face is the robot, and the dollar signs are the reward:
 
-<img src="kuUY9MJ.jpg" width="45%" alt="A 4-by-4 gridworld"/>
+![A 4-by-4 gridworld](kuUY9MJ.jpg){ width="45%" }
 
 The filled-in squares represent obstacles: walls, mountains, pits, etc. For now, let's say that every move costs $1$ unit of time, or fuel, or whatever measure we're using. 
 
@@ -319,7 +289,7 @@ Note that we're not talking about exploring with the robot in real time; we're e
 
 Here's what BFS might look like on this grid world. We reach the goal after $5$ hops:
 
-<img src="M00wXPY.jpg" width="45%" alt="BFS on the above grid world"/>
+![BFS on the above grid world](M00wXPY.jpg){ width="45%" }
 
 This looks great! It's a simple algorithm, it's pretty efficient, and everything's great. Right? 
 
@@ -328,7 +298,7 @@ It turns out that I've drawn the picture in a way that hides something from you.
 Here's the picture, slightly changed...
 
 
-<img src="yMuEM4d.jpg" width="45%" alt="A bigger grid world"/>
+![A bigger grid world](yMuEM4d.jpg){ width="45%" }
 
 What's the problem? If the world is bigger, BFS will explore a lot of unproductive space before it finds the goal. (To see why, fill in the distance markings in the new cells I just added.)
 
@@ -338,7 +308,7 @@ Neither BFS nor Dijkstra's algorithm takes advantage of any /real distance infor
 
 Here's an alternative. Let's build a search process that is entirely guided by _distance_, not by edge weights.  Every cell (implicitly; we're not actually going to have to compute them all) has such a distance.  We have a few choices of what distance metric to use here, but let's just use ordinary Euclidian distance:
 
-<img src="LPhLAXO.jpg" width="45%" alt="Greedy Best-First Search on the same grid world"/>
+![Greedy Best-First Search on the same grid world](LPhLAXO.jpg){ width="45%" }
 
 I haven't filled them all in, but the idea is to apply $\sqrt{(\Delta x)^2 + (\Delta y)^2}$ as needed to every cell. By this metric, the robot starts out at a distance $3$ from the goal. Moving up would get the robot closer: to distance $2$. Moving down would bring the robot further away: distance $4$. So the search process will move up first. In fact, for this example it will only explore the cells I've labeled. There's one branch caused by the obstacle, but it's quickly bypassed to discover the goal.
 
@@ -350,13 +320,14 @@ Greedy best-first search can be _much_ more efficient than Dijkstra's algorithm 
 
 What happens when edge weights aren't all $1$?
 
-<img src="XcEZyYT.jpg" width="45%" alt="Changing one edge weight"/>
+![Changing one edge weight](XcEZyYT.jpg){ width="45%" }
 
 GBFS still finds a path, but it isn't the _cheapest_ path. By changing an edge weight, we've made GBFS non-optimal. 
 
 ### Combining These Ideas
 
 We have just invented two different algorithms to solve the same problem. They have different advantages and disadvantages. Perhaps we can somehow _combine_ them to suit our needs? To figure out how to do this, we need to prioritize the _properties_ we want.
+
 * We don't want any fake paths! Neither of the above algorithms produce invalid paths, so hopefully we can preserve this.
 * We want _cheapest_ paths. GBFS doesn't guarantee this, but Dijkstra's does.
 * We want efficiency. GBFS is often more efficient. 
@@ -377,8 +348,7 @@ The 2nd cost will be used as the priority-queue key, ensuring that the _most pro
 
 We'll cover this in more detail next time. 
 
-~~~admonish warning title="Not all heuristics are good!"
-A* won't report "wrong" paths. However, if `h` doesn't meet some criteria, it might report paths that are more expensive than they need to be. Put another way, a bad heuristic could cause A* to lose its guarantee of optimality. We rely implicitly on the _first_ visit to the goal node corresponding to a cheapest path. But if `h` _over_-estimates the distance that will actually be taken, A* might explore a non-optimal path first&mdash;just like greedy best-first search did. 
+!!! warning "Not all heuristics are good!"
+    A* won't report "wrong" paths. However, if `h` doesn't meet some criteria, it might report paths that are more expensive than they need to be. Put another way, a bad heuristic could cause A* to lose its guarantee of optimality. We rely implicitly on the _first_ visit to the goal node corresponding to a cheapest path. But if `h` _over_-estimates the distance that will actually be taken, A* might explore a non-optimal path first&mdash;just like greedy best-first search did.
 
-For more information about this, take an algorithms course.
-~~~
+    For more information about this, take an algorithms course.
