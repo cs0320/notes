@@ -2,24 +2,23 @@
 
 These notes combine multiple sources from prior semesters. Broadly, they discuss:
 
-* data representations vs. interfaces; 
+* data representations vs. interfaces, the strategy pattern (again); 
 * kd-trees; 
-* comparators (from the perspective of the kd-tree class as a consumer); 
 * bloom filters; and 
 * A* search.
 
-We probably won't be able to talk about everything here in class! For Fall 2025, you'll want to pay special attention to the section on A* search.
+We probably won't be able to talk about everything here in class! You'll want to pay special attention to the section on A* search.
 
+!!! warning "Algorithms Evolve, and Algorithms Aren't Magic Spells"
+    All the examples in this chapter present algorithms that _evolve from other algorithms_. This is a sort of improvisation that the "theory" of the algorithm (i.e., understanding _why_ an algorithm works) enables. Algorithms are not rigid magic spells, to be learned word-for-word and never deviated from. They are general shapes, timeless design patterns that you can reuse _and_ remix, if you know what you're doing. 
 
-- algorithms evolve
-- Dijkstra
-- don't learn algorithms like magic spells
-
-
+    - A* is an evolution of Dijkstra, which itself evolves from Breadth-First Search.
+    - Bloom Filters evolve from Hash Maps. 
+    - KD-Trees evolve from Binary Search Trees.
 
 ## Thinking About Data Representations
 
-There's an adage you may have heard before: "the query influences the structure". This means that your choice of data structure shouldn't just be about the shape of the data you get, it should also be affected what you plan to _do_ with the data. 
+There's an adage you may have heard before: "the query influences the structure". This means that your choice of data structure shouldn't just be about the shape of the data you get, it should also be affected by what you plan to _do_ with the data. 
 
 This may seem obvious, but it's harder than it sounds. It's helpful to make a very careful distinction between the _representation_ of data and the _interface_ it provides. Blurring this distinction leads to pain later in the development cycle. Here's an example. 
 
@@ -38,6 +37,7 @@ This may seem obvious, but it's harder than it sounds. It's helpful to make a ve
     Keep this in mind when you're splitting up work: decide together on the operations (interface) each component needs from the others early, and keep other criteria broad ("I need you to give me the `find` operation", and then eventually "I need worst-case $O(log(N))$ runtime for the find operation"; don't skip right to  "I need you to use a Java `TreeList`").
 
 Just like we can provide the `List` interface via many different data structures, we can provide algorithmic content like "find the nearest neighbor of an element" in many different ways. Let's look at one you may not have seen before.
+
 
 ## Thinking About Algorithms: The Mailbox Problem (KD-trees)
 
@@ -131,7 +131,7 @@ So we can't always get away with a single descent. Surely we aren't doomed to al
 
 Here is where I notice that my drawing app has grid lines, but the exported images don't. Sigh. (TODO: fix for next semester.)
 
-The purpose of the invariants is, like in a normal BST, splitting the search space between points "bigger" and "smaller" than the current point. We no longer have a single number line, but we _can_ still split the space. The root note, `(6,5)` is a dimension `0` (X) node, so let's draw a line partitioning the space accordingly:
+The purpose of the invariants is, like in a normal BST, splitting the search space between points "bigger" and "smaller" than the current point. We no longer have a single number line, but we _can_ still split the space. The root node, `(6,5)` is a dimension `0` (X) node, so let's draw a line partitioning the space accordingly:
 
 ![](rkDdf7q7Y.png)
 
@@ -147,7 +147,7 @@ At least, we'll pretend that's a circle.
 
 As we follow the normal recursive descent, we'll draw 2 more dotted lines: one for `(0,5)` and another for `(4,1)`. But, sadly, our best estimate remains no closer than `sqrt(2)`. We'll pop back up from `(4,1)` to `(0,5)` and ask: _do we need to explore the right subtree?_ 
 
-Put another way, is there potentially useful space (space inside the circle) on on the far side of the dotted line we drew for `(0,5)`?
+Put another way, is there potentially useful space (space inside the circle) on the far side of the dotted line we drew for `(0,5)`?
 
 By the way, you'll sometimes hear these dotted lines referred to as _cutting planes_. 
 
@@ -182,7 +182,7 @@ At the core of the strategy pattern is _humility_: we don't pretend to know ever
 
 ```java 
 interface DistanceMetric<T> {
-    double distance(T o1, T o2);
+    double dist(T o1, T o2);
 }
 ```
 
@@ -199,7 +199,7 @@ class CartesianMetric implements DistanceMetric<Cartesian> {
 }
 ```
 
-Every instance of the CartesianMetric class contains a _strategy function_ that data structures can call to measure distance.
+Every instance of the `CartesianMetric` class contains a _strategy function_ that data structures can call to measure distance.
 A caller could create an object of this type, and pass it to the tree as needed. And they could write more of these, like `ManhattanCartesian`, and on and on, limited only by *their* needs and *your* interface. (You'll provide them a suitable interface, won't you?)
     
 Finally, remember you're free to ask something of _them_. For instance, if I write a distance-metric method that always returns `-1`, I'm setting myself up for frustration and debugging in the future **through no fault of yours!** This seems like a great opportunity to add a _contract_ to the data-structure's documentation. What do you think the caller's metric needs to guarantee?
@@ -211,7 +211,7 @@ In computer science, we're used to tradeoffs. Specifically, you've all learned a
 But what _else_ might we compromise on? Here's a thought: can we ever compromise on _correctness_ in exchange for a time or space savings? Does that even make sense? Is it possible we've already done that somehow?
 
 ??? note "Think, then click!"
-    The basic idea underlying hash tables is a compromise on correctness. They're just built to resolve that compromise internally. Collisions sacrifice in a structured way: no false _negatives_, but potential false _positives_. We invent chaining or probing strategies to recover correctness. 
+    The basic idea underlying hash tables is a compromise on correctness. They're just built to resolve that compromise internally. Collisions introduce a structured sacrifice: no false _negatives_, but potential false _positives_. We invent chaining or probing strategies to recover correctness. 
 
     Here's what I mean. If we assume that every record key hashes to a different table key, hash tables are a miracle (constant-time lookup). But this usually isn't true: collisions almost certainly happen. So the table has a (worst-case) linear-time backup plan built in to recover from that compromise.
 
@@ -230,7 +230,7 @@ Is that enough to build something useful out of? Would you maybe want more?
 !!! tip "Think Like an Engineer"
     Note again that we're back to what _guarantees_ a data structure or algorithm provides. When you're building or selecting a data structure or algorithm, consider the needs of your caller and/or end-user. In the case of these prime-testing algorithms, they can very quickly rule out many non-prime numbers, and do so fast enough that it's worth using them as a pre-test before applying a slow, but sound, algorithm.
 
-## Bloom Filters
+### Bloom Filters
 
 Bloom filters are a data structure for implementing set-membership queries. They work a lot like a hash table. Indeed, the basic structure they build on **is** a hash table. They just happen to not return booleans, or at least not in the same sense as (say) a `Set` in Java. Instead, a Bloom filter returns one of:
 
@@ -273,11 +273,9 @@ _Bloom Filters_ are a generalization of this table-of-bits idea. Why not have _s
 We still have the potential for false positives: two keys might hash to the same values across all hash functions, and even if they don't, multiple keys might have separately flipped all of those bits before our query. But, if we tune things right, it's a lot less likely than it was before. The trick is in picking the hash functions and deciding how big the table needs to be. Other operations, like deletion, also need care to implement properly. 
 
 
+## Thinking About Algorithms: Dijkstra's Algorithm
 
-
-
-
-
+This section is a placeholder: see [last year's whiteboard notes](./AStar_board_2025.pdf), to be replaced later. 
 
 ## Thinking about Algorithms: A* Search
 
@@ -312,7 +310,7 @@ Here's the picture, slightly changed...
 
 What's the problem? If the world is bigger, BFS will explore a lot of unproductive space before it finds the goal. (To see why, fill in the distance markings in the new cells I just added.)
 
-Neither BFS nor Dijkstra's algorithm takes advantage of any /real distance information/: they just look at the edge weights. Not all graphs make such information available, and not every geometric setting makes "distance" defined in a useful way. But here, we should be able to take advantage of it.
+Neither BFS nor Dijkstra's algorithm takes advantage of any _real distance information_: they just look at the edge weights. Not all graphs make such information available, and not every geometric setting makes "distance" defined in a useful way. But here, we should be able to take advantage of it.
 
 ### Greedy Best-First Search
 
@@ -344,21 +342,23 @@ We have just invented two different algorithms to solve the same problem. They h
 
 We can combine these two algorithmic ideas to produce another path-finding algorithm called A* (pronounced "A Star"). The core idea of A* is to begin with Dijkstra's algorithm, but include an *estimated actual distance* in the best-estimate calculations. Rather than looking at only the immediate neighborhood of the current node, A* recognizes that a candidate path must be extended by at least some minimal, "direct" distance in order to reach the goal. 
 
-In physical space, this distance metric might be something like the Euclidian distance between the two points. But there are also other distance metrics you might use.
+In physical space, this distance metric might be something like the Euclidean distance between the two points. But there are also other distance metrics you might use.
 
-Put another way, given two equal-length paths, the path ending closer to the goal should be considered first. The search can therefore be guided more intelligently. Dijkstra’s algorithm will often spend time exploring the “neighborhood” of the start node, but A* can be goal-directed. For example: between two candidate "next" edges with the same weight, if one would take you further from the goal, it is less likely to be the right edge to take.The beauty of the idea is that, to add in this awareness of overall distance, we just need to make small changes to Dijkstra's algorithm.
+Put another way, given two equal-length paths, the path ending closer to the goal should be considered first. The search can therefore be guided more intelligently. Dijkstra’s algorithm will often spend time exploring the “neighborhood” of the start node, but A* can be goal-directed. For example: between two candidate "next" edges with the same weight, if one would take you further from the goal, it is less likely to be the right edge to take. The beauty of the idea is that, to add in this awareness of overall distance, we just need to make small changes to Dijkstra's algorithm.
 
 In Dijkstra's algorithm, we set the cost `d[m]` of reaching (unexplored) node `m` via (explored) node `n` to `d[m] = d[n] + w(n,m)`, where `w` is the edge-weight function. 
 
 In A*, we need to include the heuristic. But we don't want to count it more than once, so we need two different notions of "distance":
-(1) the actual path-cost from the start to a given node `n` (similarly to Dijkstra's); and
-(2) the _estimated_ cost of reaching the goal via the cheapest path to that node. 
+
+1. the actual path-cost from the start to a given node `n` (similarly to Dijkstra's); and
+2. the _estimated_ cost of reaching the goal via the cheapest path to that node. 
 
 The 2nd cost will be used as the priority-queue key, ensuring that the _most promising_ nodes are processed first: `d[n] + w(n,m) + h(m,g)`, where `h` is the heuristic distance function. The 1st cost will be used to actually report the real cost of the route. In effect, Dijkstra's `h` function always returns `0`. 
 
-We'll cover this in more detail next time. 
-
 !!! warning "Not all heuristics are good!"
-    A* won't report "wrong" paths. However, if `h` doesn't meet some criteria, it might report paths that are more expensive than they need to be. Put another way, a bad heuristic could cause A* to lose its guarantee of optimality. We rely implicitly on the _first_ visit to the goal node corresponding to a cheapest path. But if `h` _over_-estimates the distance that will actually be taken, A* might explore a non-optimal path first&mdash;just like greedy best-first search did.
+    A* won't report "wrong" paths. However, if `h` doesn't meet some criteria, it might report paths that are more expensive than they need to be. Put another way, a bad heuristic could cause A* to lose its guarantee of optimality. We rely implicitly on the _first_ time a node is removed from the priority queue corresponding to the last hop on a cheapest path. But if `h` _over_-estimates the true cost remaining, A* might explore a non-optimal path first&mdash;just like greedy best-first search did.
 
-    For more information about this, take an algorithms course.
+    I'm also glossing over the fact that this version of A* assumes that the heuristic we use _obeys the triangle inequality_: estimated total cost should never suddenly decrease, i.e., $h(n) \leq w(n,p) + h(p)$, where $p$ is a direct neighbor of $n$. You can think of this like the heuristic-facing version of Dijkstra's requirement that edge weights are non-negative.
+
+
+For more information about this, take an algorithms course.
