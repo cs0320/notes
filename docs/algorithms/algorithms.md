@@ -10,6 +10,13 @@ These notes combine multiple sources from prior semesters. Broadly, they discuss
 
 We probably won't be able to talk about everything here in class! For Fall 2025, you'll want to pay special attention to the section on A* search.
 
+
+- algorithms evolve
+- Dijkstra
+- don't learn algorithms like magic spells
+
+
+
 ## Thinking About Data Representations
 
 There's an adage you may have heard before: "the query influences the structure". This means that your choice of data structure shouldn't just be about the shape of the data you get, it should also be affected what you plan to _do_ with the data. 
@@ -122,7 +129,7 @@ So we can't always get away with a single descent. Surely we aren't doomed to al
 
 ![](r1ArWQcQK.png)
 
-Here is where I notice that my drawing app has gridlines, but the exported images don't. Sigh. (TODO: fix for next semester.)
+Here is where I notice that my drawing app has grid lines, but the exported images don't. Sigh. (TODO: fix for next semester.)
 
 The purpose of the invariants is, like in a normal BST, splitting the search space between points "bigger" and "smaller" than the current point. We no longer have a single number line, but we _can_ still split the space. The root note, `(6,5)` is a dimension `0` (X) node, so let's draw a line partitioning the space accordingly:
 
@@ -150,13 +157,13 @@ Here's a possibly helpful picture:
 
 Yes! there's productive space on the far side, and so we do need to recur on the right subtree. In general, we can check for productive space by calculating:
 
-$(GOAL[d] - CURR[d]) \leq dist(GOAL, BEST)$
+$|GOAL[d] - CURR[d]| \leq dist(GOAL, BEST)$
 
-where `GOAL` is the goal point, `CURR` is the current node (where we arere trying to decide whether or not to recur again), `BEST` is our best candidate so far, and `dist` is the distance formula of your choice.
+where `GOAL` is the goal point, `CURR` is the current node (where we are trying to decide whether or not to recur again), `BEST` is our best candidate so far, and `dist` is the distance formula of your choice.
 
-## Comparators and the Strategy Pattern
+## OO Aside: The Strategy Pattern 
 
-Data structures like this rely heavily on _comparisons_, and there isn't one single comparison operation that works for every imaginable dataset. Another engineer who is using your data structure might want to provide their own, domain-appropriate comparisons. But if we code a particular comparison into the class, the engineer can't provide their own comparison metric.
+Data structures like this rely heavily on _distance metrics_, and there isn't one single distance metric that works for every imaginable dataset. Another engineer who is using your data structure might want to provide their own, domain-appropriate metric. But if we code a particular metric into the class, the engineer can't provide their own metric.
 
 !!! tip "Think Like an Engineer"
     This is an opportunity to exercise a little "technical empathy". We want to allow the other engineer to use our data structure with their own, domain-specific, definitions. This might involve multiple concepts: comparison, distance, and so on.
@@ -165,47 +172,50 @@ Data structures like this rely heavily on _comparisons_, and there isn't one sin
 
 ### OO and FP Agree on the Interface
     
-If this reminds you of the _dependency injection_ idea from last week, good! Whether or not we ask the caller to provide the metric to the constructor or at the time we call another method, the idea is the same. Object-Oriented design calls this the _strategy pattern_; Functional Programming calls this a use of _first-class functions_---that is, functions or methods that are values in the language itself and thus can be passed as arguments.
+If this reminds you of the _dependency injection_ idea we saw earlier, good! Whether or not we ask the caller to provide the metric to the constructor or at the time we call another method, the idea is the same. Object-Oriented design calls this the _strategy pattern_; Functional Programming calls this a use of _first-class functions_: functions or methods that are values in the language itself and thus can be passed as arguments. We've seen first-class functions a lot in TypeScript.
         
 You may have heard that in Java, "everything is an object". This isn't strictly true (because primitives like `int` exist) but even if it were, like in (say) Scala, I see no reason why a function can't also be an object. After all, objects carry methods.
     
-### Comparators
+### Distance-Metric Objects
     
-At the core of the strategy pattern is _humility_: we don't pretend to know every possible scenario that our caller might think of, so we give them a way to customize the larger functionality we provide.    
+At the core of the strategy pattern is _humility_: we don't pretend to know every possible scenario that our caller might think of, so we give them a way to customize the larger functionality we provide. First, the interface:
 
-Java provides another standard interface that's useful here: `Comparator`. But rather than being implemented by the class being compared, it's implemented by a standalone class whose implementation provides a new comparison method. E.g.:
+```java 
+interface DistanceMetric<T> {
+    double distance(T o1, T o2);
+}
+```
+
+Then:
 
 ```java
-class CartesianComparator implements Comparator<Cartesian> {
+class CartesianMetric implements DistanceMetric<Cartesian> {
 
     @Override
-    public int compare(Cartesian o1, Cartesian o2) {
-        // e.g., an implementation of Euclidian distance
+    public double dist(Cartesian o1, Cartesian o2) {
+        // e.g., an implementation of Euclidean distance
         //   (throw an error if #dimensions is different)
     }
 }
 ```
 
-Every instance of the CartesianComparator class contains a _strategy function_ that a kd-tree can use for comparisons. 
-A caller could create an object of this type, and pass it to the tree as needed. And they could write more of these: `WeightedCartesianComparator`, `ManhattanCartesianComparator`, and on and on, limited only by *their* needs and *your* interface. 
-
-(You'll provide them a suitable interface, won't you?)
+Every instance of the CartesianMetric class contains a _strategy function_ that data structures can call to measure distance.
+A caller could create an object of this type, and pass it to the tree as needed. And they could write more of these, like `ManhattanCartesian`, and on and on, limited only by *their* needs and *your* interface. (You'll provide them a suitable interface, won't you?)
     
-Finally, remember you're free to ask something of _them_. For instance, if I write a comparator method that always returns `-1`, I'm setting myself up for frustration and debugging in the future **through no fault of yours!** Why isn't it your fault? Can it be there's some obligation I have, when I use [the `Comparator` interface](https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html)?
+Finally, remember you're free to ask something of _them_. For instance, if I write a distance-metric method that always returns `-1`, I'm setting myself up for frustration and debugging in the future **through no fault of yours!** This seems like a great opportunity to add a _contract_ to the data-structure's documentation. What do you think the caller's metric needs to guarantee?
     
-
 ## Thinking About Tradeoffs: Bloom Filters
 
 In computer science, we're used to tradeoffs. Specifically, you've all learned about the classic _space-time tradeoff_ that caching gives. You might implement this by memoization, or dynamic programming, or (if you're Google, Netflix, or some other popular website) a Content Delivery Network.
 
-But what _else_ might we compromise on? Here's a thought: can we ever compriomise on _correctness_ in exchange for a time or space savings? Does that even make sense? Is it possible we've already done that somehow?
+But what _else_ might we compromise on? Here's a thought: can we ever compromise on _correctness_ in exchange for a time or space savings? Does that even make sense? Is it possible we've already done that somehow?
 
 ??? note "Think, then click!"
-    The basic idea underlying hash tables is a compromise on correctness. They're just built to resolve that compromise internally.
+    The basic idea underlying hash tables is a compromise on correctness. They're just built to resolve that compromise internally. Collisions sacrifice in a structured way: no false _negatives_, but potential false _positives_. We invent chaining or probing strategies to recover correctness. 
 
     Here's what I mean. If we assume that every record key hashes to a different table key, hash tables are a miracle (constant-time lookup). But this usually isn't true: collisions almost certainly happen. So the table has a (worst-case) linear-time backup plan built in to recover from that compromise.
 
-This idea of compromise on correctness is also valuable in algorithms. E.g., there exist fast algorithms for primality testing that just happen to be wrong sometimes.
+This idea of compromise on correctness is surprisingly useful. E.g., there exist fast algorithms for prime-number testing that just happen to be wrong sometimes.
 
 Is that enough to build something useful out of? Would you maybe want more?
 
@@ -258,7 +268,7 @@ In short: this data structure allows _false positives_ but not false negatives. 
 
 ### Scaling The Idea
 
-_Bloom Filters_ are a generalization of this table-of-bits idea. Wwhy not have _several_ hash functions, and use all the bits those hash functions produce for adding and looking up membership? That is, if we have 3 hash functions and they produce `{13, 2, 118}`, we'd set bits `13`, `2` and `118` to true on arrival, and check those same 3 bits on a membership check. 
+_Bloom Filters_ are a generalization of this table-of-bits idea. Why not have _several_ hash functions, and use all the bits those hash functions produce for adding and looking up membership? That is, if we have 3 hash functions and they produce `{13, 2, 118}`, we'd set bits `13`, `2` and `118` to true on arrival, and check those same 3 bits on a membership check. 
 
 We still have the potential for false positives: two keys might hash to the same values across all hash functions, and even if they don't, multiple keys might have separately flipped all of those bits before our query. But, if we tune things right, it's a lot less likely than it was before. The trick is in picking the hash functions and deciding how big the table needs to be. Other operations, like deletion, also need care to implement properly. 
 
@@ -306,7 +316,7 @@ Neither BFS nor Dijkstra's algorithm takes advantage of any /real distance infor
 
 ### Greedy Best-First Search
 
-Here's an alternative. Let's build a search process that is entirely guided by _distance_, not by edge weights.  Every cell (implicitly; we're not actually going to have to compute them all) has such a distance.  We have a few choices of what distance metric to use here, but let's just use ordinary Euclidian distance:
+Here's an alternative. Let's build a search process that is entirely guided by _distance_, not by edge weights.  Every cell (implicitly; we're not actually going to have to compute them all) has such a distance.  We have a few choices of what distance metric to use here, but let's just use ordinary Euclidean distance:
 
 ![Greedy Best-First Search on the same grid world](LPhLAXO.jpg){ width="45%" }
 
@@ -336,7 +346,7 @@ We can combine these two algorithmic ideas to produce another path-finding algor
 
 In physical space, this distance metric might be something like the Euclidian distance between the two points. But there are also other distance metrics you might use.
 
-Put another way, given two equal-length paths, the path ending closer to the goal should be considered first. The search can therefore be guided more intelligently. Dijkstra’s algorithm will often spend time exploring the “neighborhood” of the start node, but A* can be goal-directed. For example: between two candidate "next" edges with the same weight, if one would take you further from the goal, it is less likely to be the right edge to take.The beauty of the idea is that, to add in this awareness of overall distance, we just need to make two small change sto Dijkstra's algorithm.
+Put another way, given two equal-length paths, the path ending closer to the goal should be considered first. The search can therefore be guided more intelligently. Dijkstra’s algorithm will often spend time exploring the “neighborhood” of the start node, but A* can be goal-directed. For example: between two candidate "next" edges with the same weight, if one would take you further from the goal, it is less likely to be the right edge to take.The beauty of the idea is that, to add in this awareness of overall distance, we just need to make small changes to Dijkstra's algorithm.
 
 In Dijkstra's algorithm, we set the cost `d[m]` of reaching (unexplored) node `m` via (explored) node `n` to `d[m] = d[n] + w(n,m)`, where `w` is the edge-weight function. 
 
