@@ -1,0 +1,1529 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Lecture notes for CSCI 0320/1340: Software Engineering">
+      
+      
+      
+        <link rel="canonical" href="https://cs0320.github.io/notes/f26/algorithms/algorithms.html">
+      
+      
+        <link rel="prev" href="../06-html-react/06-html-react.html">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Thinking About Algorithms - CSCI 0320 Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-blue" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#thinking-about-algorithms" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="CSCI 0320 Notes" class="md-header__button md-logo" aria-label="CSCI 0320 Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CSCI 0320 Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Thinking About Algorithms
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-blue" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-blue" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/cs0320/notes" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cs0320/notes
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="CSCI 0320 Notes" class="md-nav__button md-logo" aria-label="CSCI 0320 Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CSCI 0320 Notes
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cs0320/notes" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cs0320/notes
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Success in 0320
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Success in 0320
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../success-in-0320/success-in-0320.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Success in 0320
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../success-in-0320/recipe.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Debugging Recipe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-properties/02-properties.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Properties Generalize Behavior
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-bias-validation/03-bias-validation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime Validation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-state-machines/04-state-machines.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    State Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-apis/05-apis.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web APIs and Mocks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-html-react/06-html-react.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTML and React
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Thinking About Algorithms
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Thinking About Algorithms
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Thinking About Algorithms
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="algorithms.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Thinking About Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#thinking-about-data-representations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thinking About Data Representations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#thinking-about-algorithms-the-mailbox-problem-kd-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thinking About Algorithms: The Mailbox Problem (KD-trees)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Thinking About Algorithms: The Mailbox Problem (KD-trees)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#moving-beyond-1-dimension" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Moving beyond 1 dimension
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Moving beyond 1 dimension">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fixing-the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fixing the problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oo-aside-the-strategy-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OO Aside: The Strategy Pattern
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OO Aside: The Strategy Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#oo-and-fp-agree-on-the-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OO and FP Agree on the Interface
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#distance-metric-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Distance-Metric Objects
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#thinking-about-tradeoffs-bloom-filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thinking About Tradeoffs: Bloom Filters
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Thinking About Tradeoffs: Bloom Filters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bloom-filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bloom Filters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-common-use-case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A Common Use Case
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-the-idea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building The Idea
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scaling-the-idea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scaling The Idea
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#thinking-about-algorithms-dijkstras-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thinking About Algorithms: Dijkstra's Algorithm
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#thinking-about-algorithms-a-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thinking about Algorithms: A* Search
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Thinking about Algorithms: A* Search">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#breadth-first-search-and-dijkstras-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Breadth-First Search and Dijkstra's Algorithm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#greedy-best-first-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Greedy Best-First Search
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Greedy Best-First Search">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-good" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Good
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-bad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Bad
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#combining-these-ideas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Combining These Ideas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#thinking-about-data-representations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thinking About Data Representations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#thinking-about-algorithms-the-mailbox-problem-kd-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thinking About Algorithms: The Mailbox Problem (KD-trees)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Thinking About Algorithms: The Mailbox Problem (KD-trees)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#moving-beyond-1-dimension" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Moving beyond 1 dimension
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Moving beyond 1 dimension">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fixing-the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fixing the problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oo-aside-the-strategy-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OO Aside: The Strategy Pattern
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OO Aside: The Strategy Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#oo-and-fp-agree-on-the-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OO and FP Agree on the Interface
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#distance-metric-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Distance-Metric Objects
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#thinking-about-tradeoffs-bloom-filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thinking About Tradeoffs: Bloom Filters
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Thinking About Tradeoffs: Bloom Filters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bloom-filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bloom Filters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-common-use-case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A Common Use Case
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-the-idea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building The Idea
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scaling-the-idea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scaling The Idea
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#thinking-about-algorithms-dijkstras-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thinking About Algorithms: Dijkstra's Algorithm
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#thinking-about-algorithms-a-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thinking about Algorithms: A* Search
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Thinking about Algorithms: A* Search">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#breadth-first-search-and-dijkstras-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Breadth-First Search and Dijkstra's Algorithm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#greedy-best-first-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Greedy Best-First Search
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Greedy Best-First Search">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-good" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Good
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-bad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Bad
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#combining-these-ideas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Combining These Ideas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="thinking-about-algorithms">Thinking About Algorithms<a class="headerlink" href="#thinking-about-algorithms" title="Permanent link">&para;</a></h1>
+<p>These notes combine multiple sources from prior semesters. Broadly, they discuss:</p>
+<ul>
+<li>data representations vs. interfaces, the strategy pattern (again); </li>
+<li>kd-trees; </li>
+<li>bloom filters; and </li>
+<li>A* search.</li>
+</ul>
+<p>We probably won't be able to talk about everything here in class! You'll want to pay special attention to the section on A* search.</p>
+<div class="admonition warning">
+<p class="admonition-title">Algorithms Evolve, and Algorithms Aren't Magic Spells</p>
+<p>All the examples in this chapter present algorithms that <em>evolve from other algorithms</em>. This is a sort of improvisation that the "theory" of the algorithm (i.e., understanding <em>why</em> an algorithm works) enables. Algorithms are not rigid magic spells, to be learned word-for-word and never deviated from. They are general shapes, timeless design patterns that you can reuse <em>and</em> remix, if you know what you're doing. </p>
+<ul>
+<li>A* is an evolution of Dijkstra, which itself evolves from Breadth-First Search.</li>
+<li>Bloom Filters evolve from Hash Maps. </li>
+<li>KD-Trees evolve from Binary Search Trees.</li>
+</ul>
+</div>
+<h2 id="thinking-about-data-representations">Thinking About Data Representations<a class="headerlink" href="#thinking-about-data-representations" title="Permanent link">&para;</a></h2>
+<p>There's an adage you may have heard before: "the query influences the structure". This means that your choice of data structure shouldn't just be about the shape of the data you get, it should also be affected by what you plan to <em>do</em> with the data. </p>
+<p>This may seem obvious, but it's harder than it sounds. It's helpful to make a very careful distinction between the <em>representation</em> of data and the <em>interface</em> it provides. Blurring this distinction leads to pain later in the development cycle. Here's an example. </p>
+<p><strong>QUESTION:</strong> What's a list?</p>
+<details class="note">
+<summary>Think, then click!</summary>
+<p>It depends.</p>
+<p>Do you mean the set of <em>operations</em> one usually expects a list to be able to perform? Adding, removing, index-based accesses, etc.? If so, a list is an object providing that interface to a caller.</p>
+<p>Or do you mean a particular data structure? A <em>linked</em> list? Maybe a <em>doubly linked</em> list? A (dynamic) <em>array</em> list? All of these can conform to the <code>List</code> interface, although some of them have to do more work than others for certain operations.</p>
+<p>Don't conflate these two meanings. One is about the functionality you must provide; the other is about how you concretely choose to represent your data.</p>
+</details>
+<div class="admonition tip">
+<p class="admonition-title">Think Like an Engineer</p>
+<p>Keep this in mind when you're splitting up work: decide together on the operations (interface) each component needs from the others early, and keep other criteria broad ("I need you to give me the <code>find</code> operation", and then eventually "I need worst-case <span class="arithmatex">\(O(log(N))\)</span> runtime for the find operation"; don't skip right to  "I need you to use a Java <code>TreeList</code>").</p>
+</div>
+<p>Just like we can provide the <code>List</code> interface via many different data structures, we can provide algorithmic content like "find the nearest neighbor of an element" in many different ways. Let's look at one you may not have seen before.</p>
+<h2 id="thinking-about-algorithms-the-mailbox-problem-kd-trees">Thinking About Algorithms: The Mailbox Problem (KD-trees)<a class="headerlink" href="#thinking-about-algorithms-the-mailbox-problem-kd-trees" title="Permanent link">&para;</a></h2>
+<p>In the <em>one-dimensional mailbox problem</em>, you've got a world consisting of buildings positioned on a very long street. Every building has a numeric location on the street; we'll assume it's always an integer. </p>
+<p>If I told you that I wanted to give you the addresses of all houses on the street, and you needed to let me check to see whether there was a house at any address, you'd be quite justified in reaching first for the <code>Set</code> interface. You might even go for <code>Map</code>, anticipating I might later want to add more to the data for each house. These tend to be backed by efficient hash-table data structures. </p>
+<p>But now there's a twist. I don't just want to check membership (or get data about a specific house). Instead, I've got to route the mail.</p>
+<p>Why is this hard? Because I'm doing the routing at a very high level: I'm working for a gigantic or district post office! We can't hand-deliver every piece of mail ourselves. So I need to send letters to the right small, local post office for hand-delivery. </p>
+<p><img alt="" src="SyUQYG9mY.png" /></p>
+<p>In short, I need to find the <em>nearest neighbor</em> to the target house, from among a set of post office addresses. </p>
+<p>You could solve this using a list (or set, or any collection) to store the data points, and a <code>for</code> loop to iterate through them, seeking the nearest neighbor. The trouble is that a linear-time search won't scale as the dataset grows. Our first go-to data structure, the hash table, won't work for nearest-neighbor---hashing will lose information about locality and closeness that are so vital to solving this problem! </p>
+<div class="admonition tip">
+<p class="admonition-title">Think Like an Engineer</p>
+<p>Agree on what you need from the interface, and then figure out what the right implementation is afterward. It's OK to start with something inefficient, and it might even let you explore the problem enough that your second implementation is better than it would have been otherwise.</p>
+</div>
+<p>What would you use instead, if you wanted better performance? </p>
+<details class="note">
+<summary>Think, then click!</summary>
+<p>This is one of several reasons why we still teach you binary search trees (BSTs). BSTs are absolutely perfect for this problem. Not only are they aware of relative positions (and have to be) but it turns out that the ordinary recursive descent you might perform to search for membership also suffices to find a nearest neighbor: you're guaranteed to always find the nearest neighbor somewhere on the descent!</p>
+</details>
+<p>Suppose we store a set of post offices in the following (balanced!) BST:</p>
+<p><img alt="" src="HJztFzcmY.png" /></p>
+<p>If we're seeking a nearest-neighbor to <code>17</code>, I claim that it always works to do a search in the tree for <code>17</code>. If <code>17</code> is found, it is its own nearest neighbor. If <code>17</code> isn't found, then its nearest neighbor must be on the path taken during the search. </p>
+<p><img alt="" src="HJam9zq7K.png" /></p>
+<p>And <code>20</code> is the nearest neighbor to <code>17</code>. It won't always be the last node visited, but it must be on the path. </p>
+<p>Why does this work?</p>
+<details class="note">
+<summary>Think, then click!</summary>
+<p>Because every time we move down the tree, we move in the direction of the goal. It would be impossible to visit a node <code>X</code>, where <code>X &lt; goal</code>, and move right when we should have moved left. We get this from one of the BST invariants: <em>every node is less than (or equal to) all its right descendants</em>.</p>
+</details>
+<h3 id="moving-beyond-1-dimension">Moving beyond 1 dimension<a class="headerlink" href="#moving-beyond-1-dimension" title="Permanent link">&para;</a></h3>
+<p>This seems pretty useful, and 1 dimension can be enough for data organized by (say) price or time, where "nearest" still makes sense. But often you really do need more than one dimension. How might we extend a BST for multiple dimensions?</p>
+<p>It turns out that there are a few answers. There are solutions, like quad-trees and oct-trees, where nodes have a large number of children. These are often used in (e.g.) video game engines. </p>
+<p>Today we're going to explore an alternative solution that retains the binary-tree foundation, but still handles membership and nearest-neighbor queries on multiple dimensions: <em>k-d trees</em>.</p>
+<p>(I'm going to completely sidestep the question of balance; it's vital for performance but today we'll be talking about functionality.)</p>
+<p>K-d trees have nodes corresponding to k-dimensional points. So, in a tree with two dimensions, we might have points like <code>(0,5)</code> or <code>(6,2)</code>. Here's an example of what I mean:</p>
+<p><img alt="" src="rJZ6nGc7F.png" /></p>
+<p>OK, sure: this is a binary tree with 2-dimensional node labels. But what makes it <em>usable</em> in ways other binary trees aren't? A better way to phrase that question is to ask: <em>what are the invariants of a k-d tree</em>?</p>
+<p>The key is that every rank in a k-d tree is focused on a single dimension: starting at index <code>0</code>, then moving on to index <code>1</code> and so on, and rotating back to <code>0</code>. Given that added structure, we can say that for every node <code>P</code> at rank <code>X</code>:</p>
+<ul>
+<li>all left-descendants of <code>P</code> have an <code>X</code> coordinate less than <code>P.X</code>; and</li>
+<li>all right-descendants of <code>P</code> have an <code>X</code> coordinate greater than or equal to <code>P.X</code>.</li>
+</ul>
+<p>(I'm making an arbitrary design choice and saying that same-value entries go to the right. Notice that this design choice is more important here than in a BST: there, you can avoid the question by excluding duplicates; here, you'd have to exclude any point from sharing a single dimension from another.)</p>
+<p>Here's the tree, annotated more helpfully. (Check that it satisfies the invariants!)</p>
+<p><img alt="" src="SkCYRG9mY.png" /></p>
+<p>Now how do we actually <em>use</em> these invariants? Since every rank has a single dimension of interest, we might start by doing a normal recursive descent, like we would on a BST, but ignoring dimensions that the current node has no interest in. </p>
+<p>Let's try it! We'll search for the nearest neighbor of <code>(5,5)</code> in this kd-tree. </p>
+<p><img alt="" src="ByVP1mqXt.png" /></p>
+<p>This looks promising; the nearest neighbor is <code>(6,5)</code> and we did visit that node in our descent. </p>
+<p>But will it always work? See if you can think of a target <code>(X,Y)</code> coordinate whose nearest neighbor is <em>not</em> along the normal recursive descent.</p>
+<details class="note">
+<summary>Think, then click!</summary>
+<p><code>(5,4)</code> is one example of this; there are others.</p>
+<p>Sadly, this means that we can't always get away with a single descent. Which, yes, means that even a balanced kd-tree has a worst-case search time that's worse than logarithmic in the number of nodes. In fact, the worst-case complexity is linear.</p>
+<p>In the average case, it's still much better than a list, though.</p>
+</details>
+<h4 id="fixing-the-problem">Fixing the problem<a class="headerlink" href="#fixing-the-problem" title="Permanent link">&para;</a></h4>
+<p>So we can't always get away with a single descent. Surely we aren't doomed to always exploring the <em>entire</em> tree? Maybe we can still exploit the invariants in a useful way. To explore this idea, we'll draw those same 7 points on a 2-dimensional graph, and frame the same search for <code>(5,4)</code>: </p>
+<p><img alt="" src="r1ArWQcQK.png" /></p>
+<p>Here is where I notice that my drawing app has grid lines, but the exported images don't. Sigh. (TODO: fix for next semester.)</p>
+<p>The purpose of the invariants is, like in a normal BST, splitting the search space between points "bigger" and "smaller" than the current point. We no longer have a single number line, but we <em>can</em> still split the space. The root node, <code>(6,5)</code> is a dimension <code>0</code> (X) node, so let's draw a line partitioning the space accordingly:</p>
+<p><img alt="" src="rkDdf7q7Y.png" /></p>
+<p>The invariants guarantee that any target node with an X coordinate smaller than 6 <em>must be located in the left subtree</em> of <code>(6,5)</code>. </p>
+<p>Sure, but that's the same reasoning that got us into trouble in the first place. We know that the nearest neighbor might be, and indeed is, in the <em>right</em> subtree of <code>(6,5)</code>. </p>
+<p>The trick is in the diagram. How far away from the goal <code>(5,4)</code> is the node we're currently visiting? <code>sqrt(2)</code>, assuming that we're using the usual Cartesian distance metric. So we know that any regions of the space further away from the goal than <code>sqrt(2)</code> aren't productive to visit. In fact, let's mentally draw a circle of radius <code>sqrt(2)</code> around the goal:</p>
+<p><img alt="" src="BJbyE7cQt.png" /></p>
+<p>At least, we'll pretend that's a circle. </p>
+<p>As we follow the normal recursive descent, we'll draw 2 more dotted lines: one for <code>(0,5)</code> and another for <code>(4,1)</code>. But, sadly, our best estimate remains no closer than <code>sqrt(2)</code>. We'll pop back up from <code>(4,1)</code> to <code>(0,5)</code> and ask: <em>do we need to explore the right subtree?</em> </p>
+<p>Put another way, is there potentially useful space (space inside the circle) on the far side of the dotted line we drew for <code>(0,5)</code>?</p>
+<p>By the way, you'll sometimes hear these dotted lines referred to as <em>cutting planes</em>. </p>
+<p>Here's a possibly helpful picture:</p>
+<p><img alt="" src="ByJSvmcXF.png" /></p>
+<p>Yes! there's productive space on the far side, and so we do need to recur on the right subtree. In general, we can check for productive space by calculating:</p>
+<p><span class="arithmatex">\(|GOAL[d] - CURR[d]| \leq dist(GOAL, BEST)\)</span></p>
+<p>where <code>GOAL</code> is the goal point, <code>CURR</code> is the current node (where we are trying to decide whether or not to recur again), <code>BEST</code> is our best candidate so far, and <code>dist</code> is the distance formula of your choice.</p>
+<h2 id="oo-aside-the-strategy-pattern">OO Aside: The Strategy Pattern<a class="headerlink" href="#oo-aside-the-strategy-pattern" title="Permanent link">&para;</a></h2>
+<p>Data structures like this rely heavily on <em>distance metrics</em>, and there isn't one single distance metric that works for every imaginable dataset. Another engineer who is using your data structure might want to provide their own, domain-appropriate metric. But if we code a particular metric into the class, the engineer can't provide their own metric.</p>
+<div class="admonition tip">
+<p class="admonition-title">Think Like an Engineer</p>
+<p>This is an opportunity to exercise a little "technical empathy". We want to allow the other engineer to use our data structure with their own, domain-specific, definitions. This might involve multiple concepts: comparison, distance, and so on.</p>
+<p>But don't be an "Architecture Astronaut"! Don't over-engineer things.</p>
+</div>
+<h3 id="oo-and-fp-agree-on-the-interface">OO and FP Agree on the Interface<a class="headerlink" href="#oo-and-fp-agree-on-the-interface" title="Permanent link">&para;</a></h3>
+<p>If this reminds you of the <em>dependency injection</em> idea we saw earlier, good! Whether or not we ask the caller to provide the metric to the constructor or at the time we call another method, the idea is the same. Object-Oriented design calls this the <em>strategy pattern</em>; Functional Programming calls this a use of <em>first-class functions</em>: functions or methods that are values in the language itself and thus can be passed as arguments. We've seen first-class functions a lot in TypeScript.</p>
+<p>You may have heard that in Java, "everything is an object". This isn't strictly true (because primitives like <code>int</code> exist) but even if it were, like in (say) Scala, I see no reason why a function can't also be an object. After all, objects carry methods.</p>
+<h3 id="distance-metric-objects">Distance-Metric Objects<a class="headerlink" href="#distance-metric-objects" title="Permanent link">&para;</a></h3>
+<p>At the core of the strategy pattern is <em>humility</em>: we don't pretend to know every possible scenario that our caller might think of, so we give them a way to customize the larger functionality we provide. First, the interface:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">interface</span> <span class="nc">DistanceMetric</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">dist</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">o1</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">o2</span><span class="p">);</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">}</span>
+</code></pre></div>
+<p>Then:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">class</span> <span class="nc">CartesianMetric</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">DistanceMetric</span><span class="o">&lt;</span><span class="n">Cartesian</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nd">@Override</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">dist</span><span class="p">(</span><span class="n">Cartesian</span><span class="w"> </span><span class="n">o1</span><span class="p">,</span><span class="w"> </span><span class="n">Cartesian</span><span class="w"> </span><span class="n">o2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">        </span><span class="c1">// e.g., an implementation of Euclidean distance</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">        </span><span class="c1">//   (throw an error if #dimensions is different)</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">}</span>
+</code></pre></div>
+<p>Every instance of the <code>CartesianMetric</code> class contains a <em>strategy function</em> that data structures can call to measure distance.
+A caller could create an object of this type, and pass it to the tree as needed. And they could write more of these, like <code>ManhattanCartesian</code>, and on and on, limited only by <em>their</em> needs and <em>your</em> interface. (You'll provide them a suitable interface, won't you?)</p>
+<p>Finally, remember you're free to ask something of <em>them</em>. For instance, if I write a distance-metric method that always returns <code>-1</code>, I'm setting myself up for frustration and debugging in the future <strong>through no fault of yours!</strong> This seems like a great opportunity to add a <em>contract</em> to the data-structure's documentation. What do you think the caller's metric needs to guarantee?</p>
+<h2 id="thinking-about-tradeoffs-bloom-filters">Thinking About Tradeoffs: Bloom Filters<a class="headerlink" href="#thinking-about-tradeoffs-bloom-filters" title="Permanent link">&para;</a></h2>
+<p>In computer science, we're used to tradeoffs. Specifically, you've all learned about the classic <em>space-time tradeoff</em> that caching gives. You might implement this by memoization, or dynamic programming, or (if you're Google, Netflix, or some other popular website) a Content Delivery Network.</p>
+<p>But what <em>else</em> might we compromise on? Here's a thought: can we ever compromise on <em>correctness</em> in exchange for a time or space savings? Does that even make sense? Is it possible we've already done that somehow?</p>
+<details class="note">
+<summary>Think, then click!</summary>
+<p>The basic idea underlying hash tables is a compromise on correctness. They're just built to resolve that compromise internally. Collisions introduce a structured sacrifice: no false <em>negatives</em>, but potential false <em>positives</em>. We invent chaining or probing strategies to recover correctness. </p>
+<p>Here's what I mean. If we assume that every record key hashes to a different table key, hash tables are a miracle (constant-time lookup). But this usually isn't true: collisions almost certainly happen. So the table has a (worst-case) linear-time backup plan built in to recover from that compromise.</p>
+</details>
+<p>This idea of compromise on correctness is surprisingly useful. E.g., there exist fast algorithms for prime-number testing that just happen to be wrong sometimes.</p>
+<p>Is that enough to build something useful out of? Would you maybe want more?</p>
+<details class="note">
+<summary>Think, then click!</summary>
+<p>Yeah, you'd maybe like something along the lines of:</p>
+<ul>
+<li>only wrong in one direction; and</li>
+<li>only wrong X% of the time.</li>
+</ul>
+<p><strong>Technical aside:</strong> I am oversimplifying the algorithm a bit, because there are a few other details. You might learn about these if you take a number theory class, or an algorithms class!</p>
+</details>
+<div class="admonition tip">
+<p class="admonition-title">Think Like an Engineer</p>
+<p>Note again that we're back to what <em>guarantees</em> a data structure or algorithm provides. When you're building or selecting a data structure or algorithm, consider the needs of your caller and/or end-user. In the case of these prime-testing algorithms, they can very quickly rule out many non-prime numbers, and do so fast enough that it's worth using them as a pre-test before applying a slow, but sound, algorithm.</p>
+</div>
+<h3 id="bloom-filters">Bloom Filters<a class="headerlink" href="#bloom-filters" title="Permanent link">&para;</a></h3>
+<p>Bloom filters are a data structure for implementing set-membership queries. They work a lot like a hash table. Indeed, the basic structure they build on <strong>is</strong> a hash table. They just happen to not return booleans, or at least not in the same sense as (say) a <code>Set</code> in Java. Instead, a Bloom filter returns one of:</p>
+<ul>
+<li>the item is <em>possibly</em> in the set; or</li>
+<li>the item is <em>definitely</em> not in the set.</li>
+</ul>
+<h3 id="a-common-use-case">A Common Use Case<a class="headerlink" href="#a-common-use-case" title="Permanent link">&para;</a></h3>
+<p>They're frequently used as an efficient first-pass check to more expensive membership checks on very, very large datasets. (Think: "No, I don't have that YouTube video stored in this server." or "Yes, I might have that YouTube video---let's look for it.")</p>
+<h3 id="building-the-idea">Building The Idea<a class="headerlink" href="#building-the-idea" title="Permanent link">&para;</a></h3>
+<p>Like with kd-trees, Bloom filters build on a simpler idea; in this case, it's hash tables.</p>
+<p>Start with an array of bits. We can use that to implement an approximate membership check: just hash the key you're looking for, and see if the bit in that cell of the array is <code>true</code>, rather than <code>false</code>.</p>
+<p>Here's an example. Suppose we're in charge of Amazon's Prime TV service, and we want to very quickly tell whether a certain content-delivery network (CDN) node has a show that a local customer requests. We could add a bit array to every node, and when a new piece of media arrived (say, the first chunk of a new series), we'd hash the name of the media and set the corresponding bit to <code>1</code>. Like this:</p>
+<p><img alt="" src="mfzLIUa.png" /></p>
+<p>Note one crucial difference. Instead of saving a reference to the media in the table, we're just saving <em>one bit</em>. Very space efficient, especially if we've got a large array. </p>
+<p>Now what happens if there's a collision? </p>
+<details class="note">
+<summary>Think, then click!</summary>
+<p>The key that the 2nd arrival hashes to is <em>already set to 1</em>. The array now can't tell the difference between these two media: if a customer requests the second arrival but the first arrival isn't there, the array will report a false positive.</p>
+<p>But, either way, a lookup is very, very fast. We can always do a <em>real</em> search through the local media catalogue if the array says we <em>might</em> have what the customer wants. And if the array says it's not here, it definitely isn't.</p>
+</details>
+<p>In short: this data structure allows <em>false positives</em> but not false negatives. Even so, the false positives might make it seem useless, until you think of it as just one part of an overall solution. The table of bits is <em>fast</em>, likely much faster than a real, no-false-positives membership query. If we expect most query responses to be negative, why not try something like:</p>
+<ul>
+<li>When a query arrives, hash it and check the table of bits. </li>
+<li>If the answer is "no", then we can return false right away.</li>
+<li>If the answer is "yes", then we perform the slower, real check and return its result.</li>
+</ul>
+<h3 id="scaling-the-idea">Scaling The Idea<a class="headerlink" href="#scaling-the-idea" title="Permanent link">&para;</a></h3>
+<p><em>Bloom Filters</em> are a generalization of this table-of-bits idea. Why not have <em>several</em> hash functions, and use all the bits those hash functions produce for adding and looking up membership? That is, if we have 3 hash functions and they produce <code>{13, 2, 118}</code>, we'd set bits <code>13</code>, <code>2</code> and <code>118</code> to true on arrival, and check those same 3 bits on a membership check. </p>
+<p>We still have the potential for false positives: two keys might hash to the same values across all hash functions, and even if they don't, multiple keys might have separately flipped all of those bits before our query. But, if we tune things right, it's a lot less likely than it was before. The trick is in picking the hash functions and deciding how big the table needs to be. Other operations, like deletion, also need care to implement properly. </p>
+<h2 id="thinking-about-algorithms-dijkstras-algorithm">Thinking About Algorithms: Dijkstra's Algorithm<a class="headerlink" href="#thinking-about-algorithms-dijkstras-algorithm" title="Permanent link">&para;</a></h2>
+<p>This section is a placeholder: see <a href="AStar_board_2025.pdf">last year's whiteboard notes</a>, to be replaced later. </p>
+<h2 id="thinking-about-algorithms-a-search">Thinking about Algorithms: A* Search<a class="headerlink" href="#thinking-about-algorithms-a-search" title="Permanent link">&para;</a></h2>
+<p>Let's talk about a problem that you might see in an AI class: helping a robot navigate around a grid-world. The robot wants to find the reward (hidden somewhere in the world) while spending a minimal number of resources in the process. The robot can move up, down, left, or right.</p>
+<p>Here's an example: the little smiley face is the robot, and the dollar signs are the reward:</p>
+<p><img alt="A 4-by-4 gridworld" src="kuUY9MJ.jpg" width="45%" /></p>
+<p>The filled-in squares represent obstacles: walls, mountains, pits, etc. For now, let's say that every move costs <span class="arithmatex">\(1\)</span> unit of time, or fuel, or whatever measure we're using. </p>
+<p>Assuming we know the contents of the gridworld above, how can we plan a path from the robot to the reward?</p>
+<h3 id="breadth-first-search-and-dijkstras-algorithm">Breadth-First Search and Dijkstra's Algorithm<a class="headerlink" href="#breadth-first-search-and-dijkstras-algorithm" title="Permanent link">&para;</a></h3>
+<p>One option is to use Dijkstra's algorithm. Actually, since we're saying that every move has cost <span class="arithmatex">\(1\)</span>, we're safe using a simpler variant: breadth-first search (BFS). BFS just builds a "wavefront" of exploration from the source until it finds the goal: distance-1 cells, then distance-2 cells, and so on. </p>
+<p>Note that we're not talking about exploring with the robot in real time; we're executing the algorithm all at once, before the robot starts moving at all. So if I talk about "backtracking" I mean it in an algorithmic sense only. </p>
+<p>Here's what BFS might look like on this grid world. We reach the goal after <span class="arithmatex">\(5\)</span> hops:</p>
+<p><img alt="BFS on the above grid world" src="M00wXPY.jpg" width="45%" /></p>
+<p>This looks great! It's a simple algorithm, it's pretty efficient, and everything's great. Right? </p>
+<p>It turns out that I've drawn the picture in a way that hides something from you. More formally, the <em>abstraction choices</em> I made in drawing this picture <em>excluded</em> some important aspects of the problem. </p>
+<p>Here's the picture, slightly changed...</p>
+<p><img alt="A bigger grid world" src="yMuEM4d.jpg" width="45%" /></p>
+<p>What's the problem? If the world is bigger, BFS will explore a lot of unproductive space before it finds the goal. (To see why, fill in the distance markings in the new cells I just added.)</p>
+<p>Neither BFS nor Dijkstra's algorithm takes advantage of any <em>real distance information</em>: they just look at the edge weights. Not all graphs make such information available, and not every geometric setting makes "distance" defined in a useful way. But here, we should be able to take advantage of it.</p>
+<h3 id="greedy-best-first-search">Greedy Best-First Search<a class="headerlink" href="#greedy-best-first-search" title="Permanent link">&para;</a></h3>
+<p>Here's an alternative. Let's build a search process that is entirely guided by <em>distance</em>, not by edge weights.  Every cell (implicitly; we're not actually going to have to compute them all) has such a distance.  We have a few choices of what distance metric to use here, but let's just use ordinary Euclidean distance:</p>
+<p><img alt="Greedy Best-First Search on the same grid world" src="LPhLAXO.jpg" width="45%" /></p>
+<p>I haven't filled them all in, but the idea is to apply <span class="arithmatex">\(\sqrt{(\Delta x)^2 + (\Delta y)^2}\)</span> as needed to every cell. By this metric, the robot starts out at a distance <span class="arithmatex">\(3\)</span> from the goal. Moving up would get the robot closer: to distance <span class="arithmatex">\(2\)</span>. Moving down would bring the robot further away: distance <span class="arithmatex">\(4\)</span>. So the search process will move up first. In fact, for this example it will only explore the cells I've labeled. There's one branch caused by the obstacle, but it's quickly bypassed to discover the goal.</p>
+<h4 id="the-good">The Good<a class="headerlink" href="#the-good" title="Permanent link">&para;</a></h4>
+<p>Greedy best-first search can be <em>much</em> more efficient than Dijkstra's algorithm when working with graphs that represent positions in space. </p>
+<h4 id="the-bad">The Bad<a class="headerlink" href="#the-bad" title="Permanent link">&para;</a></h4>
+<p>What happens when edge weights aren't all <span class="arithmatex">\(1\)</span>?</p>
+<p><img alt="Changing one edge weight" src="XcEZyYT.jpg" width="45%" /></p>
+<p>GBFS still finds a path, but it isn't the <em>cheapest</em> path. By changing an edge weight, we've made GBFS non-optimal. </p>
+<h3 id="combining-these-ideas">Combining These Ideas<a class="headerlink" href="#combining-these-ideas" title="Permanent link">&para;</a></h3>
+<p>We have just invented two different algorithms to solve the same problem. They have different advantages and disadvantages. Perhaps we can somehow <em>combine</em> them to suit our needs? To figure out how to do this, we need to prioritize the <em>properties</em> we want.</p>
+<ul>
+<li>We don't want any fake paths! Neither of the above algorithms produce invalid paths, so hopefully we can preserve this.</li>
+<li>We want <em>cheapest</em> paths. GBFS doesn't guarantee this, but Dijkstra's does.</li>
+<li>We want efficiency. GBFS is often more efficient. </li>
+</ul>
+<p>We can combine these two algorithmic ideas to produce another path-finding algorithm called A* (pronounced "A Star"). The core idea of A* is to begin with Dijkstra's algorithm, but include an <em>estimated actual distance</em> in the best-estimate calculations. Rather than looking at only the immediate neighborhood of the current node, A* recognizes that a candidate path must be extended by at least some minimal, "direct" distance in order to reach the goal. </p>
+<p>In physical space, this distance metric might be something like the Euclidean distance between the two points. But there are also other distance metrics you might use.</p>
+<p>Put another way, given two equal-length paths, the path ending closer to the goal should be considered first. The search can therefore be guided more intelligently. Dijkstra’s algorithm will often spend time exploring the “neighborhood” of the start node, but A* can be goal-directed. For example: between two candidate "next" edges with the same weight, if one would take you further from the goal, it is less likely to be the right edge to take. The beauty of the idea is that, to add in this awareness of overall distance, we just need to make small changes to Dijkstra's algorithm.</p>
+<p>In Dijkstra's algorithm, we set the cost <code>d[m]</code> of reaching (unexplored) node <code>m</code> via (explored) node <code>n</code> to <code>d[m] = d[n] + w(n,m)</code>, where <code>w</code> is the edge-weight function. </p>
+<p>In A*, we need to include the heuristic. But we don't want to count it more than once, so we need two different notions of "distance":</p>
+<ol>
+<li>the actual path-cost from the start to a given node <code>n</code> (similarly to Dijkstra's); and</li>
+<li>the <em>estimated</em> cost of reaching the goal via the cheapest path to that node. </li>
+</ol>
+<p>The 2nd cost will be used as the priority-queue key, ensuring that the <em>most promising</em> nodes are processed first: <code>d[n] + w(n,m) + h(m,g)</code>, where <code>h</code> is the heuristic distance function. The 1st cost will be used to actually report the real cost of the route. In effect, Dijkstra's <code>h</code> function always returns <code>0</code>. </p>
+<div class="admonition warning">
+<p class="admonition-title">Not all heuristics are good!</p>
+<p>A* won't report "wrong" paths. However, if <code>h</code> doesn't meet some criteria, it might report paths that are more expensive than they need to be. Put another way, a bad heuristic could cause A* to lose its guarantee of optimality. We rely implicitly on the <em>first</em> time a node is removed from the priority queue corresponding to the last hop on a cheapest path. But if <code>h</code> <em>over</em>-estimates the true cost remaining, A* might explore a non-optimal path first&mdash;just like greedy best-first search did.</p>
+<p>I'm also glossing over the fact that this version of A* assumes that the heuristic we use <em>obeys the triangle inequality</em>: estimated total cost should never suddenly decrease, i.e., <span class="arithmatex">\(h(n) \leq w(n,p) + h(p)\)</span>, where <span class="arithmatex">\(p\)</span> is a direct neighbor of <span class="arithmatex">\(n\)</span>. You can think of this like the heuristic-facing version of Dijkstra's requirement that edge weights are non-negative.</p>
+</div>
+<p>For more information about this, take an algorithms course.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
