@@ -1391,7 +1391,7 @@ A caller could create an object of this type, and pass it to the tree as needed.
 <p>Like with kd-trees, Bloom filters build on a simpler idea; in this case, it's hash tables.</p>
 <p>Start with an array of bits. We can use that to implement an approximate membership check: just hash the key you're looking for, and see if the bit in that cell of the array is <code>true</code>, rather than <code>false</code>.</p>
 <p>Here's an example. Suppose we're in charge of Amazon's Prime TV service, and we want to very quickly tell whether a certain content-delivery network (CDN) node has a show that a local customer requests. We could add a bit array to every node, and when a new piece of media arrived (say, the first chunk of a new series), we'd hash the name of the media and set the corresponding bit to <code>1</code>. Like this:</p>
-<p><img alt="" src="mfzLIUa.png" /></p>
+<p><img alt="" src="mfzLIUa.png" width="45%" /></p>
 <p>Note one crucial difference. Instead of saving a reference to the media in the table, we're just saving <em>one bit</em>. Very space efficient, especially if we've got a large array. </p>
 <p>Now what happens if there's a collision? </p>
 <details class="note">
