@@ -249,7 +249,7 @@ Start with an array of bits. We can use that to implement an approximate members
 
 Here's an example. Suppose we're in charge of Amazon's Prime TV service, and we want to very quickly tell whether a certain content-delivery network (CDN) node has a show that a local customer requests. We could add a bit array to every node, and when a new piece of media arrived (say, the first chunk of a new series), we'd hash the name of the media and set the corresponding bit to `1`. Like this:
 
-![](mfzLIUa.png)
+![](mfzLIUa.png){ width="45%" }
 
 Note one crucial difference. Instead of saving a reference to the media in the table, we're just saving _one bit_. Very space efficient, especially if we've got a large array. 
 
