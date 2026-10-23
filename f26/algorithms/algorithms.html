@@ -1272,9 +1272,9 @@
 <p>This is one of several reasons why we still teach you binary search trees (BSTs). BSTs are absolutely perfect for this problem. Not only are they aware of relative positions (and have to be) but it turns out that the ordinary recursive descent you might perform to search for membership also suffices to find a nearest neighbor: you're guaranteed to always find the nearest neighbor somewhere on the descent!</p>
 </details>
 <p>Suppose we store a set of post offices in the following (balanced!) BST:</p>
-<p><img alt="" src="HJztFzcmY.png" /></p>
+<p><img alt="" src="HJztFzcmY.png" width="30%" /></p>
 <p>If we're seeking a nearest-neighbor to <code>17</code>, I claim that it always works to do a search in the tree for <code>17</code>. If <code>17</code> is found, it is its own nearest neighbor. If <code>17</code> isn't found, then its nearest neighbor must be on the path taken during the search. </p>
-<p><img alt="" src="HJam9zq7K.png" /></p>
+<p><img alt="" src="HJam9zq7K.png" width="50%" /></p>
 <p>And <code>20</code> is the nearest neighbor to <code>17</code>. It won't always be the last node visited, but it must be on the path. </p>
 <p>Why does this work?</p>
 <details class="note">
@@ -1287,7 +1287,7 @@
 <p>Today we're going to explore an alternative solution that retains the binary-tree foundation, but still handles membership and nearest-neighbor queries on multiple dimensions: <em>k-d trees</em>.</p>
 <p>(I'm going to completely sidestep the question of balance; it's vital for performance but today we'll be talking about functionality.)</p>
 <p>K-d trees have nodes corresponding to k-dimensional points. So, in a tree with two dimensions, we might have points like <code>(0,5)</code> or <code>(6,2)</code>. Here's an example of what I mean:</p>
-<p><img alt="" src="rJZ6nGc7F.png" /></p>
+<p><img alt="" src="rJZ6nGc7F.png" width="35%" /></p>
 <p>OK, sure: this is a binary tree with 2-dimensional node labels. But what makes it <em>usable</em> in ways other binary trees aren't? A better way to phrase that question is to ask: <em>what are the invariants of a k-d tree</em>?</p>
 <p>The key is that every rank in a k-d tree is focused on a single dimension: starting at index <code>0</code>, then moving on to index <code>1</code> and so on, and rotating back to <code>0</code>. Given that added structure, we can say that for every node <code>P</code> at rank <code>X</code>:</p>
 <ul>
@@ -1296,10 +1296,10 @@
 </ul>
 <p>(I'm making an arbitrary design choice and saying that same-value entries go to the right. Notice that this design choice is more important here than in a BST: there, you can avoid the question by excluding duplicates; here, you'd have to exclude any point from sharing a single dimension from another.)</p>
 <p>Here's the tree, annotated more helpfully. (Check that it satisfies the invariants!)</p>
-<p><img alt="" src="SkCYRG9mY.png" /></p>
+<p><img alt="" src="SkCYRG9mY.png" width="50%" /></p>
 <p>Now how do we actually <em>use</em> these invariants? Since every rank has a single dimension of interest, we might start by doing a normal recursive descent, like we would on a BST, but ignoring dimensions that the current node has no interest in. </p>
 <p>Let's try it! We'll search for the nearest neighbor of <code>(5,5)</code> in this kd-tree. </p>
-<p><img alt="" src="ByVP1mqXt.png" /></p>
+<p><img alt="" src="ByVP1mqXt.png" width="50%" /></p>
 <p>This looks promising; the nearest neighbor is <code>(6,5)</code> and we did visit that node in our descent. </p>
 <p>But will it always work? See if you can think of a target <code>(X,Y)</code> coordinate whose nearest neighbor is <em>not</em> along the normal recursive descent.</p>
 <details class="note">
@@ -1310,20 +1310,20 @@
 </details>
 <h4 id="fixing-the-problem">Fixing the problem<a class="headerlink" href="#fixing-the-problem" title="Permanent link">&para;</a></h4>
 <p>So we can't always get away with a single descent. Surely we aren't doomed to always exploring the <em>entire</em> tree? Maybe we can still exploit the invariants in a useful way. To explore this idea, we'll draw those same 7 points on a 2-dimensional graph, and frame the same search for <code>(5,4)</code>: </p>
-<p><img alt="" src="r1ArWQcQK.png" /></p>
+<p><img alt="" src="r1ArWQcQK.png" width="30%" /></p>
 <p>Here is where I notice that my drawing app has grid lines, but the exported images don't. Sigh. (TODO: fix for next semester.)</p>
 <p>The purpose of the invariants is, like in a normal BST, splitting the search space between points "bigger" and "smaller" than the current point. We no longer have a single number line, but we <em>can</em> still split the space. The root node, <code>(6,5)</code> is a dimension <code>0</code> (X) node, so let's draw a line partitioning the space accordingly:</p>
-<p><img alt="" src="rkDdf7q7Y.png" /></p>
+<p><img alt="" src="rkDdf7q7Y.png" width="30%" /></p>
 <p>The invariants guarantee that any target node with an X coordinate smaller than 6 <em>must be located in the left subtree</em> of <code>(6,5)</code>. </p>
 <p>Sure, but that's the same reasoning that got us into trouble in the first place. We know that the nearest neighbor might be, and indeed is, in the <em>right</em> subtree of <code>(6,5)</code>. </p>
 <p>The trick is in the diagram. How far away from the goal <code>(5,4)</code> is the node we're currently visiting? <code>sqrt(2)</code>, assuming that we're using the usual Cartesian distance metric. So we know that any regions of the space further away from the goal than <code>sqrt(2)</code> aren't productive to visit. In fact, let's mentally draw a circle of radius <code>sqrt(2)</code> around the goal:</p>
-<p><img alt="" src="BJbyE7cQt.png" /></p>
+<p><img alt="" src="BJbyE7cQt.png" width="30%" /></p>
 <p>At least, we'll pretend that's a circle. </p>
 <p>As we follow the normal recursive descent, we'll draw 2 more dotted lines: one for <code>(0,5)</code> and another for <code>(4,1)</code>. But, sadly, our best estimate remains no closer than <code>sqrt(2)</code>. We'll pop back up from <code>(4,1)</code> to <code>(0,5)</code> and ask: <em>do we need to explore the right subtree?</em> </p>
 <p>Put another way, is there potentially useful space (space inside the circle) on the far side of the dotted line we drew for <code>(0,5)</code>?</p>
 <p>By the way, you'll sometimes hear these dotted lines referred to as <em>cutting planes</em>. </p>
 <p>Here's a possibly helpful picture:</p>
-<p><img alt="" src="ByJSvmcXF.png" /></p>
+<p><img alt="" src="ByJSvmcXF.png" width="45%" /></p>
 <p>Yes! there's productive space on the far side, and so we do need to recur on the right subtree. In general, we can check for productive space by calculating:</p>
 <p><span class="arithmatex">\(|GOAL[d] - CURR[d]| \leq dist(GOAL, BEST)\)</span></p>
 <p>where <code>GOAL</code> is the goal point, <code>CURR</code> is the current node (where we are trying to decide whether or not to recur again), <code>BEST</code> is our best candidate so far, and <code>dist</code> is the distance formula of your choice.</p>
@@ -1391,7 +1391,7 @@ A caller could create an object of this type, and pass it to the tree as needed.
 <p>Like with kd-trees, Bloom filters build on a simpler idea; in this case, it's hash tables.</p>
 <p>Start with an array of bits. We can use that to implement an approximate membership check: just hash the key you're looking for, and see if the bit in that cell of the array is <code>true</code>, rather than <code>false</code>.</p>
 <p>Here's an example. Suppose we're in charge of Amazon's Prime TV service, and we want to very quickly tell whether a certain content-delivery network (CDN) node has a show that a local customer requests. We could add a bit array to every node, and when a new piece of media arrived (say, the first chunk of a new series), we'd hash the name of the media and set the corresponding bit to <code>1</code>. Like this:</p>
-<p><img alt="" src="mfzLIUa.png" width="45%" /></p>
+<p><img alt="" src="mfzLIUa.png" width="30%" /></p>
 <p>Note one crucial difference. Instead of saving a reference to the media in the table, we're just saving <em>one bit</em>. Very space efficient, especially if we've got a large array. </p>
 <p>Now what happens if there's a collision? </p>
 <details class="note">
@@ -1409,7 +1409,7 @@ A caller could create an object of this type, and pass it to the tree as needed.
 <p><em>Bloom Filters</em> are a generalization of this table-of-bits idea. Why not have <em>several</em> hash functions, and use all the bits those hash functions produce for adding and looking up membership? That is, if we have 3 hash functions and they produce <code>{13, 2, 118}</code>, we'd set bits <code>13</code>, <code>2</code> and <code>118</code> to true on arrival, and check those same 3 bits on a membership check. </p>
 <p>We still have the potential for false positives: two keys might hash to the same values across all hash functions, and even if they don't, multiple keys might have separately flipped all of those bits before our query. But, if we tune things right, it's a lot less likely than it was before. The trick is in picking the hash functions and deciding how big the table needs to be. Other operations, like deletion, also need care to implement properly. </p>
 <h2 id="thinking-about-algorithms-dijkstras-algorithm">Thinking About Algorithms: Dijkstra's Algorithm<a class="headerlink" href="#thinking-about-algorithms-dijkstras-algorithm" title="Permanent link">&para;</a></h2>
-<p>This section is a placeholder: see <a href="AStar_board_2025.pdf">last year's whiteboard notes</a>, to be replaced later. </p>
+<p>See the <a href="0320-21-oct-2026_adjusted.pdf">2026 whiteboard notes</a>. Note: I am using a new tool I made to try and improve readability and accessibility of my hand-written PDFs. Please let me know if anything doesn't work well for you.  </p>
 <h2 id="thinking-about-algorithms-a-search">Thinking about Algorithms: A* Search<a class="headerlink" href="#thinking-about-algorithms-a-search" title="Permanent link">&para;</a></h2>
 <p>Let's talk about a problem that you might see in an AI class: helping a robot navigate around a grid-world. The robot wants to find the reward (hidden somewhere in the world) while spending a minimal number of resources in the process. The robot can move up, down, left, or right.</p>
 <p>Here's an example: the little smiley face is the robot, and the dollar signs are the reward:</p>

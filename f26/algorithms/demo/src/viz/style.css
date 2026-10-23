@@ -1,0 +1,88 @@
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --fg: #1c2230;
+  --muted: #6a7385;
+  --line: #dde1e8;
+  --open: #e6e9ef;
+  --edge: #c3c9d4;
+  --heavy: #a87b45;
+  --blocked: #2b3242;
+  --frontier: #cdbef2;
+  --seen-early: #9cc7f0;
+  --seen-late: #2f5fa8;
+  --current: #e0457b;
+  --path: #f2b632;
+  --start: #1f9d6b;
+  --goal: #c4372f;
+  --sans: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12151c; --surface: #1a1e27; --fg: #e6e9ef; --muted: #8d95a6; --line: #2b313d; --open: #262b37;
+    --edge: #3c4352; --heavy: #b08a5a; --blocked: #4d5568; --frontier: #5b4a8f; --seen-early: #2a4a72; --seen-late: #7fb2ec;
+    --current: #ff6b9a; --path: #f5c249; --start: #35c48c; --goal: #ef5a50; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12151c; --surface: #1a1e27; --fg: #e6e9ef; --muted: #8d95a6; --line: #2b313d; --open: #262b37;
+  --edge: #3c4352; --heavy: #b08a5a; --blocked: #4d5568; --frontier: #5b4a8f; --seen-early: #2a4a72; --seen-late: #7fb2ec;
+  --current: #ff6b9a; --path: #f5c249; --start: #35c48c; --goal: #ef5a50; color-scheme: dark;
+}
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); }
+main {
+  max-width: 1320px; margin: 0 auto; display: grid; gap: 20px; padding-block: 24px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1 { margin: 0; font-size: 1.4rem; font-weight: 600; }
+.controls { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; }
+.controls .group { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.controls .grow { flex: 1 1 360px; }
+.controls label { font: 0.8rem var(--mono); color: var(--muted); }
+.controls button, .controls select {
+  font: 500 0.85rem var(--mono); padding: 6px 10px; border-radius: 6px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--surface); color: var(--fg);
+}
+.controls button { min-width: 40px; }
+.controls button.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); min-width: 80px; }
+.controls :focus-visible { outline: 2px solid var(--seen-late); outline-offset: 2px; }
+.controls input { flex: 1 1 140px; accent-color: var(--seen-late); }
+.controls output { font: 0.85rem var(--mono); font-variant-numeric: tabular-nums; color: var(--muted); min-width: 7ch; text-align: right; }
+.panels { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+.panel { display: grid; gap: 8px; min-width: 0; align-content: start; }
+.panel header { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.panel h2 { margin: 0; font-size: 1.05rem; font-weight: 600; }
+.panel dl { display: flex; gap: 12px; margin: 0; font-family: var(--mono); font-size: 0.78rem; }
+.panel dl div { display: flex; gap: 4px; }
+.panel dt { color: var(--muted); }
+.panel dd { margin: 0; font-variant-numeric: tabular-nums; min-width: 2ch; }
+svg.graph { width: 100%; height: auto; display: block; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+svg .blocked { fill: var(--blocked); }
+svg .edge line { stroke: var(--edge); stroke-width: 0.05; stroke-linecap: round; }
+svg.graph.graph .edge line { stroke-width: 0.07; }
+svg .edge.heavy line { stroke: var(--heavy); stroke-width: 0.09; }
+svg .edge.on-path line { stroke: var(--path); stroke-width: 0.16; }
+svg .edge text {
+  font: 500 0.26px var(--mono); fill: var(--fg); text-anchor: middle; dominant-baseline: central;
+  paint-order: stroke; stroke: var(--surface); stroke-width: 0.12px;
+}
+svg.graph.graph .edge text { font-size: 0.42px; stroke-width: 0.18px; }
+svg .edge.heavy text { fill: var(--heavy); }
+svg .node rect, svg .node circle { fill: var(--open); stroke-width: 0.08; }
+svg .node.frontier rect, svg .node.frontier circle { fill: var(--frontier); }
+svg .node.seen rect, svg .node.seen circle { fill: var(--seen-late); }
+svg .node.current rect, svg .node.current circle { fill: var(--current); }
+svg .node.path rect, svg .node.path circle { fill: var(--path); }
+svg .node.start rect, svg .node.start circle { stroke: var(--start); stroke-width: 0.12; }
+svg .node.goal rect, svg .node.goal circle { stroke: var(--goal); stroke-width: 0.12; }
+svg .node text { font: 600 0.38px var(--sans); fill: var(--fg); text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 18px; list-style: none; margin: 0; padding: 0; font: 0.8rem var(--mono); color: var(--muted); }
+.legend li { display: flex; align-items: center; gap: 6px; }
+.swatch { width: 14px; height: 14px; border-radius: 3px; background: var(--open); box-sizing: border-box; }
+.swatch.frontier { background: var(--frontier); }
+.swatch.seen { background: var(--seen-late); }
+.swatch.current { background: var(--current); }
+.swatch.path { background: var(--path); }
+.swatch.start { border: 3px solid var(--start); }
+.swatch.goal { border: 3px solid var(--goal); }
