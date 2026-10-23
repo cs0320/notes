@@ -65,11 +65,11 @@ What would you use instead, if you wanted better performance?
 
 Suppose we store a set of post offices in the following (balanced!) BST:
 
-![](HJztFzcmY.png)
+![](HJztFzcmY.png){ width="30%" }
 
 If we're seeking a nearest-neighbor to `17`, I claim that it always works to do a search in the tree for `17`. If `17` is found, it is its own nearest neighbor. If `17` isn't found, then its nearest neighbor must be on the path taken during the search. 
 
-![](HJam9zq7K.png)
+![](HJam9zq7K.png){ width="50%" }
 
 And `20` is the nearest neighbor to `17`. It won't always be the last node visited, but it must be on the path. 
 
@@ -90,7 +90,7 @@ Today we're going to explore an alternative solution that retains the binary-tre
 
 K-d trees have nodes corresponding to k-dimensional points. So, in a tree with two dimensions, we might have points like `(0,5)` or `(6,2)`. Here's an example of what I mean:
 
-![](rJZ6nGc7F.png)
+![](rJZ6nGc7F.png){ width="35%" }
 
 OK, sure: this is a binary tree with 2-dimensional node labels. But what makes it _usable_ in ways other binary trees aren't? A better way to phrase that question is to ask: _what are the invariants of a k-d tree_?
 
@@ -103,13 +103,13 @@ The key is that every rank in a k-d tree is focused on a single dimension: start
 
 Here's the tree, annotated more helpfully. (Check that it satisfies the invariants!)
 
-![](SkCYRG9mY.png)
+![](SkCYRG9mY.png){ width="50%" }
 
 Now how do we actually _use_ these invariants? Since every rank has a single dimension of interest, we might start by doing a normal recursive descent, like we would on a BST, but ignoring dimensions that the current node has no interest in. 
 
 Let's try it! We'll search for the nearest neighbor of `(5,5)` in this kd-tree. 
 
-![](ByVP1mqXt.png)
+![](ByVP1mqXt.png){ width="50%" }
 
 This looks promising; the nearest neighbor is `(6,5)` and we did visit that node in our descent. 
 
@@ -127,13 +127,13 @@ But will it always work? See if you can think of a target `(X,Y)` coordinate who
 
 So we can't always get away with a single descent. Surely we aren't doomed to always exploring the _entire_ tree? Maybe we can still exploit the invariants in a useful way. To explore this idea, we'll draw those same 7 points on a 2-dimensional graph, and frame the same search for `(5,4)`: 
 
-![](r1ArWQcQK.png)
+![](r1ArWQcQK.png){ width="30%" }
 
 Here is where I notice that my drawing app has grid lines, but the exported images don't. Sigh. (TODO: fix for next semester.)
 
 The purpose of the invariants is, like in a normal BST, splitting the search space between points "bigger" and "smaller" than the current point. We no longer have a single number line, but we _can_ still split the space. The root node, `(6,5)` is a dimension `0` (X) node, so let's draw a line partitioning the space accordingly:
 
-![](rkDdf7q7Y.png)
+![](rkDdf7q7Y.png){ width="30%" }
 
 The invariants guarantee that any target node with an X coordinate smaller than 6 _must be located in the left subtree_ of `(6,5)`. 
 
@@ -141,7 +141,7 @@ Sure, but that's the same reasoning that got us into trouble in the first place.
 
 The trick is in the diagram. How far away from the goal `(5,4)` is the node we're currently visiting? `sqrt(2)`, assuming that we're using the usual Cartesian distance metric. So we know that any regions of the space further away from the goal than `sqrt(2)` aren't productive to visit. In fact, let's mentally draw a circle of radius `sqrt(2)` around the goal:
 
-![](BJbyE7cQt.png)
+![](BJbyE7cQt.png){ width="30%" }
 
 At least, we'll pretend that's a circle. 
 
@@ -153,7 +153,7 @@ By the way, you'll sometimes hear these dotted lines referred to as _cutting pla
 
 Here's a possibly helpful picture:
 
-![](ByJSvmcXF.png)
+![](ByJSvmcXF.png){ width="45%" }
 
 Yes! there's productive space on the far side, and so we do need to recur on the right subtree. In general, we can check for productive space by calculating:
 
@@ -249,7 +249,7 @@ Start with an array of bits. We can use that to implement an approximate members
 
 Here's an example. Suppose we're in charge of Amazon's Prime TV service, and we want to very quickly tell whether a certain content-delivery network (CDN) node has a show that a local customer requests. We could add a bit array to every node, and when a new piece of media arrived (say, the first chunk of a new series), we'd hash the name of the media and set the corresponding bit to `1`. Like this:
 
-![](mfzLIUa.png){ width="45%" }
+![](mfzLIUa.png){ width="30%" }
 
 Note one crucial difference. Instead of saving a reference to the media in the table, we're just saving _one bit_. Very space efficient, especially if we've got a large array. 
 
@@ -275,7 +275,7 @@ We still have the potential for false positives: two keys might hash to the same
 
 ## Thinking About Algorithms: Dijkstra's Algorithm
 
-This section is a placeholder: see [last year's whiteboard notes](./AStar_board_2025.pdf), to be replaced later. 
+See the [2026 whiteboard notes](./0320-21-oct-2026_adjusted.pdf). Note: I am using a new tool I made to try and improve readability and accessibility of my hand-written PDFs. Please let me know if anything doesn't work well for you.  
 
 ## Thinking about Algorithms: A* Search
 
