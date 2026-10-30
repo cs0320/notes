@@ -12,6 +12,13 @@ function getMd5Hash(input: string): string {
     return hash.digest('hex');
 }
 
+const digits = 7 // 0,000,000 -- 9,999,999
+const target = generateRandomString(digits)
+const hashed = getMd5Hash(target)
+console.log(`Generated (private): ${target}`)
+console.log(`Hash (public): ${hashed}`)
+
+
 /** We pay the cost of building this table only once. 
  *  Even for larger key spaces, this is often possible to do.
  *  (In practice, for large key spaces we'd likely serialize this 
@@ -19,7 +26,6 @@ function getMd5Hash(input: string): string {
  *   to search efficiently. 
 */
 const lookup: LargeMap<string, string> = new LargeMap()
-const digits = 7 // 0,000,000 -- 9,999,999
 
 console.log(`Starting to build table...`)
 for(let i = 0; i<Math.pow(10, digits);i++) {
@@ -27,8 +33,4 @@ for(let i = 0; i<Math.pow(10, digits);i++) {
     lookup.set(getMd5Hash(padded), padded)
 }
 
-const target = generateRandomString(digits)
-const hashed = getMd5Hash(target)
-console.log(`Generated (private): ${target}`)
-console.log(`Hash (public): ${hashed}`)
 console.log(`Looking up in table. Found: ${lookup.get(hashed)} (out of ${lookup.size} entries)`)
